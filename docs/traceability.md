@@ -14,7 +14,7 @@ The stable identifiers below map the interview specification to source, tests an
 | R08 React separation | frontend/src/{components,services,routes,types,contexts,hooks} | lint/types; Vitest stale-request and error tests | Frontend digest |
 | R09 local setup | compose.yaml, scripts/local.sh, scripts/dev.mjs | full Compose acceptance; hot-reload readiness | Local project linked-in-node-local |
 | R10 AWS dev | infra/aws-dev, scripts/aws-* | Terraform validate/mock tests; actual plan/cloud smoke pending account/approval | AWS environment dev, digest release manifest |
-| R11 toolchain | .github, .vscode, sonar-project.properties | local gates; actionlint; remote CI/Sonar pending setup | Protected dev environment and workflow run |
+| R11 toolchain | .github, .vscode, sonar-project.properties | local gates and actionlint; GitHub Verify passed; hosted Sonar awaiting project/token | Protected dev environment and workflow run |
 | R12 learning/AI | AGENTS.md, docs/specs, docs/prompts, guides | independent critic; docs link check; interview rehearsal | docs/releases/current.json |
 
 For a new change use branch/commit naming such as `R05: preserve idempotency across retries`, then add the actual commit SHA and pull-request/workflow links to its review entry. A release records source SHA, migration versions, test-report identity and immutable image digests. The prepared AWS deploy script retains deployed digests for rollback; it is not proof of a deployment until executed.

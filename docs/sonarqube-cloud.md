@@ -1,0 +1,19 @@
+# Hosted SonarQube Cloud (GitHub Actions)
+
+The private portfolio repository can use **SonarQube Cloud Free**. The Free plan supports up to 50,000 private lines of code per organization, five members, main-branch analysis and pull requests targeting main. This repository runs CI-based Sonar scans for main and same-repository PRs targeting main; fork PRs skip the secret-bearing scan. It uses the EU service at `https://sonarcloud.io`; Sonar's US region requires Enterprise. The local Compose SonarQube server and its `sonar-project.properties` key remain independent. Cloud analysis sends source and coverage results to SonarQube Cloud.
+
+## Owner account setup
+
+1. Sign in at <https://sonarcloud.io/login> with the GitHub account that owns `robertovalencia/linked-in-node-and-aws`. Review and accept Sonar's terms yourself.
+2. When GitHub requests SonarQube Cloud app installation, restrict access to **Only select repositories** and select **`robertovalencia/linked-in-node-and-aws`**. Review the requested repository permissions before granting access.
+3. Create/import the `robertovalencia` personal GitHub account as a SonarQube Cloud organization on the **Free** plan. Import only `linked-in-node-and-aws`. Record the exact organization key and project key shown by Sonar; do not infer them from the repository name.
+4. In the Sonar project choose **Administration → Analysis Method → With GitHub Actions**. Disable automatic analysis for this project if it is enabled, so the coverage-producing CI scan is authoritative.
+5. In **My Account → Security**, generate a personal access token for this Free-plan project. Name it for GitHub Actions and use the shortest practical expiry. Copy it once into GitHub repository **Settings → Secrets and variables → Actions → New repository secret**, named `SONAR_TOKEN`. Never put it in a file, screenshot, URL, chat or command history.
+6. Set repository Actions variables `SONAR_HOST_URL=https://sonarcloud.io`, `SONAR_ORGANIZATION=<actual organization key>`, and `SONAR_PROJECT_KEY=<actual project key>`. The host variable has already been set. Keep the other two unset until Sonar displays their actual values.
+7. Run **Actions → SonarQube quality gate → Run workflow** on `main`, then open a same-repository PR targeting main to verify PR analysis. The workflow produces LCOV from both packages, scans those sources, and waits for the server's quality-gate result. Verify the run result and the matching Sonar project dashboard. Do not claim a hosted pass from the successful local scan or from a token alone.
+
+The GitHub job deliberately fails when the host, organization, project key or token is missing. The repository currently has only the host URL configured; hosted quality remains pending account setup. The local scanner remains usable without these GitHub values. On the Free plan use Sonar's default quality profile and quality gate; custom gates/profiles require a paid plan. Review the actual gate conditions and findings, then improve code/tests where needed. The AWS dev release workflow also waits on this hosted gate before requesting deployment approval.
+
+If you prefer not to grant SonarQube Cloud access to the private repository, the supported alternative is a securely reachable owner-managed SonarQube Server with a project-scoped token. That needs a different host/project setup and hosting cost; `localhost:9191` cannot serve GitHub-hosted runners.
+
+Official references: [Free plan and limits](https://docs.sonarsource.com/sonarqube-cloud/administering-sonarcloud/managing-subscription/subscription-plans), [GitHub onboarding](https://docs.sonarsource.com/sonarqube-cloud/getting-started/github), [GitHub Actions CI analysis](https://docs.sonarsource.com/sonarqube-cloud/analyzing-source-code/ci-based-analysis/github-actions-for-sonarcloud), [token management](https://docs.sonarsource.com/sonarqube-cloud/managing-your-account/managing-tokens).
