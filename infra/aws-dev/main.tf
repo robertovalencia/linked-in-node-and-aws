@@ -47,6 +47,7 @@ resource "aws_ecr_repository" "app" {
   for_each             = toset(["backend", "frontend"])
   name                 = "${local.name}/${each.key}"
   image_tag_mutability = "IMMUTABLE"
+  force_delete         = true
   image_scanning_configuration { scan_on_push = true }
   encryption_configuration { encryption_type = "AES256" }
 }
@@ -57,7 +58,7 @@ resource "aws_ecr_lifecycle_policy" "app" {
 }
 resource "aws_s3_bucket" "releases" {
   bucket_prefix = "${local.name}-releases-"
-  force_destroy = false
+  force_destroy = true
 }
 resource "aws_s3_bucket_public_access_block" "releases" {
   bucket                  = aws_s3_bucket.releases.id

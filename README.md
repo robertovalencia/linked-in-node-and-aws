@@ -1,6 +1,6 @@
 # Service marketplace · Node.js and AWS
 
-An independent interview portfolio migrated from the Java project in “Build LinkedIn-style service market” and “Linked-in-project Phase 2”. Providers showcase services, skills, experience, portfolios, rates and availability. Companies/individuals discover and compare providers, send durable inquiries and receive provider decisions and notifications.
+A [private GitHub interview portfolio](https://github.com/robertovalencia/linked-in-node-and-aws) migrated from the Java project in “Build LinkedIn-style service market” and “Linked-in-project Phase 2”. Providers showcase services, skills, experience, portfolios, rates and availability. Companies/individuals discover and compare providers, send durable inquiries and receive provider decisions and notifications.
 
 React/TypeScript, four NestJS services, PostgreSQL and Kafka run locally. Terraform and GitHub Actions prepare an isolated AWS dev environment. The original project and credentials are preserved. This application is not affiliated with LinkedIn.
 
@@ -54,4 +54,4 @@ Practice the [interview demonstration and questions](docs/interview-demo.md). Us
 
 ## AWS development environment
 
-[AWS dev setup, deployment, rollback and cleanup](docs/aws-dev.md) explains the Terraform-managed EC2/SSM/ECR environment. [Current cost assumptions](docs/costs.md) and [Azure equivalents](docs/azure-mapping.md) cover interview tradeoffs. Local data/secrets/ports never target AWS. Provisioning requires review and approval of the actual saved Terraform plan. See [results](docs/results.md) for what was executed versus prepared.
+[AWS dev setup, deployment, rollback and cleanup](docs/aws-dev.md) explains the Terraform-managed EC2/SSM/ECR environment. [One/two-day AWS run and teardown](docs/short-run.md), [current cost assumptions](docs/costs.md) and [Azure equivalents](docs/azure-mapping.md) cover interview tradeoffs. Local data/secrets/ports never target AWS. Provisioning requires review and approval of the actual saved Terraform plan. See [results](docs/results.md) for what was executed versus prepared.

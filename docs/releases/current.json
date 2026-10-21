@@ -6,7 +6,7 @@
   "images": {},
   "awsDev": "not provisioned",
   "externalIntegrations": {
-    "github": "awaiting destination repository",
+    "github": "private repository created; workflows not yet verified",
     "jira": "import prepared; not imported",
     "sonarqube": "local server gate passed; GitHub-hosted server pending"
   },
@@ -25,5 +25,6 @@
     "frontendTests": 28,
     "resilienceChecks": 9,
     "sonarGate": "docs/evidence/sonar-gate.json"
-  }
+  },
+  "repositoryUrl": "https://github.com/robertovalencia/linked-in-node-and-aws"
 }

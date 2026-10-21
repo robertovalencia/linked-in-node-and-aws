@@ -1,0 +1,8 @@
+[32m[1mSuccess![0m The configuration is valid.
+[0m
+tests/security.tftest.hcl... in progress
+  run "private_management"... pass
+tests/security.tftest.hcl... tearing down
+tests/security.tftest.hcl... pass
+
+Success! 1 passed, 0 failed.
