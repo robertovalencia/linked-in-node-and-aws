@@ -27,6 +27,7 @@ npm run check
 npm test
 npm run build
 npm run acceptance
+npx playwright install chromium
 npm run test:browser
 node scripts/failure-drill.mjs
 ```

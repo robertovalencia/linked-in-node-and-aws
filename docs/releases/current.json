@@ -1,19 +1,29 @@
 {
   "environment": "local",
   "referenceCommit": "582c847d700c27d3bc60b44aeb8974ee6365face",
-  "sourceCommit": null,
-  "status": "verification-in-progress",
+  "sourceCommit": "6322a041f84df117fd7b2dfbbb01ff98ec275ffd",
+  "status": "local-verified",
   "images": {},
   "awsDev": "not provisioned",
   "externalIntegrations": {
     "github": "awaiting destination repository",
     "jira": "import prepared; not imported",
-    "sonarqube": "configuration prepared; server run pending"
+    "sonarqube": "local server gate passed; GitHub-hosted server pending"
   },
   "aiContribution": {
     "agent": "Codex app",
     "targetPercent": 95,
     "measuredPercent": null,
     "note": "Reference behavior/assets adapted. No audited generation metric."
+  },
+  "verifiedAt": "2026-10-21T16:42:59Z",
+  "localEvidence": {
+    "apiAcceptance": "docs/evidence/local-acceptance.json",
+    "apiRunId": "acceptance-1792600963079",
+    "browser": "docs/evidence/browser-smoke.json",
+    "backendTests": 40,
+    "frontendTests": 28,
+    "resilienceChecks": 9,
+    "sonarGate": "docs/evidence/sonar-gate.json"
   }
 }
