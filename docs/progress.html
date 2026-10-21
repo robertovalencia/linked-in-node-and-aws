@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="30">
+<title>Node marketplace progress</title>
+<style>body{font:16px/1.6 system-ui;max-width:1000px;margin:48px auto;padding:0 24px;background:#f5f7f9;color:#172b3a}h1{font-size:32px}article{padding:18px 24px;background:white;border:1px solid #dbe4e8;border-radius:12px;margin:15px 0}strong{color:#087f62}a{color:#0969a5}</style>
+<h1>Node marketplace · progress</h1>
+<p>Independent migration of the Java reference, verified locally on 21 October 2026. Follow each evidence link to inspect the actual result. This page refreshes every 30 seconds.</p>
+<article><strong>48/48 API checks pass</strong><h2>Marketplace behavior</h2><p>Four NestJS services, four separate PostgreSQL roles/databases, Kafka outbox/inbox, durable inquiries and owner checks. Independent adversarial probes pass 8/8. <a href="evidence/local-acceptance.json">API report</a> · <a href="evidence/backend-adversarial.json">adversarial report</a>.</p></article>
+<article><strong>68/68 unit and component tests pass</strong><h2>Backend and React</h2><p>40 Jest and 28 Vitest tests. Desktop and mobile browser journeys pass 2/2; dependency recovery passes 9/9. <a href="evidence/browser-smoke.json">browser report</a> · <a href="evidence/failure-drill.json">recovery report</a>.</p></article>
+<article><strong>Evaluated SonarQube gate: OK</strong><h2>Local quality</h2><p>New-code coverage 89.3%, new duplication 0% and new violations 0. <a href="evidence/sonar-gate.json">actual gate result</a>. Terraform validates and its mock security test passes; <a href="evidence/terraform.txt">Terraform evidence</a>.</p></article>
+<article><strong>Independent critics complete</strong><h2>Review</h2><p>Backend, frontend and prepared infrastructure received scoped wins after documented fixes. Blind matched discovery screenshots received a visual tie/parity pass. <a href="reviews.md">review record</a> · <a href="evidence/visual-critic.md">visual assessment</a>.</p></article>
+<article><strong>Cloud deployment pending</strong><h2>External gates</h2><p>AWS dev has not been provisioned. The account-specific Terraform plan, billable approval, live deployment and smoke test remain open. GitHub Actions and Jira import await configured destinations. <a href="results.md">results and limits</a> · <a href="costs.md">cost assumptions</a>.</p></article>
+</html>

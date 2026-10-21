@@ -1,0 +1,45 @@
+{
+  "completedAt": "2026-10-21T13:31:34.491Z",
+  "environment": "local",
+  "passed": 8,
+  "failed": 1,
+  "results": [
+    {
+      "name": "Reject missing idempotency key",
+      "status": "PASS"
+    },
+    {
+      "name": "Reject wrong field types and unknown status",
+      "status": "PASS"
+    },
+    {
+      "name": "Private internal lookup is absent from edge",
+      "status": "PASS"
+    },
+    {
+      "name": "Inquiry remains durable while Kafka is stopped",
+      "status": "PASS"
+    },
+    {
+      "name": "Outbox delivers after Kafka recovers",
+      "status": "PASS"
+    },
+    {
+      "name": "Replaying identical Kafka event does not duplicate inbox",
+      "status": "PASS"
+    },
+    {
+      "name": "Resolved inquiry cannot be changed to opposite outcome",
+      "status": "PASS"
+    },
+    {
+      "name": "Database and application restart preserve inquiry and notification",
+      "status": "FAIL",
+      "detail": "Expected values to be strictly equal:\n\n502 !== 200\n"
+    },
+    {
+      "name": "Service database login cannot connect to another service database",
+      "status": "PASS"
+    }
+  ]
+}

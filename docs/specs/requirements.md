@@ -1,0 +1,22 @@
+# Requirements and acceptance specification
+
+This is an independent interview laboratory migrated from reference commit `582c847d700c27d3bc60b44aeb8974ee6365face`. Its requirements are product behavior, not a promise to reproduce every historical infrastructure tool. AWS replaces the reference's prepared GCP environment. Java is replaced completely in runtime/build paths.
+
+| ID | Business or engineering requirement | Judgeable acceptance |
+|---|---|---|
+| R01 | Anonymous provider discovery | Six durable profiles; search, category, skill, rate, availability, deterministic sorting/paging, empty state |
+| R02 | Rich profiles and comparison | Skills, tools, experience, portfolio, prices and availability rendered; compare real API results |
+| R03 | Authentication and authorization | Four demo identities; invalid/tampered/missing token rejected; role and owner enforced server-side |
+| R04 | Provider profile update | Provider can edit own profile, invalid price rejected, changes survive read/restart, cannot alter another owner |
+| R05 | Durable inquiries | Company/individual can submit; same idempotency key and payload converge under concurrency; changed payload conflicts |
+| R06 | Inquiry lifecycle | Only participants list; only target provider accepts/declines; invalid transitions/status rejected |
+| R07 | Eventual notifications | Inquiry/outbox commit atomically; broker failure does not lose intent; consumer deduplicates; read ownership persists |
+| R08 | Readable React architecture | Separate components/services/routes/types/contexts/hooks; loading/error/empty states and stale-response handling |
+| R09 | Reproducible local setup | No AWS credentials; Compose data dependencies; hot reload; explicit start/test/debug/reset/stop commands |
+| R10 | Isolated AWS dev | Terraform validated/mocked; separate state/secrets/data; immutable release, smoke verification and rollback |
+| R11 | Enforced delivery toolchain | ESLint, Prettier, strict types, Vitest/Jest, Dependabot, SonarQube gate, GitHub Actions; Jira import and VS Code setup |
+| R12 | AI-assisted learning and traceability | Codex instructions/specs/prompts; README-linked guides; requirements → tests → source → deployment → release record |
+
+The existing product exposes inquiry creation and reading plus profile/status/inbox updates. It has no profile deletion workflow: “CRUD layer design” means clear responsibility separation, not inventing destructive endpoints. New deletion requirements need their own product specification.
+
+The original suite has conditional checks. A successful process alone is insufficient: require exactly 48 passes and zero failures, including the branches after login/inquiry creation. Supplement those with frontend, security, persistence, broker-outage and deduplication evidence. A passing local suite does not establish AWS readiness or a completed cloud deployment.

@@ -1,0 +1,19 @@
+{
+  "environment": "local",
+  "referenceCommit": "582c847d700c27d3bc60b44aeb8974ee6365face",
+  "sourceCommit": null,
+  "status": "verification-in-progress",
+  "images": {},
+  "awsDev": "not provisioned",
+  "externalIntegrations": {
+    "github": "awaiting destination repository",
+    "jira": "import prepared; not imported",
+    "sonarqube": "configuration prepared; server run pending"
+  },
+  "aiContribution": {
+    "agent": "Codex app",
+    "targetPercent": 95,
+    "measuredPercent": null,
+    "note": "Reference behavior/assets adapted. No audited generation metric."
+  }
+}

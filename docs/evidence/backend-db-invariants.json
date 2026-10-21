@@ -1,0 +1,128 @@
+{
+  "source": "Read-only psql queries executed through docker compose -p linked-in-node-local exec -T postgres, independently of builders",
+  "roles": [
+    {
+      "name": "catalog",
+      "superuser": false,
+      "createdb": false,
+      "createrole": false
+    },
+    {
+      "name": "identity",
+      "superuser": false,
+      "createdb": false,
+      "createrole": false
+    },
+    {
+      "name": "inquiries",
+      "superuser": false,
+      "createdb": false,
+      "createrole": false
+    },
+    {
+      "name": "notifications",
+      "superuser": false,
+      "createdb": false,
+      "createrole": false
+    }
+  ],
+  "connect": [
+    {
+      "role": "catalog",
+      "database": "catalog",
+      "allowed": true
+    },
+    {
+      "role": "catalog",
+      "database": "identity",
+      "allowed": false
+    },
+    {
+      "role": "catalog",
+      "database": "inquiries",
+      "allowed": false
+    },
+    {
+      "role": "catalog",
+      "database": "notifications",
+      "allowed": false
+    },
+    {
+      "role": "identity",
+      "database": "catalog",
+      "allowed": false
+    },
+    {
+      "role": "identity",
+      "database": "identity",
+      "allowed": true
+    },
+    {
+      "role": "identity",
+      "database": "inquiries",
+      "allowed": false
+    },
+    {
+      "role": "identity",
+      "database": "notifications",
+      "allowed": false
+    },
+    {
+      "role": "inquiries",
+      "database": "catalog",
+      "allowed": false
+    },
+    {
+      "role": "inquiries",
+      "database": "identity",
+      "allowed": false
+    },
+    {
+      "role": "inquiries",
+      "database": "inquiries",
+      "allowed": true
+    },
+    {
+      "role": "inquiries",
+      "database": "notifications",
+      "allowed": false
+    },
+    {
+      "role": "notifications",
+      "database": "catalog",
+      "allowed": false
+    },
+    {
+      "role": "notifications",
+      "database": "identity",
+      "allowed": false
+    },
+    {
+      "role": "notifications",
+      "database": "inquiries",
+      "allowed": false
+    },
+    {
+      "role": "notifications",
+      "database": "notifications",
+      "allowed": true
+    }
+  ],
+  "critic_concurrent_inquiry_id": "2290cacc-72d9-4553-90c2-c795550206db",
+  "inquiry_rows": 1,
+  "outbox_rows": 1,
+  "distinct_event_ids": 1,
+  "published_outbox_rows": 1,
+  "notification_rows": 1,
+  "migration_versions": {
+    "inquiries": "inquiries.001",
+    "notifications": "notifications.001"
+  },
+  "checksum_lengths": 64,
+  "constraints_verified": [
+    "UNIQUE(client_email,idempotency_key)",
+    "outbox.event_id PRIMARY KEY",
+    "outbox.inquiry_id FOREIGN KEY inquiries(id)",
+    "notifications.event_id UNIQUE"
+  ]
+}

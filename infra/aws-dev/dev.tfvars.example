@@ -1,0 +1,4 @@
+region = "us-east-1"
+project = "linked-in-node"
+github_repository = "YOUR-OWNER/linked-in-node-and-aws"
+oidc_provider_arn = "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"

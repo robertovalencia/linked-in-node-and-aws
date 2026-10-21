@@ -1,0 +1,56 @@
+
+> expertly-node-aws-frontend@1.0.0 test:coverage
+> vitest run --coverage
+
+
+ RUN  v5.0.5 /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/frontend
+      Coverage enabled with v8
+
+
+ Test Files  8 passed (8)
+      Tests  28 passed (28)
+   Start at  07:40:51
+   Duration  3.17s (tests 49%, environment 31%, setup 12%, import 4%, transform 2%, worker 1%)
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   79.89 |    76.15 |   70.74 |   81.13 |                   
+ components/auth   |   78.78 |    68.42 |   66.66 |   79.31 |                   
+  Login.tsx        |   78.78 |    68.42 |   66.66 |   79.31 | ...,65-75,119-120 
+ components/common |   91.66 |    84.09 |   84.61 |   95.31 |                   
+  Avatar.tsx       |      50 |       80 |   33.33 |      50 | 14-19             
+  Modal.tsx        |   94.02 |    84.61 |     100 |    98.3 | 16                
+ ...ents/discovery |   54.54 |    72.22 |   61.29 |   54.54 |                   
+  ...areDialog.tsx |   55.55 |    66.66 |   57.14 |   55.55 | 26,94-102         
+  Discovery.tsx    |   44.44 |     92.3 |   53.84 |   44.44 | ...62-179,244-254 
+  Hero.tsx         |   63.63 |        0 |      80 |   63.63 | 56-71             
+  ProviderCard.tsx |   66.66 |    78.57 |   66.66 |   66.66 | 37,78             
+ ...ents/inquiries |   97.77 |    82.75 |   94.73 |    97.5 |                   
+  Dashboard.tsx    |     100 |    76.31 |     100 |     100 | 30-51,86-109,131  
+  InquiryForm.tsx  |    92.3 |       95 |   85.71 |    92.3 | 59                
+ components/layout |   33.33 |    64.28 |   46.66 |      35 |                   
+  ProviderCta.tsx  |      50 |       50 |      50 |      50 | 21                
+  SiteHeader.tsx   |   18.75 |       70 |      30 |      20 | 36-57,84-118      
+ .../notifications |   83.33 |    83.33 |   85.71 |   81.81 |                   
+  ...onsDialog.tsx |   83.33 |    83.33 |   85.71 |   81.81 | 30,68             
+ ...onents/profile |   63.95 |    63.63 |   53.44 |   64.55 |                   
+  Editor.tsx       |   63.51 |    59.37 |      50 |   63.23 | ...42-313,348-350 
+  ...ileDialog.tsx |   66.66 |       75 |      70 |   72.72 | 37-50,190         
+ contexts          |      96 |    78.57 |     100 |   95.45 |                   
+  AuthContext.tsx  |      96 |    78.57 |     100 |   95.45 | 17                
+ hooks             |   86.56 |    71.59 |   86.04 |   90.36 |                   
+  useAuth.ts       |      75 |       50 |     100 |     100 | 5                 
+  ...iryAttempt.ts |   98.03 |    81.25 |     100 |     100 | 51-57,77-79,88-94 
+  ...arketplace.ts |   82.87 |    66.66 |   81.81 |   86.32 | ...60-162,167-173 
+ routes            |      56 |    85.71 |   41.66 |   56.52 |                   
+  ...laceRoute.tsx |      56 |    85.71 |   41.66 |   56.52 | 62,80,105,116-130 
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 79.89% ( 477/597 )
+Branches     : 76.15% ( 297/390 )
+Functions    : 70.74% ( 162/229 )
+Lines        : 81.13% ( 430/530 )
+================================================================================

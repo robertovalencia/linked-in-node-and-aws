@@ -1,0 +1,39 @@
+
+> marketplace-backend@1.0.0 test:coverage
+> node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --coverage
+
+(node:77138) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+------------------------------|---------|----------|---------|---------|-----------------------
+File                          | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s     
+------------------------------|---------|----------|---------|---------|-----------------------
+All files                     |   29.08 |    32.91 |   29.03 |   29.91 |                       
+ catalog                      |   24.05 |       10 |   26.31 |   23.94 |                       
+  catalog.controller.ts       |       0 |        0 |       0 |       0 | 18-46                 
+  catalog.service.ts          |      25 |     12.5 |      30 |   26.08 | 15-46,70-102          
+  provider.schema.ts          |   85.71 |      100 |   66.66 |   83.33 | 57                    
+ common                       |   20.57 |    32.92 |   14.63 |   19.87 |                       
+  auth.ts                     |   58.82 |       75 |      75 |   56.25 | 37,46-51              
+  config.ts                   |     100 |      100 |     100 |     100 |                       
+  database.ts                 |    5.55 |        0 |       0 |    2.94 | 10-84                 
+  errors.ts                   |       0 |        0 |       0 |       0 | 5-30                  
+  health.ts                   |       0 |        0 |       0 |       0 | 5-24                  
+  messaging.ts                |       0 |        0 |       0 |       0 | 7-137                 
+ identity                     |   18.36 |       28 |      20 |   20.93 |                       
+  identity.controller.ts      |       0 |        0 |       0 |       0 | 15-35                 
+  identity.service.ts         |       0 |        0 |       0 |       0 | 8-60                  
+  password.ts                 |     100 |    77.77 |     100 |     100 | 13-14                 
+ inquiries                    |   59.37 |       70 |   71.42 |   62.71 |                       
+  inquiries.controller.ts     |       0 |      100 |       0 |       0 | 6-23                  
+  inquiries.service.ts        |   66.66 |       70 |     100 |   70.21 | 72-79,105-140,162-166 
+  inquiry.schema.ts           |     100 |      100 |     100 |     100 |                       
+ notifications                |      48 |       50 |   44.44 |      50 |                       
+  notifications.controller.ts |       0 |      100 |       0 |       0 | 6-12                  
+  notifications.service.ts    |   66.66 |       50 |   66.66 |   68.75 | 15,42-46,56-60        
+------------------------------|---------|----------|---------|---------|-----------------------
+
+Test Suites: 3 passed, 3 total
+Tests:       40 passed, 40 total
+Snapshots:   0 total
+Time:        1.306 s, estimated 2 s
+Ran all test suites.

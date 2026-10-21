@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+test/logs
+package-lock.json
+seeds
+
+dist-dev

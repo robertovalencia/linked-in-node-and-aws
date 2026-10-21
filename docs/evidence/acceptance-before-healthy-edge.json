@@ -1,0 +1,150 @@
+{
+  "runId": "acceptance-1792589213674",
+  "base": "http://localhost:8180",
+  "completedAt": "2026-10-21T13:26:53.709Z",
+  "passed": 0,
+  "failed": 28,
+  "createdInquiryIds": [],
+  "results": [
+    {
+      "name": "Login company",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Login individual",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Login ava",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Login leo",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Invalid password rejected",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Anonymous identity denied",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Tampered bearer denied",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Verified identity returns correct role",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Anonymous provider discovery uses persistent seed data",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Public provider fields cover service showcase without private identity",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Name search narrows providers",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Category filter",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Skill filter",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Maximum rate filter",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Availability filter",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Rate sort and deterministic pagination",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "No-match query has empty items and zero total",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Missing provider 404",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Anonymous provider editor denied",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Client provider editor denied",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Provider reads own editor profile",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Anonymous inquiry submission denied",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Provider cannot submit client inquiry",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Invalid inquiry budget rejected",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Missing target provider rejected",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Company creates a durable inquiry",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Individual creates inquiry",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    },
+    {
+      "name": "Anonymous inquiries and notifications denied",
+      "status": "FAIL",
+      "detail": "fetch failed"
+    }
+  ]
+}

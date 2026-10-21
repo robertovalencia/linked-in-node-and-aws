@@ -1,0 +1,9 @@
+PASS Reject missing idempotency key
+PASS Reject wrong field types and unknown status
+PASS Private internal lookup is absent from edge
+PASS Inquiry remains durable while Kafka is stopped
+PASS Outbox delivers after Kafka recovers
+PASS Replaying identical Kafka event does not duplicate inbox
+PASS Resolved inquiry cannot be changed to opposite outcome
+PASS Database and application restart preserve inquiry and notification
+PASS Service database login cannot connect to another service database

@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Check source",
+      "type": "shell",
+      "command": "npm run check",
+      "problemMatcher": [
+        "$tsc"
+      ]
+    },
+    {
+      "label": "Run tests",
+      "type": "shell",
+      "command": "npm test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "npm run build",
+      "problemMatcher": [
+        "$tsc"
+      ]
+    }
+  ]
+}

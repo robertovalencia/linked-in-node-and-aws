@@ -1,0 +1,6 @@
+{
+  "recommendations": [
+    "openai.chatgpt", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode",
+    "sonarsource.sonarlint-vscode", "hashicorp.terraform", "ms-azuretools.vscode-docker"
+  ]
+}

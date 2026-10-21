@@ -1,0 +1,91 @@
+name: Deploy AWS dev
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: aws-dev-release
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm ci && npm --prefix backend ci && npm --prefix frontend ci
+      - run: npm run check && npm --prefix backend run test:coverage && npm --prefix frontend run test:coverage
+      - run: npm --prefix backend run build && npm --prefix frontend run build
+      - run: npm --prefix backend audit --omit=dev --audit-level=high && npm --prefix frontend audit --omit=dev --audit-level=high
+      - run: npm run setup && docker compose up -d --build --wait --wait-timeout 240
+      - run: node scripts/acceptance.mjs http://localhost:8180 work/release-acceptance.json
+      - uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-verification
+          path: |
+            work/release-acceptance.json
+            backend/coverage/
+            frontend/coverage/
+      - if: always()
+        run: docker compose down -v
+  deploy:
+    needs: verify
+    environment: dev
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_INSTANCE_ID: ${{ vars.AWS_INSTANCE_ID }}
+      AWS_RELEASE_BUCKET: ${{ vars.AWS_RELEASE_BUCKET }}
+      AWS_SECRET_ARN: ${{ vars.AWS_SECRET_ARN }}
+      BACKEND_REPOSITORY: ${{ vars.BACKEND_REPOSITORY }}
+      FRONTEND_REPOSITORY: ${{ vars.FRONTEND_REPOSITORY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - uses: aws-actions/amazon-ecr-login@v2
+      - uses: docker/setup-buildx-action@v3
+      - name: Build and publish immutable source images
+        run: |
+          test -n "$BACKEND_REPOSITORY" && test -n "$FRONTEND_REPOSITORY"
+          for app in backend frontend; do
+            repo_var="${app^^}_REPOSITORY"
+            repo="${!repo_var}"
+            digest=$(aws ecr batch-get-image --repository-name "${repo#*/}" --image-ids "imageTag=$GITHUB_SHA" --query 'images[0].imageId.imageDigest' --output text)
+            if [[ ! "$digest" =~ ^sha256:[a-f0-9]{64}$ ]]; then
+              docker buildx build --platform linux/amd64 --label "org.opencontainers.image.revision=$GITHUB_SHA" --push --tag "$repo:$GITHUB_SHA" "$app"
+              digest=$(aws ecr batch-get-image --repository-name "${repo#*/}" --image-ids "imageTag=$GITHUB_SHA" --query 'images[0].imageId.imageDigest' --output text)
+            fi
+            [[ "$digest" =~ ^sha256:[a-f0-9]{64}$ ]]
+            echo "${app^^}_IMAGE=$repo@$digest" >> "$GITHUB_ENV"
+          done
+      - name: Scan the actual published images
+        uses: aquasecurity/setup-trivy@v0.2.3
+        with: {version: v0.76.1, cache: true}
+      - run: |
+          mkdir -p work
+          trivy image --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed=false --format json --output work/backend-image-scan.json "$BACKEND_IMAGE"
+          trivy image --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed=false --format json --output work/frontend-image-scan.json "$FRONTEND_IMAGE"
+      - name: Deploy exact digests and verify readiness
+        run: bash scripts/aws-deploy.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aws-dev-release-evidence
+          path: |
+            work/*-image-scan.json
+            work/release-manifest.json

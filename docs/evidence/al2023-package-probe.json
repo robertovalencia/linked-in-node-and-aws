@@ -1,0 +1,9 @@
+{
+  "image": "amazonlinux:2023",
+  "image_digest": "sha256:8ed3c0a996841537f75607e7d1de2114d8150391f75792e8da9268738547e73f",
+  "platform": "linux/amd64",
+  "command": "docker run --rm --platform linux/amd64 amazonlinux:2023 sh -c 'dnf --quiet list --available awscli2 awscli-2; rpm -q awscli2 awscli-2'",
+  "output": "Available Packages\nawscli-2.noarch 2.36.47-4.amzn2023.0.1 amazonlinux\npackage awscli2 is not installed\npackage awscli-2 is not installed\n",
+  "exit_code": 2,
+  "interpretation": "DNF resolves awscli-2 in the official repository. The container image is minimal and neither CLI name is already installed; trailing rpm query therefore exits nonzero. This is a package availability check, not an EC2 user-data or service startup test."
+}

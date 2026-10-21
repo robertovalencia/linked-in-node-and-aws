@@ -1,0 +1,40 @@
+{
+  "completedAt": "2026-10-21T13:29:04.375Z",
+  "passed": 8,
+  "failed": 0,
+  "inquiryId": "2290cacc-72d9-4553-90c2-c795550206db",
+  "results": [
+    {
+      "name": "32 concurrent identical requests converge on one ID",
+      "status": "PASS"
+    },
+    {
+      "name": "Concurrent conflicting payload returns409 without replacement",
+      "status": "PASS"
+    },
+    {
+      "name": "Client-scoped key permits other client independently",
+      "status": "PASS"
+    },
+    {
+      "name": "Invalid pagination, array query and unknown field return400",
+      "status": "PASS"
+    },
+    {
+      "name": "SQL metacharacter search does not reveal providers",
+      "status": "PASS"
+    },
+    {
+      "name": "Private route blocked directly and absent from edge",
+      "status": "PASS"
+    },
+    {
+      "name": "Cross-owner inquiry status returns403",
+      "status": "PASS"
+    },
+    {
+      "name": "8 conflicting terminal decisions serialize exactly one outcome",
+      "status": "PASS"
+    }
+  ]
+}

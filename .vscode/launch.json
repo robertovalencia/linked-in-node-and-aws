@@ -1,0 +1,79 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach identity",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "restart": true,
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/backend/dist-dev/identity/**/*.js"
+      ],
+      "sourceMaps": true
+    },
+    {
+      "name": "Attach catalog",
+      "type": "node",
+      "request": "attach",
+      "port": 9230,
+      "restart": true,
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/backend/dist-dev/catalog/**/*.js"
+      ],
+      "sourceMaps": true
+    },
+    {
+      "name": "Attach inquiries",
+      "type": "node",
+      "request": "attach",
+      "port": 9231,
+      "restart": true,
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/backend/dist-dev/inquiries/**/*.js"
+      ],
+      "sourceMaps": true
+    },
+    {
+      "name": "Attach notifications",
+      "type": "node",
+      "request": "attach",
+      "port": 9232,
+      "restart": true,
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/backend/dist-dev/notifications/**/*.js"
+      ],
+      "sourceMaps": true
+    },
+    {
+      "name": "Debug React",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5183",
+      "webRoot": "${workspaceFolder}/frontend/src"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Attach all NestJS services",
+      "configurations": [
+        "Attach identity",
+        "Attach catalog",
+        "Attach inquiries",
+        "Attach notifications"
+      ]
+    }
+  ]
+}

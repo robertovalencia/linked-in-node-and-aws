@@ -1,0 +1,339 @@
+[
+  {
+    "id": "ava-martinez",
+    "ownerEmail": "ava@demo.local",
+    "name": "Ava Martinez",
+    "headline": "Full-stack engineer | Java, React & thoughtful product delivery",
+    "location": "Brooklyn, New York",
+    "category": "Software Development",
+    "about": "I turn complex ideas into reliable, approachable software. With 9 years building products for startups and established teams, I partner closely with founders and engineering leaders from the first sketch to a production release. My focus is clean architecture, accessible interfaces, and systems your team can confidently maintain.",
+    "avatarUrl": "/avatars/ava-martinez.svg",
+    "coverColor": "#d4e3db",
+    "skills": [
+      "Java",
+      "React",
+      "TypeScript",
+      "Spring Boot",
+      "PostgreSQL"
+    ],
+    "tools": [
+      "Docker",
+      "Kubernetes",
+      "Git",
+      "IntelliJ IDEA"
+    ],
+    "services": [
+      "Full-stack web development",
+      "API design & integration",
+      "Application modernization"
+    ],
+    "experience": [
+      {
+        "title": "Senior Software Engineer",
+        "company": "Northstar Digital",
+        "period": "2021 – Present",
+        "description": "Led a team of six engineers delivering a Spring Boot and React customer platform. Reduced API response time by 42% while making deployments safer."
+      },
+      {
+        "title": "Independent Consultant",
+        "company": "Selected client engagements",
+        "period": "2015 – 2019",
+        "description": "Worked with clients from discovery through launch, delivering clear documentation and practical knowledge transfer."
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "Commerce platform rebuild",
+        "description": "A fast, accessible storefront with a service-owned order API, secure authentication, and a 35% improvement in checkout completion.",
+        "url": "https://example.com/portfolio/ava-martinez"
+      }
+    ],
+    "hourlyRate": 95,
+    "currency": "USD",
+    "available": true,
+    "rating": 4.9,
+    "reviewCount": 78,
+    "completedProjects": 112,
+    "responseTime": "Within a few hours"
+  },
+  {
+    "id": "leo-chen",
+    "ownerEmail": "leo@demo.local",
+    "name": "Leo Chen",
+    "headline": "DevOps & cloud engineer | Kubernetes, reliable delivery, fewer surprises",
+    "location": "Austin, Texas",
+    "category": "IT Consulting",
+    "about": "I help engineering teams ship with confidence. Over 10 years in infrastructure and platform engineering, I have built reliable delivery systems, untangled Kubernetes incidents, and helped teams understand the systems they operate. Clear runbooks and practical knowledge transfer are part of every engagement.",
+    "avatarUrl": "/avatars/leo-chen.svg",
+    "coverColor": "#d8e0eb",
+    "skills": [
+      "Kubernetes",
+      "Terraform",
+      "AWS",
+      "Python",
+      "Linux"
+    ],
+    "tools": [
+      "Docker",
+      "Helm",
+      "Kafka",
+      "Prometheus",
+      "Grafana"
+    ],
+    "services": [
+      "DevOps consulting",
+      "Kubernetes platform engineering",
+      "Infrastructure automation"
+    ],
+    "experience": [
+      {
+        "title": "Staff Platform Engineer",
+        "company": "Meridian Labs",
+        "period": "2020 – Present",
+        "description": "Designed a Kubernetes platform for 30 services with repeatable infrastructure, explicit rollback paths, and actionable incident diagnostics."
+      },
+      {
+        "title": "Independent Consultant",
+        "company": "Selected client engagements",
+        "period": "2015 – 2019",
+        "description": "Worked with clients from discovery through launch, delivering clear documentation and practical knowledge transfer."
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "Reliable delivery platform",
+        "description": "A reproducible platform with automated environment creation and production incident runbooks. Reduced deployment recovery time from hours to minutes.",
+        "url": "https://example.com/portfolio/leo-chen"
+      }
+    ],
+    "hourlyRate": 110,
+    "currency": "USD",
+    "available": true,
+    "rating": 5.0,
+    "reviewCount": 52,
+    "completedProjects": 86,
+    "responseTime": "Within 1 day"
+  },
+  {
+    "id": "sophia-patel",
+    "ownerEmail": "sophia@demo.local",
+    "name": "Sophia Patel",
+    "headline": "Product designer creating clear, welcoming digital experiences",
+    "location": "San Francisco, California",
+    "category": "Design",
+    "about": "Great design makes difficult things feel simple. I work with ambitious teams to understand their customers, validate ideas, and create inclusive digital products. My process combines research, rapid prototypes, and close collaboration with engineers.",
+    "avatarUrl": "/avatars/sophia-patel.svg",
+    "coverColor": "#e9ded1",
+    "skills": [
+      "Product Design",
+      "UX Research",
+      "UI Design",
+      "Accessibility"
+    ],
+    "tools": [
+      "Figma",
+      "FigJam",
+      "Adobe Illustrator"
+    ],
+    "services": [
+      "UX research & strategy",
+      "Web & mobile product design",
+      "Design systems"
+    ],
+    "experience": [
+      {
+        "title": "Lead Product Designer",
+        "company": "Forma Studio",
+        "period": "2019 – Present",
+        "description": "Built a design practice connecting research to measurable product improvements for early-stage teams."
+      },
+      {
+        "title": "Independent Consultant",
+        "company": "Selected client engagements",
+        "period": "2015 – 2019",
+        "description": "Worked with clients from discovery through launch, delivering clear documentation and practical knowledge transfer."
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "Better banking onboarding",
+        "description": "A research-led mobile onboarding experience that improved activation and reduced customer support requests.",
+        "url": "https://example.com/portfolio/sophia-patel"
+      }
+    ],
+    "hourlyRate": 85,
+    "currency": "USD",
+    "available": true,
+    "rating": 4.9,
+    "reviewCount": 64,
+    "completedProjects": 94,
+    "responseTime": "Within a few hours"
+  },
+  {
+    "id": "james-okafor",
+    "ownerEmail": "james@demo.local",
+    "name": "James Okafor",
+    "headline": "Growth strategist | Content that builds trust and drives results",
+    "location": "Chicago, Illinois",
+    "category": "Marketing",
+    "about": "I help growing businesses tell a clearer story and reach the people who need them. My work brings customer research, useful content, and careful measurement together so marketing becomes a sustainable growth engine.",
+    "avatarUrl": "/avatars/james-okafor.svg",
+    "coverColor": "#e4dce8",
+    "skills": [
+      "Content Strategy",
+      "SEO",
+      "Digital Marketing",
+      "Analytics"
+    ],
+    "tools": [
+      "Google Analytics",
+      "Ahrefs",
+      "HubSpot"
+    ],
+    "services": [
+      "Content marketing strategy",
+      "SEO audits & optimization",
+      "Brand positioning"
+    ],
+    "experience": [
+      {
+        "title": "Growth Strategy Consultant",
+        "company": "Independent",
+        "period": "2018 – Present",
+        "description": "Partnered with more than 40 businesses to build editorial strategies and measure meaningful customer acquisition."
+      },
+      {
+        "title": "Independent Consultant",
+        "company": "Selected client engagements",
+        "period": "2015 – 2019",
+        "description": "Worked with clients from discovery through launch, delivering clear documentation and practical knowledge transfer."
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "A stronger organic presence",
+        "description": "An integrated content strategy for a B2B software company, doubling qualified organic inquiries over six months.",
+        "url": "https://example.com/portfolio/james-okafor"
+      }
+    ],
+    "hourlyRate": 75,
+    "currency": "USD",
+    "available": true,
+    "rating": 4.8,
+    "reviewCount": 43,
+    "completedProjects": 67,
+    "responseTime": "Within 1 day"
+  },
+  {
+    "id": "elena-rodriguez",
+    "ownerEmail": "elena@demo.local",
+    "name": "Elena Rodriguez",
+    "headline": "Software architect | Secure APIs and scalable Java systems",
+    "location": "Miami, Florida",
+    "category": "Software Development",
+    "about": "Reliable software starts with clear boundaries. I bring 12 years of experience designing Java systems in financial services and SaaS. I help teams modernize carefully, define practical API contracts, and make confident architectural decisions.",
+    "avatarUrl": "/avatars/elena-rodriguez.svg",
+    "coverColor": "#d4e3db",
+    "skills": [
+      "Java",
+      "Spring Boot",
+      "System Design",
+      "Kafka",
+      "Security"
+    ],
+    "tools": [
+      "PostgreSQL",
+      "Docker",
+      "Git",
+      "JUnit"
+    ],
+    "services": [
+      "Backend engineering",
+      "Architecture reviews",
+      "API security consulting"
+    ],
+    "experience": [
+      {
+        "title": "Principal Engineer",
+        "company": "Finova",
+        "period": "2017 – Present",
+        "description": "Guided modernization of a banking platform into independently deployable services while strengthening authorization and auditability."
+      },
+      {
+        "title": "Independent Consultant",
+        "company": "Selected client engagements",
+        "period": "2015 – 2019",
+        "description": "Worked with clients from discovery through launch, delivering clear documentation and practical knowledge transfer."
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "Secure service architecture",
+        "description": "A service-oriented payment platform with explicit ownership, secure tokens, transactional messaging, and tested failure recovery.",
+        "url": "https://example.com/portfolio/elena-rodriguez"
+      }
+    ],
+    "hourlyRate": 125,
+    "currency": "USD",
+    "available": false,
+    "rating": 4.9,
+    "reviewCount": 36,
+    "completedProjects": 58,
+    "responseTime": "Within 1 day"
+  },
+  {
+    "id": "noah-williams",
+    "ownerEmail": "noah@demo.local",
+    "name": "Noah Williams",
+    "headline": "IT consultant helping small businesses work smarter",
+    "location": "Boston, Massachusetts",
+    "category": "IT Consulting",
+    "about": "Technology should make your day easier. I help small businesses choose, connect, and maintain the tools they need. From a clearer IT roadmap to a dependable support process, I explain the options in plain language and stay focused on what helps your team.",
+    "avatarUrl": "/avatars/noah-williams.svg",
+    "coverColor": "#d9e6e4",
+    "skills": [
+      "IT Strategy",
+      "Technical Support",
+      "Networking",
+      "Linux"
+    ],
+    "tools": [
+      "Microsoft 365",
+      "Linux",
+      "Docker"
+    ],
+    "services": [
+      "IT systems consulting",
+      "Technical support & training",
+      "Business technology planning"
+    ],
+    "experience": [
+      {
+        "title": "IT Consultant",
+        "company": "Williams Technology",
+        "period": "2016 – Present",
+        "description": "Supported 60 small businesses with technology planning, security improvements, and clear operational documentation."
+      },
+      {
+        "title": "Independent Consultant",
+        "company": "Selected client engagements",
+        "period": "2015 – 2019",
+        "description": "Worked with clients from discovery through launch, delivering clear documentation and practical knowledge transfer."
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "A connected workplace",
+        "description": "Simplified tools and access for a distributed professional services team, cutting onboarding time in half.",
+        "url": "https://example.com/portfolio/noah-williams"
+      }
+    ],
+    "hourlyRate": 65,
+    "currency": "USD",
+    "available": true,
+    "rating": 4.8,
+    "reviewCount": 91,
+    "completedProjects": 146,
+    "responseTime": "Within a few hours"
+  }
+]

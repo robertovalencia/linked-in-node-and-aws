@@ -1,0 +1,13 @@
+Unable to find image 'sonarsource/sonar-scanner-cli:latest' locally
+latest: Pulling from sonarsource/sonar-scanner-cli
+0f0cc63a5845: Pulling fs layer
+d1bec7d37842: Pulling fs layer
+4e1ca7d91219: Pulling fs layer
+3aabe83a1b6f: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+392aaab27b8a: Pulling fs layer
+4f4fb700ef54: Already exists
+4f4fb700ef54: Pull complete
+docker: failed to copy: httpReadSeeker: failed open: failed to do request: Get "https://production.cloudfront.docker.com/registry-v2/docker/registry/v2/blobs/sha256/d1/d1bec7d37842c84a2be602fd9c86af3eeb037855f9fd0f8b8bed7fa2bf84c512/data?Expires=1792599746&Signature=JAxqRQvoGF8~MxAmFCiIbSUFCYRrfX3rJ3jinC4YdF07YwKVPuftNtd0gdAxYOT2ACvGpJLWLH3XqLF53Sx4-QQgmx9Uf5dPzAZzQd0T-3pkCvabBZ-zS9e5wqSO~D5tCofcojW6iO6pfC5ilUXBAWoGpW~B97As1xeCZEDEELJTX-otYOfiD1mSCwCuheR4xWkfBE68O6YFjy7o4VgNc7t2e9i2bCF570C-Y90HB4B0Ci9vPh1NAooVudVjMTL6E6SCocECKvCOR9rQiBDn43pK6AGIQ8cVf4Ja4IOuW4XQU~gGnp8ejMxyt4i0h1icE2T2ARRsWCpAMaj7cPbpPQ__&Key-Pair-Id=K31B9XRZB58O8Z": EOF
+
+Run 'docker run --help' for more information

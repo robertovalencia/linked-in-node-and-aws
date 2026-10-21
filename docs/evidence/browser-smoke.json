@@ -1,0 +1,32 @@
+{
+  "completedAt": "2026-10-21T16:42:59.093Z",
+  "base": "http://localhost:8180",
+  "results": [
+    {
+      "name": "desktop",
+      "status": "PASS",
+      "checks": [
+        "six-persisted-providers",
+        "no-horizontal-overflow",
+        "compare-two-profiles",
+        "rich-profile",
+        "client-login",
+        "durable-inquiry",
+        "no-browser-errors"
+      ]
+    },
+    {
+      "name": "mobile",
+      "status": "PASS",
+      "checks": [
+        "six-persisted-providers",
+        "no-horizontal-overflow",
+        "compare-two-profiles",
+        "rich-profile",
+        "client-login",
+        "durable-inquiry",
+        "no-browser-errors"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+Summary,Description,Issue Type,Labels
+R01: Provider discovery and filtering,Specification and acceptance: docs/specs/requirements.md R01. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r01
+R02: Profile showcase and comparison,Specification and acceptance: docs/specs/requirements.md R02. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r02
+R03: Authentication and resource authorization,Specification and acceptance: docs/specs/requirements.md R03. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r03
+R04: Provider-owned profile editing,Specification and acceptance: docs/specs/requirements.md R04. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r04
+R05: Durable idempotent inquiries,Specification and acceptance: docs/specs/requirements.md R05. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r05
+R06: Inquiry response lifecycle,Specification and acceptance: docs/specs/requirements.md R06. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r06
+R07: Reliable eventual notifications,Specification and acceptance: docs/specs/requirements.md R07. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r07
+R08: React responsibility separation,Specification and acceptance: docs/specs/requirements.md R08. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r08
+R09: Reproducible local environment and hot reload,Specification and acceptance: docs/specs/requirements.md R09. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r09
+R10: Terraform AWS dev deployment,Specification and acceptance: docs/specs/requirements.md R10. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r10
+R11: Quality and delivery toolchain,Specification and acceptance: docs/specs/requirements.md R11. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r11
+R12: Codex learning documentation and traceability,Specification and acceptance: docs/specs/requirements.md R12. Implementation/test/release mapping: docs/traceability.md. Review actual evidence before Done.,Story,portfolio-r12

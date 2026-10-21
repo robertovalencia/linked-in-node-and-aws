@@ -1,0 +1,206 @@
+{
+  "runId": "acceptance-1792600963079",
+  "base": "http://localhost:8180",
+  "expected": 48,
+  "completedAt": "2026-10-21T16:42:43.665Z",
+  "passed": 48,
+  "failed": 0,
+  "createdInquiryIds": [
+    "f6c76542-4850-4d12-9da4-6c0f26c5e2d1",
+    "812f0824-e06f-42f4-904e-8c84f9da3449"
+  ],
+  "results": [
+    {
+      "name": "Login company",
+      "status": "PASS"
+    },
+    {
+      "name": "Login individual",
+      "status": "PASS"
+    },
+    {
+      "name": "Login ava",
+      "status": "PASS"
+    },
+    {
+      "name": "Login leo",
+      "status": "PASS"
+    },
+    {
+      "name": "Invalid password rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "Anonymous identity denied",
+      "status": "PASS"
+    },
+    {
+      "name": "Tampered bearer denied",
+      "status": "PASS"
+    },
+    {
+      "name": "Verified identity returns correct role",
+      "status": "PASS"
+    },
+    {
+      "name": "Anonymous provider discovery uses persistent seed data",
+      "status": "PASS"
+    },
+    {
+      "name": "Public provider fields cover service showcase without private identity",
+      "status": "PASS"
+    },
+    {
+      "name": "Name search narrows providers",
+      "status": "PASS"
+    },
+    {
+      "name": "Category filter",
+      "status": "PASS"
+    },
+    {
+      "name": "Skill filter",
+      "status": "PASS"
+    },
+    {
+      "name": "Maximum rate filter",
+      "status": "PASS"
+    },
+    {
+      "name": "Availability filter",
+      "status": "PASS"
+    },
+    {
+      "name": "Rate sort and deterministic pagination",
+      "status": "PASS"
+    },
+    {
+      "name": "No-match query has empty items and zero total",
+      "status": "PASS"
+    },
+    {
+      "name": "Missing provider 404",
+      "status": "PASS"
+    },
+    {
+      "name": "Anonymous provider editor denied",
+      "status": "PASS"
+    },
+    {
+      "name": "Client provider editor denied",
+      "status": "PASS"
+    },
+    {
+      "name": "Provider reads own editor profile",
+      "status": "PASS"
+    },
+    {
+      "name": "Cross-owner provider update rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "Client provider update denied",
+      "status": "PASS"
+    },
+    {
+      "name": "Negative provider price rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "Provider update survives subsequent independent read",
+      "status": "PASS"
+    },
+    {
+      "name": "Restore provider demonstration data",
+      "status": "PASS"
+    },
+    {
+      "name": "Anonymous inquiry submission denied",
+      "status": "PASS"
+    },
+    {
+      "name": "Provider cannot submit client inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Invalid inquiry budget rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "Missing target provider rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "Company creates a durable inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Repeated submission returns same inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Changed payload with same key conflicts",
+      "status": "PASS"
+    },
+    {
+      "name": "Concurrent duplicate submissions converge",
+      "status": "PASS"
+    },
+    {
+      "name": "Sender can list persisted inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Other client cannot list inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Other provider cannot list inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Other provider cannot change inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Sender cannot accept own inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Target provider accepts inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Client sees persisted acceptance",
+      "status": "PASS"
+    },
+    {
+      "name": "Invalid status rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "Kafka eventually delivers provider notification",
+      "status": "PASS"
+    },
+    {
+      "name": "Other provider cannot mark notification read",
+      "status": "PASS"
+    },
+    {
+      "name": "Recipient marks notification read durably",
+      "status": "PASS"
+    },
+    {
+      "name": "Individual creates inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Target provider declines individual inquiry",
+      "status": "PASS"
+    },
+    {
+      "name": "Anonymous inquiries and notifications denied",
+      "status": "PASS"
+    }
+  ]
+}

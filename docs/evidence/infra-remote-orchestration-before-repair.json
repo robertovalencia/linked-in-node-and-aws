@@ -1,0 +1,58 @@
+{
+  "method": "Remote script copy only substitutes /opt/marketplace with a scratch fixture; external CLIs stubbed. Verifies shell orchestration, not Docker/AWS/IAM behavior.",
+  "results": [
+    {
+      "scenario": "health-and-acceptance-pass",
+      "status": "PASS",
+      "checks": {
+        "exit": true,
+        "secret-json-cleaned": true,
+        "env-mode0600": true,
+        "current-target": true,
+        "prior-recreated-on-fail": true
+      },
+      "stdout": "Release verified: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n",
+      "stderr": "",
+      "calls": [
+        "docker login",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,pull",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,up,-d,--wait,--wait-timeout,180",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,exec,-T,identity,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,exec,-T,catalog,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,exec,-T,inquiries,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,exec,-T,notifications,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "docker run"
+      ]
+    },
+    {
+      "scenario": "acceptance-fails-rollback",
+      "status": "FAIL",
+      "checks": {
+        "exit": true,
+        "secret-json-cleaned": false,
+        "env-mode0600": true,
+        "current-target": true,
+        "prior-recreated-on-fail": true
+      },
+      "stdout": "Health verification failed; restoring previous application images.\n",
+      "stderr": "",
+      "calls": [
+        "docker login",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,pull",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,up,-d,--wait,--wait-timeout,180",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,exec,-T,identity,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,exec,-T,catalog,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,exec,-T,inquiries,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/new -f,compose.yaml,exec,-T,notifications,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "docker run",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/old -f,compose.yaml,up,-d,--wait,--wait-timeout,180",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/old -f,compose.yaml,exec,-T,identity,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/old -f,compose.yaml,exec,-T,catalog,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/old -f,compose.yaml,exec,-T,inquiries,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))",
+        "compose /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/critic-infra/host/releases/old -f,compose.yaml,exec,-T,notifications,node,-e,fetch(`http://localhost:${process.env.PORT}/health/ready`).then(async r=>{if(!r.ok)process.exit(1);console.log(await r.text())}).catch(()=>process.exit(1))"
+      ]
+    }
+  ],
+  "passed": 1,
+  "failed": 1
+}

@@ -1,0 +1,13 @@
+
+> expertly-node-aws-frontend@1.0.0 test
+> vitest run src/components/inquiries/InquiryAttempt.test.tsx src/components/notifications/Notifications.test.tsx src/components/profile/Workspace.test.tsx src/routes/MarketplaceRoute.test.tsx
+
+
+ RUN  v5.0.5 /Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/frontend
+
+
+ Test Files  4 passed (4)
+      Tests  18 passed (18)
+   Start at  07:39:26
+   Duration  2.02s (tests 60%, environment 26%, setup 8%, import 5%, transform 1%)
+

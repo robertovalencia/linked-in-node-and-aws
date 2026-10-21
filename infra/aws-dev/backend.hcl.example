@@ -1,0 +1,5 @@
+bucket       = "YOUR-ACCOUNT-linked-in-terraform-state"
+key          = "linked-in-node/dev/terraform.tfstate"
+region       = "us-east-1"
+encrypt      = true
+use_lockfile = true

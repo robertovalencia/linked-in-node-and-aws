@@ -1,0 +1,112 @@
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+13:40:56.428 INFO  Scanner configuration file: /opt/sonar-scanner/conf/sonar-scanner.properties
+13:40:56.432 INFO  Project root configuration file: /usr/src/sonar-project.properties
+13:40:56.453 INFO  SonarScanner CLI 8.1.0.6389
+13:40:56.472 INFO  Linux 6.10.14-linuxkit amd64
+13:40:58.265 INFO  Communicating with SonarQube Community Build 26.10.0.133078
+13:40:58.267 INFO  JRE provisioning: os[linux], arch[x86_64]
+13:41:01.400 INFO  Starting SonarScanner Engine...
+13:41:01.401 INFO  Java 21.0.12.1 Eclipse Adoptium (64-bit)
+13:41:03.406 INFO  Load global settings
+13:41:03.673 INFO  Load global settings (done) | time=265ms
+13:41:03.681 INFO  Server id: 303924D4-AaFeqLUiRTlIXKOMuRYI
+13:41:03.766 INFO  Loading required plugins
+13:41:03.767 INFO  Load plugins index
+13:41:03.822 INFO  Load plugins index (done) | time=56ms
+13:41:03.823 INFO  Load/download plugins
+13:41:04.174 INFO  Load/download plugins (done) | time=348ms
+13:41:04.725 INFO  Load project settings for component key: 'linked-in-node-and-aws'
+13:41:04.745 INFO  Load project settings for component key: 'linked-in-node-and-aws' (done) | time=20ms
+13:41:04.774 INFO  Process project properties
+13:41:04.795 INFO  Process project properties (done) | time=22ms
+13:41:04.810 INFO  Project key: linked-in-node-and-aws
+13:41:04.811 INFO  Base dir: /usr/src
+13:41:04.811 INFO  Working dir: /tmp/.scannerwork
+13:41:04.890 INFO  Load quality profiles
+13:41:04.928 INFO  Load quality profiles (done) | time=38ms
+13:41:04.972 WARN  SCM provider autodetection failed. Please use "sonar.scm.provider" to define SCM of your project, or disable the SCM Sensor in the project settings.
+13:41:04.995 INFO  Load active rules
+13:41:05.241 INFO  Load active rules (done) | time=247ms
+13:41:05.266 INFO  Load analysis cache
+13:41:05.289 INFO  Load analysis cache | time=22ms
+13:41:05.422 INFO  Preprocessing files...
+13:41:05.534 INFO  2 languages detected in 60 preprocessed files (done) | time=112ms
+13:41:05.535 INFO  39 files ignored because of inclusion/exclusion patterns
+13:41:05.542 INFO  Loading plugins for detected languages
+13:41:05.543 INFO  Load/download plugins
+13:41:06.071 INFO  Load/download plugins (done) | time=528ms
+13:41:06.288 INFO  Load project repositories
+13:41:06.354 INFO  Load project repositories (done) | time=66ms
+13:41:06.399 INFO  Indexing files...
+13:41:06.399 INFO  Project configuration:
+13:41:06.400 INFO    Excluded sources: **/node_modules/**, **/dist/**, frontend/src/**/*.test.ts, frontend/src/**/*.test.tsx, **/*.test.ts, **/*.test.tsx, **/*.spec.ts, **/*.spec.tsx
+13:41:06.400 INFO    Included tests: **/*.test.ts, **/*.test.tsx, **/*.spec.ts, **/*.spec.tsx
+13:41:06.420 INFO  60 files indexed (done) | time=20ms
+13:41:06.421 INFO  Quality profile for css: Sonar way core
+13:41:06.421 INFO  Quality profile for ts: Sonar way core
+13:41:06.421 INFO  ------------- Run sensors on module LinkedIn Marketplace Node AWS
+13:41:06.693 INFO  Load metrics repository
+13:41:06.758 INFO  Load metrics repository (done) | time=68ms
+13:41:07.092 INFO  Sensor IaC YAML File Type Classification Sensor [iac]
+13:41:07.102 INFO  Sensor IaC YAML File Type Classification Sensor [iac] (done) | time=10ms
+13:41:07.102 INFO  Sensor IaC hadolint report Sensor [iac]
+13:41:07.102 INFO  Sensor IaC hadolint report Sensor [iac] (done) | time=0ms
+13:41:07.102 INFO  Sensor Java Config Sensor [iac]
+13:41:07.106 INFO  There are no files to be analyzed for the Java language
+13:41:07.107 INFO  Sensor Java Config Sensor [iac] (done) | time=1ms
+13:41:07.108 INFO  Sensor IaC Docker Sensor [iac]
+13:41:07.115 INFO  There are no files to be analyzed for the Docker language
+13:41:07.115 INFO  Sensor IaC Docker Sensor [iac] (done) | time=9ms
+13:41:07.115 INFO  Sensor JavaScript/TypeScript Coverage [javascript]
+13:41:07.118 INFO  Analysing [/usr/src/backend/coverage/lcov.info, /usr/src/frontend/coverage/lcov.info]
+13:41:07.268 INFO  Sensor JavaScript/TypeScript Coverage [javascript] (done) | time=153ms
+13:41:07.268 INFO  Sensor TextAndSecretsSensor [text]
+13:41:07.291 INFO  Available processors: 14
+13:41:07.292 INFO  Using 14 threads for analysis.
+13:41:07.606 INFO  Start fetching files for the text and secrets analysis
+13:41:07.647 INFO  Using Git CLI to retrieve dirty files
+13:41:07.679 WARN  Retrieving only language associated files, make sure to run the analysis inside a git repository to make use of inclusions specified via "sonar.text.inclusions"
+13:41:07.682 INFO  Starting the text and secrets analysis
+13:41:07.683 INFO  60 source files to be analyzed for the text and secrets analysis
+13:41:08.102 INFO  60/60 source files have been analyzed for the text and secrets analysis
+13:41:08.124 INFO  Sensor TextAndSecretsSensor [text] (done) | time=854ms
+13:41:08.133 INFO  ------------- Run sensors on project
+13:41:08.334 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript]
+13:41:08.574 INFO  Detected os: Linux arch: amd64 alpine: false. Platform: LINUX_X64
+13:41:08.575 INFO  Deploy location /opt/sonar-scanner/.sonar/js/node-runtime, tagetRuntime: /opt/sonar-scanner/.sonar/js/node-runtime/node,  version: /opt/sonar-scanner/.sonar/js/node-runtime/version.txt
+13:41:10.760 INFO  Using embedded Node.js runtime.
+13:41:10.762 INFO  Using Node.js executable: '/opt/sonar-scanner/.sonar/js/node-runtime/node'.
+13:41:12.861 INFO  Memory configuration: OS (7836 MB), Node.js (2240 MB).
+13:41:12.961 INFO  gRPC analyze-project server listening on 127.0.0.1:43319
+13:41:13.253 INFO  Plugin version: [14.0.0.46108]
+13:41:14.695 INFO  Found 2 tsconfig.json file(s): [/usr/src/backend/tsconfig.json, /usr/src/frontend/tsconfig.json]
+13:41:22.463 INFO  60 source files to be analyzed
+13:41:22.464 INFO  Creating TypeScript(6.0.3) program with configuration file /usr/src/backend/tsconfig.json [lib: lib.es2024.d.ts, lib.dom.d.ts]
+13:41:22.464 INFO  Analyzing 18 file(s) from tsconfig /usr/src/backend/tsconfig.json (777 total files in program)
+13:41:22.464 INFO  Creating TypeScript(6.0.3) program with configuration file /usr/src/frontend/tsconfig.json [lib: lib.es2022.d.ts, lib.dom.d.ts, lib.dom.iterable.d.ts]
+13:41:22.465 INFO  Analyzing 38 file(s) from tsconfig /usr/src/frontend/tsconfig.json (382 total files in program)
+13:41:22.465 INFO  Analyzing 3 file(s) using merged compiler options [lib: lib.es2024.d.ts, lib.dom.d.ts]
+13:41:22.466 INFO  60/60 source files have been analyzed
+13:41:22.500 INFO  Hit the cache for 0 out of 59
+13:41:22.502 INFO  Miss the cache for 59 out of 59: ANALYSIS_MODE_INELIGIBLE [59/59]
+13:41:22.502 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript] (done) | time=14167ms
+13:41:22.503 INFO  Sensor IaC Project Sensor [iac]
+13:41:22.511 INFO  Sensor IaC Project Sensor [iac] (done) | time=7ms
+13:41:22.511 INFO  Sensor Zero Coverage Sensor
+13:41:22.525 INFO  Sensor Zero Coverage Sensor (done) | time=13ms
+13:41:22.525 INFO  ------------- Gather SCA dependencies on project
+13:41:22.597 INFO  Dependency analysis skipped
+13:41:22.600 INFO  SCM Publisher No SCM system was detected. You can use the 'sonar.scm.provider' property to explicitly specify it.
+13:41:22.614 INFO  CPD Executor 5 files had no CPD blocks
+13:41:22.614 INFO  CPD Executor Calculating CPD for 44 files
+13:41:22.654 INFO  CPD Executor CPD calculation finished (done) | time=38ms
+13:41:22.793 INFO  Analysis report generated in 127ms, dir size=715.5 kB
+13:41:22.850 INFO  Analysis report compressed in 53ms, zip size=351.6 kB
+13:41:22.928 INFO  Analysis report uploaded in 77ms
+13:41:22.931 INFO  ------------- Check Quality Gate status
+13:41:22.932 INFO  Waiting for the analysis report to be processed (max 300s)
+13:41:27.986 INFO  QUALITY GATE STATUS: PASSED - View details on http://sonarqube:9000/dashboard?id=linked-in-node-and-aws
+13:41:28.179 INFO  Analysis total time: 26.687 s
+13:41:28.214 INFO  SonarScanner Engine completed successfully
+13:41:28.234 INFO  EXECUTION SUCCESS
+13:41:28.238 INFO  Total time: 31.811s
