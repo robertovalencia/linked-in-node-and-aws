@@ -58,7 +58,7 @@ jobs:
           role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
       - uses: aws-actions/amazon-ecr-login@v2
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
       - name: Build and publish immutable source images
         run: |
           test -n "$BACKEND_REPOSITORY" && test -n "$FRONTEND_REPOSITORY"
