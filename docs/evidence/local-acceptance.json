@@ -1,13 +1,13 @@
 {
-  "runId": "acceptance-1792600963079",
+  "runId": "acceptance-1792628830426",
   "base": "http://localhost:8180",
   "expected": 48,
-  "completedAt": "2026-10-21T16:42:43.665Z",
+  "completedAt": "2026-10-22T00:27:11.632Z",
   "passed": 48,
   "failed": 0,
   "createdInquiryIds": [
-    "f6c76542-4850-4d12-9da4-6c0f26c5e2d1",
-    "812f0824-e06f-42f4-904e-8c84f9da3449"
+    "b4f8a071-ff46-4da3-838e-67bc97f60b89",
+    "e3fc061f-4427-433b-90fa-e9b4f60a4bef"
   ],
   "results": [
     {
