@@ -29,3 +29,10 @@ Added twenty sequenced lessons, the roadmap, coverage matrices, an unchecked pro
 The completed independent content reviews found missing concurrent-request teaching and a missing authored UI-to-API exercise. Repairs added the two-request lock/commit trace and local retry lab, plus a proposed minimum-rate UI-to-Zod/SQL feature. Final source and coverage reviews accepted the materials; the review loop was stopped at the user's request. The architecture summary now accurately describes temporary inquiry recovery data in sessionStorage and notification-table event deduplication.
 
 Publication checks: the ZIP integrity test passed, the browsable lessons and source links were checked locally, and no application behavior or infrastructure was changed. Learner Docker/AWS labs remain instructions rather than execution claims.
+
+
+## 2026-10-22: Technical concept revision requested by the learner
+
+Rewrote the twenty lesson files around individual mechanisms, with short What/How explanations, actual code excerpts, common traps and recall questions. Added four service-specific technical handbooks. The Interview Process lessons and repository lessons use identical content. Existing personal notes, saved expansions and comments were preserved.
+
+Code links use a fixed inspected commit and verified line ranges. Existing practical walkthrough code blocks were preserved while their long prose was split. The new archive mirrors the repository documentation layout. The earlier critic loop remains stopped; this revision uses direct source, rendering, link and synchronization checks, with no claim of a new independent review or executed cloud lab.

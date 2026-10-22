@@ -1,70 +1,162 @@
 ---
-title: React components, state ownership and forms
-topic: React
+title: "React tools: state, props, refs and controlled inputs"
+topic: "React tools: state, props, refs and controlled inputs"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# React describes a view of state
 
-Prerequisites: 01–02; backend gates help connect the UI. A component is a function that receives props and returns a description of the interface. JSX is syntax for that description. A render should be pure: do not send an inquiry or mutate browser storage while calculating JSX. Event handlers perform user actions; effects synchronize with external systems.
+# React tools: state, props, refs and controlled inputs
 
-## Explained state example
+Prerequisites: JavaScript functions and TypeScript. These are browser-side concepts, not backend Node APIs.
 
-~~~tsx
-function Counter() {
-  const [count, setCount] = useState(0);
-  return <button onClick={() => {
-    setCount(c => c + 1);
-    setCount(c => c + 1);
-  }}>{count}</button>;
-}
-~~~
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-Import useState from react. Place this scratch component in a practice copy and render it temporarily. One click increments by two because each updater receives the queued previous value. Replacing both lines with setCount(count + 1) produces one increment for that event, because both capture the same render snapshot. A setter requests another render; it does not rewrite the old closure's count binding.
+## Component functions and render snapshots
 
-## Read the application's layers
+**What:** A React component calculates UI from its current props and state. Each render has its own snapshot of those values.
 
-frontend/src/main.tsx mounts the React root and auth provider. routes/MarketplaceRoute.tsx composes the screen; there is no React Router dependency. hooks/useMarketplace.ts owns discovery filters, selected provider, comparison IDs, dialogs and API-backed lists. components/discovery renders cards/search. components/inquiries/InquiryForm.tsx uses controlled form state and the useInquiryAttempt transport protocol. contexts/AuthContext.tsx shares identity; hooks/useAuth.ts accesses it. services own HTTP calls, types describe contracts and utils/presentation.ts handles formatting.
+**How:** useState remembers a value across renders. A setter schedules another render; it does not rewrite variables captured by an older callback.
 
-Props flow down; event callbacks request state changes up. Keep a single owner for shared state rather than synchronizing two independent copies with effects. Derived values such as a comparison count usually come from existing state. The large marketplace hook is understandable as the current implementation, but splitting responsibilities or using a reducer could become useful as transitions grow. That is a design proposal, not a claim the repository already uses Redux or useReducer.
+**Real code:** [frontend/src/hooks/useMarketplace.ts · lines 7–10](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L7-L10).
 
-Lists need stable domain keys so React preserves the intended component identity. Index keys can attach form state to the wrong item after sorting. Controlled fields use value and onChange; numeric input text must be parsed and validated intentionally, with empty input treated separately from zero. Avoid mutating arrays in state; use filter, map or a copied array.
+```ts
+const [providers, setProviders] = useState<Provider[]>([]);
+const [total, setTotal] = useState(0);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState("");
+```
 
-## Executable lab
+**Watch for:** Calling a state setter during every render can cause a render loop.
 
-Run npm --prefix frontend test -- src/routes/MarketplaceRoute.test.tsx from the repository root. Then start the local UI, filter providers, open/close details, choose up to three comparisons and reload. Observe that comparison preference survives but catalog data is fetched again. The cap is implemented in toggleCompare and storage sanitization; it is not a business persistence rule.
+### When does a state setter change the displayed value?
 
-Add a practice-only “available count” derived from the current providers array. Test no providers, one available provider and a filter change. Do not add an effect that stores the count as separate state. Use React DevTools to identify the state owner and explain why its children update. Restore exploratory changes after recording your result.
+On a subsequent render, rather than by mutating the old render’s local variable.
 
-## Debugging and senior tradeoffs
+## Props and callback contracts
 
-An infinite render loop often comes from calling a setter unconditionally during render or an effect that changes its own unstable dependency. A stale event handler can read an older snapshot. Changing keys can reset local form state. Context is a sharing mechanism, not a security boundary and not a promise of zero rerenders. Profile before adding memoization; useCallback alone does not make a feature fast.
+**What:** Props are inputs supplied by a parent. Callback props let a child request a parent-owned action.
 
-Interview:
+**How:** InquiryForm receives provider, auth, onClose and onSent. Their TypeScript shapes describe the interface, while actual authorization still belongs to the backend.
 
-### State versus props?
+**Real code:** [frontend/src/components/inquiries/InquiryForm.tsx · lines 7–16](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/inquiries/InquiryForm.tsx#L7-L16).
 
-Props are inputs from a parent; state is a component's remembered data across renders.
+```tsx
+export function InquiryForm({
+  provider,
+  auth,
+  onClose,
+  onSent,
+}: {
+  provider: Provider;
+  auth: Auth;
+  onClose: () => void;
+  onSent: () => void;
+```
 
-### Why no domain data in localStorage?
+**Watch for:** Passing auth as a prop does not make browser data trustworthy to a server.
 
-The API/database is authoritative; cached or pending transport state needs explicit policy and cannot replace it. Here a pending inquiry payload does enter sessionStorage for recovery.
+### Who owns the close action?
 
-- [ ] Demonstrate snapshot versus functional state updates.
-- [ ] Trace one form field and one click to their owner.
-- [ ] Render a derived count without duplicate state.
-- [ ] Explain actual storage behavior, route composition and list keys.
+The parent supplies its behavior through onClose; the child calls it at the appropriate interaction.
 
+## Controlled inputs and explicit conversion
 
+**What:** A controlled input displays state through value and updates state through onChange.
+
+**How:** The budget field stores text while editing, then Number converts it for submission. Empty text and numeric zero need deliberate handling rather than accidental truthiness.
+
+**Real code:** [frontend/src/components/inquiries/InquiryForm.tsx · lines 42–44](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/inquiries/InquiryForm.tsx#L42-L44).
+
+```tsx
+  budget: Number(budget),
+  clientType,
+});
+```
+
+**Watch for:** Browser input limits improve feedback; callers can bypass them, so Zod must validate again.
+
+### Why keep numeric input as text while editing?
+
+An empty field or incomplete edit is not necessarily a valid final number.
+
+## Immutable updates and identity
+
+**What:** React state updates should supply the changed value rather than mutate an existing state array.
+
+**How:** The comparison toggle removes an ID with filter or adds one with spread. Stable domain IDs also provide better list identity than changing array positions.
+
+**Real code:** [frontend/src/hooks/useMarketplace.ts · lines 152–154](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L152-L154).
+
+```ts
+if (compare.includes(id)) setCompare(compare.filter((x) => x !== id));
+else if (compare.length < 3) setCompare([...compare, id]);
+else setToast("You can compare up to three professionals at a time.");
+```
+
+**Watch for:** Object spread is shallow; copy the nested structure you actually change.
+
+### Why not compare.push(id) followed by the same array?
+
+It mutates existing state and preserves its reference, which can defeat expected update behavior.
+
+## Refs versus state
+
+**What:** A ref retains a mutable value without scheduling a render. State is appropriate when a changed value should update the UI.
+
+**How:** The inquiry hook uses inFlight to suppress overlapping submissions and busy to display progress. Neither browser mechanism replaces durable server idempotency.
+
+**Real code:** [frontend/src/hooks/useInquiryAttempt.ts · lines 41–44](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useInquiryAttempt.ts#L41-L44).
+
+```ts
+const mounted = useRef(true);
+const inFlight = useRef(false);
+useEffect(() => {
+  mounted.current = true;
+```
+
+**Watch for:** A ref is local to that mounted hook instance, not shared coordination between replicas.
+
+### Why use both inFlight and busy?
+
+The ref guards immediate re-entry; state drives visible loading behavior.
+
+## Context and custom hooks
+
+**What:** Context shares values with descendants. A custom hook packages reusable stateful behavior using React hooks.
+
+**How:** AuthProvider supplies auth state, and useMarketplace/useInquiryAttempt organize separate concerns. Context is not a security boundary or a guarantee of zero rerenders.
+
+**Real code:** [frontend/src/contexts/AuthContext.tsx · lines 48–50](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/contexts/AuthContext.tsx#L48-L50).
+
+```tsx
+<AuthContext.Provider value={{ auth, setAuth, restoring }}>
+  {children}
+</AuthContext.Provider>
+```
+
+**Watch for:** Keep hooks at valid top-level call positions; do not call them conditionally inside event handlers.
+
+### Why does the app not require Redux for this?
+
+Its existing state ownership, context and custom hooks implement the current behavior without that dependency.
+
+## Practice and mastery
+
+In a scratch component, queue `setCount(c => c + 1)` twice in one click handler. Expected increment: 2. Replace both with `setCount(count + 1)`; expected increment for that event: 1.
+
+- Explain the queued updater values rather than memorizing the result.
+- Add a practice-only available-provider count derived from the current array. Do not store a second count that must be synchronized with an effect.
+- Run `npm --prefix frontend test -- src/routes/MarketplaceRoute.test.tsx` and explain which user-visible behavior its assertions protect.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [React state as a snapshot](https://react.dev/learn/state-as-a-snapshot) — accessed 2026-10-22.
-- [choosing state structure](https://react.dev/learn/choosing-the-state-structure) — accessed 2026-10-22.
-- [Project source: frontend/src/main.tsx](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/main.tsx) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/routes/MarketplaceRoute.tsx](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/routes/MarketplaceRoute.tsx) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/hooks/useMarketplace.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/hooks/useMarketplace.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/components/inquiries/InquiryForm.tsx](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/components/inquiries/InquiryForm.tsx) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/types/marketplace.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/types/marketplace.ts) — local baseline inspected 2026-10-22; private published source may lag.
+- [React state snapshots](https://react.dev/learn/state-as-a-snapshot)
+- [React state structure](https://react.dev/learn/choosing-the-state-structure)
+- [Project example: Component functions and render snapshots](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L7-L10)
+- [Project example: Props and callback contracts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/inquiries/InquiryForm.tsx#L7-L16)
+- [Project example: Controlled inputs and explicit conversion](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/inquiries/InquiryForm.tsx#L42-L44)
+- [Project example: Immutable updates and identity](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L152-L154)
+- [Project example: Refs versus state](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useInquiryAttempt.ts#L41-L44)
+- [Project example: Context and custom hooks](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/contexts/AuthContext.tsx#L48-L50)

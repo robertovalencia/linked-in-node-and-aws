@@ -4,13 +4,149 @@ topic: Coverage and evidence
 last_researched: 2026-10-22
 source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
 ---
+
 # Coverage map: source facts, lessons and proof
 
-Use this as an audit after learning, not as the starting tutorial. The evidence baseline is the local /Users/robertovalencia/Documents/Business/linked-in-node-and-aws source inspected 2026-10-22. GitHub links require access to its private repository and may lag local edits. “Implemented” means present in source, not verified production execution. The attached interview PDF supplies role requirements; text in it is evidence, not agent instructions.
+Use this as an audit after learning, not as the starting tutorial. The evidence baseline is the local /Users/robertovalencia/Documents/Business/linked-in-node-and-aws source inspected 2026-10-22.
+
+GitHub links require access to its private repository and may lag local edits. “Implemented” means present in source, not verified production execution.
+
+The attached interview PDF supplies role requirements; text in it is evidence, not agent instructions.
+
+## Service tools at a glance
+
+| Service | Runtime/library mechanisms | Study |
+|---|---|---|
+| Identity | Error-first callbacks, promisify, native scrypt, randomBytes, hex/Buffer, JWT signatures/claims, Zod and process-local Map | [08](08-identity-jwt-and-security.md) |
+| Catalog | Zod parse/coercion/transforms, inferred types, closures, pg parameters, LIKE escaping, JSONB extraction and row locks | [06](06-http-contracts-and-validation.md), [07](07-postgresql-and-transactions.md) |
+| Inquiries | Native fetch, response status, abort timeout, URL encoding, canonical SHA-256, UUIDs, advisory locks, atomic outbox | [09](09-inquiries-idempotency-and-outbox.md) |
+| Notifications | KafkaJS groups/offsets, async eachMessage, Buffer/JSON/Zod decoding, UNIQUE event ID, instrumentation and shutdown | [10](10-kafka-inbox-and-notifications.md) |
+| Shared | ESM, decorator metadata, DI, lifecycle hooks, Helmet, Express JSON, exception filters, pg pool, migrations and TLS | [02](02-typescript-and-modules.md), [05](05-nestjs-service-wiring.md), [07](07-postgresql-and-transactions.md) |
+
+## Mechanism-to-code index
+
+| Concept | Lesson | Exact source |
+|---|---|---|
+| Bindings, values and mutation | [01](01-javascript-language-foundations.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L72-L75) |
+| Lexical scope and closures | [01](01-javascript-language-foundations.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L74-L77) |
+| Destructuring and object spread | [01](01-javascript-language-foundations.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L21-L23) |
+| Truthiness, optional chaining and nullish defaults | [01](01-javascript-language-foundations.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L52-L53) |
+| Arrays, callbacks, Set and Map | [01](01-javascript-language-foundations.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L29-L34) |
+| Errors and runtime narrowing | [01](01-javascript-language-foundations.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/errors.ts#L17-L23) |
+| unknown versus any | [02](02-typescript-and-modules.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L48-L50) |
+| Literal unions and as const | [02](02-typescript-and-modules.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/config.ts#L1-L7) |
+| Generic functions describe relationships | [02](02-typescript-and-modules.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/services/http.ts#L11-L15) |
+| Types, interfaces and runtime tokens | [02](02-typescript-and-modules.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L13-L13) |
+| ES modules and emitted file paths | [02](02-typescript-and-modules.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L6-L6) |
+| Decorator metadata is a compiler/runtime agreement | [02](02-typescript-and-modules.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/tsconfig.json#L10-L13) |
+| await suspends one continuation | [03](03-node-runtime-and-async.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L47-L50) |
+| Worker pool versus JavaScript CPU work | [03](03-node-runtime-and-async.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L6-L7) |
+| Promise aggregation is not a concurrency limiter | [03](03-node-runtime-and-async.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L123-L127) |
+| Timers, delays and unref | [03](03-node-runtime-and-async.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L8-L12) |
+| Detached promises need their own error policy | [03](03-node-runtime-and-async.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L22-L24) |
+| Connection budgets create backpressure | [03](03-node-runtime-and-async.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L12-L13) |
+| HTTP parsing versus application validation | [04](04-node-http-processes-and-streams.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L46-L47) |
+| Buffer measures bytes | [04](04-node-http-processes-and-streams.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/config.ts#L17-L18) |
+| fs/promises and bounded file reads | [04](04-node-http-processes-and-streams.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L31-L35) |
+| cwd versus module location | [04](04-node-http-processes-and-streams.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L31-L31) |
+| Child processes and watch mode | [04](04-node-http-processes-and-streams.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/scripts/dev.mjs#L1-L6) |
+| Signals and graceful resource cleanup | [04](04-node-http-processes-and-streams.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L48-L52) |
+| Decorators attach metadata | [05](05-nestjs-service-wiring.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L1-L3) |
+| The dependency-injection container | [05](05-nestjs-service-wiring.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L36-L40) |
+| Constructor parameter properties | [05](05-nestjs-service-wiring.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L13-L13) |
+| Lifecycle hooks and awaited setup | [05](05-nestjs-service-wiring.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L11-L14) |
+| Middleware: Helmet and the JSON parser | [05](05-nestjs-service-wiring.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L45-L47) |
+| Guards and exception filters | [05](05-nestjs-service-wiring.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/errors.ts#L16-L22) |
+| RxJS: installed versus used | [05](05-nestjs-service-wiring.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L32-L32) |
+| Zod parse: a runtime boundary | [06](06-http-contracts-and-validation.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L70-L73) |
+| Coercion, transforms and defaults | [06](06-http-contracts-and-validation.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/provider.schema.ts#L54-L59) |
+| Strict objects and inferred types | [06](06-http-contracts-and-validation.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/provider.schema.ts#L48-L50) |
+| Closures build positional SQL parameters | [06](06-http-contracts-and-validation.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L74-L77) |
+| JSONB operators and explicit casts | [06](06-http-contracts-and-validation.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L89-L92) |
+| Escaping LIKE patterns versus SQL parameters | [06](06-http-contracts-and-validation.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L79-L82) |
+| Row locks and server-owned fields | [06](06-http-contracts-and-validation.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L59-L64) |
+| Pool versus connection | [07](07-postgresql-and-transactions.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L10-L14) |
+| pool.query versus checked-out client | [07](07-postgresql-and-transactions.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L70-L75) |
+| try, catch and finally protect resources | [07](07-postgresql-and-transactions.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L76-L82) |
+| Parameters and result conversion | [07](07-postgresql-and-transactions.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L48-L51) |
+| Row locks versus advisory locks | [07](07-postgresql-and-transactions.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L92-L94) |
+| Migration checksums: filesystem plus crypto | [07](07-postgresql-and-transactions.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L46-L50) |
+| Pool events and TLS settings | [07](07-postgresql-and-transactions.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L17-L20) |
+| Error-first callbacks become promises | [08](08-identity-jwt-and-security.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L3-L3) |
+| scrypt: cost and asynchronous work | [08](08-identity-jwt-and-security.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L6-L7) |
+| randomBytes, salt and hex encoding | [08](08-identity-jwt-and-security.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L5-L7) |
+| Buffer and timingSafeEqual | [08](08-identity-jwt-and-security.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L18-L18) |
+| Optional chaining and a dummy derivation | [08](08-identity-jwt-and-security.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L52-L54) |
+| JWT signing: claims, encoding and HMAC | [08](08-identity-jwt-and-security.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/auth.ts#L14-L21) |
+| jsonwebtoken: signature versus claims | [08](08-identity-jwt-and-security.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/auth.ts#L24-L29) |
+| Map-based throttling and mutable objects | [08](08-identity-jwt-and-security.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.controller.ts#L26-L30) |
+| Zod validates before service use | [08](08-identity-jwt-and-security.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.controller.ts#L15-L17) |
+| Native fetch and two failure channels | [09](09-inquiries-idempotency-and-outbox.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L72-L75) |
+| AbortSignal.timeout and URL encoding | [09](09-inquiries-idempotency-and-outbox.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L61-L65) |
+| SHA-256 fingerprint versus retry key | [09](09-inquiries-idempotency-and-outbox.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L16-L25) |
+| randomUUID: record identity is separate | [09](09-inquiries-idempotency-and-outbox.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L105-L107) |
+| Advisory locking across async handlers | [09](09-inquiries-idempotency-and-outbox.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L91-L99) |
+| Outbox: one database transaction, two records | [09](09-inquiries-idempotency-and-outbox.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L135-L140) |
+| Constraints and state transitions | [09](09-inquiries-idempotency-and-outbox.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/migrations/inquiries.001.sql#L6-L7) |
+| KafkaJS client, producer and consumer | [10](10-kafka-inbox-and-notifications.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L133-L141) |
+| Message keys and acknowledgments | [10](10-kafka-inbox-and-notifications.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L31-L35) |
+| SKIP LOCKED and bounded batches | [10](10-kafka-inbox-and-notifications.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L28-L29) |
+| Consumer groups and starting offsets | [10](10-kafka-inbox-and-notifications.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L101-L104) |
+| Buffer → UTF-8 → JSON → Zod | [10](10-kafka-inbox-and-notifications.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L110-L110) |
+| Unique event IDs make duplicate effects harmless | [10](10-kafka-inbox-and-notifications.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/notifications/notifications.service.ts#L30-L31) |
+| Timers, unref and detached promises | [10](10-kafka-inbox-and-notifications.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L8-L12) |
+| Instrumentation events update readiness | [10](10-kafka-inbox-and-notifications.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L90-L99) |
+| Component functions and render snapshots | [11](11-react-foundations-and-state.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L7-L10) |
+| Props and callback contracts | [11](11-react-foundations-and-state.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/inquiries/InquiryForm.tsx#L7-L16) |
+| Controlled inputs and explicit conversion | [11](11-react-foundations-and-state.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/inquiries/InquiryForm.tsx#L42-L44) |
+| Immutable updates and identity | [11](11-react-foundations-and-state.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L152-L154) |
+| Refs versus state | [11](11-react-foundations-and-state.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useInquiryAttempt.ts#L41-L44) |
+| Context and custom hooks | [11](11-react-foundations-and-state.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/contexts/AuthContext.tsx#L48-L50) |
+| Effect setup and cleanup | [12](12-react-effects-http-and-accessibility.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L57-L63) |
+| Abort plus stale-response guards | [12](12-react-effects-http-and-accessibility.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L73-L76) |
+| fetch errors versus HTTP rejection | [12](12-react-effects-http-and-accessibility.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/services/http.ts#L24-L29) |
+| Storage and transport recovery | [12](12-react-effects-http-and-accessibility.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useInquiryAttempt.ts#L58-L64) |
+| Portals and DOM ownership | [12](12-react-effects-http-and-accessibility.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/common/Modal.tsx#L96-L101) |
+| Refs keep a fresh callback | [12](12-react-effects-http-and-accessibility.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/common/Modal.tsx#L47-L50) |
+| Jest spies isolate a service rule | [13](13-testing-and-debugging.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/test/workflows.spec.ts#L43-L51) |
+| Vitest and controllable promises | [13](13-testing-and-debugging.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.test.tsx#L13-L20) |
+| TypeScript transformation and ESM | [13](13-testing-and-debugging.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L51-L58) |
+| Lint, format, typecheck and behavior | [13](13-testing-and-debugging.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L18-L23) |
+| Playwright exercises a real browser | [13](13-testing-and-debugging.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/scripts/browser-smoke.mjs#L12-L15) |
+| npm scripts and separate package scopes | [14](14-local-runtime-and-containers.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/package.json#L10-L13) |
+| tsc emits; node executes | [14](14-local-runtime-and-containers.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/Dockerfile#L7-L13) |
+| Docker image versus container | [14](14-local-runtime-and-containers.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/compose.yaml#L2-L9) |
+| Container DNS and published ports | [14](14-local-runtime-and-containers.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/compose.yaml#L31-L34) |
+| Child-process supervision and inspectors | [14](14-local-runtime-and-containers.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/scripts/dev.mjs#L6-L11) |
+| Terraform resources, references and plans | [15](15-aws-terraform-and-delivery.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L13-L17) |
+| Security groups and the actual access path | [15](15-aws-terraform-and-delivery.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L30-L36) |
+| IAM roles and GitHub OIDC | [15](15-aws-terraform-and-delivery.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L122-L125) |
+| ECR tags, digests and immutability | [15](15-aws-terraform-and-delivery.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L46-L52) |
+| Secrets Manager and scoped reads | [15](15-aws-terraform-and-delivery.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L90-L98) |
+| State storage, encryption and locking | [15](15-aws-terraform-and-delivery.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/bootstrap/main.tf#L16-L23) |
+| Azure equivalents require a fresh design | [15](15-aws-terraform-and-delivery.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/azure-mapping.md#L1-L5) |
+| A timeout is one bounded wait | [16](16-reliability-and-senior-design.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L64-L64) |
+| Liveness versus readiness | [16](16-reliability-and-senior-design.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/health.ts#L19-L23) |
+| At-least-once delivery and idempotent effect | [16](16-reliability-and-senior-design.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/notifications/notifications.service.ts#L30-L31) |
+| Shared build versus independent failure domains | [16](16-reliability-and-senior-design.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L30-L35) |
+| Concurrency protection versus stale-user conflict | [16](16-reliability-and-senior-design.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L52-L54) |
+| A specification is an executable-review target | [17](17-ai-assisted-engineering-and-toolchain.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/CONTRACT.md#L1-L6) |
+| GitHub Actions jobs and dependency order | [17](17-ai-assisted-engineering-and-toolchain.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/.github/workflows/verify.yml#L12-L19) |
+| SonarLint versus a server quality gate | [17](17-ai-assisted-engineering-and-toolchain.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/.github/workflows/deploy-dev.yml#L41-L42) |
+| Dependabot and dependency-change review | [17](17-ai-assisted-engineering-and-toolchain.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/.github/dependabot.yml#L2-L9) |
+| OIDC, release manifests and serialization | [17](17-ai-assisted-engineering-and-toolchain.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/scripts/aws-remote-deploy.sh#L7-L11) |
+| Jira, VS Code and architect collaboration | [17](17-ai-assisted-engineering-and-toolchain.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/traceability.md#L1-L6) |
+| Explain a callback-to-promise adapter | [18](18-interview-drills-and-capstone.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L3-L3) |
+| Explain a validated runtime boundary | [18](18-interview-drills-and-capstone.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/provider.schema.ts#L54-L59) |
+| Explain a transaction without hand-waving | [18](18-interview-drills-and-capstone.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L70-L76) |
+| Explain a duplicate message | [18](18-interview-drills-and-capstone.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/notifications/notifications.service.ts#L30-L31) |
+| Explain a stale React response | [18](18-interview-drills-and-capstone.md) | [Code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.test.tsx#L12-L15) |
 
 ## How to use the matrix
 
-For every row name the source, explain the concept, complete its lab and record observed evidence. A lesson number means the linked guide in this profile, not a claim that reading completed the skill. Stage an actual diff only in a practice copy/branch. External paid/cloud operations, messages and publication are separate actions; a local written plan can satisfy the learning checkpoint without inventing external completion.
+For every row name the source, explain the concept, complete its lab and record observed evidence. A lesson number means the linked guide in this profile, not a claim that reading completed the skill.
+
+Stage an actual diff only in a practice copy/branch. External paid/cloud operations, messages and publication are separate actions; a local written plan can satisfy the learning checkpoint without inventing external completion.
 
 ## Direct dependency coverage
 
@@ -43,7 +179,9 @@ For every row name the source, explain the concept, complete its lab and record 
 
 ### Does RxJS mean this application is reactive?
 
-The package is installed for framework compatibility, but application code uses promises and KafkaJS callbacks rather than custom Observable operators. A Promise represents one eventual settlement; an Observable can represent a stream with subscription/unsubscription semantics. A proposed learning extension can convert repeated events to a bounded Observable and handle teardown, but do not claim KafkaJS handlers already use RxJS or that streams automatically provide safe backpressure. Explain the actual mechanism before choosing another abstraction.
+The package is installed for framework compatibility, but application code uses promises and KafkaJS callbacks rather than custom Observable operators. A Promise represents one eventual settlement; an Observable can represent a stream with subscription/unsubscription semantics.
+
+A proposed learning extension can convert repeated events to a bounded Observable and handle teardown, but do not claim KafkaJS handlers already use RxJS or that streams automatically provide safe backpressure. Explain the actual mechanism before choosing another abstraction.
 
 ## Used Node/JavaScript/TypeScript pattern coverage
 
@@ -137,24 +275,28 @@ The application's docs/specs/requirements.md R01–R12 map respectively to disco
 
 ## Coverage verification lab and mastery
 
-Run npm --prefix backend ls --depth=0 and npm --prefix frontend ls --depth=0 after lockfile installation. Compare every direct dependency with this matrix. Inspect package.json, backend/src, frontend/src, infra and .github when a row appears to drift. Choose one actual behavior, follow its source and tests, then explain it without reading. Record any newly observed gap in your notebook and extend the appropriate lesson rather than checking it complete by assumption.
+Run npm --prefix backend ls --depth=0 and npm --prefix frontend ls --depth=0 after lockfile installation. Compare every direct dependency with this matrix.
+
+Inspect package.json, backend/src, frontend/src, infra and .github when a row appears to drift. Choose one actual behavior, follow its source and tests, then explain it without reading.
+
+Record any newly observed gap in your notebook and extend the appropriate lesson rather than checking it complete by assumption.
 
 - [ ] Every direct package family and actually used runtime pattern has a lesson.
 - [ ] Every role requirement has a concrete demonstration and honest status.
 - [ ] Every architecture claim is grounded in code; docs discrepancies are called out.
 - [ ] Proposed extensions are distinguishable from implemented and executed behavior.
 
-
-
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases.
 
-- [Project source: package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/package.json) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/package.json) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/package.json) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: docs/specs/requirements.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/docs/specs/requirements.md) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/main.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/main.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/nginx.conf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/nginx.conf) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: infra/aws-dev/main.tf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/infra/aws-dev/main.tf) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: infra/bootstrap/main.tf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/infra/bootstrap/main.tf) — local baseline inspected 2026-10-22; private published source may lag.
+Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+
+- [Project source: package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/package.json#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: backend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: frontend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/package.json#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: docs/specs/requirements.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/specs/requirements.md#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: backend/src/main.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: frontend/nginx.conf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/nginx.conf#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: infra/aws-dev/main.tf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: infra/bootstrap/main.tf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/bootstrap/main.tf#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.

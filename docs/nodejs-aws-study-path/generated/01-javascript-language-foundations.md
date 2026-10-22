@@ -1,84 +1,177 @@
 ---
-title: JavaScript language foundations for backend work
-topic: JavaScript
+title: "JavaScript: values, closures, objects and collections"
+topic: "JavaScript: values, closures, objects and collections"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# JavaScript language foundations
 
-Prerequisite: lesson 00 terminal checkpoint. JavaScript is the language; Node.js is a runtime that supplies server APIs. TypeScript adds compile-time checking and produces JavaScript. NestJS organizes that runtime into application components. Keep those four ideas separate.
+# JavaScript: values, closures, objects and collections
 
-## Values, bindings and control flow
+Start here after the roadmap. No Node.js knowledge is assumed.
 
-A value has a runtime type. A binding gives a value a name. Use const when the binding should not be reassigned and let when it should. A const object can still be mutated. Primitives include string, number, boolean, undefined, null, bigint and symbol; arrays and functions are objects. null means an intentional empty value by convention; undefined often means missing. Use === for comparisons and explicitly convert request strings to numbers. The string "0" is truthy; the number 0 is falsy. An empty array is truthy.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-Objects are shared through references. Spreading an object copies its own enumerable fields shallowly; nested arrays still reference the same data. This is why a React update must copy the particular nested structure being changed. map transforms each element, filter selects elements, find returns one element or undefined, and reduce accumulates. A Map is useful for keyed state; a Set removes duplicate scalar IDs. JSON is a wire representation, not a complete JavaScript object serializer: functions and undefined properties do not round-trip as ordinary fields.
+## Bindings, values and mutation
 
-## Runnable example: closure and copying
+**What:** `const` prevents reassignment of a variable. It does not freeze an object or array stored in that variable.
 
-Save this as work/js-foundations.mjs in your practice copy and run node work/js-foundations.mjs.
+**How:** A variable can refer to an object shared with other code. Mutating that object is visible through its other references; creating a new object has a different identity.
 
-~~~js
+**Real code:** [backend/src/catalog/catalog.service.ts · lines 72–75](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L72-L75).
+
+```ts
+const values: unknown[] = [];
+const where: string[] = [];
+const add = (value: unknown) => {
+  values.push(value);
+```
+
+**Watch for:** const and immutable do not mean the same thing.
+
+### Can values.push work when values is const?
+
+Yes. The array changes; the variable is not rebound to another array.
+
+## Lexical scope and closures
+
+**What:** A closure is a function retaining access to variables in its surrounding scope.
+
+**How:** Catalog’s add function remembers the values array from the current search call. A different search call creates a different array and closure.
+
+**Real code:** [backend/src/catalog/catalog.service.ts · lines 74–77](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L74-L77).
+
+```ts
+const add = (value: unknown) => {
+  values.push(value);
+  return `$${values.length}`;
+};
+```
+
+**Watch for:** A closure can retain old values or large objects longer than intended.
+
+### Do two requests share the local values array?
+
+No. Each call creates its own local array; module or instance fields would have a different lifetime.
+
+## Destructuring and object spread
+
+**What:** Destructuring extracts properties. Rest collects the remaining ones; object spread copies enumerable properties into a new object.
+
+**How:** Catalog separates ownerEmail from public profile data. Its update also spreads user input before overriding protected fields with stored values.
+
+**Real code:** [backend/src/catalog/catalog.service.ts · lines 21–23](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L21-L23).
+
+```ts
+const { ownerEmail, ...document } = entry;
+providerSchema.parse(document);
+await client.query(
+```
+
+**Watch for:** These copies are shallow. Nested arrays or objects can still share references.
+
+### Why can a shallow copy still change the original?
+
+Both objects may refer to the same nested array or object.
+
+## Truthiness, optional chaining and nullish defaults
+
+**What:** `?.` stops an access when its receiver is null or undefined. `??` replaces only null/undefined; `||` also replaces false, zero and empty text.
+
+**How:** Identity uses a missing account’s fallback hash. Catalog checks maxRate against undefined so a supplied zero does not vanish through a truthiness check.
+
+**Real code:** [backend/src/identity/identity.service.ts · lines 52–53](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L52-L53).
+
+```ts
+const valid = await verifyPassword(password, account?.password_hash ?? this.dummyHash);
+if (!account || !valid) throw new UnauthorizedException('Invalid email or password');
+```
+
+**Watch for:** The string "false" is truthy. Convert external values with an explicit rule.
+
+### When does zero survive a default?
+
+It survives a ?? default; an || default would replace it.
+
+## Arrays, callbacks, Set and Map
+
+**What:** `map` produces transformed elements; `filter` selects elements. A Set deduplicates values; a Map associates keys with values.
+
+**How:** The React hook filters saved IDs, deduplicates them with Set and caps the result. Identity uses Map for per-IP attempt counters.
+
+**Real code:** [frontend/src/hooks/useMarketplace.ts · lines 29–34](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L29-L34).
+
+```ts
+        ...new Set(
+          saved.filter((id): id is string => typeof id === "string"),
+        ),
+      ].slice(0, 3)
+    : [];
+} catch {
+```
+
+**Watch for:** Set compares object references, not deep object content.
+
+### Why does Set remove duplicate IDs reliably?
+
+IDs are scalar strings, so equal string values compare as the same Set value.
+
+## Errors and runtime narrowing
+
+**What:** JavaScript can throw values that are not Error objects. A catch variable therefore cannot safely be assumed to have a message or stack.
+
+**How:** The error filter uses instanceof and shape checks before deciding how to report a failure. A rejected awaited promise enters catch just like a synchronous throw.
+
+**Real code:** [backend/src/common/errors.ts · lines 17–23](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/errors.ts#L17-L23).
+
+```ts
+  error instanceof ZodError
+    ? 400
+    : error instanceof HttpException
+      ? error.getStatus()
+      : (parserStatus ?? 500);
+let detail =
+  status === 500
+```
+
+**Watch for:** A try block does not catch an unrelated later callback unless the failure reaches its awaited promise chain.
+
+### Why use instanceof instead of assuming error.message?
+
+The thrown value may be a string, null or another non-Error value.
+
+## Practice and mastery
+
+Create `work/` in a practice copy. Save this as `work/values.mjs` and run `node work/values.mjs`:
+
+```js
 function counter() {
-  let n = 0;
-  return () => ++n;
+  let value = 0;
+  return () => ++value;
 }
 const next = counter();
 console.log(next(), next());
-const provider = { name: 'Ava', skills: ['Node'] };
-const copied = { ...provider };
-copied.skills.push('SQL');
-console.log(provider.skills.join(','));
+const original = { skills: ['Node'] };
+const copy = { ...original };
+copy.skills.push('SQL');
+console.log(original.skills.join(','));
 console.log('0' === 0, Boolean('0'), Number('0'));
-~~~
+```
 
-Expected output is 1 2, then Node,SQL, then false true 0. The returned function retains access to n after counter returns: that retained lexical environment is a closure. The spread copied the skills reference. Repair the example with skills: [...provider.skills] and show that the original array stays unchanged.
+Expected: `1 2`, then `Node,SQL`, then `false true 0`.
 
-## Functions, classes and errors
-
-Arrow functions capture this from the surrounding context; a method's this depends on how it is called. Destructuring a method and calling it standalone may lose its receiver. A class constructor stores instance state; prototype methods are shared. A JavaScript class does not imply Java's thread model. try/catch catches a synchronous throw and a rejected promise that is awaited in that try block; it does not magically catch a later unawaited callback.
-
-Use optional chaining for possibly missing values and ?? when only null/undefined should trigger a default. || also replaces 0, false and empty strings, which can corrupt valid input. Destructuring extracts fields; rest collects the remaining fields; spread expands values. Template literals interpolate strings and are not SQL escaping.
-
-## Read the project
-
-In backend/src/catalog/catalog.service.ts follow providers.map, object destructuring of ownerEmail, the add closure that numbers SQL parameters, and filter construction. In frontend/src/hooks/useMarketplace.ts follow Set-based comparison deduplication and the lazy useState initializer. In backend/src/common/errors.ts find the unknown-error checks. Explain each expression in plain English before reading the framework decorators.
-
-## Lab and debugging
-
-Write a pure function summarize(providers) that returns the names of available providers under a numeric budget, sorted without modifying the input. Include a missing rate, a rate of 0, an empty list, and duplicate names. Assert that the original array is unchanged. Then deliberately replace ?? with || for a zero budget; explain the wrong output and repair it. Add a closure that counts successful searches; make two independent counters and prove they do not share counts.
-
-Senior tradeoff: clever chains can hide invalid input and expensive work. Separate runtime validation from business transformation. Name intermediate values when that makes ownership or filtering rules easier to review. Know asymptotic cost: filtering n providers is O(n); sorting generally adds O(n log n); loading an entire catalog into Node does not replace database pagination.
-
-## Interview answers
-
-
-
-### What is a closure?
-
-A function retaining access to lexical variables from its creation environment; it enables counters and event handlers, and can retain outdated React render values or unnecessary memory.
-
-
-
-### Does const make an object immutable?
-
-No. It prevents rebinding the name; nested data can still change. Copy deliberately or enforce immutability at the relevant boundary.
-
-## Mastery check
-
-- [ ] Predict every line of the runnable example before execution.
-- [ ] Explain mutation, reference identity, coercion, closure and this.
-- [ ] Implement and test summarize without mutating input.
-- [ ] Find these patterns in real catalog and React source.
-
-
+- Copy the nested skills array too; prove the original no longer changes.
+- Explain one closure, one mutation and one conversion in the real Catalog code.
+- Write a filter/map transformation without mutating its input.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [MDN JavaScript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide) — accessed 2026-10-22.
-- [closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures) — accessed 2026-10-22.
-- [Project source: backend/src/catalog/catalog.service.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/catalog/catalog.service.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/hooks/useMarketplace.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/hooks/useMarketplace.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/common/errors.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/errors.ts) — local baseline inspected 2026-10-22; private published source may lag.
+- [MDN JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
+- [MDN closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures)
+- [Project example: Bindings, values and mutation](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L72-L75)
+- [Project example: Lexical scope and closures](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L74-L77)
+- [Project example: Destructuring and object spread](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L21-L23)
+- [Project example: Truthiness, optional chaining and nullish defaults](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L52-L53)
+- [Project example: Arrays, callbacks, Set and Map](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L29-L34)
+- [Project example: Errors and runtime narrowing](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/errors.ts#L17-L23)

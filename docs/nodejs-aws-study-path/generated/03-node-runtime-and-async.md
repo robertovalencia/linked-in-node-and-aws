@@ -1,68 +1,165 @@
 ---
-title: Node event loop, promises and resource limits
-topic: Node runtime
+title: "Node runtime: event loop, promises and resource limits"
+topic: "Node runtime: event loop, promises and resource limits"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# Node concurrency without the myths
 
-Prerequisites: 01–02. One Node process commonly runs application JavaScript on one main thread. Network operations can progress while a handler awaits their results. Some operations, including asynchronous password derivation, use native worker-pool resources. “Single-threaded” does not mean one request at a time and does not protect database invariants.
+# Node runtime: event loop, promises and resource limits
 
-## A runnable scheduling experiment
+Prerequisites: lessons 01–02. The examples come from the services and their supporting React client.
 
-Save as work/scheduling.mjs and run node work/scheduling.mjs.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-~~~js
+## await suspends one continuation
+
+**What:** The event loop lets Node run JavaScript callbacks while network operations wait. Await pauses the current async function until its promise settles.
+
+**How:** Other handlers can progress while a database request waits. That is why two requests can race even when application JavaScript usually executes on one main thread.
+
+**Real code:** [backend/src/identity/identity.service.ts · lines 47–50](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L47-L50).
+
+```ts
+const result = await this.db.query(
+  'SELECT email,name,role,password_hash FROM accounts WHERE email=$1',
+  [email.toLowerCase()],
+);
+```
+
+**Watch for:** Single-threaded JavaScript is not a database lock.
+
+### Does await block every HTTP request?
+
+No. It pauses the awaiting function’s continuation, not all request processing.
+
+## Worker pool versus JavaScript CPU work
+
+**What:** Some native async APIs use worker-pool resources; scrypt is one example. CPU-heavy JavaScript still occupies the main thread unless explicitly moved elsewhere.
+
+**How:** Async password derivation lets the main loop handle other I/O. Capacity remains finite; parallel derivations can contend for CPU, memory and worker threads.
+
+**Real code:** [backend/src/identity/password.ts · lines 6–7](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L6-L7).
+
+```ts
+const hash = (await scrypt(password, salt, 64)) as Buffer;
+return `scrypt:${salt}:${hash.toString('hex')}`;
+```
+
+**Watch for:** An async keyword does not offload a long JavaScript loop.
+
+### Why does CPU work still affect latency?
+
+Finite CPU and worker capacity must serve all active work, even when a particular API is asynchronous.
+
+## Promise aggregation is not a concurrency limiter
+
+**What:** `Promise.all` aggregates promises and rejects when one rejects. It does not call function values or cancel other work automatically.
+
+**How:** The map invokes providerService.get for each compared ID before the aggregate settles. This application caps comparisons at three, which bounds that particular fan-out.
+
+**Real code:** [frontend/src/hooks/useMarketplace.ts · lines 123–127](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L123-L127).
+
+```ts
+Promise.all(compare.map((id) => providerService.get(id, controller.signal)))
+  .then((items) => {
+    if (!controller.signal.aborted) setCompareProviders(items);
+  })
+  .catch((error) => {
+```
+
+**Watch for:** Building 100,000 fetch promises can start 100,000 operations; Promise.all does not queue them safely.
+
+### Where does the concurrent work start here?
+
+In each providerService.get call made by map, not in a later magical scheduler inside Promise.all.
+
+## Timers, delays and unref
+
+**What:** `setTimeout` makes a callback eligible after a delay; it does not promise an exact execution time.
+
+**How:** The worker wraps a timer in a promise for retry pacing. unref means this timer alone need not keep the Node process alive.
+
+**Real code:** [backend/src/common/messaging.ts · lines 8–12](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L8-L12).
+
+```ts
+const pause = (ms: number) =>
+  new Promise<void>((resolve) => {
+    setTimeout(resolve, ms).unref();
+  });
+
+```
+
+**Watch for:** unref does not cancel the timer or stop network calls.
+
+### Can a 500ms timer run late?
+
+Yes. Busy JavaScript or other runtime scheduling can delay the callback.
+
+## Detached promises need their own error policy
+
+**What:** Calling an async function starts it and returns a promise. `void` discards the result expression; it does not suppress a rejection.
+
+**How:** The messaging bootstrap launches a loop. That loop catches expected failures and retries; a blocking bootstrap await of the entire infinite loop would prevent normal startup completion.
+
+**Real code:** [backend/src/common/messaging.ts · lines 22–24](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L22-L24).
+
+```ts
+onApplicationBootstrap(): void {
+  void this.run();
+}
+```
+
+**Watch for:** Ignoring a rejected promise can create an unhandled rejection rather than a safe background task.
+
+### What does void this.run actually guarantee?
+
+Only that the returned promise is intentionally unused at that call site.
+
+## Connection budgets create backpressure
+
+**What:** Backpressure prevents producers from creating more work than a consumer can handle. A bounded pool is one resource limit.
+
+**How:** With max=10, additional database work waits for a connection. A slow Catalog fetch inside an inquiry transaction occupies one of those connections while waiting on another service.
+
+**Real code:** [backend/src/common/database.ts · lines 12–13](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L12-L13).
+
+```ts
+max: 10,
+connectionTimeoutMillis: 5000,
+```
+
+**Watch for:** A pool limit does not by itself define a complete HTTP overload or timeout policy.
+
+### Why can an idle-CPU API still be slow?
+
+It may be waiting for connections or downstream I/O rather than computing.
+
+## Practice and mastery
+
+Save as `work/scheduling.mjs`, then run `node work/scheduling.mjs`:
+
+```js
 console.log('start');
 setTimeout(() => console.log('timer'), 0);
 Promise.resolve().then(() => console.log('promise'));
 await Promise.resolve();
 console.log('after await');
-~~~
+```
 
-Expected order in this self-contained ESM example: start, promise, after await, timer. Synchronous code runs first, promise continuations run before the later timer callback here, and a zero delay is not an immediate execution promise. Do not memorize one ordering diagram as proof for all combinations of timers, I/O and process.nextTick across module contexts. Make the scheduling context explicit.
+Expected for this self-contained ES module: `start`, `promise`, `after await`, `timer`.
 
-An async function always returns a promise. await pauses that function's continuation, leaving the runtime free to do other work; it does not create a thread. Promise.all aggregates promises and rejects if any rejects. Calls used to construct those promises start the operations before or during argument evaluation; Promise.all does not invoke an array of function values. Promise.allSettled reports every outcome. Neither automatically limits concurrency or cancels other operations. A list of 100,000 started requests aggregated with Promise.all can exhaust sockets or a database pool.
-
-## Where this matters in the project
-
-backend/src/identity/password.ts promisifies scrypt rather than hashing synchronously in the request path. backend/src/common/database.ts limits each pool to ten clients; with four processes the configured maxima add up to forty, not ten globally. backend/src/common/messaging.ts runs background loops and uses unref timers. unref lets a timer stop keeping the process alive on its own; it is not cancellation. frontend/src/hooks/useMarketplace.ts uses Promise.all for at most three comparison profiles, which is a deliberately bounded set.
-
-The inquiry handler holds a database connection and a transaction while awaiting an internal catalog lookup. That means a slow external dependency consumes scarce connection capacity and prolongs the idempotency lock. The five-second timeout bounds that specific wait. Moving the lookup outside the transaction could reduce lock time, but changes duplicate-replay and consistency behavior; validate those tradeoffs first.
-
-## Lab: show starvation and repair the design
-
-In a scratch Node script start a 20 ms interval, then run a CPU loop for about 300 ms using performance.now(). Record the observed gap in interval output. Replace the busy loop with an awaited 300 ms timer and compare. The timer version allows ticks while waiting; adding async before a CPU-heavy function alone does not repair starvation. Proposed extensions for actual heavy CPU work include worker_threads or an external job worker with bounded concurrency; neither is implemented here.
-
-Then implement runLimited(tasks, limit) for ten synthetic promises with a maximum of two active tasks. Log active counts and assert the maximum never exceeds two even if a task rejects. Explain how you would stop accepting new work and await in-flight tasks during shutdown. This is more useful than knowing the names of all event loop phases.
-
-## Debugging and senior tradeoffs
-
-When latency rises, distinguish event-loop blocking, worker-pool contention, pool exhaustion, network waiting and downstream failure. Use timestamps, CPU profiles, pending connection counts and request traces; an increase in CPU does not automatically mean the database needs an index. async loops still need backoff, cancellation and an error policy. Catching an error and continuing forever can conceal a broken dependency.
-
-Interview:
-
-### Does await prevent duplicate inquiries?
-
-No. Separate handlers and replicas interleave; the PostgreSQL advisory lock plus uniqueness constraint protects the invariant.
-
-### Why not Promise.all every SQL query?
-
-Related transaction operations require one connection and ordered semantics; unrelated work may still need concurrency bounds.
-
-- [ ] Predict and verify scheduling output.
-- [ ] Demonstrate blocking with measured timer delay.
-- [ ] Explain why async scrypt can still contend for limited native resources.
-- [ ] Calculate aggregate pool demand and identify the network-in-transaction tradeoff.
-
-
+- Start a 20ms interval and compare a 300ms busy loop with an awaited 300ms timer. Measure the gap; do not assume exact timing.
+- Implement a two-at-a-time runner for ten synthetic tasks, including a rejection. Assert its active count never exceeds two.
+- Worker threads or external CPU jobs are possible extensions; the current services do not implement them.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [Node event loop and worker-pool guidance](https://nodejs.org/en/learn/asynchronous-work/dont-block-the-event-loop) — accessed 2026-10-22.
-- [Project source: backend/src/identity/password.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/identity/password.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/common/database.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/database.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/common/messaging.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/messaging.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/inquiries/inquiries.service.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/inquiries/inquiries.service.ts) — local baseline inspected 2026-10-22; private published source may lag.
+- [Node event loop and worker pool](https://nodejs.org/en/learn/asynchronous-work/dont-block-the-event-loop)
+- [Project example: await suspends one continuation](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L47-L50)
+- [Project example: Worker pool versus JavaScript CPU work](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L6-L7)
+- [Project example: Promise aggregation is not a concurrency limiter](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L123-L127)
+- [Project example: Timers, delays and unref](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L8-L12)
+- [Project example: Detached promises need their own error policy](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L22-L24)
+- [Project example: Connection budgets create backpressure](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L12-L13)

@@ -4,17 +4,39 @@ topic: Roadmap
 last_researched: 2026-10-22
 source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
 ---
+
 # NodeJs/AWS: from first JavaScript to defensible engineering decisions
 
-This path uses the actual service marketplace as your laboratory. You will learn to explain code before changing it, change it before optimizing it, and defend it with evidence before claiming mastery. Reading twenty guides does not establish seniority. Senior knowledge means independently making sound decisions under incomplete requirements, recognizing failure modes, and showing the results of your work.
+Learn one technical mechanism at a time. Each lesson now gives a definition, the library/runtime behavior, a small source excerpt, a common trap and a recall question.
+
+Every concept links to verified lines in the real project. Reading is preparation; mastery requires explaining and testing the behavior yourself.
+
+## Choose a service to study
+
+| Service | Start with the mechanisms | Exact example |
+|---|---|---|
+| Identity | [scrypt, promisify, Buffer, JWT, Map](08-identity-jwt-and-security.md) | [Open code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L3-L7) |
+| Catalog | [Zod, coercion, closures, JSONB](06-http-contracts-and-validation.md) | [Open code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L70-L74) |
+| Inquiries | [fetch, timeout, hashes, locks, outbox](09-inquiries-idempotency-and-outbox.md) | [Open code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L82-L86) |
+| Notifications | [KafkaJS, offsets, bytes, deduplication](10-kafka-inbox-and-notifications.md) | [Open code](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/notifications/notifications.service.ts#L26-L30) |
+
+All services also use [NestJS injection/lifecycle](05-nestjs-service-wiring.md) and [pg pools/transactions](07-postgresql-and-transactions.md).
 
 ## Start here
 
-Know how to open a terminal, edit a text file, navigate folders, and use basic Git commands. No prior Node.js is assumed. If Java/Spring is familiar, use it as a bridge, but do lessons 01–04 rather than translating every Java habit literally. First read the repository README, CONTRACT.md, docs/architecture.md and docs/interview-topics/java-to-nestjs.md. The source is at /Users/robertovalencia/Documents/Business/linked-in-node-and-aws. All relative source paths in these guides start there.
+Know how to open a terminal, edit a text file, navigate folders, and use basic Git commands. No prior Node.js is assumed.
 
-Use the repository's declared Node range (backend engines: >=22 <25), lockfiles, and exact project scripts. That is the compatibility baseline, not a claim that the pinned versions are newest. Do not upgrade frameworks while learning the existing behavior.
+If Java/Spring is familiar, use it as a bridge, but do lessons 01–04 rather than translating every Java habit literally. First read the repository README, CONTRACT.md, docs/architecture.md and docs/interview-topics/java-to-nestjs.md.
 
-Create a separate practice branch or copy. Run JavaScript scratch files with node path/to/file.mjs. Commands that start the application need Docker Desktop/Compose v2 and the repository's local setup. Never use a cloud deployment to test a JavaScript lesson.
+The source is at /Users/robertovalencia/Documents/Business/linked-in-node-and-aws. All relative source paths in these guides start there.
+
+Use the repository's declared Node range (backend engines: >=22 <25), lockfiles, and exact project scripts. That is the compatibility baseline, not a claim that the pinned versions are newest.
+
+Do not upgrade frameworks while learning the existing behavior.
+
+Create a separate practice branch or copy. Run JavaScript scratch files with node path/to/file.mjs.
+
+Commands that start the application need Docker Desktop/Compose v2 and the repository's local setup. Never use a cloud deployment to test a JavaScript lesson.
 
 ## Twelve-week route and six-week compressed route
 
@@ -27,11 +49,17 @@ Create a separate practice branch or copy. Run JavaScript scratch files with nod
 | E: engineering | Weeks 9–10 | Week 5 | 13–15, 17 | Meaningful tests, CI evidence, release/rollback plan and Terraform review |
 | F: senior rehearsal | Weeks 11–12 | Week 6 | 16, 18–19 | Defend capstone, failures, tradeoffs and requirement-to-release evidence |
 
-Pace is optional; gates are mandatory. With 60–90 minutes daily, spend 25 minutes reading, 30 building, 15 debugging and 10 explaining without notes. If you cannot pass a gate, repeat its lab with a changed input instead of rereading everything. Every seventh session is a retrieval and repair session.
+Pace is optional; gates are mandatory. With 60–90 minutes daily, spend 25 minutes reading, 30 building, 15 debugging and 10 explaining without notes.
+
+If you cannot pass a gate, repeat its lab with a changed input instead of rereading everything. Every seventh session is a retrieval and repair session.
 
 ## Interview in 48 hours
 
-First learn the four capability names and one complete inquiry journey (05, 09, 10). Then explain JWT versus ownership (08), Node concurrency (03), React effects (12), and the real AWS topology (15). Rehearse the AI review workflow (17), then answer the drills in 18 aloud. Be candid: “I have Java/backend experience; I am building Node depth through this implementation. Here is the behavior I tested and the gap I would address next.” Do not present an exercise or prepared Terraform as production experience.
+First learn the four capability names and one complete inquiry journey (05, 09, 10). Then explain JWT versus ownership (08), Node concurrency (03), React effects (12), and the real AWS topology (15).
+
+Rehearse the AI review workflow (17), then answer the drills in 18 aloud. Be candid: “I have Java/backend experience; I am building Node depth through this implementation.
+
+Here is the behavior I tested and the gap I would address next.” Do not present an exercise or prepared Terraform as production experience.
 
 ## Week 1 — JavaScript without framework shortcuts
 
@@ -95,7 +123,9 @@ First learn the four capability names and one complete inquiry journey (05, 09, 
 
 ## Your evidence notebook
 
-For each lesson record date, command/input, expected result, observed result, source location, and one remaining question. An unrun exercise stays “planned.” No check box starts checked. For code changes capture a failing test first when it verifies a real behavior, the repair, and the passing result. Record uncertainty rather than fabricate deployment, coverage, external integrations, or AI authorship percentages.
+For each lesson record date, command/input, expected result, observed result, source location, and one remaining question. An unrun exercise stays “planned.” No check box starts checked.
+
+For code changes capture a failing test first when it verifies a real behavior, the repair, and the passing result. Record uncertainty rather than fabricate deployment, coverage, external integrations, or AI authorship percentages.
 
 ## First runnable checkpoint
 
@@ -108,7 +138,11 @@ mkdir -p work
 node --input-type=module -e 'console.log(typeof process, typeof window, typeof Promise)'
 ~~~
 
-Read package.json, backend/package.json and frontend/package.json. Expect object, undefined and function in Node. In a browser console, window exists. This difference explains why React browser code and backend runtime code need different environments despite sharing TypeScript. Save subsequent scratch examples under work/ as .mjs files and run node work/the-file-name.mjs.
+Read package.json, backend/package.json and frontend/package.json. Expect object, undefined and function in Node.
+
+In a browser console, window exists. This difference explains why React browser code and backend runtime code need different environments despite sharing TypeScript.
+
+Save subsequent scratch examples under work/ as .mjs files and run node work/the-file-name.mjs.
 
 ## Mastery check
 
@@ -117,17 +151,17 @@ Read package.json, backend/package.json and frontend/package.json. Expect object
 - [ ] I have run the language checkpoint and recorded what actually happened.
 - [ ] I can explain why a short schedule cannot promise senior proficiency.
 
-
-
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases.
+
+Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
 
 - [Node introduction](https://nodejs.org/en/learn/getting-started/introduction-to-nodejs) — accessed 2026-10-22.
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) — accessed 2026-10-22.
-- [Project source: README.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/README.md) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: CONTRACT.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/CONTRACT.md) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/package.json) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/package.json) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: docs/architecture.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/docs/architecture.md) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: docs/interview-topics/java-to-nestjs.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/docs/interview-topics/java-to-nestjs.md) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: README.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/README.md#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: CONTRACT.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/CONTRACT.md#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: backend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: frontend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/package.json#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: docs/architecture.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/architecture.md#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source: docs/interview-topics/java-to-nestjs.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/interview-topics/java-to-nestjs.md#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.

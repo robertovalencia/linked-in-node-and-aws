@@ -1,32 +1,40 @@
 # NodeJs/AWS
 
-A beginner-to-senior study path grounded in the attached marketplace and Software Developer / DevOps Engineer role. Start with the roadmap, complete the labs, and record observed evidence. Existing behavior and proposed extensions are distinguished throughout.
+Study the Node.js concepts and libraries used by each service, one mechanism at a time. Explanations use short paragraphs, real source excerpts and fixed GitHub line links.
+
+Start with the [roadmap](generated/00-roadmap-and-mastery-gates.md), or choose Identity (08), Catalog (06–07), Inquiries (09) or Notifications (10). Common NestJS tools are in 05.
 
 ## Read or download
 
-Read the lessons below directly on GitHub, or [download the complete offline study pack](NodeJs-AWS-study-pack.zip), including the service walkthroughs. Start with the [twelve-week roadmap and mastery gates](generated/00-roadmap-and-mastery-gates.md). The [beginner service documentation](../nodejs-beginner/README.md) traces the actual application. Use [personal/progress.md](personal/progress.md) as an unchecked learning log.
+Read these guides directly on GitHub, or [download the complete study pack](NodeJs-AWS-study-pack.zip). The [service technical handbooks](../nodejs-beginner/README.md) organize tools by capability.
 
 ## Guides
 
-- [NodeJs/AWS: roadmap and mastery gates](generated/00-roadmap-and-mastery-gates.md)
-- [JavaScript language foundations for backend work](generated/01-javascript-language-foundations.md)
-- [Strict TypeScript, runtime boundaries and modules](generated/02-typescript-and-modules.md)
-- [Node event loop, promises and resource limits](generated/03-node-runtime-and-async.md)
-- [Node HTTP, buffers, files, processes and debugging](generated/04-node-http-processes-and-streams.md)
-- [NestJS bootstrap and the four-process dependency graph](generated/05-nestjs-service-wiring.md)
-- [HTTP contracts, Zod validation and errors](generated/06-http-contracts-and-validation.md)
-- [PostgreSQL, parameterized SQL, migrations and locks](generated/07-postgresql-and-transactions.md)
-- [Passwords, JWTs, roles and resource ownership](generated/08-identity-jwt-and-security.md)
-- [Inquiry transactions, retry identity and the outbox](generated/09-inquiries-idempotency-and-outbox.md)
-- [KafkaJS, outbox publishing and deduplicated notifications](generated/10-kafka-inbox-and-notifications.md)
-- [React components, state ownership and forms](generated/11-react-foundations-and-state.md)
-- [React effects, HTTP races, sessions and accessible dialogs](generated/12-react-effects-http-and-accessibility.md)
-- [Tests, debugging and quality evidence](generated/13-testing-and-debugging.md)
-- [Local setup, npm, containers and process lifecycle](generated/14-local-runtime-and-containers.md)
-- [AWS dev infrastructure, Terraform and immutable delivery](generated/15-aws-terraform-and-delivery.md)
-- [Reliability, architecture decisions and senior tradeoffs](generated/16-reliability-and-senior-design.md)
-- [AI-assisted delivery, toolchain and traceability](generated/17-ai-assisted-engineering-and-toolchain.md)
-- [Interview answers, practical drills and capstone](generated/18-interview-drills-and-capstone.md)
-- [Source inventory and interview requirement traceability](generated/19-source-and-requirement-coverage.md)
+- [00 · Roadmap and mastery gates](generated/00-roadmap-and-mastery-gates.md)
+- [01 · JavaScript: values, closures, objects and collections](generated/01-javascript-language-foundations.md)
+- [02 · TypeScript: erased types, narrowing, generics and ESM](generated/02-typescript-and-modules.md)
+- [03 · Node runtime: event loop, promises and resource limits](generated/03-node-runtime-and-async.md)
+- [04 · Node APIs: HTTP, Buffer, files, paths and processes](generated/04-node-http-processes-and-streams.md)
+- [05 · NestJS tools: decorators, injection and lifecycle](generated/05-nestjs-service-wiring.md)
+- [06 · Catalog tools: Zod, coercion, closures and JSONB](generated/06-http-contracts-and-validation.md)
+- [07 · pg tools: pools, transactions, locks and migrations](generated/07-postgresql-and-transactions.md)
+- [08 · Identity tools: scrypt, Buffer, JWT, Zod and Map](generated/08-identity-jwt-and-security.md)
+- [09 · Inquiries tools: fetch, hashes, UUIDs and transaction locks](generated/09-inquiries-idempotency-and-outbox.md)
+- [10 · Messaging tools: KafkaJS, offsets, Buffer and deduplication](generated/10-kafka-inbox-and-notifications.md)
+- [11 · React tools: state, props, refs and controlled inputs](generated/11-react-foundations-and-state.md)
+- [12 · React tools: effects, abort, HTTP errors and portals](generated/12-react-effects-http-and-accessibility.md)
+- [13 · Testing tools: Jest, Vitest, mocks, types and browsers](generated/13-testing-and-debugging.md)
+- [14 · Runtime tools: npm, tsc, Docker and process supervision](generated/14-local-runtime-and-containers.md)
+- [15 · Infrastructure tools: Terraform, IAM, SSM, ECR and releases](generated/15-aws-terraform-and-delivery.md)
+- [16 · Reliability concepts: timeouts, budgets, consistency and recovery](generated/16-reliability-and-senior-design.md)
+- [17 · Delivery tools: specifications, CI, quality gates and traceability](generated/17-ai-assisted-engineering-and-toolchain.md)
+- [18 · Interview practice: explain the mechanism, then prove it](generated/18-interview-drills-and-capstone.md)
+- [19 · Source and interview coverage map](generated/19-source-and-requirement-coverage.md)
 
-Source baseline: /Users/robertovalencia/Documents/Business/linked-in-node-and-aws, inspected 2026-10-22. Browser-ready source links point to the private [GitHub project](https://github.com/robertovalencia/linked-in-node-and-aws), which requires access and may lag local files. The local source is the evidence baseline.
+## How to use a concept card
+
+Read What and How. Open Real code and explain its lines. Answer the question without notes, then complete the practice check.
+
+Code blocks are source excerpts unless explicitly labeled as runnable practice. Pinned code links keep their meaning when the branch later changes.
+
+The existing implementation and suggested extensions are labeled separately. Personal progress and saved notes are preserved.

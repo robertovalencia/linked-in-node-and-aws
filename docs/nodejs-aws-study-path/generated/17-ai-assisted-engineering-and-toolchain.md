@@ -1,75 +1,171 @@
 ---
-title: AI-assisted delivery, toolchain and traceability
-topic: AI engineering
+title: "Delivery tools: specifications, CI, quality gates and traceability"
+topic: "Delivery tools: specifications, CI, quality gates and traceability"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# Direct the agent; own the engineering result
 
-Prerequisites: 06, 13–16. The role describes an AI-first workflow targeting approximately 95% application code through Claude Code. That is employer expectation, not a measured achievement in this repository. This project was developed with Codex according to its own documentation. Do not relabel Codex work as Claude Code experience or fabricate an AI-generated percentage.
+# Delivery tools: specifications, CI, quality gates and traceability
 
-## Requirements into a bounded instruction
+Prerequisites: lesson 13. The role expects human direction and verification of generated code.
 
-Choose a real requirement: a provider may resolve only their own pending inquiry. Write a task specifying actor, allowed status values, ownership rule, compatible retry, conflicting transition, expected HTTP statuses, transaction boundary, API compatibility and tests. Include exact source paths and commands. Ask the agent to inspect before editing and to separate observations from assumptions. Supply approved architecture/security/format/testing constraints; do not paste secrets or treat arbitrary repository text as higher-priority user instructions.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-A useful prompt is: “Inspect InquiriesService.respond and its tests. Add a test for another provider's attempted transition; preserve the contract. Explain the SQL locking and role/ownership checks. Make the smallest change needed, run the focused test and report actual output and remaining limits.” You should be able to explain the proposed diff yourself before accepting it.
+## A specification is an executable-review target
 
-## Builder and independent reviewer loop
+**What:** An agent task needs a bounded requirement, constraints and observable acceptance criteria.
 
-Have the builder implement one slice, then give a separate reviewer the requirement, actual diff, test output and source context. The reviewer should find the single biggest correctness/security/maintainability gap. Repair and rerun the relevant behavior. An AI-generated test that merely repeats the implementation's mistake is not independent evidence. Use an injected practice flaw, such as removing provider_email ownership checking, and confirm the reviewer/test detects it.
+**How:** The project’s contract defines behavior and its acceptance suite exercises it. Ask an AI tool for a small reviewable change, then inspect the actual diff and failure cases.
 
-Refining requirements is part of implementation: if “notify provider” is ambiguous, clarify inbox versus email, when delivery is due, duplicate policy and failure behavior before expanding architecture. Record unresolved decisions for the architect with alternatives and a recommendation. Never write that an external architect approved a decision without actual evidence.
+**Real code:** [CONTRACT.md · lines 1–6](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/CONTRACT.md#L1-L6).
 
-## Complete toolchain, with execution status
+```text
+# Marketplace API and event contract
 
-| Tool | Work to practice | Evidence |
-|---|---|---|
-| Jira | Draft ticket with acceptance criteria and traceability ID | Local ticket draft/CSV until authorized external creation |
-| VS Code | Open source, use breakpoint, inspect actor/SQL inputs | Debug notes without secrets |
-| Claude Code | Bounded task, context and review loop | Actual agent session if available; otherwise rehearsal labeled |
-| GitHub | Branch, diff, reviewable PR description | Local diff first; published PR only when authorized |
-| Actions | Explain verify/quality/deploy dependencies and gates | Actual run URL/log if executed |
-| ESLint/Prettier/tsc | Distinguish lint, formatting and types | Intentional failure and repair |
-| Jest/Vitest/Playwright | Behavior, UI and browser evidence | Commands, assertions and observed results |
-| Dependabot | Review dependency PR, lockfile, compatibility and vulnerability | Review exercise; no automatic “safe” claim |
-| SonarLint/SonarQube | Editor findings versus configured server analysis/gate | Configuration is not a successful remote scan |
-| Terraform | Review policy/network/state changes and saved plan | Local checks; real plan and cost approval separately |
+This document defines the local application boundaries and the API behavior that the frontend and services rely on. The schemas below define the public migration contract; the executable reference is `scripts/acceptance.mjs`.
 
-Read docs/ai-development.md, docs/toolchain.md, docs/traceability.md, .github/dependabot.yml, .github/workflows/verify.yml, quality.yml and deploy-dev.yml. verify performs source/coverage/build/audit plus container integration/browser checks and Terraform checks. quality depends on configured Sonar server/project/token and gate. deploy is a controlled dev/main release path with OIDC, scanning, digest artifacts and smoke/rollback operations. Check actual YAML for triggers rather than assuming every push deploys.
+**Stack:** Node.js 22, NestJS, strict TypeScript, React/Vite, PostgreSQL and Kafka. Local and AWS dev have independent configuration, secrets and data.
 
-## Executable traceability lab
+```
 
-Create a local evidence table for one requirement: requirement ID → contract/spec paragraph → changed file/commit → test name/output → build artifact identity → release manifest/digest → smoke result. Fill stages you actually ran, mark the rest planned. Run npm run check and the focused test for your change, inspect git diff --check and git diff, then write a PR description explaining the before/after behavior and validation. This local workflow requires no Jira message, PR publication, paid agent call or AWS deployment.
+**Watch for:** The employer’s approximately 95% generated-code target is not a measured achievement for this project.
 
-Interview:
+### What should a useful agent instruction contain?
 
-### What is your value if AI writes most code?
+The behavior, source context, boundaries, acceptance cases and evidence required to finish.
 
-I make requirements executable, preserve boundaries, review failure/security paths, diagnose mismatches and own validated delivery.
+## GitHub Actions jobs and dependency order
 
-### How prove 95%?
+**What:** A workflow describes automated jobs. Each job’s commands provide different evidence from type checks to real integration behavior.
 
-Define a measurement method first; absent one, describe it as the stated target and provide actual workflow evidence instead.
+**How:** Verify runs source checks, integration and Terraform validation. Deployment is a separate manual workflow; a workflow file existing is not proof of a successful run.
 
-- [ ] Produce one bounded agent task and a concrete reviewer repair.
-- [ ] Explain every tool's purpose and whether it actually ran.
-- [ ] Trace one requirement through all completed stages honestly.
-- [ ] Explain a tradeoff to an architect with unresolved choices explicit.
+**Real code:** [.github/workflows/verify.yml · lines 12–19](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/.github/workflows/verify.yml#L12-L19).
 
+```yaml
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+```
 
+**Watch for:** A green build does not prove that cloud deployment occurred.
+
+### Why separate unit and integration jobs?
+
+They have different dependencies, costs and failure meanings.
+
+## SonarLint versus a server quality gate
+
+**What:** Editor analysis gives local feedback. SonarQube analysis and its configured gate evaluate submitted project evidence.
+
+**How:** The deployment workflow requires configuration and waits for the Sonar gate. Coverage scope, exclusions and actual findings must be reviewed rather than treated as universal quality scores.
+
+**Real code:** [.github/workflows/deploy-dev.yml · lines 41–42](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/.github/workflows/deploy-dev.yml#L41-L42).
+
+```yaml
+-Dsonar.qualitygate.wait=true
+-Dsonar.qualitygate.timeout=300
+```
+
+**Watch for:** Do not claim a hosted integration is verified merely because variables or plugins are listed.
+
+### Does a passing gate prove ownership checks are correct?
+
+No. Meaningful security tests and code review are still required.
+
+## Dependabot and dependency-change review
+
+**What:** Dependabot proposes dependency updates. Lockfiles record the exact resolved graph used by installation.
+
+**How:** This repository config covers npm, actions, Terraform and Docker. A version PR still needs compatibility, release-note, security and test review; an automatic proposal is not an automatic approval.
+
+**Real code:** [.github/dependabot.yml · lines 2–9](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/.github/dependabot.yml#L2-L9).
+
+```yaml
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule: {interval: weekly}
+  - package-ecosystem: npm
+    directory: /backend
+    schedule: {interval: weekly}
+  - package-ecosystem: npm
+```
+
+**Watch for:** A transitive override such as js-yaml is a reviewed dependency policy, not an application YAML API.
+
+### Why inspect a lockfile change?
+
+It can modify transitive runtime or build dependencies beyond the package name in the PR title.
+
+## OIDC, release manifests and serialization
+
+**What:** A release manifest associates source identity with exact image content. A host lock prevents overlapping deployment scripts.
+
+**How:** The remote script obtains a filesystem lock before applying a release. App rollback and data/schema recovery remain different operations.
+
+**Real code:** [scripts/aws-remote-deploy.sh · lines 7–11](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/scripts/aws-remote-deploy.sh#L7-L11).
+
+```bash
+exec 9>/opt/marketplace/deploy.lock
+flock -n 9 || { echo 'Another deployment is running'; exit 1; }
+secret_arn=$(jq -er .secret_arn manifest.json)
+region=$(jq -er .region manifest.json)
+registry=$(jq -er .backend manifest.json | cut -d/ -f1)
+```
+
+**Watch for:** An image rollback cannot undo a destructive migration or restore missing rows.
+
+### Why link the source commit to image digests?
+
+It lets a reviewer trace exactly which built content was released from which source.
+
+## Jira, VS Code and architect collaboration
+
+**What:** Tickets track requirements; the editor supports source navigation and debugging; an architecture decision explains constraints and alternatives.
+
+**How:** The project’s traceability document connects requirement records to tests and release evidence. Draft a ticket and ADR locally before claiming any external ticket or approval exists.
+
+**Real code:** [docs/traceability.md · lines 1–6](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/traceability.md#L1-L6).
+
+```text
+# Requirements through release
+
+The stable identifiers below map the interview specification to source, tests and operational evidence. They are local requirement IDs; Jira issue keys become real only after import into the chosen Jira project. Do not invent issue URLs or claim an import ran.
+
+| Requirement | Implementation | Verification | Deployment/release link |
+|---|---|---|---|
+```
+
+**Watch for:** A role requirement or study exercise is not personal production experience.
+
+### What makes traceability useful?
+
+A real requirement can be followed through specification, diff/test, artifact and observed release result.
+
+## Practice and mastery
+
+Draft an agent task for the proposed minRate filter. Include default compatibility, invalid bounds, affected files and expected tests.
+
+- Review an intentionally missing-owner-check change in a practice copy; explain why it is wrong before repairing it.
+- Record one chain: requirement → code change → behavioral test → artifact → release result. Mark stages that have not run as planned.
+- Give the architect one recommendation, one alternative and one unresolved assumption.
+- Use Claude Code as the role’s requested tool; distinguish that expectation from which agent created this project. Do not fabricate generation percentages or completed integrations.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [Claude Code overview](https://code.claude.com/docs/en/overview) — accessed 2026-10-22.
-- [GitHub Actions documentation](https://docs.github.com/en/actions) — accessed 2026-10-22.
-- [Dependabot](https://docs.github.com/en/code-security/dependabot) — accessed 2026-10-22.
-- [SonarQube documentation](https://docs.sonarsource.com/sonarqube-server/) — accessed 2026-10-22.
-- [Project source: docs/ai-development.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/docs/ai-development.md) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: docs/toolchain.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/docs/toolchain.md) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: docs/traceability.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/docs/traceability.md) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: .github/dependabot.yml](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/.github/dependabot.yml) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: .github/workflows/verify.yml](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/.github/workflows/verify.yml) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: .github/workflows/quality.yml](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/.github/workflows/quality.yml) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: .github/workflows/deploy-dev.yml](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/.github/workflows/deploy-dev.yml) — local baseline inspected 2026-10-22; private published source may lag.
+- [GitHub Actions workflows](https://docs.github.com/en/actions/writing-workflows/about-workflows)
+- [GitHub OIDC](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
+- [Project example: A specification is an executable-review target](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/CONTRACT.md#L1-L6)
+- [Project example: GitHub Actions jobs and dependency order](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/.github/workflows/verify.yml#L12-L19)
+- [Project example: SonarLint versus a server quality gate](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/.github/workflows/deploy-dev.yml#L41-L42)
+- [Project example: Dependabot and dependency-change review](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/.github/dependabot.yml#L2-L9)
+- [Project example: OIDC, release manifests and serialization](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/scripts/aws-remote-deploy.sh#L7-L11)
+- [Project example: Jira, VS Code and architect collaboration](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/traceability.md#L1-L6)

@@ -1,81 +1,156 @@
 ---
-title: Node HTTP, buffers, files, processes and debugging
-topic: Node runtime
+title: "Node APIs: HTTP, Buffer, files, paths and processes"
+topic: "Node APIs: HTTP, Buffer, files, paths and processes"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# The server beneath the framework
 
-Prerequisite: 03. A process has its own memory, environment, sockets and lifetime. HTTP sends a method, URL, headers and optional body; the server produces a status, headers and optional body. JSON is an application convention on top of bytes. Nest/Express organize the same mechanics rather than replacing them.
+# Node APIs: HTTP, Buffer, files, paths and processes
 
-## Runnable HTTP checkpoint
+Prerequisite: lesson 03. Learn the standard APIs beneath NestJS.
 
-Save work/http.mjs and run node work/http.mjs in one terminal.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-~~~js
-import { createServer } from 'node:http';
-const server = createServer((req, res) => {
-  if (req.url !== '/health') {
-    res.writeHead(404, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify({ detail: 'Unknown path' }));
-  }
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ status: 'UP' }));
-});
-server.listen(8288, '127.0.0.1');
-process.on('SIGTERM', () => server.close());
-~~~
+## HTTP parsing versus application validation
 
-In another terminal run curl -i http://127.0.0.1:8288/health and curl -i http://127.0.0.1:8288/missing. Expect 200 JSON and 404 JSON. Stop with Ctrl-C. This server is only a teaching example; it is not the repository's entry point and is not a production template.
+**What:** HTTP transports bytes, method, path and headers. Express parses a JSON body into a JavaScript value.
 
-## Bytes, files and streams
+**How:** The parser limit controls memory exposure. A valid JSON number is still not a valid login object; Zod and business rules run after parsing.
 
-A Buffer represents bytes; UTF-8 characters may take multiple bytes. Buffer.byteLength(secret) and secret.length answer different questions. Password comparison converts hex back to bytes, checks expected lengths and uses timingSafeEqual. Kafka message.value is a Buffer, so the consumer decodes UTF-8 before JSON parsing.
+**Real code:** [backend/src/main.ts · lines 46–47](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L46-L47).
 
-readFile reads an entire file into memory; this is reasonable for small migration and seed files. A large export should use streams. A readable produces chunks, a writable consumes them, and backpressure keeps the faster side from growing memory indefinitely. A scratch extension can copy a file with await pipeline(createReadStream(source), createWriteStream(destination)); import pipeline from node:stream/promises and the file streams from node:fs. This application does not currently implement file-upload or export streams.
+```ts
+app.use(json({ limit: '128kb' }));
+app.useGlobalFilters(new ErrorFilter());
+```
 
-Paths from process.cwd() depend on where the process starts, whereas import.meta.url identifies the module location. Database migrations are loaded from the backend working directory. Starting dist/main.js from the wrong folder can produce missing-migration errors even when the file exists elsewhere.
+**Watch for:** Parser errors and schema errors can both be 400, but occur at different boundaries.
 
-## Read the application
+### Does successful JSON parsing establish a valid request?
 
-backend/src/main.ts disables the default parser, installs helmet and a 128kb JSON limit, registers ErrorFilter, enables shutdown hooks and listens on 0.0.0.0. In a container that permits its mapped network interface; Compose binds published local ports to loopback. backend/src/common/config.ts validates environment variables. backend/scripts/dev.mjs and scripts/dev.mjs coordinate subprocesses; inspect process spawning, output forwarding and termination rather than assuming one process starts all four capabilities internally.
+No. It only establishes JSON syntax and decoding, not the domain contract.
 
-## Debugging lab
+## Buffer measures bytes
 
-Run node --inspect=127.0.0.1:9229 work/http.mjs and attach a local debugger; never expose the inspector publicly. Break in the handler, send curl again, and inspect req.url and res.statusCode. Then intentionally reuse port 8288 and explain EADDRINUSE. Change the unused scratch server port rather than killing unknown processes. Finally test a small file copy stream and compare the byte length of the input and output using node:fs/promises stat.
+**What:** Buffer is Node’s binary-data representation. Text needs an encoding to become bytes or to be decoded from them.
 
-## Senior tradeoffs and interview answers
+**How:** Config checks UTF-8 secret byte length; password code decodes hex; Kafka code decodes UTF-8. Each conversion has a different purpose.
 
-Graceful shutdown means stop accepting traffic, finish or bound in-flight work, stop workers, and release connections. The repository installs lifecycle hooks and disconnects resources, but that is not proof of fully coordinated draining under every signal/race. Review and test that behavior before promising it. process.exitCode allows the runtime to finish pending work; immediate process.exit can truncate output or work.
+**Real code:** [backend/src/common/config.ts · lines 17–18](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/config.ts#L17-L18).
 
+```ts
+if (Buffer.byteLength(secret) < 32) throw new Error('JWT_SECRET requires at least 32 bytes');
+const url = new URL(required('DB_URL'));
+```
 
+**Watch for:** JavaScript string length and UTF-8 byte length can differ for non-ASCII text.
 
-### Why a request size limit?
+### Why can an emoji need more bytes than its visible character count?
 
-To bound parsing/memory exposure.
+Unicode characters can occupy multiple bytes in UTF-8.
 
-### Does Buffer length equal character count?
+## fs/promises and bounded file reads
 
-Not for general UTF-8 text.
+**What:** `readFile` resolves after reading a complete file. `readdir` lists entries; neither is an SQL or HTTP operation.
 
-### When use streams?
+**How:** The migration runner reads small SQL files and filters by service prefix. Reading an unbounded upload into one Buffer would have different memory consequences.
 
-When processing incremental or large data while preserving backpressure.
+**Real code:** [backend/src/common/database.ts · lines 31–35](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L31-L35).
 
-- [ ] Produce and explain 200/404 HTTP responses.
-- [ ] Show byte versus character length with an emoji.
-- [ ] Diagnose EADDRINUSE and a wrong working directory safely.
-- [ ] Explain why a stream example is an extension rather than existing application behavior.
+```ts
+const directory = join(process.cwd(), 'migrations');
+const files = (await readdir(directory))
+  .filter((file) => file.startsWith(`${name}.`) && /^.+\.\d{3}\.sql$/.test(file))
+  .sort((a, b) => a.localeCompare(b, 'en'));
+if (!files.length) throw new Error(`No migrations found for ${name}`);
+```
 
+**Watch for:** Streams are an extension for large data; the app does not already contain a streaming upload feature.
 
+### When prefer a stream?
+
+When data should be processed incrementally while respecting downstream capacity.
+
+## cwd versus module location
+
+**What:** `process.cwd()` is the directory from which the process runs. It need not be the directory containing the current module.
+
+**How:** Database migrations are located relative to cwd. The supplied scripts set the expected execution context; launching dist/main.js elsewhere can break those file paths.
+
+**Real code:** [backend/src/common/database.ts · lines 31–31](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L31-L31).
+
+```ts
+const directory = join(process.cwd(), 'migrations');
+```
+
+**Watch for:** A correct compiled file can still fail because its runtime working directory is wrong.
+
+### What would import.meta.url describe instead?
+
+The current module’s location, which can anchor paths independently of the launch directory.
+
+## Child processes and watch mode
+
+**What:** `spawn` starts another operating-system process with its own memory and lifetime. Watch mode restarts or recompiles on changes.
+
+**How:** The development launcher first compiles TypeScript, then runs compiler watch and Node watch. Compilation and executing emitted JavaScript are separate jobs.
+
+**Real code:** [backend/scripts/dev.mjs · lines 1–6](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/scripts/dev.mjs#L1-L6).
+
+```js
+import { spawn } from 'node:child_process';
+const service = process.argv[2];
+if (!['identity', 'catalog', 'inquiries', 'notifications'].includes(service)) {
+  throw new Error('Expected service name');
+}
+const outDir = `dist-dev/${service}`;
+```
+
+**Watch for:** A source watcher does not validate every behavioral consequence of a change.
+
+### Does one child process share variables with its parent?
+
+No. Use explicit IPC, environment, files or network communication when coordination is needed.
+
+## Signals and graceful resource cleanup
+
+**What:** A signal tells a process about an event such as termination. Nest shutdown hooks allow registered cleanup methods to run.
+
+**How:** Database closes its pool; workers disconnect. Crash-safe persistence is still needed because a forced kill or host loss may bypass graceful cleanup.
+
+**Real code:** [backend/src/main.ts · lines 48–52](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L48-L52).
+
+```ts
+app.enableShutdownHooks();
+const port = Number(process.env.PORT ?? 8181 + SERVICES.indexOf(service));
+if (!Number.isInteger(port) || port < 1 || port > 65535)
+  throw new Error('PORT must be a valid TCP port');
+await app.listen(port, '0.0.0.0');
+```
+
+**Watch for:** process.exitCode allows pending work to finish; it does not forcibly close every leaked handle.
+
+### Why keep the outbox if shutdown is graceful?
+
+A crash can occur between external effects and local bookkeeping despite normal shutdown hooks.
+
+## Practice and mastery
+
+- In `work/bytes.mjs`, print `'😀'.length` and `Buffer.byteLength('😀')`. Expected: 2 UTF-16 units and 4 UTF-8 bytes.
+- Read `Database.onModuleInit` and identify each filesystem operation, path operation and cryptographic operation.
+- For a practice-only stream copy, use `pipeline` from `node:stream/promises` with file read/write streams. Compare byte counts afterward; keep it separate from application behavior.
+- Use the project’s loopback inspector configuration to break on a handler. Do not expose the inspector publicly.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [Node streams](https://nodejs.org/api/stream.html) — accessed 2026-10-22.
-- [HTTP](https://nodejs.org/api/http.html) — accessed 2026-10-22.
-- [Project source: backend/src/main.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/main.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/common/config.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/config.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/scripts/dev.mjs](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/scripts/dev.mjs) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: scripts/dev.mjs](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/scripts/dev.mjs) — local baseline inspected 2026-10-22; private published source may lag.
+- [Node Buffer](https://nodejs.org/api/buffer.html)
+- [Node streams](https://nodejs.org/api/stream.html)
+- [Node child processes](https://nodejs.org/api/child_process.html)
+- [Project example: HTTP parsing versus application validation](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L46-L47)
+- [Project example: Buffer measures bytes](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/config.ts#L17-L18)
+- [Project example: fs/promises and bounded file reads](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L31-L35)
+- [Project example: cwd versus module location](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L31-L31)
+- [Project example: Child processes and watch mode](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/scripts/dev.mjs#L1-L6)
+- [Project example: Signals and graceful resource cleanup](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L48-L52)

@@ -2,7 +2,9 @@
 
 [Guide index](README.md) · [Previous: practice](04-debugging-and-practice.md)
 
-Use this beside the source. Small examples are explanations, not requested changes to the application. Try them in a scratch file outside the service source, predicting the result first.
+Use this beside the source. Small examples are explanations, not requested changes to the application.
+
+Try them in a scratch file outside the service source, predicting the result first.
 
 ## JavaScript values and functions
 
@@ -32,9 +34,13 @@ Explain why this ordering matters in profile update security.
 
 ## Promises, errors, and the event loop
 
-A Promise represents a future result or rejection. `async` returns a Promise. `await` suspends that function until the Promise settles while the event loop can handle other work. It does not create a database transaction or serialize incoming requests. CPU-heavy synchronous JavaScript still blocks the event loop; async I/O does not make arbitrary CPU work parallel.
+A Promise represents a future result or rejection. `async` returns a Promise. `await` suspends that function until the Promise settles while the event loop can handle other work. It does not create a database transaction or serialize incoming requests.
 
-`try/catch` handles thrown errors and awaited rejections. `finally` performs cleanup on success or failure. Find the guaranteed client release in [Database.transaction](../../backend/src/common/database.ts). Calling an async function without awaiting/handling it can detach important work from a caller. [Messaging bootstrap](../../backend/src/common/messaging.ts) intentionally launches `void this.run()` as a background loop with its own error handling; startup has not waited for delivery to finish.
+CPU-heavy synchronous JavaScript still blocks the event loop; async I/O does not make arbitrary CPU work parallel.
+
+`try/catch` handles thrown errors and awaited rejections. `finally` performs cleanup on success or failure. Find the guaranteed client release in [Database.transaction](../../backend/src/common/database.ts).
+
+Calling an async function without awaiting/handling it can detach important work from a caller. [Messaging bootstrap](../../backend/src/common/messaging.ts) intentionally launches `void this.run()` as a background loop with its own error handling; startup has not waited for delivery to finish.
 
 ```js
 async function example() {
@@ -66,7 +72,9 @@ Expected A, B, C. Explain how two async inquiry handlers can interleave, and why
 | `private readonly` | Restricts field access/reassignment in TypeScript | Injected database parameter property |
 | Interface / `implements` | Class promises a method contract | Nest lifecycle interfaces |
 
-A budget JSON string and a budget JSON number differ. Inquiry schema requires a number. Query schema deliberately coerces number values because URLs contain strings. `as number` would not convert or validate untrusted data.
+A budget JSON string and a budget JSON number differ. Inquiry schema requires a number.
+
+Query schema deliberately coerces number values because URLs contain strings. `as number` would not convert or validate untrusted data.
 
 ## Node APIs actually used
 
@@ -85,17 +93,25 @@ A budget JSON string and a budget JSON number differ. Inquiry schema requires a 
 | child_process spawn | Start compiler/watch/processes | Dev scripts |
 | fs readFileSync | Synchronous startup read | Root launcher; not request-path persistence |
 
-An ID is not a secret; an internal service key is. A checksum is not a password hash. A Buffer is bytes, not a decoded JSON object. Practice those distinctions before using crypto as one vague concept.
+An ID is not a secret; an internal service key is. A checksum is not a password hash.
+
+A Buffer is bytes, not a decoded JSON object. Practice those distinctions before using crypto as one vague concept.
 
 ## Nest and runtime dependencies
 
 `@Controller` declares route ownership; `@Get/@Post/@Put/@Patch` choose method/path. `@Body/@Param/@Query/@Headers/@Req` select request data. `@Injectable` marks Nest-managed classes; `@Module` registers controllers/providers. `@UseGuards` runs authentication; `@Catch` marks a filter. A decorator attaches framework metadata; it does not replace business logic inside a method.
 
-`@nestjs/core` bootstraps; `@nestjs/common` provides decorators/exceptions/lifecycle contracts; `@nestjs/platform-express` provides HTTP adaptation. `reflect-metadata` supports constructor-injection metadata. RxJS is installed for framework interoperability, but application code does not implement an Observable business pipeline. An installed package does not imply its every feature is used.
+`@nestjs/core` bootstraps; `@nestjs/common` provides decorators/exceptions/lifecycle contracts; `@nestjs/platform-express` provides HTTP adaptation. `reflect-metadata` supports constructor-injection metadata. RxJS is installed for framework interoperability, but application code does not implement an Observable business pipeline.
 
-Helmet sets protective HTTP headers. jsonwebtoken signs/verifies JWTs. Zod validates runtime input. pg supplies explicit SQL/pooling: no ORM. KafkaJS talks to Kafka directly: no Nest microservices transport. Lifecycle hooks initialize and clean up; they are not HTTP endpoints.
+An installed package does not imply its every feature is used.
 
-There is no ConfigModule, global ValidationPipe, Passport, Swagger generator, Prisma/TypeORM, or CQRS package to find. Those can be later extension topics. Environment config is checked manually in `validateConfig`; HTTP/event schemas are parsed explicitly with Zod.
+Helmet sets protective HTTP headers. jsonwebtoken signs/verifies JWTs. Zod validates runtime input. pg supplies explicit SQL/pooling: no ORM.
+
+KafkaJS talks to Kafka directly: no Nest microservices transport. Lifecycle hooks initialize and clean up; they are not HTTP endpoints.
+
+There is no ConfigModule, global ValidationPipe, Passport, Swagger generator, Prisma/TypeORM, or CQRS package to find. Those can be later extension topics.
+
+Environment config is checked manually in `validateConfig`; HTTP/event schemas are parsed explicitly with Zod.
 
 ## SQL and messaging vocabulary
 
@@ -122,10 +138,24 @@ There is no ConfigModule, global ValidationPipe, Passport, Swagger generator, Pr
 
 ## React and tools
 
-A component renders UI from props/state. Props are parent inputs. State persists across renders; updates ask React to render again. A ref holds a mutable value without causing rendering—useful for `inFlight`, not durable data. Context supplies shared state; AuthProvider supplies identity. Hooks bundle reusable behavior. Effects coordinate outside rendering, such as HTTP requests; cleanup cancels obsolete work. Controlled inputs get values from state and write changes back to state.
+A component renders UI from props/state. Props are parent inputs.
 
-Vite serves dev UI/builds production bundles. nginx serves built files/proxies APIs. react-dom mounts UI. Lucide supplies icons. No Next.js/React Router/Redux/React Query is implemented. Domain types describe shapes; they do not store records.
+State persists across renders; updates ask React to render again. A ref holds a mutable value without causing rendering—useful for `inFlight`, not durable data.
 
-`npm ci` follows lockfiles. tsc checks/emits; `@types/*` supplies declarations, not runtime security. ESLint checks patterns; Prettier formats. Jest/ts-jest with ESM configuration runs backend tests. Vitest/jsdom/React Testing Library/user-event/jest-dom simulate DOM/user interactions. V8 coverage records executed paths, not the quality of assertions. Playwright drives a real browser. Dependabot proposes updates. SonarLint/SonarQube analyze locally/on a server; configured integration is not proof of a successful remote run.
+Context supplies shared state; AuthProvider supplies identity. Hooks bundle reusable behavior.
+
+Effects coordinate outside rendering, such as HTTP requests; cleanup cancels obsolete work. Controlled inputs get values from state and write changes back to state.
+
+Vite serves dev UI/builds production bundles. nginx serves built files/proxies APIs. react-dom mounts UI. Lucide supplies icons.
+
+No Next.js/React Router/Redux/React Query is implemented. Domain types describe shapes; they do not store records.
+
+`npm ci` follows lockfiles. tsc checks/emits; `@types/*` supplies declarations, not runtime security. ESLint checks patterns; Prettier formats.
+
+Jest/ts-jest with ESM configuration runs backend tests. Vitest/jsdom/React Testing Library/user-event/jest-dom simulate DOM/user interactions.
+
+V8 coverage records executed paths, not the quality of assertions. Playwright drives a real browser.
+
+Dependabot proposes updates. SonarLint/SonarQube analyze locally/on a server; configured integration is not proof of a successful remote run.
 
 **Recall:** choose ten terms, point to source uses, explain without undefined acronyms, then demonstrate an input/failure where the difference matters.

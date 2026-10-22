@@ -1,78 +1,176 @@
 ---
-title: NestJS bootstrap and the four-process dependency graph
-topic: NestJS
+title: "NestJS tools: decorators, injection and lifecycle"
+topic: "NestJS tools: decorators, injection and lifecycle"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# How Nest wires this application
 
-Prerequisites: 01–04. Dependency injection means a class declares what it needs and the framework supplies registered instances. It lets a controller ask for a service and a service ask for Database without manually constructing a new connection pool for every request.
+# NestJS tools: decorators, injection and lifecycle
 
-## Read bootstrap in execution order
+Prerequisites: JavaScript classes, TypeScript types, promises. Used by all four services.
 
-Open backend/src/main.ts. First reflect-metadata is loaded. bootstrap validates configuration, gets SERVICE and chooses entries from controller/provider lookup tables. A locally declared @Module registers HealthController, exactly one capability controller, Database, AuthGuard, WorkerHealth, and the providers required by that capability. NestFactory builds the application graph. Middleware, global error mapping and shutdown hooks are installed before listen.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-The source package imports all four capabilities, but each running process registers only its selected capability. This is a module class assembled at bootstrap; it is not four listeners inside one Node process and is not an example of a DynamicModule.register API. Four containers can use one image because SERVICE and DB_URL vary per container.
+## Decorators attach metadata
 
-| SERVICE | Controller | Capability providers | Extra runtime work |
-|---|---|---|---|
-| identity | IdentityController | IdentityService | Optional accounts seed and dummy password hash |
-| catalog | CatalogController | CatalogService | Optional provider seed |
-| inquiries | InquiriesController | InquiriesService, OutboxPublisher | Poll persisted outbox and publish |
-| notifications | NotificationsController | NotificationsService, InquiryConsumer | Subscribe and persist notifications |
+**What:** A decorator is a function applied to a class or member. Nest reads its metadata to discover routes and providers.
 
-Database is an injectable provider whose onModuleInit applies the selected service's migrations. Identity/Catalog seed in onApplicationBootstrap when SEED_DEMO=true. Workers start in that bootstrap phase but their run loops continue asynchronously. WorkerHealth distinguishes an HTTP listener being alive from a worker being ready. Nest awaits relevant initialization hooks, but you should not infer exact ordering between unrelated providers beyond documented lifecycle guarantees and actual dependencies.
+**How:** `@Controller`, `@Get` and `@Injectable` describe different roles. `reflect-metadata` supports metadata storage; TypeScript emits constructor type metadata for dependency resolution.
 
-## Trace a request
+**Real code:** [backend/src/main.ts · lines 1–3](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L1-L3).
 
-For GET /api/inquiries, the controller-level AuthGuard extracts and verifies a bearer token, writes actor to the request, then the controller passes that actor into InquiriesService.list. The service restricts SQL by actor.email; Database delegates to pg.Pool; the returned rows are mapped into the API view. A thrown error travels to the global ErrorFilter. Authorization remains in business services for operations such as create/respond, so the framework decorator alone is not the business policy.
+```ts
+import 'reflect-metadata';
+import { Module, Type } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+```
 
-## Runnable lab
+**Watch for:** Importing a class does not register it as a provider.
 
-First inspect npm scripts and docs/local-setup.md. In a configured local practice environment run npm run up from the repository root, then:
+### Does @Injectable create a database connection?
 
-~~~bash
-curl -i http://127.0.0.1:8181/health/live
-curl -i http://127.0.0.1:8182/health/ready
-curl -i http://127.0.0.1:8183/api/inquiries
-~~~
+No. It marks a class for Nest; its constructor or initialization code creates resources.
 
-Expect live 200, ready 200 when its dependencies initialize, and unauthenticated inquiries 401. Direct local backend ports are for the lab; edge management routing differs. Record actual readiness rather than assuming startup means healthy. Run npm run down when finished. No cloud scripts are involved.
+## The dependency-injection container
 
-In a practice branch remove Database from the providers array, run the backend build and start a configured service. Explain why typechecking can succeed while Nest reports unresolved dependencies at runtime. Restore it immediately. Draw constructor arrows: NotificationsController → NotificationsService → Database, plus InquiryConsumer → NotificationsService and WorkerHealth.
+**What:** Dependency injection supplies a class with the objects it needs. The container is Nest’s registry of those objects.
 
-## Senior tradeoffs
+**How:** The module lists provider classes. Nest resolves constructor parameters and normally reuses one provider instance per application context; this is not one instance shared between separate Node processes.
 
-Shared infrastructure code reduces duplication while distinct processes retain deployment and data ownership. It also couples all capabilities to the shared image/build version. A modular monolith might lower operational cost for a small team. Request-scoped providers have different lifecycle/cost implications; these providers are ordinary singleton instances per application context. Creating globals or service locators to hide missing registrations makes testing and ownership harder.
+**Real code:** [backend/src/main.ts · lines 36–40](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L36-L40).
 
-Interview:
+```ts
+@Module({
+  controllers: [HealthController, controllers[service]],
+  providers: [Database, AuthGuard, WorkerHealth, ...providers[service]],
+})
+class ApplicationModule {}
+```
 
-### Where are the four applications?
+**Watch for:** An interface is erased at runtime; injecting an interface requires an explicit runtime token.
 
-In four independent processes selecting SERVICE.
+### What happens when Database is missing from providers?
 
-### Who constructs Database?
+TypeScript may compile, but Nest cannot resolve the constructor dependency at startup.
 
-Nest resolves the registered injectable and passes it through constructors.
+## Constructor parameter properties
 
-### Does the controller enforce all ownership?
+**What:** `constructor(private readonly db: Database)` declares a parameter and stores it as a field.
 
-No; inspect each service's explicit actor/owner checks.
+**How:** `private` restricts TypeScript access. `readonly` prevents rebinding the field. Neither makes the pool or database contents immutable.
 
-- [ ] Draw all four provider graphs and name their ports.
-- [ ] Explain migration versus seeding versus worker startup.
-- [ ] Demonstrate a dependency-resolution failure and repair.
-- [ ] Trace one authenticated request through guard, controller, service and SQL.
+**Real code:** [backend/src/catalog/catalog.service.ts · lines 13–13](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L13-L13).
 
+```ts
+constructor(private readonly db: Database) {}
+```
 
+**Watch for:** A readonly field can still reference a mutable object.
+
+### Who supplies db?
+
+Nest resolves the registered Database provider and passes that object to the constructor.
+
+## Lifecycle hooks and awaited setup
+
+**What:** A lifecycle hook is a method Nest calls at a defined initialization or shutdown stage.
+
+**How:** `onModuleInit` applies migrations. Identity’s `onApplicationBootstrap` awaits its dummy hash and optional seed. A returned promise delays that lifecycle stage until it settles.
+
+**Real code:** [backend/src/identity/identity.service.ts · lines 11–14](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L11-L14).
+
+```ts
+async onApplicationBootstrap(): Promise<void> {
+  this.dummyHash = await hashPassword('dummy-password-never-used');
+  if (process.env.SEED_DEMO !== 'true') return;
+  const providers: { ownerEmail: string; name: string }[] = JSON.parse(
+```
+
+**Watch for:** Do not assume unrelated providers initialize in their array order.
+
+### Why is the dummy hash ready before login requests?
+
+The bootstrap hook awaits hash creation before application initialization finishes.
+
+## Middleware: Helmet and the JSON parser
+
+**What:** Middleware runs around the HTTP request before a controller handles it.
+
+**How:** Helmet sets security-related response headers. Express `json` converts JSON bytes into a JavaScript value and limits body size to 128kb; it does not validate business fields.
+
+**Real code:** [backend/src/main.ts · lines 45–47](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L45-L47).
+
+```ts
+app.use(helmet());
+app.use(json({ limit: '128kb' }));
+app.useGlobalFilters(new ErrorFilter());
+```
+
+**Watch for:** Header hardening, JSON parsing and Zod validation solve separate problems.
+
+### Does Helmet validate an inquiry budget?
+
+No. inquirySchema performs that runtime validation.
+
+## Guards and exception filters
+
+**What:** A guard decides whether execution may reach a route. A filter turns thrown errors into HTTP responses.
+
+**How:** AuthGuard verifies a token and attaches an actor. ErrorFilter maps known errors, maps Zod errors to 400, and masks unexpected 500 details.
+
+**Real code:** [backend/src/common/errors.ts · lines 16–22](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/errors.ts#L16-L22).
+
+```ts
+const status =
+  error instanceof ZodError
+    ? 400
+    : error instanceof HttpException
+      ? error.getStatus()
+      : (parserStatus ?? 500);
+let detail =
+```
+
+**Watch for:** Passing a guard does not establish ownership of a particular row.
+
+### Why handle error as unknown?
+
+Thrown values need runtime checks before reading properties or selecting an error response.
+
+## RxJS: installed versus used
+
+**What:** RxJS provides Observables: lazy streams that can emit several values and support unsubscription.
+
+**How:** It is installed for the Nest ecosystem here. Application services use promises and KafkaJS callbacks; they do not implement custom Observable pipelines.
+
+**Real code:** [backend/package.json · lines 32–32](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L32-L32).
+
+```json
+"rxjs": "^7.8.2",
+```
+
+**Watch for:** A package in package.json is not evidence of an application-level reactive design.
+
+### Promise or Observable for this code?
+
+Describe the actual Promise-returning service methods first; Observable operators would be an extension.
+
+## Practice and mastery
+
+- Explain one decorator, one injected constructor and one lifecycle hook without describing the marketplace workflow.
+- In a practice copy, remove `Database` from module providers. Build, observe the runtime injection error, then restore it.
+- Read `ErrorFilter`: predict the status for a Zod error and an unexpected Error. Expected: 400 and masked 500.
+- Name one singleton limitation: state in one process is not shared with another replica.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [Nest providers](https://docs.nestjs.com/providers) — accessed 2026-10-22.
-- [lifecycle events](https://docs.nestjs.com/fundamentals/lifecycle-events) — accessed 2026-10-22.
-- [Project source: backend/src/main.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/main.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/common/database.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/database.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/common/health.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/health.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/inquiries/inquiries.controller.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/inquiries/inquiries.controller.ts) — local baseline inspected 2026-10-22; private published source may lag.
+- [Nest providers](https://docs.nestjs.com/providers)
+- [Nest lifecycle](https://docs.nestjs.com/fundamentals/lifecycle-events)
+- [Project example: Decorators attach metadata](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L1-L3)
+- [Project example: The dependency-injection container](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L36-L40)
+- [Project example: Constructor parameter properties](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L13-L13)
+- [Project example: Lifecycle hooks and awaited setup](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L11-L14)
+- [Project example: Middleware: Helmet and the JSON parser](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/main.ts#L45-L47)
+- [Project example: Guards and exception filters](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/errors.ts#L16-L22)
+- [Project example: RxJS: installed versus used](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L32-L32)

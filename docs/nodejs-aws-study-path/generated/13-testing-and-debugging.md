@@ -1,72 +1,152 @@
 ---
-title: Tests, debugging and quality evidence
-topic: Testing
+title: "Testing tools: Jest, Vitest, mocks, types and browsers"
+topic: "Testing tools: Jest, Vitest, mocks, types and browsers"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# Prove behavior at the right boundary
 
-Prerequisites: 01–12. A test is useful when it detects a meaningful broken promise. Formatting checks, typechecking, unit tests, real SQL/concurrency tests and browser tests answer different questions. A green unit test cannot prove a broker delivered a message, and a screenshot cannot prove an inquiry survived a restart.
+# Testing tools: Jest, Vitest, mocks, types and browsers
 
-## The project's test layers
+Prerequisites: a service method and an effect you can explain. Choose the test tool from the evidence needed.
 
-backend/test uses Jest with ts-jest's ESM preset, experimental VM modules and a .js-to-source mapper. Fakes isolate services and cover validation, roles, mapping and error paths. frontend uses Vitest, jsdom, React Testing Library, user-event, jest-dom assertions and V8 coverage. Root scripts/acceptance.mjs performs real HTTP checks against a running local application. scripts/browser-smoke.mjs uses Playwright against the browser. scripts/failure-drill.mjs exercises a controlled local outage.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-Read a test before running it. Identify arrange, act, assert, the boundary being faked, and a plausible implementation bug it would catch. Avoid tests that merely assert that a mock was called with the same literal already copied from the implementation. Authorization, duplicate retries, outbox recovery, form uncertainty and focus restoration deserve behavioral assertions.
+## Jest spies isolate a service rule
 
-## Executable validation ladder
+**What:** A spy records calls; a mock supplies controlled behavior instead of a real dependency.
 
-From the repository root with dependencies installed using the separate backend/frontend lockfiles:
+**How:** The backend tests inject a fake Database and inspect SQL-call intent. This is useful for ownership and retry branches, but cannot establish real PostgreSQL locking.
 
-~~~bash
-npm run check
-npm test
-npm run build
-~~~
+**Real code:** [backend/test/workflows.spec.ts · lines 43–51](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/test/workflows.spec.ts#L43-L51).
 
-Expected outcome: zero exit status for each command, with actual test counts and any warnings recorded. check runs lint/format/typechecking; it is not application execution. Build creates compiled artifacts. Then start the isolated local application using npm run up and run npm run acceptance. Install the declared browser runtime as needed with npx playwright install chromium before npm run test:browser. These integration steps need Docker and a running edge on port 8180. Preserve failures when they explain a repair; do not claim a run occurred from reading results.md.
+```ts
+function database(rows: unknown[] = []) {
+  const query = jest.fn<(...args: any[]) => Promise<any>>().mockResolvedValue({ rows });
+  const db = {
+    query,
+    transaction: jest.fn(async (fn: (tx: { query: typeof query }) => Promise<unknown>) =>
+      fn({ query }),
+    ),
+  };
+  return { query, db: db as unknown as Database };
+```
 
-## Red-to-green debugging exercise
+**Watch for:** A mock that repeats the implementation’s assumptions can pass while integration is broken.
 
-In a practice copy add a deterministic test for replaying an inquiry with a changed body under the same client/key. It should expect ConflictException/409 and no second insert. Temporarily remove the fingerprint mismatch branch to prove the test fails, then restore the behavior and show it passes. Separately simulate delayed old/new provider responses in a frontend hook test; assert newest query wins. Do not use real-time sleeps when controlled promise resolution can make the case deterministic.
+### What does the duplicate test prove?
 
-When a test fails, classify it: assertion failure, invalid test fixture, ESM transform/configuration, port collision, missing dependencies or real application behavior. Read the complete stack and first relevant application frame. Set a breakpoint in source using the repository's VS Code configuration or loopback inspector; inspect actor, transaction client and parsed input. Never log tokens or full runtime secrets to diagnose a 401.
+That this service path returns the previous result without issuing another insert against its fake database.
 
-## Coverage and tooling interpretation
+## Vitest and controllable promises
 
-Coverage shows which instrumented statements/branches were exercised, not whether assertions are correct. main.ts is excluded from backend collected coverage, so do not imply it was fully tested by that percentage. ESLint detects selected code patterns; Prettier enforces formatting; tsc checks static types; npm audit/Dependabot report dependency risks; Sonar analyzes configured code and quality rules. Each has false positives, scope limits and policy choices. Backend ESLint and frontend ESLint major versions differ by package; do not homogenize versions without compatibility work.
+**What:** Vitest runs frontend tests; Testing Library drives components or hooks from their public behavior.
 
-## Senior interview answers
+**How:** The hook test saves a promise resolver, changes the search, then resolves the older response last. The schedule is deterministic rather than dependent on network luck.
 
+**Real code:** [frontend/src/hooks/useMarketplace.test.tsx · lines 13–20](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.test.tsx#L13-L20).
 
+```tsx
+let resolveFirst!: (value: Response) => void;
+vi.stubGlobal(
+  "fetch",
+  vi
+    .fn()
+    .mockImplementationOnce(
+      () =>
+        new Promise<Response>((resolve) => {
+```
 
-### What do you mock?
+**Watch for:** jsdom simulates DOM APIs; it does not reproduce every real browser layout or network behavior.
 
-Isolate pure business decisions and external failure branches, then use real integration tests for SQL locks, transactions, Kafka offsets and proxy routing.
+### Why avoid timing sleeps for the race test?
 
-### How do you validate AI code?
+Explicit promise control reproduces the failing schedule reliably.
 
-Review the invariant, write meaningful negative/failure tests, inspect the diff, execute relevant checks and keep evidence tied to the requirement. Test-generated-by-AI is not independently verified merely because it agrees with generated code.
+## TypeScript transformation and ESM
 
-- [ ] Name the promise each selected test proves and what it cannot prove.
-- [ ] Demonstrate a real regression test failing then passing.
-- [ ] Trace a failure through browser/network/backend/SQL boundaries.
-- [ ] Record commands, output, actual coverage scope and unresolved limits.
+**What:** A test runner must execute JavaScript even when test sources are TypeScript.
 
+**How:** ts-jest transforms backend tests; the ESM preset and .js-to-source mapper match the backend module convention. @types packages help compilation without changing runtime assertions.
 
+**Real code:** [backend/package.json · lines 51–58](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L51-L58).
+
+```json
+"preset": "ts-jest/presets/default-esm",
+"testEnvironment": "node",
+"testMatch": [
+  "<rootDir>/test/**/*.spec.ts"
+],
+"collectCoverageFrom": [
+  "src/**/*.ts",
+  "!src/main.ts"
+```
+
+**Watch for:** Changing test transforms can hide module-configuration problems rather than fix production loading.
+
+### Why do tests need a mapper for .js suffixes?
+
+Source imports name runtime output paths while the runner executes TypeScript source.
+
+## Lint, format, typecheck and behavior
+
+**What:** ESLint detects configured code issues; Prettier formats text; TypeScript checks types; tests assert behavior.
+
+**How:** The project’s check script combines three different kinds of evidence. Passing it does not prove a database invariant or a user journey.
+
+**Real code:** [backend/package.json · lines 18–23](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L18-L23).
+
+```json
+  "check": "npm run typecheck && npm run lint && npm run format:check",
+  "lint": "eslint src test scripts eslint.config.js",
+  "format": "prettier --write src test scripts eslint.config.js package.json tsconfig.json .prettierrc.json",
+  "format:check": "prettier --check src test scripts eslint.config.js package.json tsconfig.json .prettierrc.json"
+},
+"dependencies": {
+```
+
+**Watch for:** Coverage measures executed code under the collected scope; it is not a direct correctness percentage.
+
+### Can well-formatted code still be insecure?
+
+Yes. Formatting and lint success do not establish authorization or safe failure behavior.
+
+## Playwright exercises a real browser
+
+**What:** Playwright drives a browser page, finds controls and waits for observable UI conditions.
+
+**How:** The smoke script visits the running application and sends an inquiry. Its evidence differs from a component mock: the UI, proxy and real services participate.
+
+**Real code:** [scripts/browser-smoke.mjs · lines 12–15](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/scripts/browser-smoke.mjs#L12-L15).
+
+```js
+await page.goto(base);await page.locator('.provider-card').first().waitFor();
+assert.ok(await page.locator('.provider-card').count()>=6);
+assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+await page.screenshot({path:`docs/evidence/browser/${name}-discovery.png`,fullPage:true});
+```
+
+**Watch for:** A passing happy path does not cover every retry or crash schedule.
+
+### What should a locator wait for?
+
+A meaningful visible or network condition, rather than an arbitrary fixed delay.
+
+## Practice and mastery
+
+- Run one backend file and one frontend file. Explain the inputs, dependency doubles and assertions before reading PASS.
+- Break a real ownership or stale-response rule in a practice copy. Confirm a meaningful existing test fails, then restore the rule.
+- Describe which extra real-database test is needed to prove advisory locking.
+- Use the local breakpoint launcher for diagnosis; do not treat every failure as a reason to reinstall packages.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [Jest ESM](https://jestjs.io/docs/ecmascript-modules) — accessed 2026-10-22.
-- [Vitest](https://vitest.dev/guide/) — accessed 2026-10-22.
-- [Testing Library guiding principles](https://testing-library.com/docs/guiding-principles/) — accessed 2026-10-22.
-- [Playwright](https://playwright.dev/docs/intro) — accessed 2026-10-22.
-- [Project source: backend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/package.json) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/package.json) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/test/workflows.spec.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/test/workflows.spec.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/hooks/useMarketplace.test.tsx](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/hooks/useMarketplace.test.tsx) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: scripts/acceptance.mjs](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/scripts/acceptance.mjs) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: scripts/browser-smoke.mjs](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/scripts/browser-smoke.mjs) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: docs/testing.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/docs/testing.md) — local baseline inspected 2026-10-22; private published source may lag.
+- [Jest mocks](https://jestjs.io/docs/mock-functions)
+- [Vitest mocks](https://vitest.dev/guide/mocking.html)
+- [Testing Library principles](https://testing-library.com/docs/guiding-principles/)
+- [Project example: Jest spies isolate a service rule](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/test/workflows.spec.ts#L43-L51)
+- [Project example: Vitest and controllable promises](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.test.tsx#L13-L20)
+- [Project example: TypeScript transformation and ESM](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L51-L58)
+- [Project example: Lint, format, typecheck and behavior](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/package.json#L18-L23)
+- [Project example: Playwright exercises a real browser](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/scripts/browser-smoke.mjs#L12-L15)

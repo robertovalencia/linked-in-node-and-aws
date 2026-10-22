@@ -1,61 +1,223 @@
 ---
-title: Passwords, JWTs, roles and resource ownership
-topic: Security
+title: "Identity tools: scrypt, Buffer, JWT, Zod and Map"
+topic: "Identity tools: scrypt, Buffer, JWT, Zod and Map"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# Identity answers who; authorization answers what
 
-Prerequisites: 05–07. Follow backend/src/identity/identity.controller.ts → identity.service.ts → password.ts → common/auth.ts. Login validates input and rate-limits attempts per request IP in process memory. Identity looks up a normalized email with parameterized SQL, verifies a password and signs an actor token.
+# Identity tools: scrypt, Buffer, JWT, Zod and Map
 
-## Password and token explanation
+Prerequisites: lessons 02, 03 and 05. Read the mechanism first; use login only as its real example.
 
-The application uses asynchronous scrypt with a random 16-byte salt and a 64-byte derived key. The stored value is scrypt:salt:hexhash, not plaintext and not reversible encryption. Verification checks the encoded format, derives the candidate and compares equal-size bytes using timingSafeEqual. A dummy hash for unknown accounts reduces an obvious fast missing-user path; it is not a proof that every timing channel is eliminated. The demo seed shares a synthetic demonstration password, which is appropriate only for this laboratory.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-signActor creates an HS256 token with issuer and audience marketplace, email subject and one-hour expiry. verifyActor fixes the accepted algorithm, checks issuer/audience, lets the library verify expiry and signature, and validates principal fields. JWT payloads are encoded, not encrypted; never put secrets in claims. The guard rejects missing/invalid bearer tokens and adds the verified actor. requireRole and per-resource ownership checks then enforce business permission.
+## Error-first callbacks become promises
 
-Catalog protects private owner lookups with a distinct internal key and timing-safe comparison. It checks byte lengths before timingSafeEqual, because different lengths would throw. Being reachable only through internal routing is additional exposure control, not a substitute for this check.
+**What:** Node’s scrypt API accepts a callback with an error and a result. `promisify` wraps that convention in a Promise-returning function.
 
-## Executable negative lab
+**How:** The callback error becomes a rejection; its successful derived key becomes the resolved value. `await` simplifies sequencing but does not change the cryptographic algorithm.
 
-With local services up, run curl -i -H 'Authorization: Bearer invalid' http://127.0.0.1:8180/api/inquiries. Expect 401 with generic JSON detail. Use the UI to log in as a synthetic client, attempt a provider-only action through an authenticated HTTP client, and expect 403. Log in as one provider and attempt to change another provider's inquiry; expect ownership rejection. Reuse repository acceptance/security tests to build correct bodies and tokens rather than publishing a token in notes. Never record bearer tokens or real passwords in evidence.
+**Real code:** [backend/src/identity/password.ts · lines 3–3](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L3-L3).
 
-Run npm --prefix backend test -- --runTestsByPath test/security.spec.ts to inspect the repository's focused security behavior. Record actual output; this command exercises code, while an external security audit remains separate.
+```ts
+const scrypt = promisify(scryptCallback);
+```
 
-## Debugging scenarios
+**Watch for:** promisify does not move arbitrary synchronous code to another thread.
 
-A good signature with a wrong issuer/audience is invalid. A CLIENT token is not a provider permission grant. Expiry can explain a 401 after an hour, but inspect clock assumptions and actual response before assuming it. A UI hiding the edit button does not protect the endpoint. Test direct calls. An internal secret accidentally copied to frontend code is exposed because browser assets are public to that user.
+### Why can hashPassword use await scrypt?
 
-## Senior tradeoffs and proposed hardening
+scryptCallback was adapted from callback style to a promise by util.promisify.
 
-All verifiers possessing the shared HMAC secret can mint tokens. Production extensions include asymmetric identity-provider tokens and rotation, hardened session handling, distributed login throttling, account lifecycle/revocation and audited access. Browser localStorage token persistence is currently implemented; XSS can read it. HttpOnly cookie sessions change XSS/CSRF design and require careful same-site, CSRF and proxy decisions; they are not a one-line universal fix. Helmet and input validation reduce specific risks but do not establish total security.
+## scrypt: cost and asynchronous work
 
+**What:** scrypt derives a password-checking key using deliberate CPU and memory cost. A fast general-purpose hash is unsuitable for storing passwords.
 
+**How:** The asynchronous API uses Node’s native worker-pool resources. JavaScript can serve other I/O while awaiting it, but many simultaneous hashes can still exhaust limited capacity.
 
-### Hashing versus encryption?
+**Real code:** [backend/src/identity/password.ts · lines 6–7](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L6-L7).
 
-Password verification needs a deliberately costly one-way derivation, whereas encryption is reversible with a key.
+```ts
+const hash = (await scrypt(password, salt, 64)) as Buffer;
+return `scrypt:${salt}:${hash.toString('hex')}`;
+```
 
-### Role versus ownership?
+**Watch for:** Adding async to a CPU-heavy JavaScript function would not produce the same offloading.
 
-Role permits a class of operation; ownership restricts the particular resource.
+### Why throttle login when hashing is asynchronous?
 
-- [ ] Trace login and token verification without skipping runtime checks.
-- [ ] Explain salt, scrypt, timing-safe comparison and dummy hash.
-- [ ] Demonstrate 401 and ownership/role 403 paths.
-- [ ] Name existing controls and production extensions accurately.
+Async avoids blocking JavaScript directly, but password work still consumes finite CPU, memory and worker capacity.
 
+## randomBytes, salt and hex encoding
 
+**What:** A salt makes two equal passwords produce different stored derivations. It is stored beside the hash and is not a secret.
+
+**How:** `randomBytes(16)` produces 16 random bytes; hex represents them using 32 characters. The 64-byte derived key becomes 128 hex characters.
+
+**Real code:** [backend/src/identity/password.ts · lines 5–7](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L5-L7).
+
+```ts
+const salt = randomBytes(16).toString('hex');
+const hash = (await scrypt(password, salt, 64)) as Buffer;
+return `scrypt:${salt}:${hash.toString('hex')}`;
+```
+
+**Watch for:** Hex is a reversible representation of bytes, not encryption.
+
+### Can the stored salt be public?
+
+Yes. Password safety depends on the derivation cost and password strength, not salt secrecy.
+
+## Buffer and timingSafeEqual
+
+**What:** A Buffer stores bytes. `timingSafeEqual` compares equal-length byte sequences without content-dependent early exit in that comparison.
+
+**How:** Verification checks the stored format, derives a new candidate, decodes the stored hex, then compares bytes. Other branches and surrounding code can still expose timing differences.
+
+**Real code:** [backend/src/identity/password.ts · lines 18–18](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L18-L18).
+
+```ts
+return timingSafeEqual(candidate, Buffer.from(hash, 'hex'));
+```
+
+**Watch for:** Different-length buffers throw; validate the representation before comparing.
+
+### Why not compare two strings with ===?
+
+An ordinary comparison does not promise the same timing behavior for secret-derived bytes.
+
+## Optional chaining and a dummy derivation
+
+**What:** `account?.password_hash ?? dummyHash` supplies a hash even when no account exists.
+
+**How:** The service performs a real derivation before returning its generic login error. This reduces the obvious fast missing-user branch without proving that all account-enumeration signals disappear.
+
+**Real code:** [backend/src/identity/identity.service.ts · lines 52–54](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L52-L54).
+
+```ts
+const valid = await verifyPassword(password, account?.password_hash ?? this.dummyHash);
+if (!account || !valid) throw new UnauthorizedException('Invalid email or password');
+const actor: Actor = {
+```
+
+**Watch for:** The fallback protects timing behavior; it never authorizes a missing account.
+
+### Can the dummy hash accidentally log in a missing user?
+
+The next condition explicitly rejects !account regardless of the verification result.
+
+## JWT signing: claims, encoding and HMAC
+
+**What:** A JWT normally has header.payload.signature sections encoded for transport. Encoding does not hide the claims.
+
+**How:** jwt.sign uses HS256 to authenticate the header/payload with a shared secret. The options add issuer, audience, subject and a one-hour expiry; the expiry is not a server-side session record.
+
+**Real code:** [backend/src/common/auth.ts · lines 14–21](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/auth.ts#L14-L21).
+
+```ts
+  return jwt.sign(actor, required('JWT_SECRET'), {
+    algorithm: 'HS256',
+    issuer: 'marketplace',
+    audience: 'marketplace',
+    subject: actor.email,
+    expiresIn: '1h',
+  });
+}
+```
+
+**Watch for:** Every verifier holding this HMAC secret can also mint a token. The signature does not provide encryption.
+
+### What does expiresIn do here?
+
+The library adds an expiration claim; later verification rejects an expired token unless explicitly configured otherwise.
+
+## jsonwebtoken: signature versus claims
+
+**What:** A JWT contains encoded header/payload data plus a signature. HS256 uses the same secret for signing and verification.
+
+**How:** jwt.verify checks the allowed algorithm, signature, expiry and configured issuer/audience rules. The remaining code checks subject/email and id/email equality plus valid actor fields.
+
+**Real code:** [backend/src/common/auth.ts · lines 24–29](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/auth.ts#L24-L29).
+
+```ts
+const value = jwt.verify(token, required('JWT_SECRET'), {
+  algorithms: ['HS256'],
+  issuer: 'marketplace',
+  audience: 'marketplace',
+});
+if (
+```
+
+**Watch for:** jwt.decode only reads data; it does not establish signature validity.
+
+### Does a valid JWT prove permission to edit a row?
+
+No. The service still checks role and the resource’s stored owner.
+
+## Map-based throttling and mutable objects
+
+**What:** Map stores key/value pairs in process memory. Here each value tracks an IP’s count and expiry.
+
+**How:** The increment mutates the stored object; expired entries are removed on later calls. Counts reset on restart and are not shared with another service replica.
+
+**Real code:** [backend/src/identity/identity.controller.ts · lines 26–30](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.controller.ts#L26-L30).
+
+```ts
+const key = request.ip ?? 'unknown';
+const attempts = this.attempts.get(key) ?? { count: 0, until: now + 60_000 };
+if (++attempts.count > 30)
+  throw new HttpException('Too many login attempts; retry in one minute', 429);
+this.attempts.set(key, attempts);
+```
+
+**Watch for:** Behind a proxy, effective request IP depends on proxy configuration; this is not a distributed rate limiter.
+
+### What does a second replica do to the limit?
+
+It has another Map, so a process-local limit does not enforce one global counter.
+
+## Zod validates before service use
+
+**What:** The strict login schema limits email/password shape and rejects unexpected fields.
+
+**How:** Validation returns parsed values to the controller; a ZodError becomes a 400 through the shared filter. Credentials still require database lookup and password verification.
+
+**Real code:** [backend/src/identity/identity.controller.ts · lines 15–17](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.controller.ts#L15-L17).
+
+```ts
+const loginSchema = z
+  .object({ email: z.email().max(254), password: z.string().min(1).max(200) })
+  .strict();
+```
+
+**Watch for:** A validated email address is not evidence that the sender owns that account.
+
+### Is validation authentication?
+
+No. Validation checks input shape; authentication checks the supplied credentials.
+
+## Practice and mastery
+
+- Trace `callback → promisify → Promise → await → Buffer` using the linked password code.
+- Predict the salt and derived-key hex lengths: 32 and 128 characters.
+- Run `npm --prefix backend test -- --runTestsByPath test/security.spec.ts` from the project root.
+- Explain HS256 verification, role and row ownership separately. Do not save bearer tokens in study notes.
+- Production extensions: external asymmetric identity provider, rotation and distributed throttling. These are not implemented by adding a decorator.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [Node crypto](https://nodejs.org/api/crypto.html) — accessed 2026-10-22.
-- [jsonwebtoken project](https://github.com/auth0/node-jsonwebtoken) — accessed 2026-10-22.
-- [OWASP authentication guidance](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html) — accessed 2026-10-22.
-- [Project source: backend/src/identity/identity.controller.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/identity/identity.controller.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/identity/identity.service.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/identity/identity.service.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/identity/password.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/identity/password.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/common/auth.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/auth.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/test/security.spec.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/test/security.spec.ts) — local baseline inspected 2026-10-22; private published source may lag.
+- [Node crypto](https://nodejs.org/api/crypto.html)
+- [Node util.promisify](https://nodejs.org/api/util.html#utilpromisifyoriginal)
+- [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+- [Zod](https://zod.dev/api)
+- [Project example: Error-first callbacks become promises](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L3-L3)
+- [Project example: scrypt: cost and asynchronous work](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L6-L7)
+- [Project example: randomBytes, salt and hex encoding](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L5-L7)
+- [Project example: Buffer and timingSafeEqual](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L18-L18)
+- [Project example: Optional chaining and a dummy derivation](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.service.ts#L52-L54)
+- [Project example: JWT signing: claims, encoding and HMAC](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/auth.ts#L14-L21)
+- [Project example: jsonwebtoken: signature versus claims](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/auth.ts#L24-L29)
+- [Project example: Map-based throttling and mutable objects](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.controller.ts#L26-L30)
+- [Project example: Zod validates before service use](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/identity.controller.ts#L15-L17)

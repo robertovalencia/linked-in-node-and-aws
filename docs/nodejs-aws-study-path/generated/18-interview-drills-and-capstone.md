@@ -1,79 +1,141 @@
 ---
-title: Interview answers, practical drills and capstone
-topic: Interview practice
+title: "Interview practice: explain the mechanism, then prove it"
+topic: "Interview practice: explain the mechanism, then prove it"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# Rehearse explanations that survive follow-up questions
 
-Prerequisites: gates A–E. Speak a concise answer, draw the relevant path, then prove it from code or a lab. A memorized answer that contradicts the implementation is a liability. Use the Java Interview Process question-bank style as a retrieval tool, but ground answers in Node behavior.
+# Interview practice: explain the mechanism, then prove it
 
-## Core questions with model answers
+Prerequisites: lessons 01–17. Answer in 30 seconds, then give a source example and a failure case.
 
-### What happens from clicking Send to seeing a notification?
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-The form creates/persists a logical attempt with key and payload. The API helper sends JWT and Idempotency-Key through the same-origin proxy. Nest's guard verifies identity. The service checks role/input, locks client/key in a DB transaction, replays or looks up catalog through bounded internal HTTP, then commits inquiry plus outbox. A worker publishes to Kafka; notifications validates and inserts with unique eventId. Provider inbox HTTP reads that persisted data. A success response proves the inquiry committed, not immediate delivery to every downstream channel.
+## Explain a callback-to-promise adapter
 
-### Why Node for this backend?
+**What:** Start with the API contract: callback(error, result) becomes a promise that rejects or resolves.
 
-It fits asynchronous I/O and a shared TypeScript ecosystem with React. CPU-bound JavaScript can block the event loop, pools and native resources remain limited, and runtime validation is still necessary. Choose based on workload/team constraints rather than a universal faster-than-Java claim.
+**How:** Use password.ts to explain promisify, awaited native work and the returned Buffer. Avoid replacing the mechanism with a general login workflow description.
 
-### How do four Nest services share one package?
+**Real code:** [backend/src/identity/password.ts · lines 3–3](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L3-L3).
 
-SERVICE selects a controller/provider graph at startup; four processes use distinct configuration and database credentials. One image does not imply one process or shared domain tables.
+```ts
+const scrypt = promisify(scryptCallback);
+```
 
-### How do you avoid duplicate writes?
+**Watch for:** Do not claim promisify creates a worker thread for any supplied function.
 
-Stable client-scoped key, canonical payload hash, a cross-replica DB advisory lock and durable uniqueness. UI double-click guards help usability but cannot prove distributed correctness. HTTP retry identity and event identity solve related but distinct problems.
+### What would a strong short answer say?
 
-### Can Kafka make it exactly once?
+promisify adapts the error-first callback; Node’s async scrypt implementation supplies the native worker work.
 
-This implementation has a DB/Kafka commit gap. It uses at-least-once delivery and idempotent notification effects. Broker transaction features do not automatically include PostgreSQL.
+## Explain a validated runtime boundary
 
-### How do you secure it?
+**What:** State which data is untrusted, which schema checks it, and which type becomes available after parsing.
 
-Async password derivation, validated JWT algorithm/issuer/audience/claims, runtime Zod schemas, role/ownership checks, parameterized SQL, internal-key boundary and request limits exist. Shared HMAC verification, browser-readable tokens, per-process throttling and single-host dev topology need honest production discussion.
+**How:** Use the search query schema to explain numeric coercion and the explicit true/false transform. Name the public error behavior for rejected data.
 
-### What would you improve first?
+**Real code:** [backend/src/catalog/provider.schema.ts · lines 54–59](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/provider.schema.ts#L54-L59).
 
-Name a measured problem. For example, if catalog delay causes pool contention, measure transaction/pool waits and evaluate moving provider validation outside the lock with explicit replay and consistency semantics. Do not propose microservices or Redis simply to sound senior.
+```ts
+maxRate: z.coerce.number().int().min(0).max(1e6).optional(),
+available: z
+  .enum(['true', 'false'])
+  .transform((v) => v === 'true')
+  .optional(),
+sort: z.enum(['recommended', 'rate-asc', 'rating']).default('recommended'),
+```
 
-## Live coding drills
+**Watch for:** A compiler type or assertion does not establish a valid runtime object.
 
-Implement a concurrency-limited promise runner (03), a discriminated-union result handler (02), a non-mutating provider filter (01), a controlled React form with errors (11), and a parameterized paginated SQL query (07). For each explain time/space cost, invalid input, cancellation/failure policy and one meaningful test. Prefer a clear working solution before optimizing.
+### Why is Boolean("false") a bad query parser?
 
-## Capstone: status-change notification proposal
+It produces true because the text is nonempty; use a defined set of accepted strings.
 
-This is an extension, not existing behavior. Providers currently resolve inquiries; only inquiry-created events are implemented. Specify an event notifying the client after an accepted/declined decision. Define permission, transition, retry identity, schema/version, recipient privacy and duplicate-effect invariant. Keep the status update and new outbox record atomic. Decide message key, eventId generation on compatible replay, consumer validation/deduplication and UI refresh semantics. Explain whether using the existing notification service/group/topic is compatible or requires versioned changes.
+## Explain a transaction without hand-waving
 
-Build the smallest vertical slice in a practice branch. First show a negative ownership test and duplicate-compatible-retry test. Then implement SQL/event/UI changes without cross-service database access. Run source checks/unit tests/build, real HTTP integration, duplicate event replay and the relevant browser journey. Supply an ADR and requirement-to-release evidence table; mark cloud execution planned unless performed separately. A separate critic should challenge contracts, data privacy, failure windows and actual outputs and identify the largest gap for repair.
+**What:** Name the checked-out client, the transaction boundary and the resource that must be released.
 
-## Mock interview scoring by evidence
+**How:** Then explain the specific lock and durable constraint. A useful answer separates function sequencing, database coordination and crash behavior.
 
-| Area | Pass demonstration |
-|---|---|
-| Language/runtime | Predict output and explain concurrency without myths |
-| Backend/security | Trace guard/role/ownership/SQL with a rejected attack |
-| Distributed data | Enumerate every commit/ack gap and safe retry |
-| React | Diagnose a stale response and explain focus cleanup |
-| Infrastructure | Draw real EC2/SSM/ECR/S3 topology and a justified alternative |
-| AI delivery | Show requirement, review gap, repair and executed evidence |
+**Real code:** [backend/src/common/database.ts · lines 70–76](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L70-L76).
 
-Fail a category if you cannot explain it without notes or if your claim outruns evidence. Repeat that exercise with changed inputs. Prepare two honest STAR stories from your own work; study labs are practice stories and must not be represented as production incidents.
+```ts
+const client = await this.pool.connect();
+try {
+  await client.query('BEGIN');
+  const result = await operation(client);
+  await client.query('COMMIT');
+  return result;
+} catch (error) {
+```
 
-- [ ] Give the complete journey in 90 seconds, then defend each boundary.
-- [ ] Solve two drills without copying and diagnose a failure.
-- [ ] Specify and validate capstone invariants across UI/HTTP/DB/events.
-- [ ] Distinguish personal experience, current source and proposed design.
+**Watch for:** Do not use pool.query for one of the statements that must remain in the same transaction.
 
+### What must be true for two inserts to commit atomically?
 
+They must run in the same database transaction through the same client/session.
+
+## Explain a duplicate message
+
+**What:** Start at the exact crash boundary: a durable effect can exist before the broker offset commit.
+
+**How:** Then identify the stable event ID and SQL unique conflict policy. Avoid promising exactly-once transport when the code supplies idempotent effects.
+
+**Real code:** [backend/src/notifications/notifications.service.ts · lines 30–31](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/notifications/notifications.service.ts#L30-L31).
+
+```ts
+'INSERT INTO notifications(id,event_id,inquiry_id,recipient_email,message,created_at) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(event_id) DO NOTHING',
+[
+```
+
+**Watch for:** A new random notification candidate ID is not the deduplication identity.
+
+### How can delivery repeat without creating another inbox row?
+
+The repeated event carries the same event ID and the unique constraint makes its insert a no-op.
+
+## Explain a stale React response
+
+**What:** Describe which request owns the current result and when that ownership changes.
+
+**How:** The effect’s cleanup aborts its request; the callback checks whether it was abandoned. Use the existing controlled-promise test to demonstrate the older result arriving last.
+
+**Real code:** [frontend/src/hooks/useMarketplace.test.tsx · lines 12–15](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.test.tsx#L12-L15).
+
+```tsx
+it("ignores late search results after filters change even if transport ignores abort", async () => {
+  let resolveFirst!: (value: Response) => void;
+  vi.stubGlobal(
+    "fetch",
+```
+
+**Watch for:** Do not use a slow-network anecdote as the only reproducible regression test.
+
+### What evidence should accompany the explanation?
+
+A deterministic test that fails when the stale-result guard is removed and passes when restored.
+
+## Practice and mastery
+
+**Capstone: a proposed minRate filter.** Use lesson 12’s vertical lab as the implementation scope.
+
+1. Write acceptance examples before editing: absent filter preserves results; valid bounds filter correctly; inverted bounds return 400.
+2. Change the runtime schema and parameterized SQL. Add focused negative and positive tests.
+3. Wire a controlled React input through the query helper. Demonstrate loading, error, empty and success states.
+4. Run checks, tests and build. Record actual outputs; keep AWS deployment as planned unless separately performed.
+5. Explain each tool you touched: Zod, closures, pg parameters, React state, effects and HTTP errors.
+
+- Pass when you can explain the code without reading the prose, reproduce one failure and defend one tradeoff.
+- Give an honest narrative: distinguish prior experience, locally demonstrated skills and remaining gaps. Reading the pack does not establish senior production experience.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [Project source: CONTRACT.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/CONTRACT.md) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: docs/interview-demo.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/docs/interview-demo.md) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/inquiries/inquiries.service.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/inquiries/inquiries.service.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/hooks/useInquiryAttempt.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/hooks/useInquiryAttempt.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/common/messaging.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/messaging.ts) — local baseline inspected 2026-10-22; private published source may lag.
+- [Project source repository](https://github.com/robertovalencia/linked-in-node-and-aws)
+- [Project example: Explain a callback-to-promise adapter](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/identity/password.ts#L3-L3)
+- [Project example: Explain a validated runtime boundary](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/provider.schema.ts#L54-L59)
+- [Project example: Explain a transaction without hand-waving](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L70-L76)
+- [Project example: Explain a duplicate message](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/notifications/notifications.service.ts#L30-L31)
+- [Project example: Explain a stale React response](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.test.tsx#L12-L15)

@@ -1,69 +1,210 @@
 ---
-title: KafkaJS, outbox publishing and deduplicated notifications
-topic: Messaging
+title: "Messaging tools: KafkaJS, offsets, Buffer and deduplication"
+topic: "Messaging tools: KafkaJS, offsets, Buffer and deduplication"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# From committed inquiry to provider inbox
 
-Prerequisite: 09. The event is inquiry.created.v1. Producer and consumer are separate runtime workers registered only for inquiries and notifications respectively. Kafka carries a fact; the notification UI later reads persisted inbox records through HTTP. This application does not implement email delivery, WebSockets or a separate inbox table.
+# Messaging tools: KafkaJS, offsets, Buffer and deduplication
 
-## Publisher walkthrough
+Prerequisites: lessons 03, 07 and 09. Distinguish delivery of a message from the durable business effect.
 
-backend/src/common/messaging.ts constructs KafkaJS with configured brokers, timeouts, retry limits and optional TLS. OutboxPublisher starts an asynchronous loop, connects a producer and polls every 500 ms. publishBatch uses a DB transaction to select up to 25 unpublished rows in creation order with FOR UPDATE SKIP LOCKED. Each event is sent with key inquiry_id and acks:-1; after acknowledgement its published_at is updated. Other publishers can skip locked batches rather than duplicate that concurrent work.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-The transaction holds locks while network publishing happens. That simplifies claiming rows but can hold connections/locks during broker delay. A proposed lease/claim design must preserve recovery when a publisher dies. Kafka acknowledgement configuration also depends on broker replication and in-sync replica settings; acks:-1 on a single local broker does not provide multi-zone durability.
+## KafkaJS client, producer and consumer
 
-## Consumer walkthrough
+**What:** KafkaJS is a Node client library. A producer sends records; a consumer reads topic partitions as part of a consumer group.
 
-InquiryConsumer uses group marketplace-notifications-v1, subscribes with fromBeginning:true, and awaits NotificationsService.consume inside eachMessage. Existing committed group offsets determine normal restart position; fromBeginning is relevant when no valid offset exists. It does not replay every event on every restart.
+**How:** The shared factory configures brokers, request/connect timeouts, retries and optional TLS. A client ID labels the client; a group ID coordinates consumer membership and offsets.
 
-consume validates eventSchema and inserts a notification using ON CONFLICT(event_id) DO NOTHING. The notification table's UNIQUE event_id is the deduplication record and effect in one statement. There is no distinct inbox-receipts table. Only after awaited processing can KafkaJS continue its acknowledgement/offset machinery. A replay following a crash therefore repeats the insert attempt safely for that identity.
+**Real code:** [backend/src/common/messaging.ts · lines 133–141](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L133-L141).
 
-## Crash table to explain aloud
+```ts
+return new Kafka({
+  clientId: `marketplace-${serviceName()}`,
+  brokers: required('KAFKA_BROKERS')
+    .split(',')
+    .map((v) => v.trim()),
+  logLevel: logLevel.ERROR,
+  connectionTimeout: 5000,
+  requestTimeout: 10000,
+  retry: { retries: 4 },
+```
 
-| Failure boundary | Durable state | Recovery |
-|---|---|---|
-| Before inquiry/outbox commit | Neither new row committed | Client retries logical operation |
-| After commit, before publish | Pending outbox | Publisher retries later |
-| After Kafka ack, before published_at commit | Kafka may contain event; outbox still pending | Publish again; consumer deduplicates |
-| After notification insert, before committed group offset | Inbox effect exists | Replay; unique event_id suppresses second effect |
+**Watch for:** A broker bootstrap address must lead to reachable advertised broker addresses.
 
-This is at-least-once delivery with idempotent effects. It is not an exactly-once transaction across PostgreSQL and Kafka.
+### Is clientId the same thing as groupId?
 
-## Executable lab
+No. Client identity labels connections; consumer-group identity coordinates partition work.
 
-With local dependencies running, read scripts/failure-drill.mjs before invoking node scripts/failure-drill.mjs. It intentionally manipulates the isolated local lab; record the actual stopped component, submitted inquiry, recovery, IDs and counts. Do not run it against shared or cloud infrastructure. Run focused backend coverage/workflow tests to inspect duplicate event behavior. Extend a test with a malformed event and confirm validation failure; a poison message needs an explicit production retry/quarantine policy. A dead-letter queue is proposed, not present.
+## Message keys and acknowledgments
 
-## Debugging and senior tradeoffs
+**What:** The record key affects partition routing. The producer acknowledgment setting controls which broker acknowledgment it waits for.
 
-If inquiries exist but notifications do not, check pending outbox age, producer readiness/errors, topic configuration, consumer group state, schema failures and recipient filtering in order. Broker up does not imply consumer ready. WorkerHealth changes on worker connection events, but readiness is an operational signal with limits, not end-to-end delivery evidence. Partition ordering is per key/partition rather than global across topics or unrelated inquiries.
+**How:** This producer uses the inquiry ID as key and acks=-1. It waits for in-sync replica acknowledgments, but one broker still has one-host failure risk.
 
+**Real code:** [backend/src/common/messaging.ts · lines 31–35](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L31-L35).
 
+```ts
+await this.producer!.send({
+  topic: process.env.KAFKA_TOPIC ?? INQUIRY_TOPIC,
+  acks: -1,
+  messages: [{ key: event.inquiry_id, value: JSON.stringify(event.payload) }],
+});
+```
 
-### Why use inquiry ID as the message key?
+**Watch for:** Acks do not create an atomic transaction with the PostgreSQL update.
 
-It groups one inquiry's messages for partition ordering, subject to topic partitioning behavior.
+### Does acks=-1 mean the event cannot be duplicated?
 
-### Can a duplicate event cause another notification?
+No. A crash after broker acknowledgment and before the outbox transaction commits can cause another send.
 
-The same eventId is deduplicated; a producer wrongly issuing a new eventId for the same semantic fact is a different identity and requires a broader business invariant.
+## SKIP LOCKED and bounded batches
 
-- [ ] Explain every crash boundary without saying exactly once.
-- [ ] Locate deduplication in notifications SQL.
-- [ ] Explain consumer groups, offsets, fromBeginning and message keys.
-- [ ] Produce observed recovery evidence and identify a poison-event extension.
+**What:** `FOR UPDATE SKIP LOCKED` lets a worker skip rows another transaction already holds.
 
+**How:** The publisher takes up to 25 pending records, sends them, then marks them published in one SQL transaction. Waiting on Kafka holds that client and its selected-row locks.
 
+**Real code:** [backend/src/common/messaging.ts · lines 28–29](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L28-L29).
+
+```ts
+  'SELECT event_id,inquiry_id,payload FROM outbox WHERE published_at IS NULL ORDER BY created_at LIMIT 25 FOR UPDATE SKIP LOCKED',
+);
+```
+
+**Watch for:** If a later send fails, the batch transaction can roll back earlier published markers; those sends may repeat.
+
+### Why is batch size a resource control?
+
+It bounds the work and locks held per transaction, though it does not bound every downstream delay.
+
+## Consumer groups and starting offsets
+
+**What:** A partition offset names a position in a Kafka log. Committed group offsets support resuming work.
+
+**How:** `fromBeginning` applies when there is no usable committed offset. It does not rewind the group on every restart; successful handling and offset commits remain separate failure boundaries.
+
+**Real code:** [backend/src/common/messaging.ts · lines 101–104](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L101-L104).
+
+```ts
+await this.consumer.subscribe({
+  topic: process.env.KAFKA_TOPIC ?? INQUIRY_TOPIC,
+  fromBeginning: true,
+});
+```
+
+**Watch for:** Throwing on an invalid event can block progress for its partition; there is no implemented dead-letter policy here.
+
+### What does fromBeginning=true actually promise?
+
+It selects the beginning when the group has no applicable stored starting position.
+
+## Buffer → UTF-8 → JSON → Zod
+
+**What:** Kafka carries bytes. The consumer decodes text, parses JSON, then validates the resulting unknown value.
+
+**How:** A malformed byte payload, invalid JSON document or schema mismatch can fail at a different stage. Zod checks event IDs, email and date shape before the database insert.
+
+**Real code:** [backend/src/common/messaging.ts · lines 110–110](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L110-L110).
+
+```ts
+await this.notifications.consume(JSON.parse(message.value.toString('utf8')));
+```
+
+**Watch for:** Successful JSON.parse only proves valid JSON syntax, not a valid event contract.
+
+### Why still call eventSchema.parse after JSON.parse?
+
+A syntactically valid JSON value may have entirely wrong fields and types.
+
+## Unique event IDs make duplicate effects harmless
+
+**What:** Idempotent consumption means replaying one event does not create another business effect.
+
+**How:** The notification INSERT has ON CONFLICT(event_id) DO NOTHING. The table’s unique event_id constraint makes the database decide atomically even with concurrent delivery.
+
+**Real code:** [backend/src/notifications/notifications.service.ts · lines 30–31](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/notifications/notifications.service.ts#L30-L31).
+
+```ts
+'INSERT INTO notifications(id,event_id,inquiry_id,recipient_email,message,created_at) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(event_id) DO NOTHING',
+[
+```
+
+**Watch for:** There is no separate inbox receipt table; the notification row serves both content and deduplication.
+
+### What if the process dies after INSERT but before offset commit?
+
+Delivery may repeat, and the unique event ID prevents a second notification row.
+
+## Timers, unref and detached promises
+
+**What:** A timer schedules a future callback. `unref` lets the process exit if that timer is the only remaining activity.
+
+**How:** `void this.run()` starts a promise-returning loop without awaiting it in the bootstrap hook. The loop needs its own rejection handling; void itself does not catch errors.
+
+**Real code:** [backend/src/common/messaging.ts · lines 8–12](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L8-L12).
+
+```ts
+const pause = (ms: number) =>
+  new Promise<void>((resolve) => {
+    setTimeout(resolve, ms).unref();
+  });
+
+```
+
+**Watch for:** A sleep, unref call or stopping flag is not complete cancellation of an already running network operation.
+
+### Why can HTTP start while Kafka is still connecting?
+
+The hook launches the worker loop without awaiting the entire loop’s lifetime.
+
+## Instrumentation events update readiness
+
+**What:** An event listener reacts to a KafkaJS runtime signal such as group join, crash or disconnect.
+
+**How:** Listeners update WorkerHealth; shutdown sets a stopping flag and disconnects. Readiness is a recent signal, not proof that every event has reached every recipient.
+
+**Real code:** [backend/src/common/messaging.ts · lines 90–99](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L90-L99).
+
+```ts
+this.consumer.on(this.consumer.events.CRASH, (event) => {
+  this.health.ready = false;
+  this.logger.error(`Consumer crash: ${event.payload.error.message}`);
+});
+this.consumer.on(this.consumer.events.GROUP_JOIN, () => {
+  this.health.ready = true;
+});
+this.consumer.on(this.consumer.events.DISCONNECT, () => {
+  this.health.ready = false;
+});
+```
+
+**Watch for:** The current outer loop does not prove automatic recovery from every possible internal consumer crash.
+
+### Does GROUP_JOIN mean the inbox is caught up?
+
+No. It establishes membership, not that all records have been persisted.
+
+## Practice and mastery
+
+- Explain these identities separately: inquiry key, Kafka group ID, event ID, partition offset.
+- Draw the two replay windows: broker ack → outbox commit, and notification commit → consumer offset commit.
+- Use the notification workflow tests to inspect duplicate-event behavior. Explain why a mock does not prove real broker recovery.
+- Predict the failure stage for `not JSON`, `{}` and a valid duplicate event: JSON parsing, Zod validation, then harmless unique conflict.
+- Run the optional broker outage exercise only in the isolated local environment. The guide describes the experiment; it is not a claim that it has run.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [KafkaJS consuming](https://kafka.js.org/docs/consuming) — accessed 2026-10-22.
-- [producing](https://kafka.js.org/docs/producing) — accessed 2026-10-22.
-- [Project source: backend/src/common/messaging.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/messaging.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/notifications/notifications.service.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/notifications/notifications.service.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/migrations/notifications.001.sql](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/migrations/notifications.001.sql) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/common/health.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/health.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: scripts/failure-drill.mjs](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/scripts/failure-drill.mjs) — local baseline inspected 2026-10-22; private published source may lag.
+- [KafkaJS consuming](https://kafka.js.org/docs/consuming)
+- [KafkaJS producing](https://kafka.js.org/docs/producing)
+- [KafkaJS instrumentation](https://kafka.js.org/docs/instrumentation-events)
+- [Project example: KafkaJS client, producer and consumer](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L133-L141)
+- [Project example: Message keys and acknowledgments](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L31-L35)
+- [Project example: SKIP LOCKED and bounded batches](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L28-L29)
+- [Project example: Consumer groups and starting offsets](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L101-L104)
+- [Project example: Buffer → UTF-8 → JSON → Zod](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L110-L110)
+- [Project example: Unique event IDs make duplicate effects harmless](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/notifications/notifications.service.ts#L30-L31)
+- [Project example: Timers, unref and detached promises](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L8-L12)
+- [Project example: Instrumentation events update readiness](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/messaging.ts#L90-L99)

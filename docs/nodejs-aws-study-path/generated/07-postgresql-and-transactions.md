@@ -1,90 +1,196 @@
 ---
-title: PostgreSQL, parameterized SQL, migrations and locks
-topic: Persistence
+title: "pg tools: pools, transactions, locks and migrations"
+topic: "pg tools: pools, transactions, locks and migrations"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# Durable data is a separate system
 
-Prerequisites: 05–06. Each capability owns a database and login even though the local environment shares one PostgreSQL server. The pg library is a SQL driver; there is no Prisma, TypeORM or JPA layer here. Read backend/src/common/database.ts and backend/migrations/*.sql before drawing database relationships.
+# pg tools: pools, transactions, locks and migrations
 
-## Transaction mechanics
+Prerequisites: promises and SQL basics. The Database wrapper is shared by all four services.
 
-A pool manages reusable connections. Database.transaction checks out one client, begins a transaction, awaits the operation, commits on success, rolls back on failure and releases the client in finally. All transaction queries must use that same client. Calling pool.query between BEGIN and COMMIT can execute on another connection and break atomicity.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-Inquiries and outbox are written in one transaction. If the outbox insert fails, the inquiry insert rolls back. That prevents a committed inquiry without a recorded notification intent. It does not atomically commit PostgreSQL and Kafka; lesson 09 explains that separate boundary.
+## Pool versus connection
 
-Parameterized queries send values separately: WHERE email=$1 with [email]. Concatenating user input into the SQL string is unsafe. Placeholders cannot choose arbitrary table names or ORDER BY expressions; catalog constructs ordering from a fixed allowlist and parameters for values. The catalog stores profile data in JSONB while keeping id and owner_email relational. That enables flexible documents, but runtime/schema constraints and indexing still matter.
+**What:** `pg.Pool` manages reusable database connections. A connection is one PostgreSQL session.
 
-## Migrations and startup
+**How:** The pool lends an idle connection, creates one up to max, or queues the request. Here max is 10 per process; four processes can request up to 40 connections.
 
-Database selects migration files named for SERVICE, sorts them, takes a transaction-scoped advisory migration lock, creates schema_migrations if needed and records SHA-256 checksums. A previously applied file with changed contents triggers an error. Add a new numbered migration rather than editing an executed one. Startup migration is convenient locally; production deployments need a deliberate compatibility and concurrency strategy.
+**Real code:** [backend/src/common/database.ts · lines 10–14](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L10-L14).
 
-## Safe SQL lab
+```ts
+readonly pool = new Pool({
+  connectionString: required('DB_URL'),
+  max: 10,
+  connectionTimeoutMillis: 5000,
+  ssl:
+```
 
-Use the isolated local catalog database after npm run up. From the repository root, this command opens psql inside the PostgreSQL container using the catalog service's existing password environment variable without displaying it:
+**Watch for:** Increasing pool size can overload PostgreSQL instead of fixing a slow dependency.
 
-~~~bash
-docker compose -p linked-in-node-local exec postgres sh -c 'PGPASSWORD="$CATALOG_DB_PASSWORD" exec psql -h 127.0.0.1 -U catalog -d catalog'
-~~~
+### Does every request create its own pool?
 
-Expect a catalog=> prompt. The following transaction uses only a temporary lesson table and ends with ROLLBACK, so no provider data is changed. Never use a production connection. If Compose reports a missing variable, first complete npm run setup from the root rather than pasting a password. Execute:
+No. The injected Database provider owns a reusable pool in that service process.
 
-~~~sql
-BEGIN;
-CREATE TEMP TABLE lesson_accounts(id int PRIMARY KEY, balance numeric NOT NULL);
-INSERT INTO lesson_accounts VALUES (1,100), (2,50);
-SAVEPOINT before_transfer;
-UPDATE lesson_accounts SET balance=balance-10 WHERE id=1;
-UPDATE lesson_accounts SET balance=balance+10 WHERE id=2;
-SELECT sum(balance) FROM lesson_accounts;
-ROLLBACK TO SAVEPOINT before_transfer;
-SELECT * FROM lesson_accounts ORDER BY id;
-ROLLBACK;
-~~~
+## pool.query versus checked-out client
 
-Expect sum 150, then restored balances 100/50, then no lasting lesson table. Temporary tables are session-local, so do not use that temporary row for the next two-session experiment.
+**What:** `pool.query` is convenient for one independent SQL statement. A checked-out client preserves one session across several statements.
 
-For a brief no-write lock demonstration in this isolated seeded catalog, open two terminals and run the same psql connection command in each. In session A execute:
+**How:** A transaction must send BEGIN, every statement, and COMMIT/ROLLBACK through the same client. Another pool.query call may use another connection.
 
-~~~sql
-BEGIN;
-SELECT id FROM providers WHERE id='ava-martinez' FOR UPDATE;
-~~~
+**Real code:** [backend/src/common/database.ts · lines 70–75](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L70-L75).
 
-Expect the seeded ID immediately. Leave that transaction open only for this short lab. In session B execute the same BEGIN and SELECT. Expect its SELECT to wait because A holds the row lock. Return to session A and execute ROLLBACK; session B then returns the ID. In B execute ROLLBACK too, then exit both clients with \q. No profile data was updated, but while the lock is held it can delay concurrent updates to that demo provider, so never use this experiment in a shared or production environment. If the seed ID is absent, complete the local demo setup rather than creating arbitrary production rows. A unit-test fake cannot prove that lock behavior.
+```ts
+const client = await this.pool.connect();
+try {
+  await client.query('BEGIN');
+  const result = await operation(client);
+  await client.query('COMMIT');
+  return result;
+```
 
-For the actual catalog, use EXPLAIN on a representative search in the disposable environment. Explain rows scanned, sorting and expected index usefulness; do not add indexes based only on table size guesses. For latency evidence, EXPLAIN ANALYZE executes the statement, so apply it only to safe reads or deliberate disposable experiments.
+**Watch for:** A transaction callback does not make unrelated pool queries join its transaction.
 
-## Debugging and senior tradeoffs
+### Where is transaction state stored?
 
-A ten-client pool can be exhausted by unreleased clients or long transactions. Inspect waiters, active queries, transaction age and downstream waits. The current inquiry transaction awaits catalog while holding a client and advisory lock; its bounded timeout trades simplicity for capacity. Offset pagination can degrade at deep pages; a cursor is an extension with a different contract. Numeric money values can require explicit string-to-number conversion; avoid silently losing precision when scale grows.
+On the PostgreSQL session represented by that checked-out client.
 
+## try, catch and finally protect resources
 
+**What:** `catch` handles a rejected awaited operation. `finally` runs on successful returns and on thrown errors.
 
-### Why both a lock and a unique constraint?
+**How:** The wrapper attempts ROLLBACK on failure and releases the client in finally. Releasing returns the connection to the pool; ending the pool belongs to shutdown.
 
-The lock serializes decision logic for a logical key across replicas; uniqueness remains a durable final invariant.
+**Real code:** [backend/src/common/database.ts · lines 76–82](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L76-L82).
 
-### Does sharing a database server violate service ownership?
+```ts
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+```
 
-Distinct databases/logins preserve ownership, but still share an outage and resource domain.
+**Watch for:** A failed ROLLBACK can itself throw; the current helper does not preserve every possible original-error detail.
 
-- [ ] Demonstrate rollback and one-connection transaction semantics.
-- [ ] Explain parameter values versus allowlisted SQL structure.
-- [ ] Find schema constraints, partial indexes and migration checksums.
-- [ ] Diagnose a pool wait without blindly increasing max connections.
+### Why release after both success and failure?
 
+Otherwise repeated requests can exhaust the pool even when the database is healthy.
 
+## Parameters and result conversion
+
+**What:** `query(sql, values)` sends values separately from SQL syntax. The result exposes rows and rowCount.
+
+**How:** TypeScript’s row generic describes an expected shape. It does not decode or validate every returned value; this code explicitly converts numeric money and timestamps at its API boundary.
+
+**Real code:** [backend/src/inquiries/inquiries.service.ts · lines 48–51](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L48-L51).
+
+```ts
+budget: Number(row.budget),
+clientType: row.client_type,
+status: row.status,
+createdAt: new Date(row.created_at).toISOString(),
+```
+
+**Watch for:** PostgreSQL numeric values may arrive as strings to avoid implicit precision loss.
+
+### Does query<InquiryRow> validate each row?
+
+No. The generic helps the compiler; runtime representation still needs deliberate handling.
+
+## Row locks versus advisory locks
+
+**What:** A row lock protects an existing row. An advisory lock coordinates an application-defined key, even before a row exists.
+
+**How:** Inquiry creation derives a key from client email and retry key. The transaction-scoped advisory lock is released when the transaction ends; the unique constraint remains the durable invariant.
+
+**Real code:** [backend/src/inquiries/inquiries.service.ts · lines 92–94](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L92-L94).
+
+```ts
+await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))', [
+  JSON.stringify([actor.email, key]),
+]);
+```
+
+**Watch for:** Hash collisions can serialize unrelated requests; they do not make different requests the same inquiry.
+
+### Why is SELECT FOR UPDATE not enough before insertion?
+
+There may be no existing row to lock for the new logical request.
+
+## Migration checksums: filesystem plus crypto
+
+**What:** A migration is a versioned SQL change. The runner lists service-specific files and computes a SHA-256 checksum.
+
+**How:** An already-applied version must retain its checksum. `readFile` reads the small SQL file asynchronously; hashing detects edited history, not whether a migration is reversible.
+
+**Real code:** [backend/src/common/database.ts · lines 46–50](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L46-L50).
+
+```ts
+const checksum = createHash('sha256').update(sql).digest('hex');
+const applied = await client.query(
+  'SELECT checksum FROM schema_migrations WHERE version=$1',
+  [version],
+);
+```
+
+**Watch for:** A filename change or checksum edit is not a safe way to rerun production migration history.
+
+### How should the next schema change be made?
+
+Add a new numbered migration and plan compatibility with old and new application versions.
+
+## Pool events and TLS settings
+
+**What:** An EventEmitter-style listener receives asynchronous pool errors. TLS can encrypt the database connection and authenticate its certificate.
+
+**How:** The pool registers an error listener. When DB_SSL is enabled, it requires certificate verification and can use a configured CA; it does not silently disable verification.
+
+**Real code:** [backend/src/common/database.ts · lines 17–20](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L17-L20).
+
+```ts
+    rejectUnauthorized: true,
+    ...(process.env.DB_SSL_CA ? { ca: process.env.DB_SSL_CA } : {}),
+  }
+: undefined,
+```
+
+**Watch for:** TLS configuration, database credentials and SQL permissions are separate controls.
+
+### Does a successful connection prove every later query is healthy?
+
+No. Connections and dependencies can fail after startup.
+
+## Practice and mastery
+
+Use the existing local container credentials without printing them:
+
+```bash
+docker compose exec postgres sh -c 'PGPASSWORD="$CATALOG_DB_PASSWORD" psql -U catalog -d catalog'
+```
+
+In this local-only session, run `BEGIN; SELECT id FROM providers WHERE id='ava-martinez' FOR UPDATE;`.
+
+Open a second session with the same command. Run the same BEGIN/SELECT; it should wait. Run `ROLLBACK;` in the first session, observe the second return, then `ROLLBACK;` there too.
+
+- This reads and locks an existing seeded row; it does not alter provider data. Release both transactions promptly.
+- Explain why two sessions cannot share a TEMP table.
+- Draw which exact connection receives BEGIN, SELECT and ROLLBACK.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [node-postgres transactions](https://node-postgres.com/features/transactions) — accessed 2026-10-22.
-- [PostgreSQL locking](https://www.postgresql.org/docs/current/explicit-locking.html) — accessed 2026-10-22.
-- [Project source: backend/src/common/database.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/database.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/migrations/inquiries.001.sql](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/migrations/inquiries.001.sql) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/migrations/catalog.001.sql](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/migrations/catalog.001.sql) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/catalog/catalog.service.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/catalog/catalog.service.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: infra/postgres/init-databases.sh](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/infra/postgres/init-databases.sh) — local baseline inspected 2026-10-22; private published source may lag.
+- [pg pooling](https://node-postgres.com/features/pooling)
+- [pg transactions](https://node-postgres.com/features/transactions)
+- [PostgreSQL locks](https://www.postgresql.org/docs/current/explicit-locking.html)
+- [Project example: Pool versus connection](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L10-L14)
+- [Project example: pool.query versus checked-out client](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L70-L75)
+- [Project example: try, catch and finally protect resources](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L76-L82)
+- [Project example: Parameters and result conversion](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L48-L51)
+- [Project example: Row locks versus advisory locks](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L92-L94)
+- [Project example: Migration checksums: filesystem plus crypto](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L46-L50)
+- [Project example: Pool events and TLS settings](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/common/database.ts#L17-L20)

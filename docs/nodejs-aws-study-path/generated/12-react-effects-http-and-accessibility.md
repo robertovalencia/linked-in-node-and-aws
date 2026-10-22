@@ -1,73 +1,183 @@
 ---
-title: React effects, HTTP races, sessions and accessible dialogs
-topic: React reliability
+title: "React tools: effects, abort, HTTP errors and portals"
+topic: "React tools: effects, abort, HTTP errors and portals"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# External synchronization needs cleanup
 
-Prerequisites: 03, 08–11. Rendering computes the UI. An effect synchronizes it with a network request, timer, browser storage or DOM listener. A user-triggered submission belongs in an event handler; performing it in a mount effect risks duplicate/accidental actions.
+# React tools: effects, abort, HTTP errors and portals
 
-## Follow a real effect
+Prerequisites: lesson 11 and promise basics. Focus on the mechanics of browser-side I/O.
 
-frontend/src/hooks/useMarketplace.ts creates an AbortController for each provider-list effect, builds URLSearchParams and calls providerService.list with its signal. It checks signal.aborted before updating state and aborts on cleanup. Rapid filter changes should not let an old response replace newer results. The dependencies describe values used by the effect; suppressing the hooks lint rule conceals bugs rather than resolving dependencies.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-AuthContext restores a saved token using identityService.me. It also checks that the stored token still matches before applying its result, preventing an old restore response from overwriting a newer session. Abort alone is not a business cancellation guarantee: aborting a POST response wait does not undo a committed inquiry. useInquiryAttempt consequently persists a retry identity and payload separately.
+## Effect setup and cleanup
 
-services/http.ts adds JSON and bearer headers, normalizes non-OK errors into ApiError, maps 401 to a session message and handles 204. fetch generally resolves even for HTTP 4xx/5xx, so res.ok must be checked. The generic T is compile-time only. Network rejection, abort and HTTP rejection have different meanings and must not all be labeled “server never received it.”
+**What:** An effect synchronizes a render with an external system. Cleanup undoes that render’s subscription, timer or request ownership.
 
-## Accessible dialogs are lifecycle work
+**How:** The provider-list effect creates an AbortController and returns its abort operation. Dependencies determine when a new setup replaces the previous one.
 
-components/common/Modal.tsx uses createPortal from react-dom so the dialog is rendered under document.body. Refs access dialog/backdrop DOM nodes and hold the latest onClose callback. Effects register keyboard handling, move initial focus, trap Tab, handle Escape for the top dialog, mark background content inert/aria-hidden, lock scrolling and restore focus/state on cleanup. A module-level stack coordinates multiple open dialogs. lucide-react supplies icons; icon-only controls still need accessible names.
+**Real code:** [frontend/src/hooks/useMarketplace.ts · lines 57–63](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L57-L63).
 
-## Executable lab
+```ts
+const controller = new AbortController();
+setLoading(true);
+setError("");
+const params = new URLSearchParams({
+  q: search,
+  sort,
+  page: String(page),
+```
 
-Run npm --prefix frontend test -- src/hooks/useMarketplace.test.tsx src/contexts/AuthContext.test.tsx src/components/common/Modal.test.tsx src/services/http.test.ts. In the local browser, enable slow network, rapidly change category and search, then verify final results match the newest filters. Open a modal entirely by keyboard, cycle Tab and Shift-Tab, press Escape and confirm focus returns to the opener. Open a nested dialog if the UI exposes one and confirm only the top responds. Automated tests and real keyboard observation answer different questions.
+**Watch for:** A user-triggered POST belongs in an event handler rather than an accidental mount effect.
 
-For a practice bug remove the aborted check in a scratch copy and arrange an older request to resolve last using a deterministic mocked promise. Write a test that fails with stale data and passes after restoring the guard. Do not depend on unpredictable Internet latency for this test.
+### Why does cleanup matter under StrictMode?
 
-## Senior tradeoffs
+Development setup/cleanup checks expose effects that fail to undo their external work.
 
-Cancellation limits unnecessary work but does not provide server rollback. A query-cache library could centralize retries, caching and request identity, but is not an existing dependency. Refs do not trigger renders; use state when the display must update. An effect holding a stale callback can call outdated code, while an unstable callback dependency can repeatedly tear down listeners. This Modal uses a ref to retain the current callback without reinstalling the whole keyboard effect for every render.
+## Abort plus stale-response guards
 
-## Proposed vertical lab: minimum hourly rate
+**What:** Abort requests cancellation, but a transport or already-resolved promise may still reach application callbacks.
 
-This feature does not exist yet. Existing search has maxRate. Add optional minRate while preserving behavior when it is absent. Work in a practice branch. Trace one input through every layer rather than adding a disconnected React demo.
+**How:** The hook checks signal.aborted before changing state. An old response must not replace the newer search result after filter changes.
 
-1. In backend/src/catalog/provider.schema.ts extend searchSchema with minRate using the same integer/coercion/bounds convention as maxRate. Reject minRate above maxRate when both exist; do not silently swap values. Add schema tests in a new backend/test/min-rate.spec.ts.
-2. In backend/src/catalog/catalog.service.ts add a parameterized JSONB hourlyRate >= predicate using the existing add helper. Retain fixed sort selection and stable pagination. Add behavior tests proving absent minRate preserves current results and bounds combine correctly.
-3. In frontend/src/hooks/useMarketplace.ts add controlled input text state minRate, set it in URLSearchParams only when nonempty, add it to the provider-list effect dependencies, return its getter/setter and reset page when the filter changes. Existing providerService.list accepts URLSearchParams, so no invented typed DTO parameter should be added unless you deliberately introduce one.
-4. In frontend/src/components/discovery/Discovery.tsx, the actual filter panel, add a labeled minimum-rate numeric input using the hook's state. If the prop plumbing is defined elsewhere, follow MarketplaceRoute.tsx and its MarketplaceState type rather than assuming context. Keep empty text distinct from numeric zero. No response type change is required because Provider already includes hourlyRate.
-5. In frontend/src/hooks/useMarketplace.test.tsx assert the service receives minRate and resets page as specified. In a component test assert labeled input interaction and visible loading/error/empty/success behavior. In frontend/src/services/http.test.ts retain correct 400 detail handling.
+**Real code:** [frontend/src/hooks/useMarketplace.ts · lines 73–76](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L73-L76).
 
-With local services up, run curl -i 'http://127.0.0.1:8180/api/providers?minRate=100&maxRate=200' and verify every returned rate is within bounds; expect 400 for minRate=201&maxRate=200. Test a valid range with no matches as 200 with empty items, not a server error. From the UI type a minimum, submit/apply through the actual filter interaction and observe Network query, loading state and returned cards. Clear it and prove the original default results return. Run npm run check, npm test and npm run build, then add the real HTTP case to an explicit extension test rather than pretending the original 48-check reference suite already covered it.
+```ts
+  if (controller.signal.aborted) return;
+  setProviders(r.items);
+  setTotal(r.total);
+})
+```
 
-Interview:
+**Watch for:** Aborting a write response wait cannot roll back a transaction already committed on the server.
 
-### Why does StrictMode expose effect bugs?
+### Why use both abort and a signal check?
 
-Development remount/re-execution checks expose missing cleanup; write effects that tolerate setup/cleanup rather than disabling diagnostics.
+One asks the transport to stop; the other protects state application in the callback.
 
-### Is ARIA enough?
+## fetch errors versus HTTP rejection
 
-No; semantic names, focus behavior, keyboard access and background isolation must work together.
+**What:** fetch normally resolves for HTTP error statuses. The helper checks res.ok and throws a structured ApiError.
 
-- [ ] Explain fetch rejection versus HTTP error versus abort.
-- [ ] Reproduce and prevent stale-response overwrite deterministically.
-- [ ] Keyboard-test focus, Escape and restoration.
-- [ ] Explain state, refs, effects, portals and stable callbacks in source.
+**How:** ApiError retains the status for callers. The helper parses public detail where possible and treats 204 as no content; api<T> does not validate the runtime response shape.
 
+**Real code:** [frontend/src/services/http.ts · lines 24–29](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/services/http.ts#L24-L29).
 
+```ts
+if (!res.ok) {
+  let detail = "The request could not be completed.";
+  try {
+    const e = await res.json();
+    detail =
+      e.detail ||
+```
+
+**Watch for:** A generic type annotation is not a JSON decoder.
+
+### Why not rely on fetch.catch for a 403?
+
+The response arrived successfully at the transport layer; the application must check its HTTP status.
+
+## Storage and transport recovery
+
+**What:** localStorage persists within an origin; sessionStorage is scoped to a browsing session/tab context. Both are readable by page JavaScript.
+
+**How:** The retry hook stores the exact key and payload before sending. This records uncertain intent, not a confirmed business record; a retry preserves both.
+
+**Real code:** [frontend/src/hooks/useInquiryAttempt.ts · lines 58–64](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useInquiryAttempt.ts#L58-L64).
+
+```ts
+const canonical = attempt || { key: crypto.randomUUID(), payload };
+// Persist before sending: dismiss/reopen and page reload must resume this attempt.
+sessionStorage.setItem(key, JSON.stringify(canonical));
+setAttempt(canonical);
+inFlight.current = true;
+setBusy(true);
+setError("");
+```
+
+**Watch for:** Do not replace an uncertain retry with a new key merely because a request timed out.
+
+### Why store the payload as well as the key?
+
+Reusing a key with modified content must conflict; recovery needs the original logical submission.
+
+## Portals and DOM ownership
+
+**What:** createPortal renders React children into a different DOM container without removing them from their React ownership tree.
+
+**How:** The modal renders under document.body. Effects manage focus, keyboard listeners, background isolation and scroll cleanup; ARIA attributes alone do not implement those behaviors.
+
+**Real code:** [frontend/src/components/common/Modal.tsx · lines 96–101](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/common/Modal.tsx#L96-L101).
+
+```tsx
+return createPortal(
+  <div
+    ref={backdropRef}
+    className="modal-backdrop"
+    role="presentation"
+    onMouseDown={(e) => {
+```
+
+**Watch for:** An icon component from lucide-react still needs an accessible name on its interactive control.
+
+### Does a portal automatically trap focus?
+
+No. The modal’s keyboard and focus management implement that separately.
+
+## Refs keep a fresh callback
+
+**What:** A callback ref can hold the current handler while an effect retains a stable listener.
+
+**How:** Modal updates onCloseRef when the prop changes. Its keyboard listener reads that ref, avoiding an old closure without reinstalling the entire listener on every callback change.
+
+**Real code:** [frontend/src/components/common/Modal.tsx · lines 47–50](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/common/Modal.tsx#L47-L50).
+
+```tsx
+const onCloseRef = useRef(onClose);
+useEffect(() => {
+  onCloseRef.current = onClose;
+}, [onClose]);
+```
+
+**Watch for:** An empty dependency array does not make every closed-over value stay current.
+
+### Why not close over onClose directly forever?
+
+A later render may supply a different callback; the old listener could otherwise keep the earlier one.
+
+## Practice and mastery
+
+Run the deterministic stale-response test:
+
+```bash
+npm --prefix frontend test -- src/hooks/useMarketplace.test.tsx
+```
+
+Its mocked first request resolves after the newer result. Expected: the newer provider list stays visible. In a practice copy, remove the aborted guard, observe the regression, then restore it.
+
+**Proposed vertical lab: minRate.** This filter does not exist yet.
+
+1. Extend Catalog’s `searchSchema` with bounded optional minRate and reject minRate above maxRate.
+2. Add a parameterized JSONB numeric predicate using Catalog’s existing add helper. Preserve absent-filter behavior.
+3. Add controlled input text and URLSearchParams handling in useMarketplace, plus a labeled Discovery filter control. Reset page when the filter changes.
+4. Test schema rejection, combined SQL bounds, loading/error/empty/success UI states, and clearing the filter.
+
+Expected local HTTP outcomes after the extension: minRate=100/maxRate=200 returns only rates in range; `minRate=201&maxRate=200` returns 400; a valid empty range result is 200 with empty items.
+
+- Keyboard-test Tab, Shift-Tab, Escape and return focus on the existing modal.
+- Explain why this feature changes the query contract without changing Provider’s response fields.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [React effects](https://react.dev/learn/synchronizing-with-effects) — accessed 2026-10-22.
-- [WAI-ARIA modal dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) — accessed 2026-10-22.
-- [Project source: frontend/src/hooks/useMarketplace.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/hooks/useMarketplace.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/contexts/AuthContext.tsx](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/contexts/AuthContext.tsx) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/services/http.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/services/http.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/components/common/Modal.tsx](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/components/common/Modal.tsx) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/components/discovery/Discovery.tsx](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/components/discovery/Discovery.tsx) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/catalog/provider.schema.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/catalog/provider.schema.ts) — local baseline inspected 2026-10-22; private published source may lag.
+- [React effects](https://react.dev/learn/synchronizing-with-effects)
+- [ARIA modal pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)
+- [Project example: Effect setup and cleanup](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L57-L63)
+- [Project example: Abort plus stale-response guards](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useMarketplace.ts#L73-L76)
+- [Project example: fetch errors versus HTTP rejection](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/services/http.ts#L24-L29)
+- [Project example: Storage and transport recovery](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/hooks/useInquiryAttempt.ts#L58-L64)
+- [Project example: Portals and DOM ownership](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/common/Modal.tsx#L96-L101)
+- [Project example: Refs keep a fresh callback](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/src/components/common/Modal.tsx#L47-L50)

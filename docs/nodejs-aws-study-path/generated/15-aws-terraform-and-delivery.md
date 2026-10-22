@@ -1,75 +1,198 @@
 ---
-title: AWS dev infrastructure, Terraform and immutable delivery
-topic: AWS and Terraform
+title: "Infrastructure tools: Terraform, IAM, SSM, ECR and releases"
+topic: "Infrastructure tools: Terraform, IAM, SSM, ECR and releases"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# Explain the infrastructure that exists
 
-Prerequisites: 14 and basic IP/port concepts. AWS infrastructure is described in code; its presence does not prove it was provisioned. The current design is a private-access development environment on one EC2 host running Compose. RDS, MSK, ECS/Fargate, Lambda, API Gateway, ALB, CloudFront and multi-zone failover are possible extensions, not current application components.
+# Infrastructure tools: Terraform, IAM, SSM, ECR and releases
 
-## Walk the actual request and release paths
+Prerequisites: containers, configuration and failure boundaries. These are infrastructure mechanisms used by the prepared AWS development setup.
 
-infra/aws-dev/main.tf creates a VPC, subnet, internet gateway and outbound route. The subnet allows a public IP, but the security group has zero ingress rules. EC2 uses AL2023, an encrypted gp3 disk, IMDSv2 and an instance role. SSM Session Manager manages the host and tunnels browser traffic to the loopback frontend. A public-IP-capable subnet is not the same as a public-facing application; SSM availability still depends on agent, IAM and network reachability.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-The host role can read the runtime secret, pull designated ECR images and read release objects. ECR has separate backend/frontend repositories with immutable tags, scanning and lifecycle rules. The S3 release bucket is private, versioned and encrypted and denies insecure transport. Runtime configuration uses Secrets Manager; metadata creation in Terraform is distinct from setting a secret value. Do not put secret values into a tfvars file or show them in lesson evidence.
+## Terraform resources, references and plans
 
-GitHub's dev-environment OIDC identity assumes a constrained deployment role instead of storing long-lived AWS access keys. Deployment builds/images/scans resolve immutable commit tags to digests, stores a release manifest in S3 and uses SSM to invoke the host deployment. Smoke checks and rollback scripts operate on exact release artifacts. Source configuration is not evidence that GitHub, Sonar or AWS integrations have run successfully.
+**What:** Terraform describes desired resources. A plan compares configuration, state and provider observations to propose changes.
 
-## Terraform model and safe local lab
+**How:** Resource references form dependency relationships. State tracks managed identities and can contain sensitive values; it is not just a harmless configuration cache.
 
-Terraform configuration is desired resources; state maps them to actual infrastructure. plan computes proposed changes against state/provider observations; apply performs them. State and saved plans may contain sensitive material. infra/bootstrap prepares the private, versioned state bucket with AES256 server-side encryption and optional GitHub OIDC provider; application backend configuration enables S3 locking. The release bucket separately uses AES256 server-side encryption. No custom KMS key resource is defined in these Terraform files. Learn KMS key-policy/rotation tradeoffs as a proposed extension; do not label this design as customer-managed-KMS-encrypted or confuse state infrastructure with runtime data.
+**Real code:** [infra/aws-dev/main.tf · lines 13–17](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L13-L17).
 
-Read infra/aws-dev/{main,variables,outputs,versions}.tf, infra/bootstrap/main.tf, infra/aws-dev/tests/security.tftest.hcl, .github/workflows/deploy-dev.yml and scripts/aws-remote-deploy.sh. Then execute only local preparation, if Terraform/provider dependencies are available:
+```hcl
+resource "aws_subnet" "dev" {
+  vpc_id                  = aws_vpc.dev.id
+  cidr_block              = "10.84.1.0/24"
+  map_public_ip_on_launch = true
+}
+```
 
-~~~bash
-terraform -chdir=infra/aws-dev fmt -check
-terraform -chdir=infra/aws-dev init -backend=false
-terraform -chdir=infra/aws-dev validate
-terraform -chdir=infra/aws-dev test
-~~~
+**Watch for:** Preparing a plan is different from approving and applying it; no cloud provisioning is needed to read these lessons.
 
-Expect format/validation/test success only if prerequisites are satisfied. init can download providers; it does not create cloud resources. Review the test's mock/provider behavior before running. A real plan requires credentials/backend inputs and may query AWS; save/review it separately. Provisioning needs approval of the concrete saved plan and current cost estimate under the project agreement. No apply/deploy is required by this study lesson.
+### What does vpc_id = aws_vpc.dev.id express?
 
-## Senior design extension lab
+The subnet uses the managed VPC’s identity and depends on that resource relationship.
 
-Draw a production alternative with managed database/broker, multiple application instances, TLS ingress, centralized logs/metrics/traces and tested backup restore. State RTO/RPO, connection/partition capacity and expected spend drivers. Compare it with a modular monolith on fewer services. Do not assume “more AWS services” is better. Price and quota claims must be verified when used; do not memorize an old cost estimate as current fact.
+## Security groups and the actual access path
 
-Azure is explicitly required by the role but not implemented here. Map EC2 to VM, ECR to ACR, S3 to Blob Storage, IAM/workload identity to Entra/workload identity and Secrets Manager to Key Vault. These are purpose comparisons, not identical semantics. Specify one Azure deployment plan with networking, identity and rollback evidence; execution is a separately approved extension.
+**What:** A security group filters instance traffic. An internet gateway route does not automatically permit inbound application access.
 
-Interview:
+**How:** This development group has no ingress rules. SSM manages the instance and tunnels browser access; it is not an existing public load-balanced multi-AZ deployment.
 
-### How does the browser reach AWS?
+**Real code:** [infra/aws-dev/main.tf · lines 30–36](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L30-L36).
 
-Through an authenticated SSM tunnel in this dev design.
+```hcl
+resource "aws_security_group" "dev" {
+  name        = local.name
+  description = "No ingress. SSM manages host and tunnels browser traffic."
+  ingress     = []
+  vpc_id      = aws_vpc.dev.id
+  egress {
+    from_port   = 0
+```
 
-### What survives host loss?
+**Watch for:** A public-IP-capable subnet and an open application endpoint are not equivalent.
 
-Single-host volumes are a shared failure domain; state/release buckets do not magically back up PostgreSQL.
+### Why does a route to the internet not make port 8180 public?
 
-### Why immutable digests?
+Other controls still apply, including the security group’s absence of ingress permission.
 
-They identify exact image content for audit and rollback.
+## IAM roles and GitHub OIDC
 
-- [ ] Draw actual AWS networking and IAM boundaries.
-- [ ] Explain state, plan, apply, locking and sensitive artifacts.
-- [ ] Trace requirement → commit → digest → manifest → smoke result.
-- [ ] Distinguish actual AWS source, unverified execution and proposed Azure/production designs.
+**What:** IAM permissions say what a principal may do. A trust policy says which identity may assume a role.
 
+**How:** The deploy role trusts GitHub’s OIDC subject for this repository’s dev environment. Temporary identity avoids placing permanent AWS access keys in the workflow.
 
+**Real code:** [infra/aws-dev/main.tf · lines 122–125](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L122-L125).
+
+```hcl
+resource "aws_iam_role" "deploy" {
+  name               = "${local.name}-github-deploy"
+  assume_role_policy = jsonencode({ Version = "2012-10-17", Statement = [{ Effect = "Allow", Principal = { Federated = var.oidc_provider_arn }, Action = "sts:AssumeRoleWithWebIdentity", Condition = { StringEquals = { "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com", "token.actions.githubusercontent.com:sub" = "repo:${var.github_repository}:environment:dev" } } }] })
+}
+```
+
+**Watch for:** A valid role session still needs appropriately scoped resource permissions.
+
+### Why restrict the OIDC subject?
+
+Otherwise an unintended repository or workflow identity might obtain deployment credentials.
+
+## ECR tags, digests and immutability
+
+**What:** ECR stores container images. A tag is a name; a digest identifies image content.
+
+**How:** The repositories make tags immutable and enable scanning. Deployment resolves digest references so an approved release describes exact image content rather than a mutable nickname.
+
+**Real code:** [infra/aws-dev/main.tf · lines 46–52](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L46-L52).
+
+```hcl
+resource "aws_ecr_repository" "app" {
+  for_each             = toset(["backend", "frontend"])
+  name                 = "${local.name}/${each.key}"
+  image_tag_mutability = "IMMUTABLE"
+  force_delete         = true
+  image_scanning_configuration { scan_on_push = true }
+  encryption_configuration { encryption_type = "AES256" }
+```
+
+**Watch for:** A clean scan is one security input, not proof that application permissions or business behavior are correct.
+
+### Why use a digest in a release manifest?
+
+It fixes the image content that deployment should pull.
+
+## Secrets Manager and scoped reads
+
+**What:** Secrets Manager stores runtime secret values. Terraform here creates secret metadata; values are supplied separately.
+
+**How:** The host role receives scoped read permission for that secret and release objects. Application code then reads environment variables, not a Secrets Manager SDK in every handler.
+
+**Real code:** [infra/aws-dev/main.tf · lines 90–98](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L90-L98).
+
+```hcl
+resource "aws_iam_role_policy" "host" {
+  role = aws_iam_role.host.id
+  policy = jsonencode({ Version = "2012-10-17", Statement = [
+    { Effect = "Allow", Action = ["secretsmanager:GetSecretValue"], Resource = aws_secretsmanager_secret.runtime.arn },
+    { Effect = "Allow", Action = ["ecr:GetAuthorizationToken"], Resource = "*" },
+    { Effect = "Allow", Action = ["ecr:BatchGetImage", "ecr:GetDownloadUrlForLayer", "ecr:BatchCheckLayerAvailability"], Resource = [for r in aws_ecr_repository.app : r.arn] },
+    { Effect = "Allow", Action = ["s3:GetObject"], Resource = "${aws_s3_bucket.releases.arn}/releases/*" }
+  ] })
+}
+```
+
+**Watch for:** A secret ARN is an identifier, not the secret value; do not confuse prepared metadata with configured credentials.
+
+### Does this Node backend call Secrets Manager on every login?
+
+No. The deployment path assembles runtime configuration for the processes.
+
+## State storage, encryption and locking
+
+**What:** Versioning keeps older object versions; encryption protects stored bytes; locking coordinates competing Terraform writers.
+
+**How:** Bootstrap config enables versioning and AES256 encryption for its state bucket. That is SSE-S3; a custom customer-managed KMS key is a separate design choice.
+
+**Real code:** [infra/bootstrap/main.tf · lines 16–23](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/bootstrap/main.tf#L16-L23).
+
+```hcl
+resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
+  bucket = aws_s3_bucket.state.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+```
+
+**Watch for:** Versioning and locking do not replace least-privilege state access or a recovery plan.
+
+### Does encryption prevent two simultaneous state writers?
+
+No. Encryption and concurrency locking address different risks.
+
+## Azure equivalents require a fresh design
+
+**What:** Cloud services can serve similar roles without having identical APIs, permissions or operational behavior.
+
+**How:** The project documents an Azure mapping. Treat an Azure lab as an extension: translate identity, networking, secrets and artifact access deliberately rather than renaming AWS resources.
+
+**Real code:** [docs/azure-mapping.md · lines 1–5](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/azure-mapping.md#L1-L5).
+
+```text
+# Explaining the Azure equivalents
+
+AWS is the implemented deployment target. This is an interview comparison, not an Azure deployment or tested portability claim. The mappings follow [Microsoft's AWS/Azure comparison](https://learn.microsoft.com/en-us/azure/architecture/aws-professional/services), reviewed October 21, 2026.
+
+| Responsibility here | AWS implementation | Azure equivalent and difference |
+```
+
+**Watch for:** A comparison document is not evidence that an Azure environment was deployed.
+
+### What must an Azure comparison include beyond service names?
+
+Identity permissions, access paths, state, deployment behavior and recovery assumptions.
+
+## Practice and mastery
+
+- Read the Terraform graph from subnet → VPC and instance → role/profile/security group.
+- On a machine with Terraform installed, run fmt/validate using the repository’s documented backend-free validation flow. Do not apply infrastructure for this study task.
+- Explain one trust condition, one scoped permission and one image digest.
+- Proposed production extensions include managed databases/brokers, multi-AZ hosting, TLS entry points, tracing and restore drills; these are not the current single-host topology.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [AWS Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html) — accessed 2026-10-22.
-- [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) — accessed 2026-10-22.
-- [GitHub OIDC in AWS](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws) — accessed 2026-10-22.
-- [Azure for AWS professionals](https://learn.microsoft.com/en-us/azure/architecture/aws-professional/) — accessed 2026-10-22.
-- [Project source: infra/aws-dev/main.tf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/infra/aws-dev/main.tf) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: infra/aws-dev/versions.tf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/infra/aws-dev/versions.tf) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: infra/bootstrap/main.tf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/infra/bootstrap/main.tf) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: infra/aws-dev/tests/security.tftest.hcl](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/infra/aws-dev/tests/security.tftest.hcl) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: .github/workflows/deploy-dev.yml](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/.github/workflows/deploy-dev.yml) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: scripts/aws-remote-deploy.sh](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/scripts/aws-remote-deploy.sh) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: docs/azure-mapping.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/docs/azure-mapping.md) — local baseline inspected 2026-10-22; private published source may lag.
+- [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan)
+- [AWS IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)
+- [SSM sessions](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html)
+- [Project example: Terraform resources, references and plans](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L13-L17)
+- [Project example: Security groups and the actual access path](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L30-L36)
+- [Project example: IAM roles and GitHub OIDC](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L122-L125)
+- [Project example: ECR tags, digests and immutability](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L46-L52)
+- [Project example: Secrets Manager and scoped reads](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L90-L98)
+- [Project example: State storage, encryption and locking](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/bootstrap/main.tf#L16-L23)
+- [Project example: Azure equivalents require a fresh design](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/azure-mapping.md#L1-L5)

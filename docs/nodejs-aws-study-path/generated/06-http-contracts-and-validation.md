@@ -1,67 +1,191 @@
 ---
-title: HTTP contracts, Zod validation and errors
-topic: API contracts
+title: "Catalog tools: Zod, coercion, closures and JSONB"
+topic: "Catalog tools: Zod, coercion, closures and JSONB"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# Make the boundary explicit
 
-Prerequisites: 02, 04, 05. An API contract describes what callers send, what the server returns, who may call it and how failures behave. A TypeScript interface is only one part. Read CONTRACT.md alongside controllers and scripts/acceptance.mjs; implementation discrepancies are findings to resolve, not permission to invent behavior.
+# Catalog tools: Zod, coercion, closures and JSONB
 
-## Walk through validation
+Prerequisites: lessons 01–05. Focus: the tools used by Catalog, with patterns reused by the other services.
 
-backend/src/inquiries/inquiries.controller.ts receives body: unknown and a possibly missing Idempotency-Key. InquiriesService.create verifies CLIENT role, checks the key format, and calls inquirySchema.parse. The resulting input has been checked at runtime. Catalog search receives URL query strings; searchSchema deliberately coerces selected numeric fields and handles the available flag. A query string of available=false must not become Boolean('false'), which is true in JavaScript.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-Zod errors become 400 via backend/src/common/errors.ts. Known Nest HttpExceptions preserve their status, parser failures recognize 400/413, and unexpected failures return a generic 500 detail while logging server-side information. The filter bounds public detail length. Never return database connection strings, raw SQL internals or stack traces to the browser.
+## Zod parse: a runtime boundary
 
-Route specificity matters: /api/providers/me is declared before /api/providers/:id. Public GET returns a profile document without ownerEmail. The internal lookup returns ownerEmail only after its internal-key check and is omitted from frontend proxy routing. Hiding a path in the UI is not authentication; the backend still enforces the key.
+**What:** A schema is executable validation. `parse` returns a validated value or throws a ZodError.
 
-## Executable contract lab
+**How:** The controller accepts `unknown`. Catalog parses that value before reading its fields. TypeScript types alone cannot reject malformed network input.
 
-With the local environment running, execute:
+**Real code:** [backend/src/catalog/catalog.service.ts · lines 70–73](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L70-L73).
 
-~~~bash
-curl -i 'http://127.0.0.1:8180/api/providers?page=0&size=2&available=false'
-curl -i 'http://127.0.0.1:8180/api/providers?page=-1'
-curl -i -H 'Content-Type: application/json' -d '{"email":"bad","password":"x"}' http://127.0.0.1:8180/api/auth/login
-~~~
+```ts
+const query = searchSchema.parse(input);
+// Parameterized JSONB predicates keep filtering/pagination in PostgreSQL as the catalog grows.
+const values: unknown[] = [];
+const where: string[] = [];
+```
 
-Expect a JSON page with at most two items for the first request, validation failure 400 for the invalid page and email, and no leaked stack trace. Verify exact pagination bounds in provider.schema.ts before choosing additional inputs. Save status and body in your evidence notebook. Run npm run acceptance for the repository's full HTTP contract when local dependencies are ready; a documented 48-check suite is a target until your own output confirms it.
+**Watch for:** `value as Provider` only changes compiler assumptions; it does not validate data.
 
-## Extension exercise
+### Why parse if TypeScript already knows the type?
 
-Specify cursor pagination as a proposal without changing the current page/size contract. Define sorting stability, cursor expiry/encoding, maximum size and backward compatibility. For a new field add a contract example, runtime schema, UI type, SQL mapping and behavioral test. Changing only the interface is incomplete.
+HTTP input has no trustworthy TypeScript type at runtime.
 
-## Debugging and senior reasoning
+## Coercion, transforms and defaults
 
-If the UI shows “could not complete,” inspect the Network tab status/body, then api<T>'s error normalization, then ErrorFilter. A 404 can mean missing path or missing resource; request method and exact URL help distinguish them. A 401 concerns identity, a 403 permission, and a 409 a conflict with current state or the idempotency contract. Do not turn every failure into 200 with an error string; callers and monitoring depend on meaningful status.
+**What:** Query parameters arrive as text. Coercion converts selected values before bounds are checked.
 
+**How:** `z.coerce.number()` converts numeric text. Availability instead accepts only the strings true/false and transforms them explicitly. A default supplies a value when input is undefined.
 
+**Real code:** [backend/src/catalog/provider.schema.ts · lines 54–59](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/provider.schema.ts#L54-L59).
 
-### PUT versus PATCH?
+```ts
+maxRate: z.coerce.number().int().min(0).max(1e6).optional(),
+available: z
+  .enum(['true', 'false'])
+  .transform((v) => v === 'true')
+  .optional(),
+sort: z.enum(['recommended', 'rate-asc', 'rating']).default('recommended'),
+```
 
-PUT commonly represents replacing a resource representation; PATCH applies a defined partial modification. Here profile PUT accepts the editable profile document, and status PATCH performs a constrained transition.
+**Watch for:** `Boolean("false")` is true; coercing arbitrary query text to Boolean is a trap.
 
-### Why validate twice?
+### What happens to available=false?
 
-UI validation helps the user; backend validation protects the server because callers can bypass the UI.
+The enum accepts it and the transform produces the boolean false.
 
-- [ ] Trace invalid input into its public status and detail.
-- [ ] Explain coercion and why types do not validate JSON.
-- [ ] Show that public profiles do not expose ownerEmail.
-- [ ] Specify a contract extension with compatibility and negative tests.
+## Strict objects and inferred types
 
+**What:** A strict Zod object rejects unknown keys. `z.infer` derives the parsed TypeScript shape from a schema.
 
+**How:** The schema is a runtime value; the inferred Provider type is erased. Nested objects need their own strictness rules; top-level strictness does not automatically configure every child.
+
+**Real code:** [backend/src/catalog/provider.schema.ts · lines 48–50](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/provider.schema.ts#L48-L50).
+
+```ts
+export type Provider = z.infer<typeof providerSchema>;
+export const searchSchema = z
+  .object({
+```
+
+**Watch for:** Validation does not establish that the caller owns the validated profile.
+
+### Does .strict() mean every field is required?
+
+No. Required, optional and defaulted fields are defined by their individual schemas.
+
+## Closures build positional SQL parameters
+
+**What:** A closure retains access to variables from the scope where the function was created.
+
+**How:** The local `add` function captures values, appends one item, and returns its positional placeholder. The resulting SQL and parameter array are sent separately to pg.
+
+**Real code:** [backend/src/catalog/catalog.service.ts · lines 74–77](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L74-L77).
+
+```ts
+const add = (value: unknown) => {
+  values.push(value);
+  return `$${values.length}`;
+};
+```
+
+**Watch for:** Placeholders represent data values, not arbitrary SQL identifiers or ORDER BY expressions.
+
+### Why does add return $1, then $2?
+
+Each push increases the captured array length, which supplies the next parameter position.
+
+## JSONB operators and explicit casts
+
+**What:** PostgreSQL JSONB stores structured JSON. `->` returns JSON; `->>` extracts text.
+
+**How:** Catalog extracts hourlyRate as text, casts it to numeric, then compares it with a parameter. Casting matters: textual sorting would put 100 before 20.
+
+**Real code:** [backend/src/catalog/catalog.service.ts · lines 89–92](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L89-L92).
+
+```ts
+if (query.maxRate !== undefined)
+  where.push(`(document->>'hourlyRate')::numeric<=${add(query.maxRate)}`);
+if (query.available !== undefined)
+  where.push(`(document->>'available')::boolean=${add(query.available)}`);
+```
+
+**Watch for:** Database JSON extraction and JavaScript property access are different operations.
+
+### Why check undefined instead of truthiness?
+
+A numeric zero is a valid supplied filter and must not disappear.
+
+## Escaping LIKE patterns versus SQL parameters
+
+**What:** A parameter prevents a value from becoming SQL syntax. It does not remove special meaning inside a LIKE pattern.
+
+**How:** Catalog escapes backslash, percent and underscore before adding wildcard characters around the query. Sort expressions come from fixed code branches rather than browser SQL.
+
+**Real code:** [backend/src/catalog/catalog.service.ts · lines 79–82](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L79-L82).
+
+```ts
+const escaped = query.q.trim().replace(/[\\%_]/g, '\\$&');
+where.push(
+  `(concat_ws(' ', document->>'name',document->>'headline',document->>'about',document->>'skills',document->>'tools',document->>'services',document->>'location')) ILIKE ${add(`%${escaped}%`)}`,
+);
+```
+
+**Watch for:** Do not call a parameterized query a named prepared statement unless a statement name is actually configured.
+
+### Why escape percent even with $1?
+
+It changes wildcard matching, not SQL statement structure.
+
+## Row locks and server-owned fields
+
+**What:** `FOR UPDATE` locks selected rows until the transaction ends. Another conflicting writer must wait.
+
+**How:** Catalog locks the owner’s row, checks the submitted ID, and preserves stored rating fields. Object spread order matters: later server values override earlier input fields.
+
+**Real code:** [backend/src/catalog/catalog.service.ts · lines 59–64](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L59-L64).
+
+```ts
+const document = {
+  ...updated,
+  rating: row.document.rating,
+  reviewCount: row.document.reviewCount,
+  completedProjects: row.document.completedProjects,
+};
+```
+
+**Watch for:** A row lock serializes writers; it does not by itself detect a user editing a stale representation.
+
+### Why put rating after ...updated?
+
+The stored rating replaces any submitted rating with the same key.
+
+## Practice and mastery
+
+With the local stack running, execute:
+
+```bash
+curl -i 'http://127.0.0.1:8180/api/providers?available=false&size=2'
+curl -i 'http://127.0.0.1:8180/api/providers?available=yes'
+```
+
+Expected: 200 and at most two items; then 400. Predict the parsed values before running.
+
+- Write a tiny closure that collects values and returns `$1`, `$2`. Assert the array and placeholders match.
+- Explain why a sort field needs an allowlist even though filter values use placeholders.
+- In a practice extension, add `minRate` to the Zod query schema, SQL predicate and React control. See lesson 12.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [Zod documentation](https://zod.dev/) — accessed 2026-10-22.
-- [Nest exception filters](https://docs.nestjs.com/exception-filters) — accessed 2026-10-22.
-- [HTTP semantics RFC 9110](https://www.rfc-editor.org/rfc/rfc9110) — accessed 2026-10-22.
-- [Project source: CONTRACT.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/CONTRACT.md) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/common/errors.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/common/errors.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/catalog/provider.schema.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/catalog/provider.schema.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/src/inquiries/inquiry.schema.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/inquiries/inquiry.schema.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: scripts/acceptance.mjs](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/scripts/acceptance.mjs) — local baseline inspected 2026-10-22; private published source may lag.
+- [Zod API](https://zod.dev/api)
+- [node-postgres queries](https://node-postgres.com/features/queries)
+- [Project example: Zod parse: a runtime boundary](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L70-L73)
+- [Project example: Coercion, transforms and defaults](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/provider.schema.ts#L54-L59)
+- [Project example: Strict objects and inferred types](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/provider.schema.ts#L48-L50)
+- [Project example: Closures build positional SQL parameters](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L74-L77)
+- [Project example: JSONB operators and explicit casts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L89-L92)
+- [Project example: Escaping LIKE patterns versus SQL parameters](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L79-L82)
+- [Project example: Row locks and server-owned fields](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/catalog/catalog.service.ts#L59-L64)

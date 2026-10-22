@@ -1,60 +1,193 @@
 ---
-title: Inquiry transactions, retry identity and the outbox
-topic: Distributed workflows
+title: "Inquiries tools: fetch, hashes, UUIDs and transaction locks"
+topic: "Inquiries tools: fetch, hashes, UUIDs and transaction locks"
 last_researched: 2026-10-22
-source_labels: Project source evidence; Interview PDF requirements; Official documentation; Proposed extensions explicitly labeled
+source_labels: Project code; Library mechanics; Practice extensions explicitly labeled
 ---
-# A timeout does not prove a failed write
 
-Prerequisites: 03, 07–08. A client can lose a response after the server commits. Retrying with a new logical identity can create a second inquiry. Idempotency means repeating one logical operation has one intended effect; it does not mean all identical-looking requests from a user are duplicates.
+# Inquiries tools: fetch, hashes, UUIDs and transaction locks
 
-## Exact creation sequence
+Prerequisites: validation, promises and pg transactions. These tools coordinate one retryable write.
 
-Read backend/src/inquiries/inquiries.service.ts. create checks CLIENT role and an 8–100-character key, parses the body and hashes a canonical ordered field array with SHA-256. A transaction acquires a transaction-scoped PostgreSQL advisory lock derived from [actor.email, key]. It then searches for an existing inquiry with that client/key. Matching fingerprint returns the existing result; a different fingerprint produces 409.
+Study one concept at a time: explain it, open the linked code, then answer the recall question. Code blocks are source excerpts unless the practice section explicitly says to run them.
 
-Only when no previous inquiry exists does the service call catalog's internal provider endpoint. This HTTP call is inside the transaction and lock, with AbortSignal.timeout(5000). The response is parsed with Zod. It supplies the provider's private recipient email and public name without letting the client select an arbitrary recipient email. The service creates UUIDs, inserts the inquiry, inserts the event into outbox, and commits through Database.transaction.
+## Native fetch and two failure channels
 
-The migration adds UNIQUE(client_email,idempotency_key). PostgreSQL protects the final invariant across processes; an in-memory Map would protect only one process and would disappear on restart. The advisory lock serializes the find-or-create decision for this key. Lock hash collisions can serialize unrelated keys but do not merge their stored identities.
+**What:** `fetch` resolves to a Response when an HTTP response arrives. An HTTP 404 is not normally a rejected fetch promise.
 
-## Browser half of the protocol
+**How:** Network/abort failures go to catch. The service separately checks response.status/ok, then parses and validates the returned JSON.
 
-frontend/src/hooks/useInquiryAttempt.ts persists a logical attempt containing both key and canonical payload in sessionStorage before transmission. A ref prevents a same-instance double submit. An uncertain error preserves the attempt and freezes its details; retry sends the same key and same payload. A first-transmission definite rejection can clear it; rejection during retry cannot disprove an earlier commit.
+**Real code:** [backend/src/inquiries/inquiries.service.ts · lines 72–75](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L72-L75).
 
-This is an important source-over-docs correction: architecture.md broadly describes browser storage as token/preferences, but actual code also persists the pending inquiry payload. That is transport recovery state, not the authoritative inquiry database, and it still has privacy/retention implications. Explain its contents and lifetime rather than claiming no business text ever enters browser storage.
+```ts
+if (response.status === 404) throw new NotFoundException('Provider not found');
+if (!response.ok) throw new ServiceUnavailableException('Catalog lookup failed');
+try {
+  return z
+```
 
-## Executable lab and expected outcomes
+**Watch for:** A 200 response can still contain malformed or unexpected data.
 
-Run npm --prefix frontend test -- src/components/inquiries/InquiryAttempt.test.tsx and npm --prefix backend test -- --runTestsByPath test/workflows.spec.ts. Inspect test names and record the observed results. In a running local UI submit a synthetic inquiry while DevTools simulates a lost/failed response, reopen the attempt and retry. Confirm one inquiry ID and one logical event, not two success toasts alone. Use repository tests to simulate precise crash boundaries when network tooling cannot guarantee a post-commit loss.
+### Why catch fetch and also check response.ok?
 
-Write a behavior table for same client/key/same body, same client/key/different body, different client/same key, and simultaneous duplicate requests. Expected outcomes: replay existing, 409, independent operation, and one created inquiry. Unit tests demonstrate branches; real concurrent HTTP/SQL checks are required for the lock guarantee.
+Transport failure and a received non-success HTTP response are different outcomes.
 
-## Senior reasoning
+## AbortSignal.timeout and URL encoding
 
-The outbox is a durable promise to publish, not immediate notification delivery. Returning a committed inquiry while Kafka is down preserves the core write but delays the inbox. Holding an external call in a DB transaction is a capacity risk. Idempotency retention, key expiry and replay policy are currently not a complete production lifecycle; specify them before adding cleanup that could permit duplicates.
+**What:** A timeout signal can abort a fetch. Encoding a path component prevents characters in an ID from becoming URL structure.
 
-Interview:
+**How:** This lookup passes a five-second signal and a separate internal-authentication header. Timing out the client does not undo work the remote server may already have performed.
 
-### Why hash a canonical array?
+**Real code:** [backend/src/inquiries/inquiries.service.ts · lines 61–65](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L61-L65).
 
-So equivalent validated fields have stable comparison independent of incoming object-key ordering.
+```ts
+`${required('CATALOG_URL').replace(/\/$/, '')}/internal/providers/${encodeURIComponent(id)}`,
+{
+  headers: { 'X-Internal-Key': required('INTERNAL_API_KEY') },
+  signal: AbortSignal.timeout(5000),
+},
+```
 
-### Why not generate a new retry key?
+**Watch for:** This timeout does not enforce a total deadline for every part of the whole inquiry operation.
 
-It would represent a new operation and can duplicate the committed one.
+### Why is the internal key not a browser JWT?
 
-- [ ] Draw the lock, lookup, HTTP, insert and commit sequence correctly.
-- [ ] Explain all four replay-table cases.
-- [ ] Trace pending browser state separately from authoritative persistence.
-- [ ] Prove retry behavior with observed IDs or focused tests.
+It authenticates a different server-to-server boundary and must stay out of browser code.
 
+## SHA-256 fingerprint versus retry key
 
+**What:** The retry key names one logical submission. The fingerprint detects whether the submission’s validated content changed.
+
+**How:** The code serializes a fixed-order array of parsed fields, then hashes it. Field order is deliberate; hashing arbitrary JSON objects without a canonical policy can compare representations incorrectly.
+
+**Real code:** [backend/src/inquiries/inquiries.service.ts · lines 16–25](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L16-L25).
+
+```ts
+return createHash('sha256')
+  .update(
+    JSON.stringify([
+      input.providerId,
+      input.subject,
+      input.message,
+      input.budget,
+      input.clientType,
+    ]),
+  )
+```
+
+**Watch for:** SHA-256 here is a change detector, not password storage or payload encryption.
+
+### Same key but changed budget: what should happen?
+
+The stored fingerprint differs and the service rejects the conflicting retry with 409.
+
+## randomUUID: record identity is separate
+
+**What:** A UUID supplies a generated identifier. The inquiry ID and event ID identify different things.
+
+**How:** A new inquiry receives one ID and its announcement receives another. A replay returns the existing inquiry before generating either new identifier.
+
+**Real code:** [backend/src/inquiries/inquiries.service.ts · lines 105–107](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L105-L107).
+
+```ts
+const id = randomUUID();
+const eventId = randomUUID();
+const createdAt = new Date().toISOString();
+```
+
+**Watch for:** An unpredictable ID does not replace authorization or prove a request was not replayed.
+
+### Why not use the event ID as the retry key?
+
+Retry identity belongs to the client operation; the event is created later after a new operation is accepted.
+
+## Advisory locking across async handlers
+
+**What:** Two handlers can interleave whenever they await work. A JavaScript object or boolean cannot coordinate separate replicas.
+
+**How:** The PostgreSQL lock serializes the client/key decision. After waiting, a second transaction checks the committed previous inquiry and either returns it or rejects changed content.
+
+**Real code:** [backend/src/inquiries/inquiries.service.ts · lines 91–99](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L91-L99).
+
+```ts
+// The transaction-scoped lock serializes the same client/key across every replica.
+await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))', [
+  JSON.stringify([actor.email, key]),
+]);
+const previous = await client.query(
+  'SELECT * FROM inquiries WHERE client_email=$1 AND idempotency_key=$2',
+  [actor.email, key],
+);
+if (previous.rows[0]) {
+```
+
+**Watch for:** The internal Catalog fetch happens while the transaction holds its connection and lock.
+
+### Does await serialize all incoming requests?
+
+No. It sequences one function’s continuation; the database lock coordinates this shared invariant.
+
+## Outbox: one database transaction, two records
+
+**What:** An outbox stores event intent beside the business write. Both records commit or roll back together.
+
+**How:** The same checked-out client inserts the inquiry and event. Kafka publishing happens later; no transaction here spans both PostgreSQL and Kafka.
+
+**Real code:** [backend/src/inquiries/inquiries.service.ts · lines 135–140](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L135-L140).
+
+```ts
+await client.query('INSERT INTO outbox(event_id,inquiry_id,payload) VALUES($1,$2,$3)', [
+  eventId,
+  id,
+  event,
+]);
+return inquiryView(inserted.rows[0]);
+```
+
+**Watch for:** A committed inquiry can exist before its notification is visible.
+
+### What does HTTP success prove?
+
+The handler’s database transaction committed, not that every downstream consumer already processed its event.
+
+## Constraints and state transitions
+
+**What:** A unique constraint is a database-enforced invariant. Application locks make the decision sequence orderly; constraints protect the stored result.
+
+**How:** The migration makes client/key unique. Provider decisions separately lock the inquiry row and enforce allowed terminal-state behavior.
+
+**Real code:** [backend/migrations/inquiries.001.sql · lines 6–7](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/migrations/inquiries.001.sql#L6-L7).
+
+```sql
+ idempotency_key text NOT NULL, request_hash text NOT NULL, UNIQUE (client_email,idempotency_key)
+);
+```
+
+**Watch for:** Uniqueness, permitted status values and resource ownership are different checks.
+
+### Why retain the constraint when the service already locks?
+
+It remains a durable backstop if another code path or future implementation bypasses the expected sequence.
+
+## Practice and mastery
+
+- Draw three separate values: retry key, inquiry ID and event ID. State who creates each.
+- Run the existing duplicate and changed-payload tests: `npm --prefix backend test -- --runTestsByPath test/workflows.spec.ts`.
+- For a lost response, keep the original key and body. Explain why generating a new key can create another valid inquiry.
+- For load reasoning, calculate how many of ten pool connections can be held by slow five-second Catalog calls.
+- Optional live retry exercise: use the full local script in the beginner service guide; record observed results rather than assuming the lab ran.
 
 ## References
 
-Official references were checked 2026-10-22. Use the repository version/lockfiles as the compatibility baseline; current documentation may describe newer releases. Local source paths below are relative to /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/. GitHub links require access and may lag that local baseline.
+Code links are pinned to the inspected source commit. The repository lockfiles define the study baseline; library documentation may cover newer versions.
 
-- [PostgreSQL advisory locks](https://www.postgresql.org/docs/current/explicit-locking.html#ADVISORY-LOCKS) — accessed 2026-10-22.
-- [Project source: backend/src/inquiries/inquiries.service.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/src/inquiries/inquiries.service.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: backend/migrations/inquiries.001.sql](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/backend/migrations/inquiries.001.sql) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/hooks/useInquiryAttempt.ts](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/hooks/useInquiryAttempt.ts) — local baseline inspected 2026-10-22; private published source may lag.
-- [Project source: frontend/src/components/inquiries/InquiryAttempt.test.tsx](https://github.com/robertovalencia/linked-in-node-and-aws/blob/main/frontend/src/components/inquiries/InquiryAttempt.test.tsx) — local baseline inspected 2026-10-22; private published source may lag.
+- [Node fetch](https://nodejs.org/api/globals.html#fetch)
+- [Node crypto](https://nodejs.org/api/crypto.html)
+- [pg transactions](https://node-postgres.com/features/transactions)
+- [Project example: Native fetch and two failure channels](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L72-L75)
+- [Project example: AbortSignal.timeout and URL encoding](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L61-L65)
+- [Project example: SHA-256 fingerprint versus retry key](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L16-L25)
+- [Project example: randomUUID: record identity is separate](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L105-L107)
+- [Project example: Advisory locking across async handlers](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L91-L99)
+- [Project example: Outbox: one database transaction, two records](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/src/inquiries/inquiries.service.ts#L135-L140)
+- [Project example: Constraints and state transitions](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/backend/migrations/inquiries.001.sql#L6-L7)

@@ -4,7 +4,9 @@
 
 ## The map in words
 
-The browser renders React. Its API helper uses relative URLs such as `/api/inquiries`, so the request goes back to the origin that served the page. In container mode nginx chooses the right backend from the path; in hot-reload mode Vite performs that routing. The backend does not run inside React, and the browser does not connect directly to PostgreSQL or Kafka.
+The browser renders React. Its API helper uses relative URLs such as `/api/inquiries`, so the request goes back to the origin that served the page.
+
+In container mode nginx chooses the right backend from the path; in hot-reload mode Vite performs that routing. The backend does not run inside React, and the browser does not connect directly to PostgreSQL or Kafka.
 
 ```mermaid
 flowchart LR
@@ -22,7 +24,9 @@ flowchart LR
   N --> ND
 ```
 
-Text equivalent: browser → same-origin proxy → chosen service → that service's database. Separately, Inquiries → private Catalog HTTP lookup, then persisted outbox → Kafka → Notifications consumer → recipient inbox row. A browser subsequently reads that row through the Notifications HTTP API. Kafka does not push directly into this browser UI.
+Text equivalent: browser → same-origin proxy → chosen service → that service's database. Separately, Inquiries → private Catalog HTTP lookup, then persisted outbox → Kafka → Notifications consumer → recipient inbox row.
+
+A browser subsequently reads that row through the Notifications HTTP API. Kafka does not push directly into this browser UI.
 
 ## Open these files beside the browser
 
@@ -38,7 +42,9 @@ Text equivalent: browser → same-origin proxy → chosen service → that servi
 | UI form | [InquiryForm](../../frontend/src/components/inquiries/InquiryForm.tsx) | Collects fields, prevents normal form navigation, submits and renders progress/errors |
 | Edge | [nginx.conf](../../frontend/nginx.conf), [vite.config.ts](../../frontend/vite.config.ts) | Routes public API paths to backend ports |
 
-`MarketplaceRoute` is a component name, not evidence that React Router is installed. This application composes panels/dialogs without React Router. `api<T>` gives TypeScript callers a compile-time return shape; it does not perform runtime response schema validation. Server input validation remains essential.
+`MarketplaceRoute` is a component name, not evidence that React Router is installed. This application composes panels/dialogs without React Router. `api<T>` gives TypeScript callers a compile-time return shape; it does not perform runtime response schema validation.
+
+Server input validation remains essential.
 
 ## Journey A: discover and sign in
 
@@ -48,7 +54,11 @@ Text equivalent: browser → same-origin proxy → chosen service → that servi
 4. Selecting “contact” while signed out opens login and remembers the selected profile in component state. [Login](../../frontend/src/components/auth/Login.tsx) calls `identityService.login`. The browser receives a signed token and actor details; `setAuth` stores the token under a project namespace and updates React state.
 5. On a later page load `AuthProvider` reads that token and asks `/api/auth/me` for verified identity. It guards against a late restore response replacing a newer token. A failed restoration removes the matching stale token. A generic API 401 elsewhere becomes a friendly `ApiError` message; `api` does not itself globally clear the AuthContext or perform automatic refresh.
 
-**Storage is deliberately limited, but includes an important exception:** localStorage holds the auth token and comparison IDs. `useInquiryAttempt` also stores a **temporary pending key and inquiry payload** in sessionStorage before sending. That payload is recovery intent, not proof of a committed inquiry or the source of the dashboard. Once success is known, the attempt is removed. Treat that temporary content as sensitive browser data when discussing XSS. Profiles, committed inquiries, and notifications still come from APIs.
+**Storage is deliberately limited, but includes an important exception:** localStorage holds the auth token and comparison IDs. `useInquiryAttempt` also stores a **temporary pending key and inquiry payload** in sessionStorage before sending. That payload is recovery intent, not proof of a committed inquiry or the source of the dashboard.
+
+Once success is known, the attempt is removed. Treat that temporary content as sensitive browser data when discussing XSS.
+
+Profiles, committed inquiries, and notifications still come from APIs.
 
 ## Journey B: click Send inquiry
 
@@ -85,11 +95,19 @@ Inquiry DB commit -> HTTP 201 -> broker publish -> notification SQL commit -> la
                                                                 ^ offset commit may lag
 ```
 
-This is **at-least-once delivery with idempotent database effects** under the expected recovery assumptions. It is not an exactly-once transaction across PostgreSQL, Kafka, and the browser. Local Kafka has replication factor one, so `acks=-1` still acknowledges only the available single-replica setup. Disk loss, retention expiry, lost outbox data, operator mistakes, and poison events are separate failure classes. No implemented dead-letter queue or cross-region replication makes them disappear.
+This is **at-least-once delivery with idempotent database effects** under the expected recovery assumptions. It is not an exactly-once transaction across PostgreSQL, Kafka, and the browser.
+
+Local Kafka has replication factor one, so `acks=-1` still acknowledges only the available single-replica setup. Disk loss, retention expiry, lost outbox data, operator mistakes, and poison events are separate failure classes.
+
+No implemented dead-letter queue or cross-region replication makes them disappear.
 
 ## Journey D: a provider accepts the inquiry
 
-[Dashboard](../../frontend/src/components/inquiries/Dashboard.tsx) loads only participant inquiries via the API and renders ACCEPTED/DECLINED buttons for a provider's pending items. The click disables actions while busy, calls `inquiryService.respond`, and replaces the row with the returned view only after success. Backend ownership and row-lock checks still enforce the rule if somebody bypasses the UI. The server accepts only `PENDING`, `ACCEPTED`, and `DECLINED`; the UI also tolerates a legacy `NEW` label, which does not create an additional backend status. Responding does not currently emit a Kafka event.
+[Dashboard](../../frontend/src/components/inquiries/Dashboard.tsx) loads only participant inquiries via the API and renders ACCEPTED/DECLINED buttons for a provider's pending items. The click disables actions while busy, calls `inquiryService.respond`, and replaces the row with the returned view only after success.
+
+Backend ownership and row-lock checks still enforce the rule if somebody bypasses the UI. The server accepts only `PENDING`, `ACCEPTED`, and `DECLINED`; the UI also tolerates a legacy `NEW` label, which does not create an additional backend status.
+
+Responding does not currently emit a Kafka event.
 
 ## The prepared AWS environment uses the same application
 
@@ -107,11 +125,19 @@ Read [Terraform main](../../infra/aws-dev/main.tf), [AWS Compose](../../infra/aw
 | Terraform state bucket | Stores infrastructure's resource mapping | Separate bootstrap configuration; versioning and protection; not application database storage |
 | IAM/OIDC | Temporary authorization | GitHub deployment role trust restricted to the named repository's `dev` environment |
 
-The EC2 instance has metadata tokens required and an encrypted root volume. PostgreSQL and Kafka remain containers on that instance. Separate DB users/databases do not mean managed RDS instances. Kafka does not become MSK just because it runs in AWS. This is a single-host failure domain, and the root disk is configured to be deleted on termination. Docker volumes are persistence across container replacement, not an independent backup strategy.
+The EC2 instance has metadata tokens required and an encrypted root volume. PostgreSQL and Kafka remain containers on that instance.
 
-Text deployment sequence: GitHub verification → build/publish backend and frontend images → identify ECR digests → bundle Compose/scripts/manifest in S3 → SSM downloads bundle on EC2 → host retrieves its own secret → Compose pulls exact images → checks readiness and smoke/API behavior → update current-release pointer. Browser → SSM forwarding → host loopback port 80 → nginx container 8180 → chosen Nest container. No public load balancer or public HTTPS API endpoint is configured here.
+Separate DB users/databases do not mean managed RDS instances. Kafka does not become MSK just because it runs in AWS.
 
-The [deployment workflow](../../.github/workflows/deploy-dev.yml) performs checks and scans before deploying, but a file existing does not prove a successful workflow run. `aws-remote-deploy.sh` uses a host lock, writes a restrictive runtime environment file, pulls digest-referenced images, verifies readiness and acceptance, and restores the prior application Compose release on failure when one exists. It does not reverse a schema migration or restore lost data. Production migrations need forward/backward compatibility and an explicit data-recovery plan.
+This is a single-host failure domain, and the root disk is configured to be deleted on termination. Docker volumes are persistence across container replacement, not an independent backup strategy.
+
+Text deployment sequence: GitHub verification → build/publish backend and frontend images → identify ECR digests → bundle Compose/scripts/manifest in S3 → SSM downloads bundle on EC2 → host retrieves its own secret → Compose pulls exact images → checks readiness and smoke/API behavior → update current-release pointer.
+
+Browser → SSM forwarding → host loopback port 80 → nginx container 8180 → chosen Nest container. No public load balancer or public HTTPS API endpoint is configured here.
+
+The [deployment workflow](../../.github/workflows/deploy-dev.yml) performs checks and scans before deploying, but a file existing does not prove a successful workflow run. `aws-remote-deploy.sh` uses a host lock, writes a restrictive runtime environment file, pulls digest-referenced images, verifies readiness and acceptance, and restores the prior application Compose release on failure when one exists.
+
+It does not reverse a schema migration or restore lost data. Production migrations need forward/backward compatibility and an explicit data-recovery plan.
 
 **Extension study, not implemented infrastructure:** compare managed RDS with container PostgreSQL, managed messaging with this broker, ECS tasks with EC2 Compose, an ALB with TLS/WAF against SSM-only access, Multi-AZ resilience, backups/restore drills, structured centralized logs/metrics/traces, and an external identity provider. State the cost, operating burden, failure mode, and product need before proposing each service.
 
