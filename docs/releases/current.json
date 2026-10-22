@@ -1,14 +1,14 @@
 {
   "environment": "local",
   "referenceCommit": "582c847d700c27d3bc60b44aeb8974ee6365face",
-  "sourceCommit": "6322a041f84df117fd7b2dfbbb01ff98ec275ffd",
+  "sourceCommit": "d90a9e80edd355658f51464aea7b3c436b8e1097",
   "status": "local-verified",
   "images": {},
   "awsDev": "not provisioned",
   "externalIntegrations": {
-    "github": "private repository created; workflows not yet verified",
+    "github": "private repository; Verify workflow passed on main before this evidence update",
     "jira": "import prepared; not imported",
-    "sonarqube": "local server gate passed; GitHub-hosted server pending"
+    "sonarqube": "local server gate passed at analysis bff6bec1-c67f-4b1b-900e-fc63d704c5ea; GitHub-hosted server pending"
   },
   "aiContribution": {
     "agent": "Codex app",
@@ -16,15 +16,16 @@
     "measuredPercent": null,
     "note": "Reference behavior/assets adapted. No audited generation metric."
   },
-  "verifiedAt": "2026-10-21T16:42:59Z",
+  "verifiedAt": "2026-10-22T00:27:11Z",
   "localEvidence": {
     "apiAcceptance": "docs/evidence/local-acceptance.json",
-    "apiRunId": "acceptance-1792600963079",
+    "apiRunId": "acceptance-1792628830426",
     "browser": "docs/evidence/browser-smoke.json",
-    "backendTests": 40,
+    "backendTests": 64,
     "frontendTests": 28,
     "resilienceChecks": 9,
-    "sonarGate": "docs/evidence/sonar-gate.json"
+    "sonarGate": "docs/evidence/sonar-gate.json",
+    "sonarAnalysisId": "bff6bec1-c67f-4b1b-900e-fc63d704c5ea"
   },
   "repositoryUrl": "https://github.com/robertovalencia/linked-in-node-and-aws"
 }
