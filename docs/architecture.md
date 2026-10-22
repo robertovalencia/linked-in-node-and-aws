@@ -12,7 +12,7 @@ flowchart LR
   Identity --> ID[(identity DB)]
   Catalog --> CD[(catalog DB)]
   Inquiries --> QD[(inquiries DB + outbox)]
-  Notifications --> ND[(notifications DB + inbox)]
+  Notifications --> ND[(notifications DB: inbox rows with unique event identity)]
   Inquiries -- authenticated internal HTTP lookup --> Catalog
   Inquiries -- acknowledged publish --> Kafka[Kafka inquiry.created.v1]
   Kafka --> Notifications
@@ -44,6 +44,6 @@ sequenceDiagram
 
 A crash after Kafka acknowledgment and before marking the outbox can publish twice. Notifications must handle duplicate delivery safely. This is at-least-once transport with idempotent effects, not an exactly-once transaction spanning Kafka and PostgreSQL. Retrying an HTTP inquiry uses a client-scoped idempotency key and canonical payload comparison; it must also work for simultaneous requests.
 
-React components render, route containers compose pages, services own API calls, types define contracts, contexts expose shared authentication and hooks manage reusable state/effects. Business success is shown only after the API succeeds. Browser storage holds only token/UI preferences, with a project-specific namespace. The API remains the source of truth.
+React components render, route containers compose pages, services own API calls, types define contracts, contexts expose shared authentication and hooks manage reusable state/effects. Business success is shown only after the API succeeds. Browser localStorage holds the token and comparison IDs with a project-specific namespace. The inquiry-attempt hook also temporarily saves its original key and payload in sessionStorage so an uncertain write can be reconciled safely; that saved intent is not evidence of a committed inquiry. Profiles, committed inquiries and notifications are read from APIs, which remain the source of truth. The notifications table itself has a unique event ID and serves the inbox/deduplication role; there is no separate inbox table. See the [beginner service guide](nodejs-beginner/README.md) for source-linked walkthroughs.
 
 Local uses its own Compose namespace and loopback ports. AWS dev runs on a Terraform-managed instance with SSM access and independent state/secrets/data. It is a development environment with single-host failure risk. See [AWS dev](aws-dev.md), [data and security](interview-topics/data-security.md), and [frontend](interview-topics/frontend.md).

@@ -20,3 +20,12 @@ The first frontend critique found late login completion after dismissal, lost-re
 The backend critic reproduced the stale nginx upstream failure after container recreation. The repaired DNS resolution passed the unchanged nine-check drill. The infrastructure critic reproduced retained fetched secret JSON after a failed remote deployment. The absolute cleanup trap now passes both fake-CLI scenarios; a separate Amazon Linux package probe corrected the `awscli-2` bootstrap package name. These review records show the correction path and the limits of each check.
 
 The [requirements](specs/requirements.md), [implementation plan](specs/implementation-plan.md), [acceptance contract](../CONTRACT.md), [traceability table](traceability.md), [raw results](results.md), and [Codex prompts](prompts/builder.md) make the chain from requirement to implementation and test inspectable. No percentage of AI-authored code was measured; the role's approximately 95% target is presented as a workflow target, not an attribution claim.
+
+
+## 2026-10-22: NodeJs/AWS study path and beginner service documentation
+
+Added twenty sequenced lessons, the roadmap, coverage matrices, an unchecked progress template, and the complete offline ZIP. The main README links both the browsable study path and download. Six service guides explain runtime wiring, each capability, browser/event/AWS flow, debugging labs, and vocabulary.
+
+The completed independent content reviews found missing concurrent-request teaching and a missing authored UI-to-API exercise. Repairs added the two-request lock/commit trace and local retry lab, plus a proposed minimum-rate UI-to-Zod/SQL feature. Final source and coverage reviews accepted the materials; the review loop was stopped at the user's request. The architecture summary now accurately describes temporary inquiry recovery data in sessionStorage and notification-table event deduplication.
+
+Publication checks: the ZIP integrity test passed, the browsable lessons and source links were checked locally, and no application behavior or infrastructure was changed. Learner Docker/AWS labs remain instructions rather than execution claims.
