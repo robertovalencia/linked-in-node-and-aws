@@ -34,7 +34,24 @@ done
 fi
 if [[ "$healthy" == true ]]; then
   backend_image=$(jq -er .backend manifest.json)
-  if ! docker run --rm --network host -v "$release_dir:/release:ro" --entrypoint node "$backend_image" /release/acceptance.mjs http://127.0.0.1:80; then healthy=false; fi
+  install -d -o 1000 -g 1000 -m 0700 "$release_dir/evidence"
+  rm -f "$release_dir/evidence/acceptance.json"
+  if ! docker run --rm --network host -v "$release_dir:/release:ro" -v "$release_dir/evidence:/evidence" --entrypoint node "$backend_image" /release/acceptance.mjs http://127.0.0.1:80 /evidence/acceptance.json >"$release_dir/evidence/acceptance.log" 2>&1; then healthy=false; fi
+  if [[ -f "$release_dir/evidence/acceptance.json" ]]; then
+    # Compress the full report below SSM's stdout limit. No extra AWS IAM grants.
+    if ! python3 - <<'PYTHON'
+import base64,gzip,json
+from pathlib import Path
+report=json.loads(Path('evidence/acceptance.json').read_text())
+encoded=base64.b64encode(gzip.compress(json.dumps(report,separators=(',',':')).encode())).decode()
+if len(encoded)>16000: raise SystemExit('Compressed acceptance report exceeds bounded SSM evidence capacity')
+print('MARKETPLACE_ACCEPTANCE_GZIP_BASE64='+encoded)
+PYTHON
+    then healthy=false; fi
+  else
+    tail -c 8000 "$release_dir/evidence/acceptance.log" >&2
+    healthy=false
+  fi
 fi
 if [[ "$healthy" != true ]]; then
   echo 'Health verification failed; restoring previous application images.'

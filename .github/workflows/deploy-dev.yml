@@ -1,9 +1,14 @@
 name: Deploy AWS dev
 on:
   workflow_dispatch:
+    inputs:
+      deploy:
+        description: 'Deploy to AWS after verification (false runs verification only)'
+        type: boolean
+        default: false
+        required: true
 permissions:
   contents: read
-  id-token: write
 concurrency:
   group: aws-dev-release
   cancel-in-progress: false
@@ -11,7 +16,7 @@ jobs:
   verify:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0}
@@ -19,40 +24,37 @@ jobs:
         with: {node-version: '22'}
       - run: npm ci && npm --prefix backend ci && npm --prefix frontend ci
       - run: npm run check && npm --prefix backend run test:coverage && npm --prefix frontend run test:coverage
+      - run: node --test scripts/aws-deploy.test.mjs scripts/aws-release-local.test.mjs
       - run: npm --prefix backend run build && npm --prefix frontend run build
       - run: npm --prefix backend audit --omit=dev --audit-level=high && npm --prefix frontend audit --omit=dev --audit-level=high
       - run: npm run setup && docker compose up -d --build --wait --wait-timeout 240
       - run: node scripts/acceptance.mjs http://localhost:8180 work/release-acceptance.json
-      - name: Require configured SonarQube Cloud project
-        env:
-          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-          SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
-          SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: test -n "$SONAR_HOST_URL" && test -n "$SONAR_ORGANIZATION" && test -n "$SONAR_PROJECT_KEY" && test -n "$SONAR_TOKEN"
-      - uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >-
-            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
-            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
-            -Dsonar.qualitygate.wait=true
-            -Dsonar.qualitygate.timeout=300
+      - name: Release application verification containers
+        run: docker compose down -v
+      - name: Set SonarQube Linux host prerequisites
+        run: |
+          if [ "$(sysctl -n vm.max_map_count)" -lt 524288 ]; then sudo sysctl -w vm.max_map_count=524288; fi
+          if [ "$(sysctl -n fs.file-max)" -lt 131072 ]; then sudo sysctl -w fs.file-max=131072; fi
+      - name: Verify actual source with an isolated SonarQube server
+        run: node scripts/sonar-ci.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: release-verification
           path: |
             work/release-acceptance.json
+            work/ci-sonar/
             backend/coverage/
             frontend/coverage/
       - if: always()
         run: docker compose down -v
   deploy:
     needs: verify
+    if: inputs.deploy == true
     environment: dev
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
@@ -100,3 +102,6 @@ jobs:
           path: |
             work/*-image-scan.json
             work/release-manifest.json
+            work/aws-ssm-command.json
+            work/aws-ssm-invocation.json
+            work/aws-acceptance.json

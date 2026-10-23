@@ -1,10 +1,17 @@
-# One- or two-day AWS dev run
+# 24-hour AWS dev demonstration and teardown
 
-This runbook is for a temporary interview demonstration in `us-east-1`. No AWS resources have been created. Choose **24 or 48 hours before applying** the account-specific Terraform plan, record the exact UTC start/deadline in the release record, and arrange a reminder/operator to perform teardown. There is no automatic expiration job today. A stopped instance is not complete cleanup because its disk, secrets and retained images/objects can continue billing.
+The user selected **24 hours**, an active AWS Free plan, and the temporary-local-login release path in `us-east-2`. The prepared host is `m7i-flex.large` (2 vCPU, 8 GiB), reported Free Tier eligible by live discovery. No resources have been provisioned. GitHub runs source/runtime/Sonar verification; the operator's temporary AWS login publishes verified images and invokes SSM. Hosted Sonar Cloud remains configured but pending.
 
-Under the [dated official-price assumptions](costs.md), the core estimate is **about $1.25 for 24 hours** or **about $2.49 for 48 hours** if AWS dev resources are deleted at the deadline. Add variable S3 storage/requests, internet egress, API calls, CI/Sonar costs and tax. Those charges depend on the account and workload; this is not a guaranteed cap. Verify the actual account and region, review a saved plan, and approve provisioning only after reviewing its resources and the cost model.
+The [current official-price model](costs.md) estimates approximately **$2.54 of credits for the 24-hour core infrastructure**, plus ECR/S3/API/transfer usage and any applicable CI charges. The $100 credit balance was observed during preparation; recheck before apply. This estimate is not a spending cap. Do not switch the account to Paid or try to bypass its service control policies.
 
-Before the approved run, check `aws sts get-caller-identity`, set the intended `AWS_PROFILE` and `AWS_REGION`, save the Terraform plan, record its SHA256 and the source commit, and confirm that GitHub's `dev` environment is restricted. Record who will perform cleanup and when. The app has no inbound security-group rule; connect with SSM port forwarding for the demonstration.
+Before provisioning:
+
+1. Confirm `AWS_PROFILE=marketplace-dev`, `AWS_REGION=us-east-2`, and `aws sts get-caller-identity` against the reviewed account.
+2. Review the saved bootstrap bucket-only plan and current costs. Keep `create_github_oidc=false`. Only apply after approval of that exact plan.
+3. Initialize the S3 backend with the actual bucket, copy `dev-local.tfvars.example` to ignored `dev.tfvars`, and generate a **fresh S3-backed dev plan**. A local-backend scratch preview is planning evidence only and must not be applied as the final dev plan.
+4. Record the plan hash, source commit, account, resource list, approval, and intended 24-hour lifespan. Obtain approval before the saved final dev plan is applied.
+5. When provisioning actually starts, record exact UTC start/deadline and the operator responsible for teardown. Arrange an explicit reminder or approved automation. **No teardown is currently scheduled**, and Terraform tags do not expire resources.
+6. Initialize separate AWS secrets, require successful exact-SHA verification-only CI, run the local release helper, and preserve the AWS 48-check acceptance evidence. Use SSM port forwarding for the demonstration; there is no inbound security-group rule.
 
 At the deadline, save required test/release evidence and export any database contents worth retaining. Check the account again. Create a fresh **saved destroy plan** from `infra/aws-dev`, review its exact resource list, then apply that same plan. The dev ECR repositories use `force_delete=true` and the versioned release bucket uses `force_destroy=true` so images and release objects are removed with the dev stack. The instance root disk has `delete_on_termination=true`. The secret enters its seven-day recovery window; [AWS says a secret marked for deletion has no charge](https://docs.aws.amazon.com/secretsmanager/latest/userguide/manage_delete-secret.html). These settings intentionally discard demo data and release images during final cleanup. They do not run until an approved destroy is executed.
 

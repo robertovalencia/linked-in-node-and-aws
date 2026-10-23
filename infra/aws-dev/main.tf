@@ -114,17 +114,24 @@ resource "aws_instance" "dev" {
     encrypted             = true
     delete_on_termination = true
   }
-  credit_specification { cpu_credits = "standard" }
+  # CPU-credit options apply only to burstable T instances. Non-T families
+  # such as m7i-flex must omit the API field entirely.
+  dynamic "credit_specification" {
+    for_each = can(regex("^t[0-9]", var.instance_type)) ? [1] : []
+    content { cpu_credits = "standard" }
+  }
   user_data                   = file("${path.module}/user-data.sh")
   user_data_replace_on_change = true
   tags                        = { Name = local.name }
 }
 resource "aws_iam_role" "deploy" {
+  count              = var.enable_github_deployment ? 1 : 0
   name               = "${local.name}-github-deploy"
   assume_role_policy = jsonencode({ Version = "2012-10-17", Statement = [{ Effect = "Allow", Principal = { Federated = var.oidc_provider_arn }, Action = "sts:AssumeRoleWithWebIdentity", Condition = { StringEquals = { "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com", "token.actions.githubusercontent.com:sub" = "repo:${var.github_repository}:environment:dev" } } }] })
 }
 resource "aws_iam_role_policy" "deploy" {
-  role = aws_iam_role.deploy.id
+  count = var.enable_github_deployment ? 1 : 0
+  role  = aws_iam_role.deploy[0].id
   policy = jsonencode({ Version = "2012-10-17", Statement = [
     { Effect = "Allow", Action = ["ecr:GetAuthorizationToken"], Resource = "*" },
     { Effect = "Allow", Action = ["ecr:BatchCheckLayerAvailability", "ecr:InitiateLayerUpload", "ecr:UploadLayerPart", "ecr:CompleteLayerUpload", "ecr:PutImage", "ecr:BatchGetImage", "ecr:DescribeImageScanFindings"], Resource = [for r in aws_ecr_repository.app : r.arn] },

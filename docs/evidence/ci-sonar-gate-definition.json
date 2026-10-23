@@ -1,0 +1,82 @@
+{
+  "copiedFrom": "Sonar way",
+  "copyResponse": {
+    "id": "e72eeec9-d6e7-481d-a177-2bf6af519890",
+    "name": "Marketplace release (Sonar way plus overall checks)"
+  },
+  "name": "Marketplace release (Sonar way plus overall checks)",
+  "conditions": [
+    {
+      "id": "0e242f98-4f70-48f0-aa61-ccb5d9fbc0ca",
+      "metric": "new_violations",
+      "op": "GT",
+      "error": "0",
+      "isCaycCondition": true
+    },
+    {
+      "id": "5610ed7e-3a45-443a-ab89-e4240dd7e696",
+      "metric": "new_coverage",
+      "op": "LT",
+      "error": "80",
+      "isCaycCondition": true
+    },
+    {
+      "id": "5bb1d258-1136-4af4-8bb2-c11d0840d02f",
+      "metric": "new_duplicated_lines_density",
+      "op": "GT",
+      "error": "3",
+      "isCaycCondition": true
+    },
+    {
+      "id": "6c0e135c-bde8-4e2c-90f6-96768cf3a440",
+      "metric": "new_security_hotspots_reviewed",
+      "op": "LT",
+      "error": "100",
+      "isCaycCondition": true
+    },
+    {
+      "id": "257de7fe-7280-4fc4-9ffd-e1d4bf7c40f2",
+      "metric": "coverage",
+      "op": "LT",
+      "error": "80",
+      "isCaycCondition": false
+    },
+    {
+      "id": "8186ae5a-ff75-444b-bfb3-079c37c405a9",
+      "metric": "violations",
+      "op": "GT",
+      "error": "0",
+      "isCaycCondition": false
+    },
+    {
+      "id": "98243f3f-b35b-4810-8e6a-5dc88629cad9",
+      "metric": "duplicated_lines_density",
+      "op": "GT",
+      "error": "3",
+      "isCaycCondition": false
+    },
+    {
+      "id": "01734561-be87-4d4d-97a0-409b9ee2abea",
+      "metric": "security_hotspots_reviewed",
+      "op": "LT",
+      "error": "100",
+      "isCaycCondition": false
+    }
+  ],
+  "isBuiltIn": false,
+  "actions": {
+    "rename": true,
+    "setAsDefault": true,
+    "copy": true,
+    "associateProjects": true,
+    "delete": true,
+    "manageConditions": true,
+    "delegate": true,
+    "manageAiCodeAssurance": false
+  },
+  "caycStatus": "over-compliant",
+  "isDefault": false,
+  "hasStandardConditions": false,
+  "hasMQRConditions": false,
+  "isAiCodeSupported": false
+}

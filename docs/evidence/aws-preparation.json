@@ -1,0 +1,295 @@
+{
+  "checkedAt": "2026-10-23T14:46:39.368855+00:00",
+  "status": "prepared-not-provisioned",
+  "account": {
+    "accountId": "772641336063",
+    "accountPlanType": "FREE",
+    "accountPlanStatus": "ACTIVE",
+    "accountPlanRemainingCredits": {
+      "amount": 100.0,
+      "unit": "USD"
+    },
+    "accountPlanExpirationDate": "2027-04-21T17:52:26.416000+00:00"
+  },
+  "region": "us-east-2",
+  "durationHours": 24,
+  "instance": {
+    "Type": "m7i-flex.large",
+    "FreeTier": true,
+    "VCpus": 2,
+    "MemoryMiB": 8192
+  },
+  "ami": {
+    "Name": "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64",
+    "Value": "ami-053ef5d7ebe355f4a",
+    "Version": 195
+  },
+  "selectedReleaseMode": "GitHub verification followed by temporary local AWS session deployment",
+  "oidc": {
+    "selected": false,
+    "reason": "Live iam:ListOpenIDConnectProviders denied by managed SCP; documented iam:*Provider* restriction. No provider creation attempted."
+  },
+  "bootstrap": {
+    "scope": "Apply-ready bucket-only plan, awaiting user approval; no OIDC or compute",
+    "terraformVersion": "1.17.0",
+    "savedPlanSHA256": "cb8f09b28cd62261787f5e4bdea66c91ac3192acbc6e8e068fe6a96424af625f",
+    "creates": 5,
+    "updates": 0,
+    "destroys": 0,
+    "resources": [
+      "aws_s3_bucket.state",
+      "aws_s3_bucket_policy.state_tls",
+      "aws_s3_bucket_public_access_block.state",
+      "aws_s3_bucket_server_side_encryption_configuration.state",
+      "aws_s3_bucket_versioning.state"
+    ]
+  },
+  "devPreview": {
+    "scope": "Local-backend preview only; MUST regenerate final S3-backed plan after approved bootstrap",
+    "terraformVersion": "1.17.0",
+    "savedPlanSHA256": "70713543d3147f418a4782b7e458af10a0dddd08125971da9669b103008f002c",
+    "creates": 21,
+    "updates": 0,
+    "destroys": 0,
+    "resources": [
+      "aws_ecr_lifecycle_policy.app[\"backend\"]",
+      "aws_ecr_lifecycle_policy.app[\"frontend\"]",
+      "aws_ecr_repository.app[\"backend\"]",
+      "aws_ecr_repository.app[\"frontend\"]",
+      "aws_iam_instance_profile.host",
+      "aws_iam_role.host",
+      "aws_iam_role_policy.host",
+      "aws_iam_role_policy_attachment.ssm",
+      "aws_instance.dev",
+      "aws_internet_gateway.dev",
+      "aws_route_table.dev",
+      "aws_route_table_association.dev",
+      "aws_s3_bucket.releases",
+      "aws_s3_bucket_policy.releases_tls",
+      "aws_s3_bucket_public_access_block.releases",
+      "aws_s3_bucket_server_side_encryption_configuration.releases",
+      "aws_s3_bucket_versioning.releases",
+      "aws_secretsmanager_secret.runtime",
+      "aws_security_group.dev",
+      "aws_subnet.dev",
+      "aws_vpc.dev"
+    ]
+  },
+  "terraformConfigurationHashes": {
+    "bootstrap": "24f83d7fcd46710bf50a1001531fd01ed3b2c068502e144ad1f0f1fe39dcde8c",
+    "dev": "6395943911714ae6f68404cede1d748c2384cabfa4785a5d064950f07d077753"
+  },
+  "costEstimate": {
+    "region": "us-east-2",
+    "hours": 24,
+    "monthHours": 730,
+    "coreUSD": {
+      "EC2": "2.2982400000",
+      "IPv4": "0.1200000000",
+      "gp3_40GB": "0.1052054794520547945205479452",
+      "one_runtime_secret": "0.01315068493150684931506849315",
+      "ECR_1GB": "0.003287671232876712328767123288"
+    },
+    "coreTotalUSD": "2.539883835616438356164383561",
+    "roundedCoreUSD": "2.54",
+    "exclusions": [
+      "S3 state/release storage and requests",
+      "Secrets Manager API requests",
+      "outbound transfer",
+      "tax",
+      "GitHub Actions minutes/storage"
+    ],
+    "estimateIsCap": false
+  },
+  "officialPrices": {
+    "checkedAt": "2026-10-23T14:23:18.760499+00:00",
+    "region": "us-east-2",
+    "meters": [
+      {
+        "meter": "EC2",
+        "serviceCode": "AmazonEC2",
+        "filters": {
+          "instanceType": "m7i-flex.large",
+          "regionCode": "us-east-2",
+          "operatingSystem": "Linux",
+          "tenancy": "Shared",
+          "preInstalledSw": "NA",
+          "capacitystatus": "Used"
+        },
+        "ok": true,
+        "rates": [
+          {
+            "sku": "NF94DUQA29AU4W9G",
+            "effectiveDate": "2026-10-01T00:00:00Z",
+            "unit": "Hrs",
+            "USD": "0.0957600000",
+            "description": "$0.09576 per On Demand Linux m7i-flex.large Instance Hour"
+          }
+        ]
+      },
+      {
+        "meter": "gp3",
+        "serviceCode": "AmazonEC2",
+        "filters": {
+          "productFamily": "Storage",
+          "volumeApiName": "gp3",
+          "regionCode": "us-east-2"
+        },
+        "ok": true,
+        "rates": [
+          {
+            "sku": "M6UGCCQ3CDJQAA37",
+            "effectiveDate": "2026-10-01T00:00:00Z",
+            "unit": "GB-Mo",
+            "USD": "0.0800000000",
+            "description": "$0.08 per GB-month of General Purpose (gp3) provisioned storage - US East (Ohio)"
+          }
+        ]
+      },
+      {
+        "meter": "IPv4",
+        "serviceCode": "AmazonVPC",
+        "filters": {
+          "usagetype": "USE2-PublicIPv4:InUseAddress",
+          "regionCode": "us-east-2"
+        },
+        "ok": true,
+        "rates": [
+          {
+            "sku": "8HFJK44D9234XNWA",
+            "effectiveDate": "2026-10-01T00:00:00Z",
+            "unit": "Hrs",
+            "USD": "0.0050000000",
+            "description": "$0.005 per In-use public IPv4 address per hour"
+          }
+        ]
+      },
+      {
+        "meter": "SecretsManager",
+        "serviceCode": "AWSSecretsManager",
+        "filters": {
+          "usagetype": "USE2-AWSSecretsManager-Secrets",
+          "regionCode": "us-east-2"
+        },
+        "ok": true,
+        "rates": [
+          {
+            "sku": "HHK3AZN6HN5CFDJM",
+            "effectiveDate": "2025-07-01T00:00:00Z",
+            "unit": "Secrets",
+            "USD": "0.4000000000",
+            "description": "$0.40 per Secret"
+          }
+        ]
+      },
+      {
+        "meter": "ECR",
+        "serviceCode": "AmazonECR",
+        "filters": {
+          "usagetype": "USE2-TimedStorage-ByteHrs",
+          "regionCode": "us-east-2"
+        },
+        "ok": true,
+        "rates": [
+          {
+            "sku": "NA4VZMZUEQGMXP2Y",
+            "attributes": {
+              "regionCode": "us-east-2",
+              "servicecode": "AmazonECR",
+              "usagetype": "USE2-TimedStorage-ByteHrs",
+              "locationType": "AWS Region",
+              "storageType": "S3",
+              "location": "US East (Ohio)",
+              "servicename": "Amazon EC2 Container Registry (ECR)",
+              "operation": ""
+            },
+            "effectiveDate": "2025-11-01T00:00:00Z",
+            "unit": "GB-Mo",
+            "USD": "0.1000000000",
+            "description": "$0.10 per GB-month of data storage"
+          }
+        ]
+      }
+    ]
+  },
+  "provisioned": false,
+  "teardownScheduled": false,
+  "preparedChecks": {
+    "terraformMockRuns": {
+      "dev": 5,
+      "bootstrap": 2,
+      "note": "mock provider only; no live apply"
+    },
+    "releaseContractTests": {
+      "passed": 28,
+      "failed": 0,
+      "evidence": "docs/evidence/release-contract-tests.txt"
+    },
+    "isolatedSonarPositive": {
+      "ceTaskId": "d6783b4c-bace-4ffc-b8d8-be9ca4fb03b9",
+      "analysisId": "7be54378-5633-46f4-8700-aec2002b955a",
+      "projectStatus": {
+        "status": "OK",
+        "conditions": [
+          {
+            "status": "OK",
+            "metricKey": "coverage",
+            "comparator": "LT",
+            "errorThreshold": "80",
+            "actualValue": "82.3"
+          },
+          {
+            "status": "OK",
+            "metricKey": "duplicated_lines_density",
+            "comparator": "GT",
+            "errorThreshold": "3",
+            "actualValue": "0.0"
+          },
+          {
+            "status": "OK",
+            "metricKey": "violations",
+            "comparator": "GT",
+            "errorThreshold": "0",
+            "actualValue": "0"
+          }
+        ],
+        "ignoredConditions": false,
+        "caycStatus": "over-compliant"
+      }
+    },
+    "isolatedSonarNegative": {
+      "ceTaskId": "ebc57596-cec5-49e3-8954-7467fc777fbe",
+      "analysisId": "2829da92-911c-4fac-8dbd-c7d37e646606",
+      "projectStatus": {
+        "status": "ERROR",
+        "conditions": [
+          {
+            "status": "ERROR",
+            "metricKey": "coverage",
+            "comparator": "LT",
+            "errorThreshold": "80",
+            "actualValue": "0.0"
+          },
+          {
+            "status": "OK",
+            "metricKey": "duplicated_lines_density",
+            "comparator": "GT",
+            "errorThreshold": "3",
+            "actualValue": "0.0"
+          },
+          {
+            "status": "OK",
+            "metricKey": "violations",
+            "comparator": "GT",
+            "errorThreshold": "0",
+            "actualValue": "0"
+          }
+        ],
+        "ignoredConditions": false,
+        "caycStatus": "over-compliant"
+      }
+    },
+    "backendRuntimeSecurity": "docs/evidence/backend-runtime-image-security.json",
+    "sourceChecksAndBuilds": "passed locally; fresh exact-source GitHub verification pending"
+  }
+}

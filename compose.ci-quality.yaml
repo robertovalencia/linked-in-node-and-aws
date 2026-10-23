@@ -1,0 +1,38 @@
+# Ephemeral quality infrastructure only; never combine with compose.yaml.
+# The invoking script supplies an isolated project name and one-use DB password.
+services:
+  sonar-db:
+    image: postgres:17.6-alpine
+    mem_limit: 384m
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_DB: sonar
+      POSTGRES_PASSWORD: ${CI_SONAR_DB_PASSWORD:?Use scripts/sonar-ci.mjs}
+    volumes: [sonar-db:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U sonar -d sonar]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+  sonarqube:
+    image: sonarqube:26.10.0.133078-community
+    mem_limit: 3g
+    ports: ['127.0.0.1:9292:9000']
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonar-db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: ${CI_SONAR_DB_PASSWORD}
+    ulimits:
+      nofile: {soft: 131072, hard: 131072}
+      nproc: 8192
+    depends_on:
+      sonar-db: {condition: service_healthy}
+    volumes:
+      - sonar-data:/opt/sonarqube/data
+      - sonar-extensions:/opt/sonarqube/extensions
+      - sonar-logs:/opt/sonarqube/logs
+volumes:
+  sonar-db:
+  sonar-data:
+  sonar-extensions:
+  sonar-logs:

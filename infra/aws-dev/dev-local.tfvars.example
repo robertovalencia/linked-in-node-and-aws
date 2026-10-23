@@ -1,0 +1,7 @@
+# Selected 24-hour Free plan demo: GitHub validates; local temporary credentials deploy.
+# This mode does not create or manage an account-wide GitHub OIDC provider.
+region                   = "us-east-2"
+project                  = "linked-in-node"
+github_repository        = "robertovalencia/linked-in-node-and-aws"
+instance_type            = "m7i-flex.large"
+enable_github_deployment = false

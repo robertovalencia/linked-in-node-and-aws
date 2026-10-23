@@ -1,4 +1,8 @@
+# Optional GitHub deployment mode; requires an existing account OIDC provider.
+# For the selected temporary-local-login demo use dev-local.tfvars.example.
 region = "us-east-1"
 project = "linked-in-node"
 github_repository = "robertovalencia/linked-in-node-and-aws"
 oidc_provider_arn = "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
+instance_type = "m7i-flex.large"
+enable_github_deployment = true

@@ -16,3 +16,5 @@ work/
 .scannerwork/
 
 .idea/
+
+infra/aws-dev/backend.hcl

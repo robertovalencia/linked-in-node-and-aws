@@ -13,8 +13,8 @@ This is an independent interview laboratory migrated from reference commit `582c
 | R07 | Eventual notifications | Inquiry/outbox commit atomically; broker failure does not lose intent; consumer deduplicates; read ownership persists |
 | R08 | Readable React architecture | Separate components/services/routes/types/contexts/hooks; loading/error/empty states and stale-response handling |
 | R09 | Reproducible local setup | No AWS credentials; Compose data dependencies; hot reload; explicit start/test/debug/reset/stop commands |
-| R10 | Isolated AWS dev | Terraform validated/mocked; separate state/secrets/data; immutable release, smoke verification and rollback |
-| R11 | Enforced delivery toolchain | ESLint, Prettier, strict types, Vitest/Jest, Dependabot, SonarQube gate, GitHub Actions; Jira import and VS Code setup |
+| R10 | Isolated AWS dev | Terraform validated/mocked for optional GitHub OIDC and selected temporary-local-login mode; reviewed final S3-backed plan; separate state/secrets/data; immutable release, exact-command 48-check smoke evidence and rollback; 24-hour teardown |
+| R11 | Enforced delivery toolchain | ESLint, Prettier, strict types, Vitest/Jest, Dependabot, isolated CI SonarQube 80% gate and exact-SHA successful verification before release; hosted Cloud configured pending; Jira import and VS Code setup |
 | R12 | AI-assisted learning and traceability | Codex instructions/specs/prompts; README-linked guides; requirements → tests → source → deployment → release record |
 
 The existing product exposes inquiry creation and reading plus profile/status/inbox updates. It has no profile deletion workflow: “CRUD layer design” means clear responsibility separation, not inventing destructive endpoints. New deletion requirements need their own product specification.

@@ -1,0 +1,32 @@
+{
+  "ceTaskId": "d6783b4c-bace-4ffc-b8d8-be9ca4fb03b9",
+  "analysisId": "7be54378-5633-46f4-8700-aec2002b955a",
+  "projectStatus": {
+    "status": "OK",
+    "conditions": [
+      {
+        "status": "OK",
+        "metricKey": "coverage",
+        "comparator": "LT",
+        "errorThreshold": "80",
+        "actualValue": "82.3"
+      },
+      {
+        "status": "OK",
+        "metricKey": "duplicated_lines_density",
+        "comparator": "GT",
+        "errorThreshold": "3",
+        "actualValue": "0.0"
+      },
+      {
+        "status": "OK",
+        "metricKey": "violations",
+        "comparator": "GT",
+        "errorThreshold": "0",
+        "actualValue": "0"
+      }
+    ],
+    "ignoredConditions": false,
+    "caycStatus": "over-compliant"
+  }
+}

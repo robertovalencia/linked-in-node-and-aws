@@ -1,0 +1,58 @@
+{
+  "scope": "Local linux/amd64 backend runtime image repair; not an AWS deployment or complete business acceptance run",
+  "baseImage": "node:22.23.4-alpine3.24@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914",
+  "baseAmd64Manifest": "sha256:025b8e975a61d94e33abeafaad1255ef44e4898cf1a1b6446860009c72e6d284",
+  "baseline": {
+    "path": "work/aws-preparation/backend-image-scan.json",
+    "sha256": "60c6497eda22be45d4755751b0763b2755218803ff16fa93c25738936b389319",
+    "createdAt": "2026-10-23T10:43:54.924949-04:00",
+    "os": {
+      "Family": "alpine",
+      "Name": "3.23.3"
+    },
+    "highCriticalCounts": {
+      "CRITICAL": 5,
+      "HIGH": 54
+    },
+    "retainedReport": "docs/evidence/backend-runtime-image-scan-before-repair.json"
+  },
+  "repaired": {
+    "path": "work/aws-preparation/backend-image-scan-repaired.json",
+    "sha256": "8a6ab41065c032a6988e4705cac2d160b2a2a893f5cf2424173895c0f89e854d",
+    "createdAt": "2026-10-23T10:45:42.507851-04:00",
+    "os": {
+      "Family": "alpine",
+      "Name": "3.24.3"
+    },
+    "highCriticalCounts": {},
+    "retainedReport": "docs/evidence/backend-runtime-image-scan-after-repair.json"
+  },
+  "buildCommand": "docker buildx build --platform linux/amd64 --provenance=false --output type=docker,dest=work/aws-preparation/backend-image-repaired.tar backend",
+  "scanCommand": "work/tools/trivy-0.76.1/trivy --cache-dir work/tools/trivy-cache image --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed=false --format json --output work/aws-preparation/backend-image-scan-repaired.json --input work/aws-preparation/backend-image-repaired.tar",
+  "scanExitCode": 0,
+  "scannerVersion": "0.76.1",
+  "exclusionsAdded": false,
+  "runtimeArchiveSha256": "3b208f3c41383737a77b6350d02b0343ab868627f05d220432975d44177e815e",
+  "dockerLoadedImageId": "sha256:196a0c7cf3cfca21baecfde21bb0abd5a83977f79f254bdcc025c505567ba994",
+  "runtimeProbe": {
+    "exitCode": 0,
+    "node": "v22.23.4",
+    "uid": 1000,
+    "runtimeDependencies": "NestJS, pg, KafkaJS, jsonwebtoken, Zod loaded",
+    "runtimeFiles": "dist/main.js, migrations, seeds present",
+    "packageManagers": "npm, npx, corepack, yarn absent",
+    "scryptBytes": 32
+  },
+  "remainingGate": "Fresh exact-source CI and full HTTP acceptance must pass; this local archive does not establish AWS success.",
+  "imageIdentity": {
+    "archiveIndexManifestDigest": "sha256:196a0c7cf3cfca21baecfde21bb0abd5a83977f79f254bdcc025c505567ba994",
+    "manifestConfigDigest": "sha256:48aeb09772ee0ed9fa665159a5355828d16ce00e3dfece11157b23775a8d6606",
+    "trivyMetadataImageId": "sha256:48aeb09772ee0ed9fa665159a5355828d16ce00e3dfece11157b23775a8d6606",
+    "dockerInspectId": "sha256:196a0c7cf3cfca21baecfde21bb0abd5a83977f79f254bdcc025c505567ba994",
+    "dockerInspectDescriptorDigest": "sha256:196a0c7cf3cfca21baecfde21bb0abd5a83977f79f254bdcc025c505567ba994",
+    "configRootfsMatchesDockerInspect": true,
+    "configDigestVerified": true,
+    "manifestDigestVerified": true,
+    "explanation": "Trivy reports the archive config digest as ImageID; Docker Desktop containerd loads/runs the image by its distribution manifest digest. The archive manifest binds the exact config digest and all rootfs diff IDs match Docker inspection."
+  }
+}
