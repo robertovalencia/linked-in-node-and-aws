@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with: {fetch-depth: 0}
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
@@ -65,7 +65,7 @@ jobs:
       BACKEND_REPOSITORY: ${{ vars.BACKEND_REPOSITORY }}
       FRONTEND_REPOSITORY: ${{ vars.FRONTEND_REPOSITORY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
