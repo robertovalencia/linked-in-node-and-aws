@@ -62,8 +62,8 @@ run "temporary_local_login_deployment" {
   command = plan
   variables {
     region                   = "us-east-2"
-    enable_github_deployment  = false
-    oidc_provider_arn         = null
+    enable_github_deployment = false
+    oidc_provider_arn        = null
   }
   assert {
     condition     = length(aws_iam_role.deploy) == 0 && length(aws_iam_role_policy.deploy) == 0 && output.deploy_role_arn == null
