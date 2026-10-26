@@ -53,12 +53,21 @@ Without executing cloud files, annotate the subnet excerpt with block type, reso
 
 ## Checkpoint and answer
 
-**Question:** If `variables.tf` sorts after `main.tf`, does Terraform create the resource before reading its variable declaration? **Answer:** No. Terraform loads the module configuration as a whole and evaluates references. File names organize people, while dependencies organize work. Moving declarations between files does not itself move resources between states.
+### Recall: If `variables.tf` sorts after `main.tf`, does Terraform create the resource before reading its variable declaration?
+
+**Answer:** No. Terraform loads the module configuration as a whole and evaluates references. File names organize people, while dependencies organize work. Moving declarations between files does not itself move resources between states.
 
 ## Interview tradeoff and common pitfalls
 
 A useful junior explanation identifies the desired object. A senior explanation also identifies ownership, dependencies, state, review and recovery. Declarative code makes repeated execution predictable when configuration, observations and provider behavior agree; it does not remove failures or make every apply transactional. Avoid treating Terraform as a shell script, assuming a public subnet is an open firewall, or copying an AWS apply command just to understand syntax. The local lab builds mechanical confidence before any cloud action is considered.
 
-Primary references, checked 2026-10-26: [HashiCorp types and values](https://developer.hashicorp.com/terraform/language/expressions/types), [references](https://developer.hashicorp.com/terraform/language/expressions/references), and [terraform_data](https://developer.hashicorp.com/terraform/language/resources/terraform-data). Read these alongside the project excerpt, because language rules and the project's design choices answer different questions.
+## References
+
+Official sources checked on 2026-10-26.
+
+- [HashiCorp types and values](https://developer.hashicorp.com/terraform/language/expressions/types)
+- [references](https://developer.hashicorp.com/terraform/language/expressions/references)
+- [terraform_data](https://developer.hashicorp.com/terraform/language/resources/terraform-data)
+
 
 [Previous lesson](./31-aws-production-design-tradeoffs.md) · [Next lesson](./33-terraform-providers-versions-and-init.md)

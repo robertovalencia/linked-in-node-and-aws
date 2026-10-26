@@ -57,12 +57,21 @@ If initialization fails, first identify whether the message names Terraform's ve
 
 ## Checkpoint and answer
 
-**Question:** Does `provider "aws" { region = var.region }` set the S3 state bucket's region? **Answer:** No. The backend receives its own initialization configuration. The resource provider uses `var.region`; the backend example separately specifies its own region. Changing an application input does not migrate a backend or relocate an existing state bucket.
+### Recall: Does `provider "aws" { region = var.region }` set the S3 state bucket's region?
+
+**Answer:** No. The backend receives its own initialization configuration. The resource provider uses `var.region`; the backend example separately specifies its own region. Changing an application input does not migrate a backend or relocate an existing state bucket.
 
 ## Interview tradeoff and pitfalls
 
 Broader compatible version ranges admit fixes without editing every module, while committed lock selections make actual runs reproducible. Strict pinning can simplify controlled upgrades but also postpones fixes unless someone maintains it. Explain both the constraint and the selected version before claiming reproducibility. Avoid committing `.terraform`, treating lock files as state backups, putting credentials in backend examples, or running init against a live backend during an exercise intended to be offline.
 
-Primary references, checked 2026-10-26: [dependency lock file](https://developer.hashicorp.com/terraform/language/files/dependency-lock), [S3 backend](https://developer.hashicorp.com/terraform/language/backend/s3), and [validation initialization requirements](https://developer.hashicorp.com/terraform/cli/commands/validate). The inspected project declares Terraform 1.10 or newer because native S3 lock-file configuration is part of its intended backend setup.
+## References
+
+Official sources checked on 2026-10-26.
+
+- [dependency lock file](https://developer.hashicorp.com/terraform/language/files/dependency-lock)
+- [S3 backend](https://developer.hashicorp.com/terraform/language/backend/s3)
+- [validation initialization requirements](https://developer.hashicorp.com/terraform/cli/commands/validate)
+
 
 [Previous lesson](./32-terraform-hcl-and-first-local-lab.md) · [Next lesson](./34-terraform-inputs-locals-and-outputs.md)

@@ -73,12 +73,21 @@ For a paper exercise, label the project buckets by responsibility: the bootstrap
 
 ## Checkpoint and answer
 
-**Question:** Does `sensitive = true` on an output remove its value from state, and does a lock recover a deleted state object? **Answer:** No to both. Sensitivity controls normal display, while state requires storage protection. Locking coordinates writers; versioning and a tested recovery procedure address recovery.
+### Recall: Does `sensitive = true` on an output remove its value from state, and does a lock recover a deleted state object?
+
+**Answer:** No to both. Sensitivity controls normal display, while state requires storage protection. Locking coordinates writers; versioning and a tested recovery procedure address recovery.
 
 ## Interview tradeoff and pitfalls
 
 Separating bootstrap from application state reduces accidental coupling but adds another ownership record to protect. Remote state enables collaboration but needs access control, service availability and recovery practice. Treat `prevent_destroy` as a useful planning guard while its configuration remains present, not an account-wide deletion policy. Avoid merging unrelated environments into one key, assuming provider credentials configure the backend, or mixing application cleanup with state-storage deletion.
 
-Primary references checked 2026-10-26: [S3 backend](https://developer.hashicorp.com/terraform/language/backend/s3), [sensitive data](https://developer.hashicorp.com/terraform/language/manage-sensitive-data), and [lifecycle rules](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle). This reading and the local lab require no S3 initialization or cloud provisioning.
+## References
+
+Official sources checked on 2026-10-26.
+
+- [S3 backend](https://developer.hashicorp.com/terraform/language/backend/s3)
+- [sensitive data](https://developer.hashicorp.com/terraform/language/manage-sensitive-data)
+- [lifecycle rules](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle)
+
 
 [Previous lesson](./35-terraform-graph-loops-and-modules.md) · [Next lesson](./37-terraform-plan-apply-and-drift.md)

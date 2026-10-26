@@ -55,12 +55,21 @@ The credential-free runner was executed with Terraform 1.17.0. Its first plan, u
 
 ## Checkpoint and answer
 
-**Question:** Does a successful mocked assertion that the security group's ingress is empty prove an SSM tunnel will connect? **Answer:** No. It verifies a configuration property. Real SSM connectivity also needs a healthy agent, credentials, network access, instance registration and caller permissions. Each belongs to later authorized integration evidence.
+### Recall: Does a successful mocked assertion that the security group's ingress is empty prove an SSM tunnel will connect?
+
+**Answer:** No. It verifies a configuration property. Real SSM connectivity also needs a healthy agent, credentials, network access, instance registration and caller permissions. Each belongs to later authorized integration evidence.
 
 ## Interview tradeoff and pitfalls
 
 Fast mocked tests catch regression in branching, names, policy construction and resource arguments. Real account integration checks catch service behavior and permission errors that mocks cannot simulate faithfully. A sound delivery process uses each at its appropriate boundary. Do not run uninspected tests against production, count mock assertions as deployment verification, weaken a failing assertion to claim success, or infer resource availability from a fixture AMI. Name the observed check, its result and its limit.
 
-Primary references checked 2026-10-26: [validate command](https://developer.hashicorp.com/terraform/cli/commands/validate), [Terraform tests](https://developer.hashicorp.com/terraform/language/tests), and [provider mocking](https://developer.hashicorp.com/terraform/language/tests/mocking). Continue to the release lesson to connect validated infrastructure configuration with actual build artifacts and selected deployment identity.
+## References
+
+Official sources checked on 2026-10-26.
+
+- [validate command](https://developer.hashicorp.com/terraform/cli/commands/validate)
+- [Terraform tests](https://developer.hashicorp.com/terraform/language/tests)
+- [provider mocking](https://developer.hashicorp.com/terraform/language/tests/mocking)
+
 
 [Previous lesson](./38-terraform-lifecycle-import-and-refactoring.md) · [Next lesson](./40-aws-release-pipeline-and-oidc.md)

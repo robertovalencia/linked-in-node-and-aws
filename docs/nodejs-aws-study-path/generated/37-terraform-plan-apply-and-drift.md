@@ -53,7 +53,9 @@ The built-in resource has no external API object for another person to edit. The
 
 ## Checkpoint and answer
 
-**Question:** A plan says one resource will change. Is that enough information to approve it? **Answer:** No. Read the address, action type, changed arguments, dependencies and data/recovery implications. Replacing the only compute host can be more consequential than creating several independent metadata objects. A no-op plan also does not prove the application is healthy.
+### Recall: A plan says one resource will change. Is that enough information to approve it?
+
+**Answer:** No. Read the address, action type, changed arguments, dependencies and data/recovery implications. Replacing the only compute host can be more consequential than creating several independent metadata objects. A no-op plan also does not prove the application is healthy.
 
 ## Interview tradeoff and pitfalls
 
@@ -61,6 +63,11 @@ A normal plan evaluates desired convergence. A refresh-only plan is useful when 
 
 A senior review explains cause, effect, downtime, rollback limits and the evidence needed after apply. Avoid assuming plan means authorization, confusing a provider observation with an input value, publishing saved plans as ordinary text artifacts, or treating a failed apply as if nothing happened. Preserve the diagnostic and examine the next plan carefully.
 
-Primary reference checked 2026-10-26: [HashiCorp plan command](https://developer.hashicorp.com/terraform/cli/commands/plan) documents planning modes, saved plans and detailed exit codes. Compare that general contract with the repository's explicit user-data replacement setting and the lab's observed action assertions.
+## References
+
+Official sources checked on 2026-10-26.
+
+- [HashiCorp plan command](https://developer.hashicorp.com/terraform/cli/commands/plan)
+
 
 [Previous lesson](./36-terraform-state-locking-and-bootstrap.md) · [Next lesson](./38-terraform-lifecycle-import-and-refactoring.md)

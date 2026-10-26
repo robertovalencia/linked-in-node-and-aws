@@ -56,12 +56,23 @@ Expected result: ECR has backend and frontend keys. The optional deploy role and
 
 ## Checkpoint and answer
 
-**Question:** Can `dynamic "credit_specification"` give each CPU-credit block an independently managed Terraform address? **Answer:** No. It generates nested blocks inside the instance resource. Top-level `count` or `for_each` creates separately addressed resource instances; dynamic blocks configure one resource's schema.
+### Recall: Can `dynamic "credit_specification"` give each CPU-credit block an independently managed Terraform address?
+
+**Answer:** No. It generates nested blocks inside the instance resource. Top-level `count` or `for_each` creates separately addressed resource instances; dynamic blocks configure one resource's schema.
 
 ## Interview tradeoff and pitfalls
 
 Prefer references that communicate real relationships. Excessive `depends_on` makes the graph more conservative and can propagate unknown values, while missing a true readiness relationship can start a dependent action too early. Choose keys for identity, not just convenient display text. Avoid cycles, dependencies added solely to force arbitrary file ordering, and claims that this demo already implements a reusable production module platform.
 
-Primary references checked 2026-10-26: [for_each](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each), [count](https://developer.hashicorp.com/terraform/language/meta-arguments/count), [dynamic blocks](https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks), and [HashiCorp value references](https://developer.hashicorp.com/terraform/language/expressions/references) explains inferred dependencies. [Module refactoring](https://developer.hashicorp.com/terraform/language/modules/develop/refactoring) explains the migration work needed when addresses change.
+## References
+
+Official sources checked on 2026-10-26.
+
+- [for_each](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each)
+- [count](https://developer.hashicorp.com/terraform/language/meta-arguments/count)
+- [dynamic blocks](https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks)
+- [HashiCorp value references](https://developer.hashicorp.com/terraform/language/expressions/references)
+- [Module refactoring](https://developer.hashicorp.com/terraform/language/modules/develop/refactoring)
+
 
 [Previous lesson](./34-terraform-inputs-locals-and-outputs.md) · [Next lesson](./36-terraform-state-locking-and-bootstrap.md)

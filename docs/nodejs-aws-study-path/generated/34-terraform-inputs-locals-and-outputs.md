@@ -54,12 +54,21 @@ Next inspect the `invalid_project` test. It deliberately supplies `Invalid Proje
 
 ## Checkpoint and answer
 
-**Question:** If the selected tfvars example says us-east-2, but the variable default says us-east-1, which describes that selected configuration? **Answer:** The supplied us-east-2 value overrides the default. It does not override the S3 backend region, because backend initialization has a separate configuration channel.
+### Recall: If the selected tfvars example says us-east-2, but the variable default says us-east-1, which describes that selected configuration?
+
+**Answer:** The supplied us-east-2 value overrides the default. It does not override the S3 backend region, because backend initialization has a separate configuration channel.
 
 ## Interview tradeoff and pitfalls
 
 Strong contracts shorten feedback loops and make automation predictable. Excessively elaborate validation can reproduce a provider imperfectly and become harder to maintain than the problem it prevents. Validate decisions your module owns, give useful messages, and let the provider validate its full API schema. Avoid using `try` to hide every error: here it models one intentional optional resource. Review the difference between an absent feature, a malformed required input and a failed remote API request before choosing a fallback.
 
-Primary references, checked 2026-10-26: [input variables](https://developer.hashicorp.com/terraform/language/values/variables), [local values](https://developer.hashicorp.com/terraform/language/values/locals), and [value references](https://developer.hashicorp.com/terraform/language/expressions/references). The examples above explain this repository's selected values rather than promising that a default instance type has universal pricing or eligibility.
+## References
+
+Official sources checked on 2026-10-26.
+
+- [input variables](https://developer.hashicorp.com/terraform/language/values/variables)
+- [local values](https://developer.hashicorp.com/terraform/language/values/locals)
+- [value references](https://developer.hashicorp.com/terraform/language/expressions/references)
+
 
 [Previous lesson](./33-terraform-providers-versions-and-init.md) · [Next lesson](./35-terraform-graph-loops-and-modules.md)

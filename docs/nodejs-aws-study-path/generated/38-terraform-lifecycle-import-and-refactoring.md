@@ -64,12 +64,21 @@ This teaching lab does not perform a cloud import. Import is introduced to expla
 
 ## Checkpoint and answer
 
-**Question:** Does a moved block bring an untracked existing AWS bucket into state? **Answer:** No. It tells Terraform how an already tracked address changed. Import adopts an existing object. After either operation, a plan must still verify that configuration changes do not cause an unintended update or replacement.
+### Recall: Does a moved block bring an untracked existing AWS bucket into state?
+
+**Answer:** No. It tells Terraform how an already tracked address changed. Import adopts an existing object. After either operation, a plan must still verify that configuration changes do not cause an unintended update or replacement.
 
 ## Interview tradeoff and pitfalls
 
 Declarative migration blocks preserve reviewable history and support teammates upgrading through older configurations. Removing them too early can break migration paths for a state that has not yet moved. Prefer a small migration, explicit identity checks and a no-op follow-up plan over a combined rename, provider upgrade and architecture change that obscures cause. Never hand-edit state casually, delete state to solve a rename, or treat force-destroy options as harmless cleanup defaults for valuable data.
 
-Primary references checked 2026-10-26: [lifecycle meta-arguments](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle), [module refactoring and moved blocks](https://developer.hashicorp.com/terraform/language/modules/develop/refactoring), and [import overview](https://developer.hashicorp.com/terraform/language/import). The import scenario is explicitly hypothetical; the lifecycle excerpts and executed local move are concrete evidence.
+## References
+
+Official sources checked on 2026-10-26.
+
+- [lifecycle meta-arguments](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle)
+- [module refactoring and moved blocks](https://developer.hashicorp.com/terraform/language/modules/develop/refactoring)
+- [import overview](https://developer.hashicorp.com/terraform/language/import)
+
 
 [Previous lesson](./37-terraform-plan-apply-and-drift.md) · [Next lesson](./39-terraform-validation-and-mocked-tests.md)
