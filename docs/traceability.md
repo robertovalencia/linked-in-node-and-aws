@@ -20,3 +20,8 @@ The stable identifiers below map the interview specification to source, tests an
 For a new change use branch/commit naming such as `R05: preserve idempotency across retries`, then add the actual commit SHA and pull-request/workflow links to its review entry. A release records source SHA, migration versions, test-report identity and immutable image digests. The prepared AWS deploy script retains deployed digests for rollback; it is not proof of a deployment until executed.
 
 [Jira CSV](jira-import.csv) has importable Summary, Description, Issue Type and Labels columns. In Jira map those fields in CSV import, choose your existing project, inspect the preview and import. Add returned issue keys to this table and link pull requests manually or through your configured integration. CSV creation did not access Jira.
+
+
+## Cloud study extension evidence
+
+R12 → `docs/nodejs-aws-study-path/generated/20–43` → `scripts/check-cloud-study.py` → `labs/terraform-local/run.py` and `evidence/` → independent curriculum review. These are teaching/local verification results, not AWS deployment evidence. The app imports managed guides with profile-scoped IDs and preserves personal notes/expansions/comments.

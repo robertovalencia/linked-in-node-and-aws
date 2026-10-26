@@ -300,3 +300,16 @@ Local source paths below are relative to /Users/robertovalencia/Documents/Busine
 - [Project source: frontend/nginx.conf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/nginx.conf#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
 - [Project source: infra/aws-dev/main.tf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/aws-dev/main.tf#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
 - [Project source: infra/bootstrap/main.tf](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/infra/bootstrap/main.tf#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+
+
+## Expanded AWS/Terraform coverage
+
+| Learning area | Stepwise lessons | Real project reference | Evidence to produce |
+|---|---|---|---|
+| AWS identity, network and host |21–25 |infra/aws-dev/main.tf, user-data.sh |Identity matrix, traffic trace, data-lifetime table |
+| Artifacts, secrets and managed-service choices |26–28 |ECR/S3/Secrets resources, AWS Compose |Digest chain, storage inventory, proposed migration tradeoffs |
+| Operations, cost and production design |29–31 |aws-smoke.sh, costs.md, short-run.md |Diagnostic timeline, dated cost worksheet, clearly labeled production proposal |
+| Terraform mechanics |32–39 |Both Terraform roots, backend.hcl.example, mocked tests |Credential-free lab output, state/lock/plan explanations, assertion evidence |
+| Delivery and interview defense |40–43 |deploy-dev.yml, aws-release-local.mjs, aws-remote-deploy.sh |Exact-SHA gate trace, rollback limitations, scored rehearsal |
+
+Start the [cloud roadmap](20-cloud-roadmap-and-lab.md). These additions expand interview preparation; they do not claim a live AWS deployment or every AWS service is covered.

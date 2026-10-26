@@ -1,0 +1,55 @@
+{
+  "scope": "temporary source copies; aws-dev backend removed; only mock_provider aws tests; cached locked provider schema",
+  "results": [
+    {
+      "root": "bootstrap",
+      "command": [
+        "terraform",
+        "init",
+        "-backend=false",
+        "-input=false",
+        "-no-color",
+        "-plugin-dir=/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/infra/bootstrap/.terraform/providers"
+      ],
+      "exit_code": 0,
+      "stdout": "Initializing provider plugins...\n- Reusing version 6.69.1 of hashicorp/aws from the dependency lock file\n- Installing hashicorp/aws v6.69.1...\n- Installed hashicorp/aws v6.69.1 (unauthenticated)\n\nTerraform has been successfully initialized!\n",
+      "stderr": ""
+    },
+    {
+      "root": "bootstrap",
+      "command": [
+        "terraform",
+        "validate",
+        "-no-color"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "\nError: Failed to load plugin schemas\n\nError while loading schemas for plugin components: Failed to obtain provider\nschema: Could not load the schema for provider\nregistry.terraform.io/hashicorp/aws: failed to instantiate provider\n\"registry.terraform.io/hashicorp/aws\" to obtain schema: Unrecognized remote\nplugin message: \nFailed to read any lines from plugin's stdout\nThis usually means\n  the plugin was not compiled for this architecture,\n  the plugin is missing dynamic-link libraries necessary to run,\n  the plugin is not executable by this process due to file permissions, or\n  the plugin failed to negotiate the initial go-plugin protocol handshake\n\nAdditional notes about plugin:\n  Path: .terraform/providers/registry.terraform.io/hashicorp/aws/6.69.1/darwin_arm64/terraform-provider-aws_v6.69.1_x5\n  Mode: -rwxr-xr-x\n  Owner: 501 [robertovalencia] (current: 501 [robertovalencia])\n  Group: 20 [staff] (current: 20 [staff])\n  MachO architecture: CpuArm64 (current architecture: arm64)\n..\n"
+    },
+    {
+      "root": "aws-dev",
+      "command": [
+        "terraform",
+        "init",
+        "-backend=false",
+        "-input=false",
+        "-no-color",
+        "-plugin-dir=/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/infra/aws-dev/.terraform/providers"
+      ],
+      "exit_code": 0,
+      "stdout": "Initializing provider plugins...\n- Reusing version 6.69.1 of hashicorp/aws from the dependency lock file\n- Installing hashicorp/aws v6.69.1...\n- Installed hashicorp/aws v6.69.1 (unauthenticated)\n\nTerraform has been successfully initialized!\n",
+      "stderr": ""
+    },
+    {
+      "root": "aws-dev",
+      "command": [
+        "terraform",
+        "validate",
+        "-no-color"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "\nError: Failed to load plugin schemas\n\nError while loading schemas for plugin components: Failed to obtain provider\nschema: Could not load the schema for provider\nregistry.terraform.io/hashicorp/aws: failed to instantiate provider\n\"registry.terraform.io/hashicorp/aws\" to obtain schema: Unrecognized remote\nplugin message: \nFailed to read any lines from plugin's stdout\nThis usually means\n  the plugin was not compiled for this architecture,\n  the plugin is missing dynamic-link libraries necessary to run,\n  the plugin is not executable by this process due to file permissions, or\n  the plugin failed to negotiate the initial go-plugin protocol handshake\n\nAdditional notes about plugin:\n  Path: .terraform/providers/registry.terraform.io/hashicorp/aws/6.69.1/darwin_arm64/terraform-provider-aws_v6.69.1_x5\n  Mode: -rwxr-xr-x\n  Owner: 501 [robertovalencia] (current: 501 [robertovalencia])\n  Group: 20 [staff] (current: 20 [staff])\n  MachO architecture: CpuArm64 (current architecture: arm64)\n..\n"
+    }
+  ]
+}

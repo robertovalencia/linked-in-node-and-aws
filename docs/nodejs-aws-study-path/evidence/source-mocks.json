@@ -1,0 +1,77 @@
+{
+  "scope": "temporary source copies; aws-dev backend removed; only mock_provider aws tests; cached locked provider schema",
+  "results": [
+    {
+      "root": "bootstrap",
+      "command": [
+        "terraform",
+        "init",
+        "-backend=false",
+        "-input=false",
+        "-no-color",
+        "-plugin-dir=/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/infra/bootstrap/.terraform/providers"
+      ],
+      "exit_code": 0,
+      "stdout": "Initializing provider plugins...\n- Reusing version 6.69.1 of hashicorp/aws from the dependency lock file\n- Installing hashicorp/aws v6.69.1...\n- Installed hashicorp/aws v6.69.1 (unauthenticated)\n\nTerraform has been successfully initialized!\n",
+      "stderr": ""
+    },
+    {
+      "root": "bootstrap",
+      "command": [
+        "terraform",
+        "validate",
+        "-no-color"
+      ],
+      "exit_code": 0,
+      "stdout": "Success! The configuration is valid.\n\n",
+      "stderr": ""
+    },
+    {
+      "root": "bootstrap",
+      "command": [
+        "terraform",
+        "test",
+        "-no-color"
+      ],
+      "exit_code": 0,
+      "stdout": "tests/security.tftest.hcl... in progress\n  run \"private_encrypted_state\"... pass\n  run \"explicit_github_oidc\"... pass\ntests/security.tftest.hcl... tearing down\ntests/security.tftest.hcl... pass\n\nSuccess! 2 passed, 0 failed.\n",
+      "stderr": ""
+    },
+    {
+      "root": "aws-dev",
+      "command": [
+        "terraform",
+        "init",
+        "-backend=false",
+        "-input=false",
+        "-no-color",
+        "-plugin-dir=/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/infra/aws-dev/.terraform/providers"
+      ],
+      "exit_code": 0,
+      "stdout": "Initializing provider plugins...\n- Reusing version 6.69.1 of hashicorp/aws from the dependency lock file\n- Installing hashicorp/aws v6.69.1...\n- Installed hashicorp/aws v6.69.1 (unauthenticated)\n\nTerraform has been successfully initialized!\n",
+      "stderr": ""
+    },
+    {
+      "root": "aws-dev",
+      "command": [
+        "terraform",
+        "validate",
+        "-no-color"
+      ],
+      "exit_code": 0,
+      "stdout": "Success! The configuration is valid.\n\n",
+      "stderr": ""
+    },
+    {
+      "root": "aws-dev",
+      "command": [
+        "terraform",
+        "test",
+        "-no-color"
+      ],
+      "exit_code": 0,
+      "stdout": "tests/security.tftest.hcl... in progress\n  run \"private_management\"... pass\n  run \"free_plan_demo_instance\"... pass\n  run \"burstable_without_surplus_charges\"... pass\n  run \"temporary_local_login_deployment\"... pass\n  run \"github_mode_requires_oidc_provider\"... pass\ntests/security.tftest.hcl... tearing down\ntests/security.tftest.hcl... pass\n\nSuccess! 5 passed, 0 failed.\n",
+      "stderr": ""
+    }
+  ]
+}

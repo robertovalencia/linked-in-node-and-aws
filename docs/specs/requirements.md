@@ -20,3 +20,8 @@ This is an independent interview laboratory migrated from reference commit `582c
 The existing product exposes inquiry creation and reading plus profile/status/inbox updates. It has no profile deletion workflow: “CRUD layer design” means clear responsibility separation, not inventing destructive endpoints. New deletion requirements need their own product specification.
 
 The original suite has conditional checks. A successful process alone is insufficient: require exactly 48 passes and zero failures, including the branches after login/inquiry creation. Supplement those with frontend, security, persistence, broker-outage and deduplication evidence. A passing local suite does not establish AWS readiness or a completed cloud deployment.
+
+
+## R12 learning acceptance: AWS/Terraform extension
+
+The NodeJS/AWS path contains 44 lessons, including 24 ordered AWS/Terraform lessons (20–43). New lessons must distinguish current resources from proposed services, link real pinned GitHub examples, teach prerequisites/mechanisms, include observable practice and answered recall questions. The credential-free local Terraform lab must demonstrate create, idempotence, update, replacement, moved identity, tests and cleanup. The real Terraform mock checks must report actual execution. Study Desk navigation must expose the lessons and preserve all personal/saved content. Validate local links and pinned source ranges with `python3 scripts/check-cloud-study.py`; do not provision cloud infrastructure for documentation verification.

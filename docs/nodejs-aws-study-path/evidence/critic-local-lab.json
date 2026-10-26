@@ -1,0 +1,321 @@
+{
+  "scope": "built-in terraform_data only; no AWS provider or credentials",
+  "records": [
+    {
+      "command": [
+        "terraform",
+        "version",
+        "-json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"format_version\": \"1.0\",\n  \"terraform_version\": \"1.17.0\",\n  \"platform\": \"darwin_arm64\",\n  \"provider_selections\": {},\n  \"terraform_outdated\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "fmt",
+        "-check",
+        "-recursive"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "init",
+        "-backend=false",
+        "-input=false",
+        "-no-color"
+      ],
+      "exit_code": 0,
+      "stdout": "Initializing provider plugins...\n- terraform.io/builtin/terraform is built in to Terraform\n\nTerraform has been successfully initialized!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "validate",
+        "-no-color"
+      ],
+      "exit_code": 0,
+      "stdout": "Success! The configuration is valid.\n\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "plan",
+        "-input=false",
+        "-no-color",
+        "-detailed-exitcode",
+        "-out=first.tfplan"
+      ],
+      "exit_code": 2,
+      "stdout": "\nTerraform used the selected providers to generate the following execution\nplan. Resource actions are indicated with the following symbols:\n  + create\n\nTerraform will perform the following actions:\n\n  # terraform_data.release will be created\n  + resource \"terraform_data\" \"release\" {\n      + id               = (known after apply)\n      + input            = {\n          + name    = \"marketplace-local\"\n          + release = \"v1\"\n        }\n      + output           = (known after apply)\n      + triggers_replace = 1\n    }\n\nPlan: 1 to add, 0 to change, 0 to destroy.\n\nChanges to Outputs:\n  + release_summary = (known after apply)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "show",
+        "-json",
+        "first.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"format_version\":\"1.2\",\"terraform_version\":\"1.17.0\",\"variables\":{\"generation\":{\"value\":1},\"project\":{\"value\":\"marketplace\"},\"release\":{\"value\":\"v1\"}},\"planned_values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"input\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"store\":null,\"triggers_replace\":1},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}},\"resource_changes\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"change\":{\"actions\":[\"create\"],\"before\":null,\"after\":{\"input\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"store\":null,\"triggers_replace\":1},\"after_unknown\":{\"id\":true,\"input\":{},\"output\":true},\"before_sensitive\":false,\"after_sensitive\":{\"input\":{},\"output\":{}}}}],\"output_changes\":{\"release_summary\":{\"actions\":[\"create\"],\"before\":null,\"after_unknown\":true,\"before_sensitive\":false,\"after_sensitive\":false}},\"configuration\":{\"provider_config\":{\"terraform\":{\"name\":\"terraform\",\"full_name\":\"terraform.io/builtin/terraform\"}},\"root_module\":{\"outputs\":{\"release_summary\":{\"expression\":{\"references\":[\"terraform_data.release.output\",\"terraform_data.release\"]}}},\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_config_key\":\"terraform\",\"expressions\":{\"input\":{\"references\":[\"local.name\",\"var.release\"]},\"triggers_replace\":{\"references\":[\"var.generation\"]}},\"schema_version\":0}],\"variables\":{\"generation\":{\"default\":1},\"project\":{\"default\":\"marketplace\"},\"release\":{\"default\":\"v1\"}}}},\"relevant_attributes\":[{\"resource\":\"terraform_data.release\",\"attribute\":[\"output\"]}],\"checks\":[{\"address\":{\"kind\":\"var\",\"name\":\"project\",\"to_display\":\"var.project\"},\"status\":\"pass\",\"instances\":[{\"address\":{\"to_display\":\"var.project\"},\"status\":\"pass\"}]}],\"timestamp\":\"2026-10-26T21:14:14Z\",\"applyable\":true,\"complete\":true,\"errored\":false}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "apply",
+        "-input=false",
+        "-no-color",
+        "first.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "terraform_data.release: Creating...\nterraform_data.release: Creation complete after 0s [id=7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce]\n\nApply complete! Resources: 1 added, 0 changed, 0 destroyed.\n\nOutputs:\n\nrelease_summary = {\n  \"name\" = \"marketplace-local\"\n  \"release\" = \"v1\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "show",
+        "-json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"format_version\":\"1.0\",\"terraform_version\":\"1.17.0\",\"values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"value\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}]}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"store\":null,\"triggers_replace\":1},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}},\"checks\":[{\"address\":{\"kind\":\"var\",\"name\":\"project\",\"to_display\":\"var.project\"},\"status\":\"pass\",\"instances\":[{\"address\":{\"to_display\":\"var.project\"},\"status\":\"pass\"}]}]}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "plan",
+        "-input=false",
+        "-no-color",
+        "-detailed-exitcode",
+        "-out=idempotent.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "terraform_data.release: Refreshing state... [id=7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce]\n\nNo changes. Your infrastructure matches the configuration.\n\nTerraform has compared your real infrastructure against your configuration\nand found no differences, so no changes are needed.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "show",
+        "-json",
+        "idempotent.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"format_version\":\"1.2\",\"terraform_version\":\"1.17.0\",\"variables\":{\"generation\":{\"value\":1},\"project\":{\"value\":\"marketplace\"},\"release\":{\"value\":\"v1\"}},\"planned_values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}],\"value\":{\"name\":\"marketplace-local\",\"release\":\"v1\"}}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"store\":null,\"triggers_replace\":1},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}},\"resource_changes\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"change\":{\"actions\":[\"no-op\"],\"before\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"store\":null,\"triggers_replace\":1},\"after\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"store\":null,\"triggers_replace\":1},\"after_unknown\":{},\"before_sensitive\":{\"input\":{},\"output\":{}},\"after_sensitive\":{\"input\":{},\"output\":{}}}}],\"output_changes\":{\"release_summary\":{\"actions\":[\"no-op\"],\"before\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"after\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"after_unknown\":false,\"before_sensitive\":false,\"after_sensitive\":false}},\"prior_state\":{\"format_version\":\"1.0\",\"terraform_version\":\"1.17.0\",\"values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"value\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}]}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"store\":null,\"triggers_replace\":1},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}}},\"configuration\":{\"provider_config\":{\"terraform\":{\"name\":\"terraform\",\"full_name\":\"terraform.io/builtin/terraform\"}},\"root_module\":{\"outputs\":{\"release_summary\":{\"expression\":{\"references\":[\"terraform_data.release.output\",\"terraform_data.release\"]}}},\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_config_key\":\"terraform\",\"expressions\":{\"input\":{\"references\":[\"local.name\",\"var.release\"]},\"triggers_replace\":{\"references\":[\"var.generation\"]}},\"schema_version\":0}],\"variables\":{\"generation\":{\"default\":1},\"project\":{\"default\":\"marketplace\"},\"release\":{\"default\":\"v1\"}}}},\"checks\":[{\"address\":{\"kind\":\"var\",\"name\":\"project\",\"to_display\":\"var.project\"},\"status\":\"pass\",\"instances\":[{\"address\":{\"to_display\":\"var.project\"},\"status\":\"pass\"}]}],\"timestamp\":\"2026-10-26T21:14:15Z\",\"applyable\":false,\"complete\":true,\"errored\":false}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "plan",
+        "-input=false",
+        "-no-color",
+        "-detailed-exitcode",
+        "-out=change.tfplan",
+        "-var=release=v2"
+      ],
+      "exit_code": 2,
+      "stdout": "terraform_data.release: Refreshing state... [id=7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce]\n\nTerraform used the selected providers to generate the following execution\nplan. Resource actions are indicated with the following symbols:\n  ~ update in-place\n\nTerraform will perform the following actions:\n\n  # terraform_data.release will be updated in-place\n  ~ resource \"terraform_data\" \"release\" {\n        id               = \"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\"\n      ~ input            = {\n            name    = \"marketplace-local\"\n          ~ release = \"v1\" -> \"v2\"\n        }\n      ~ output           = {\n          - name    = \"marketplace-local\"\n          - release = \"v1\"\n        } -> (known after apply)\n        # (1 unchanged attribute hidden)\n    }\n\nPlan: 0 to add, 1 to change, 0 to destroy.\n\nChanges to Outputs:\n  ~ release_summary = {\n      - name    = \"marketplace-local\"\n      - release = \"v1\"\n    } -> (known after apply)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "show",
+        "-json",
+        "change.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"format_version\":\"1.2\",\"terraform_version\":\"1.17.0\",\"variables\":{\"generation\":{\"value\":1},\"project\":{\"value\":\"marketplace\"},\"release\":{\"value\":\"v2\"}},\"planned_values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":1},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}},\"resource_changes\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"change\":{\"actions\":[\"update\"],\"before\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"store\":null,\"triggers_replace\":1},\"after\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":1},\"after_unknown\":{\"input\":{},\"output\":true},\"before_sensitive\":{\"input\":{},\"output\":{}},\"after_sensitive\":{\"input\":{},\"output\":{}}}}],\"output_changes\":{\"release_summary\":{\"actions\":[\"update\"],\"before\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"after_unknown\":true,\"before_sensitive\":false,\"after_sensitive\":false}},\"prior_state\":{\"format_version\":\"1.0\",\"terraform_version\":\"1.17.0\",\"values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"value\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}]}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v1\"},\"store\":null,\"triggers_replace\":1},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}}},\"configuration\":{\"provider_config\":{\"terraform\":{\"name\":\"terraform\",\"full_name\":\"terraform.io/builtin/terraform\"}},\"root_module\":{\"outputs\":{\"release_summary\":{\"expression\":{\"references\":[\"terraform_data.release.output\",\"terraform_data.release\"]}}},\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_config_key\":\"terraform\",\"expressions\":{\"input\":{\"references\":[\"local.name\",\"var.release\"]},\"triggers_replace\":{\"references\":[\"var.generation\"]}},\"schema_version\":0}],\"variables\":{\"generation\":{\"default\":1},\"project\":{\"default\":\"marketplace\"},\"release\":{\"default\":\"v1\"}}}},\"relevant_attributes\":[{\"resource\":\"terraform_data.release\",\"attribute\":[\"output\"]}],\"checks\":[{\"address\":{\"kind\":\"var\",\"name\":\"project\",\"to_display\":\"var.project\"},\"status\":\"pass\",\"instances\":[{\"address\":{\"to_display\":\"var.project\"},\"status\":\"pass\"}]}],\"timestamp\":\"2026-10-26T21:14:15Z\",\"applyable\":true,\"complete\":true,\"errored\":false}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "apply",
+        "-input=false",
+        "-no-color",
+        "change.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "terraform_data.release: Modifying... [id=7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce]\nterraform_data.release: Modifications complete after 0s [id=7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce]\n\nApply complete! Resources: 0 added, 1 changed, 0 destroyed.\n\nOutputs:\n\nrelease_summary = {\n  \"name\" = \"marketplace-local\"\n  \"release\" = \"v2\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "plan",
+        "-input=false",
+        "-no-color",
+        "-detailed-exitcode",
+        "-out=replace.tfplan",
+        "-var=release=v2",
+        "-var=generation=2"
+      ],
+      "exit_code": 2,
+      "stdout": "terraform_data.release: Refreshing state... [id=7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce]\n\nTerraform used the selected providers to generate the following execution\nplan. Resource actions are indicated with the following symbols:\n-/+ destroy and then create replacement\n\nTerraform will perform the following actions:\n\n  # terraform_data.release must be replaced\n-/+ resource \"terraform_data\" \"release\" {\n      ~ id               = \"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\" -> (known after apply)\n      ~ output           = {\n          - name    = \"marketplace-local\"\n          - release = \"v2\"\n        } -> (known after apply)\n      ~ triggers_replace = 1 -> 2\n        # (1 unchanged attribute hidden)\n    }\n\nPlan: 1 to add, 0 to change, 1 to destroy.\n\nChanges to Outputs:\n  ~ release_summary = {\n      - name    = \"marketplace-local\"\n      - release = \"v2\"\n    } -> (known after apply)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "show",
+        "-json",
+        "replace.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"format_version\":\"1.2\",\"terraform_version\":\"1.17.0\",\"variables\":{\"generation\":{\"value\":\"2\"},\"project\":{\"value\":\"marketplace\"},\"release\":{\"value\":\"v2\"}},\"planned_values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}},\"resource_changes\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"change\":{\"actions\":[\"delete\",\"create\"],\"before\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":1},\"after\":{\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"after_unknown\":{\"id\":true,\"input\":{},\"output\":true},\"before_sensitive\":{\"input\":{},\"output\":{}},\"after_sensitive\":{\"input\":{},\"output\":{}},\"replace_paths\":[[\"triggers_replace\"]]},\"action_reason\":\"replace_because_cannot_update\"}],\"output_changes\":{\"release_summary\":{\"actions\":[\"update\"],\"before\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"after_unknown\":true,\"before_sensitive\":false,\"after_sensitive\":false}},\"prior_state\":{\"format_version\":\"1.0\",\"terraform_version\":\"1.17.0\",\"values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"value\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}]}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":1},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}}},\"configuration\":{\"provider_config\":{\"terraform\":{\"name\":\"terraform\",\"full_name\":\"terraform.io/builtin/terraform\"}},\"root_module\":{\"outputs\":{\"release_summary\":{\"expression\":{\"references\":[\"terraform_data.release.output\",\"terraform_data.release\"]}}},\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_config_key\":\"terraform\",\"expressions\":{\"input\":{\"references\":[\"local.name\",\"var.release\"]},\"triggers_replace\":{\"references\":[\"var.generation\"]}},\"schema_version\":0}],\"variables\":{\"generation\":{\"default\":1},\"project\":{\"default\":\"marketplace\"},\"release\":{\"default\":\"v1\"}}}},\"relevant_attributes\":[{\"resource\":\"terraform_data.release\",\"attribute\":[\"output\"]}],\"checks\":[{\"address\":{\"kind\":\"var\",\"name\":\"project\",\"to_display\":\"var.project\"},\"status\":\"pass\",\"instances\":[{\"address\":{\"to_display\":\"var.project\"},\"status\":\"pass\"}]}],\"timestamp\":\"2026-10-26T21:14:15Z\",\"applyable\":true,\"complete\":true,\"errored\":false}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "apply",
+        "-input=false",
+        "-no-color",
+        "replace.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "terraform_data.release: Destroying... [id=7dd7ddc0-8dc2-e156-55d4-dd16b9ed45ce]\nterraform_data.release: Destruction complete after 0s\nterraform_data.release: Creating...\nterraform_data.release: Creation complete after 0s [id=5c36c424-60a3-ab1a-5d8b-47f99a23b3b3]\n\nApply complete! Resources: 1 added, 0 changed, 1 destroyed.\n\nOutputs:\n\nrelease_summary = {\n  \"name\" = \"marketplace-local\"\n  \"release\" = \"v2\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "show",
+        "-json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"format_version\":\"1.0\",\"terraform_version\":\"1.17.0\",\"values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"value\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}]}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"release\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}},\"checks\":[{\"address\":{\"kind\":\"var\",\"name\":\"project\",\"to_display\":\"var.project\"},\"status\":\"pass\",\"instances\":[{\"address\":{\"to_display\":\"var.project\"},\"status\":\"pass\"}]}]}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "fmt",
+        "-no-color"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "plan",
+        "-input=false",
+        "-no-color",
+        "-detailed-exitcode",
+        "-out=moved.tfplan",
+        "-var=release=v2",
+        "-var=generation=2"
+      ],
+      "exit_code": 2,
+      "stdout": "terraform_data.artifact: Refreshing state... [id=5c36c424-60a3-ab1a-5d8b-47f99a23b3b3]\n\nTerraform will perform the following actions:\n\n  # terraform_data.release has moved to terraform_data.artifact\n    resource \"terraform_data\" \"artifact\" {\n        id               = \"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\"\n        # (3 unchanged attributes hidden)\n    }\n\nPlan: 0 to add, 0 to change, 0 to destroy.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "show",
+        "-json",
+        "moved.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"format_version\":\"1.2\",\"terraform_version\":\"1.17.0\",\"variables\":{\"generation\":{\"value\":\"2\"},\"project\":{\"value\":\"marketplace\"},\"release\":{\"value\":\"v2\"}},\"planned_values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}],\"value\":{\"name\":\"marketplace-local\",\"release\":\"v2\"}}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.artifact\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"artifact\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}},\"resource_changes\":[{\"address\":\"terraform_data.artifact\",\"previous_address\":\"terraform_data.release\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"artifact\",\"provider_name\":\"terraform.io/builtin/terraform\",\"change\":{\"actions\":[\"no-op\"],\"before\":{\"id\":\"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"after\":{\"id\":\"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"after_unknown\":{},\"before_sensitive\":{\"input\":{},\"output\":{}},\"after_sensitive\":{\"input\":{},\"output\":{}}}}],\"output_changes\":{\"release_summary\":{\"actions\":[\"no-op\"],\"before\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"after\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"after_unknown\":false,\"before_sensitive\":false,\"after_sensitive\":false}},\"prior_state\":{\"format_version\":\"1.0\",\"terraform_version\":\"1.17.0\",\"values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"value\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}]}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.artifact\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"artifact\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}}},\"configuration\":{\"provider_config\":{\"terraform\":{\"name\":\"terraform\",\"full_name\":\"terraform.io/builtin/terraform\"}},\"root_module\":{\"outputs\":{\"release_summary\":{\"expression\":{\"references\":[\"terraform_data.artifact.output\",\"terraform_data.artifact\"]}}},\"resources\":[{\"address\":\"terraform_data.artifact\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"artifact\",\"provider_config_key\":\"terraform\",\"expressions\":{\"input\":{\"references\":[\"local.name\",\"var.release\"]},\"triggers_replace\":{\"references\":[\"var.generation\"]}},\"schema_version\":0}],\"variables\":{\"generation\":{\"default\":1},\"project\":{\"default\":\"marketplace\"},\"release\":{\"default\":\"v1\"}}}},\"checks\":[{\"address\":{\"kind\":\"var\",\"name\":\"project\",\"to_display\":\"var.project\"},\"status\":\"pass\",\"instances\":[{\"address\":{\"to_display\":\"var.project\"},\"status\":\"pass\"}]}],\"timestamp\":\"2026-10-26T21:14:15Z\",\"applyable\":true,\"complete\":true,\"errored\":false}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "apply",
+        "-input=false",
+        "-no-color",
+        "moved.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "\nApply complete! Resources: 0 added, 0 changed, 0 destroyed.\n\nOutputs:\n\nrelease_summary = {\n  \"name\" = \"marketplace-local\"\n  \"release\" = \"v2\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "show",
+        "-json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"format_version\":\"1.0\",\"terraform_version\":\"1.17.0\",\"values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"value\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}]}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.artifact\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"artifact\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}},\"checks\":[{\"address\":{\"kind\":\"var\",\"name\":\"project\",\"to_display\":\"var.project\"},\"status\":\"pass\",\"instances\":[{\"address\":{\"to_display\":\"var.project\"},\"status\":\"pass\"}]}]}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "plan",
+        "-input=false",
+        "-no-color",
+        "-detailed-exitcode",
+        "-out=after-move.tfplan",
+        "-var=release=v2",
+        "-var=generation=2"
+      ],
+      "exit_code": 0,
+      "stdout": "terraform_data.artifact: Refreshing state... [id=5c36c424-60a3-ab1a-5d8b-47f99a23b3b3]\n\nNo changes. Your infrastructure matches the configuration.\n\nTerraform has compared your real infrastructure against your configuration\nand found no differences, so no changes are needed.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "show",
+        "-json",
+        "after-move.tfplan"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"format_version\":\"1.2\",\"terraform_version\":\"1.17.0\",\"variables\":{\"generation\":{\"value\":\"2\"},\"project\":{\"value\":\"marketplace\"},\"release\":{\"value\":\"v2\"}},\"planned_values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}],\"value\":{\"name\":\"marketplace-local\",\"release\":\"v2\"}}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.artifact\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"artifact\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}},\"resource_changes\":[{\"address\":\"terraform_data.artifact\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"artifact\",\"provider_name\":\"terraform.io/builtin/terraform\",\"change\":{\"actions\":[\"no-op\"],\"before\":{\"id\":\"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"after\":{\"id\":\"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"after_unknown\":{},\"before_sensitive\":{\"input\":{},\"output\":{}},\"after_sensitive\":{\"input\":{},\"output\":{}}}}],\"output_changes\":{\"release_summary\":{\"actions\":[\"no-op\"],\"before\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"after\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"after_unknown\":false,\"before_sensitive\":false,\"after_sensitive\":false}},\"prior_state\":{\"format_version\":\"1.0\",\"terraform_version\":\"1.17.0\",\"values\":{\"outputs\":{\"release_summary\":{\"sensitive\":false,\"value\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"type\":[\"object\",{\"name\":\"string\",\"release\":\"string\"}]}},\"root_module\":{\"resources\":[{\"address\":\"terraform_data.artifact\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"artifact\",\"provider_name\":\"terraform.io/builtin/terraform\",\"schema_version\":0,\"values\":{\"id\":\"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\",\"input\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"output\":{\"name\":\"marketplace-local\",\"release\":\"v2\"},\"store\":null,\"triggers_replace\":2},\"sensitive_values\":{\"input\":{},\"output\":{}}}]}}},\"configuration\":{\"provider_config\":{\"terraform\":{\"name\":\"terraform\",\"full_name\":\"terraform.io/builtin/terraform\"}},\"root_module\":{\"outputs\":{\"release_summary\":{\"expression\":{\"references\":[\"terraform_data.artifact.output\",\"terraform_data.artifact\"]}}},\"resources\":[{\"address\":\"terraform_data.artifact\",\"mode\":\"managed\",\"type\":\"terraform_data\",\"name\":\"artifact\",\"provider_config_key\":\"terraform\",\"expressions\":{\"input\":{\"references\":[\"local.name\",\"var.release\"]},\"triggers_replace\":{\"references\":[\"var.generation\"]}},\"schema_version\":0}],\"variables\":{\"generation\":{\"default\":1},\"project\":{\"default\":\"marketplace\"},\"release\":{\"default\":\"v1\"}}}},\"checks\":[{\"address\":{\"kind\":\"var\",\"name\":\"project\",\"to_display\":\"var.project\"},\"status\":\"pass\",\"instances\":[{\"address\":{\"to_display\":\"var.project\"},\"status\":\"pass\"}]}],\"timestamp\":\"2026-10-26T21:14:15Z\",\"applyable\":false,\"complete\":true,\"errored\":false}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "test",
+        "-no-color"
+      ],
+      "exit_code": 0,
+      "stdout": "tests/contracts.tftest.hcl... in progress\n  run \"default_contract\"... pass\n  run \"custom_input\"... pass\n  run \"invalid_project\"... pass\ntests/contracts.tftest.hcl... tearing down\ntests/contracts.tftest.hcl... pass\n\nSuccess! 3 passed, 0 failed.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "destroy",
+        "-auto-approve",
+        "-input=false",
+        "-no-color",
+        "-var=release=v2",
+        "-var=generation=2"
+      ],
+      "exit_code": 0,
+      "stdout": "terraform_data.artifact: Refreshing state... [id=5c36c424-60a3-ab1a-5d8b-47f99a23b3b3]\n\nTerraform used the selected providers to generate the following execution\nplan. Resource actions are indicated with the following symbols:\n  - destroy\n\nTerraform will perform the following actions:\n\n  # terraform_data.artifact will be destroyed\n  - resource \"terraform_data\" \"artifact\" {\n      - id               = \"5c36c424-60a3-ab1a-5d8b-47f99a23b3b3\" -> null\n      - input            = {\n          - name    = \"marketplace-local\"\n          - release = \"v2\"\n        } -> null\n      - output           = {\n          - name    = \"marketplace-local\"\n          - release = \"v2\"\n        } -> null\n      - triggers_replace = 2 -> null\n    }\n\nPlan: 0 to add, 0 to change, 1 to destroy.\n\nChanges to Outputs:\n  - release_summary = {\n      - name    = \"marketplace-local\"\n      - release = \"v2\"\n    } -> null\nterraform_data.artifact: Destroying... [id=5c36c424-60a3-ab1a-5d8b-47f99a23b3b3]\nterraform_data.artifact: Destruction complete after 0s\n\nDestroy complete! Resources: 1 destroyed.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "terraform",
+        "state",
+        "list"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

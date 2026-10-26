@@ -1,0 +1,222 @@
+{
+  "source_commit": "9bb88515f14067feb23611c6851c03ca8fbc89b6",
+  "excerpts": [
+    {
+      "path": "docs/aws-dev.md",
+      "start": 5,
+      "end": 8,
+      "excerpt": "## Why one EC2 host\n\nThe four Node services, PostgreSQL, Kafka, and frontend run on one `m7i-flex.large` Amazon Linux 2023 x86_64 host (2 vCPU, 8 GiB RAM) in `us-east-2` for the selected 24-hour Free plan demonstration. Each service still owns a distinct database and role. A single host keeps a small dev environment explainable and avoids an ALB, NAT gateway, RDS, and managed Kafka baseline bill. ECS/Fargate plus RDS/MSK would improve service lifecycle and database resilience, but brings more infrastructure and a higher minimum bill. This deployment has no high availability, automated backups, or production SLO claim. Database and Kafka volumes live on the encrypted root disk: replacing/terminating the instance loses them. Snapshot/export before replacement.\n",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/docs/aws-dev.md#L5-L8"
+    },
+    {
+      "path": "infra/aws-dev/dev-local.tfvars.example",
+      "start": 1,
+      "end": 7,
+      "excerpt": "# Selected 24-hour Free plan demo: GitHub validates; local temporary credentials deploy.\n# This mode does not create or manage an account-wide GitHub OIDC provider.\nregion                   = \"us-east-2\"\nproject                  = \"linked-in-node\"\ngithub_repository        = \"robertovalencia/linked-in-node-and-aws\"\ninstance_type            = \"m7i-flex.large\"\nenable_github_deployment = false",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/dev-local.tfvars.example#L1-L7"
+    },
+    {
+      "path": "infra/aws-dev/outputs.tf",
+      "start": 8,
+      "end": 10,
+      "excerpt": "output \"deployment_account_id\" { value = data.aws_caller_identity.current.account_id }\n\noutput \"deployment_region\" { value = var.region }",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/outputs.tf#L8-L10"
+    },
+    {
+      "path": "infra/aws-dev/main.tf",
+      "start": 90,
+      "end": 98,
+      "excerpt": "resource \"aws_iam_role_policy\" \"host\" {\n  role = aws_iam_role.host.id\n  policy = jsonencode({ Version = \"2012-10-17\", Statement = [\n    { Effect = \"Allow\", Action = [\"secretsmanager:GetSecretValue\"], Resource = aws_secretsmanager_secret.runtime.arn },\n    { Effect = \"Allow\", Action = [\"ecr:GetAuthorizationToken\"], Resource = \"*\" },\n    { Effect = \"Allow\", Action = [\"ecr:BatchGetImage\", \"ecr:GetDownloadUrlForLayer\", \"ecr:BatchCheckLayerAvailability\"], Resource = [for r in aws_ecr_repository.app : r.arn] },\n    { Effect = \"Allow\", Action = [\"s3:GetObject\"], Resource = \"${aws_s3_bucket.releases.arn}/releases/*\" }\n  ] })\n}",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/main.tf#L90-L98"
+    },
+    {
+      "path": "infra/aws-dev/main.tf",
+      "start": 99,
+      "end": 100,
+      "excerpt": "resource \"aws_iam_instance_profile\" \"host\" { role = aws_iam_role.host.name }\nresource \"aws_instance\" \"dev\" {",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/main.tf#L99-L100"
+    },
+    {
+      "path": "infra/aws-dev/main.tf",
+      "start": 8,
+      "end": 19,
+      "excerpt": "resource \"aws_vpc\" \"dev\" {\n  cidr_block           = \"10.84.0.0/16\"\n  enable_dns_hostnames = true\n  enable_dns_support   = true\n}\nresource \"aws_subnet\" \"dev\" {\n  vpc_id                  = aws_vpc.dev.id\n  cidr_block              = \"10.84.1.0/24\"\n  map_public_ip_on_launch = true\n}\nresource \"aws_internet_gateway\" \"dev\" { vpc_id = aws_vpc.dev.id }\nresource \"aws_route_table\" \"dev\" {",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/main.tf#L8-L19"
+    },
+    {
+      "path": "infra/aws-dev/main.tf",
+      "start": 19,
+      "end": 27,
+      "excerpt": "resource \"aws_route_table\" \"dev\" {\n  vpc_id = aws_vpc.dev.id\n  route {\n    cidr_block = \"0.0.0.0/0\"\n    gateway_id = aws_internet_gateway.dev.id\n  }\n}\nresource \"aws_route_table_association\" \"dev\" {\n  subnet_id      = aws_subnet.dev.id",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/main.tf#L19-L27"
+    },
+    {
+      "path": "infra/aws-dev/main.tf",
+      "start": 30,
+      "end": 41,
+      "excerpt": "resource \"aws_security_group\" \"dev\" {\n  name        = local.name\n  description = \"No ingress. SSM manages host and tunnels browser traffic.\"\n  ingress     = []\n  vpc_id      = aws_vpc.dev.id\n  egress {\n    from_port   = 0\n    to_port     = 0\n    protocol    = \"-1\"\n    cidr_blocks = [\"0.0.0.0/0\"]\n  }\n}",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/main.tf#L30-L41"
+    },
+    {
+      "path": "infra/aws-dev/compose.yaml",
+      "start": 98,
+      "end": 104,
+      "excerpt": "  frontend:\n    image: ${FRONTEND_IMAGE:?immutable frontend digest required}\n    restart: unless-stopped\n    ports: [127.0.0.1:80:8180]\n    depends_on: [identity, catalog, inquiries, notifications]\n    logging: {driver: json-file, options: {max-size: 10m, max-file: '3'}}\nvolumes:",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/compose.yaml#L98-L104"
+    },
+    {
+      "path": "infra/aws-dev/main.tf",
+      "start": 107,
+      "end": 118,
+      "excerpt": "  metadata_options {\n    http_tokens                 = \"required\"\n    http_put_response_hop_limit = 1\n  }\n  root_block_device {\n    volume_type           = \"gp3\"\n    volume_size           = 40\n    encrypted             = true\n    delete_on_termination = true\n  }\n  # CPU-credit options apply only to burstable T instances. Non-T families\n  # such as m7i-flex must omit the API field entirely.",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/main.tf#L107-L118"
+    },
+    {
+      "path": "infra/aws-dev/user-data.sh",
+      "start": 1,
+      "end": 7,
+      "excerpt": "#!/bin/bash\nset -euo pipefail\ndnf install -y docker jq python3 awscli-2\nsystemctl enable --now docker amazon-ssm-agent\ninstall -d -m 0700 /opt/marketplace/releases\n# Compose is vendored in release bundles from the validated CLI container in CI.\n# The host uses that pinned container against its Docker socket, avoiding curl|sh.",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/user-data.sh#L1-L7"
+    },
+    {
+      "path": "infra/aws-dev/main.tf",
+      "start": 46,
+      "end": 54,
+      "excerpt": "resource \"aws_ecr_repository\" \"app\" {\n  for_each             = toset([\"backend\", \"frontend\"])\n  name                 = \"${local.name}/${each.key}\"\n  image_tag_mutability = \"IMMUTABLE\"\n  force_delete         = true\n  image_scanning_configuration { scan_on_push = true }\n  encryption_configuration { encryption_type = \"AES256\" }\n}\nresource \"aws_ecr_lifecycle_policy\" \"app\" {",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/main.tf#L46-L54"
+    },
+    {
+      "path": ".github/workflows/deploy-dev.yml",
+      "start": 81,
+      "end": 89,
+      "excerpt": "            digest=$(aws ecr batch-get-image --repository-name \"${repo#*/}\" --image-ids \"imageTag=$GITHUB_SHA\" --query 'images[0].imageId.imageDigest' --output text)\n            if [[ ! \"$digest\" =~ ^sha256:[a-f0-9]{64}$ ]]; then\n              docker buildx build --platform linux/amd64 --label \"org.opencontainers.image.revision=$GITHUB_SHA\" --push --tag \"$repo:$GITHUB_SHA\" \"$app\"\n              digest=$(aws ecr batch-get-image --repository-name \"${repo#*/}\" --image-ids \"imageTag=$GITHUB_SHA\" --query 'images[0].imageId.imageDigest' --output text)\n            fi\n            [[ \"$digest\" =~ ^sha256:[a-f0-9]{64}$ ]]\n            echo \"${app^^}_IMAGE=$repo@$digest\" >> \"$GITHUB_ENV\"\n          done\n      - name: Scan the actual published images",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/.github/workflows/deploy-dev.yml#L81-L89"
+    },
+    {
+      "path": "infra/aws-dev/main.tf",
+      "start": 42,
+      "end": 45,
+      "excerpt": "resource \"aws_secretsmanager_secret\" \"runtime\" {\n  name                    = \"${local.name}/runtime\"\n  recovery_window_in_days = 7\n}",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/main.tf#L42-L45"
+    },
+    {
+      "path": "scripts/aws-remote-deploy.sh",
+      "start": 4,
+      "end": 14,
+      "excerpt": "umask 077\nrelease_dir=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\ncd \"$release_dir\"\nexec 9>/opt/marketplace/deploy.lock\nflock -n 9 || { echo 'Another deployment is running'; exit 1; }\nsecret_arn=$(jq -er .secret_arn manifest.json)\nregion=$(jq -er .region manifest.json)\nregistry=$(jq -er .backend manifest.json | cut -d/ -f1)\ntrap 'rm -f \"$release_dir/secret.json\"' EXIT\naws secretsmanager get-secret-value --region \"$region\" --secret-id \"$secret_arn\" --query SecretString --output text >secret.json\npython3 - <<'PY'",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/scripts/aws-remote-deploy.sh#L4-L14"
+    },
+    {
+      "path": "infra/aws-dev/compose.yaml",
+      "start": 15,
+      "end": 24,
+      "excerpt": "    postgres: {condition: service_healthy}\n    kafka: {condition: service_healthy}\n  logging: {driver: json-file, options: {max-size: 10m, max-file: '3'}}\nx-env: &env\n  JWT_SECRET: ${JWT_SECRET:?required}\n  INTERNAL_API_KEY: ${INTERNAL_API_KEY:?required}\n  KAFKA_BROKERS: kafka:9092\n  NODE_ENV: development\n  SEED_DEMO: \"true\"\nservices:",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/compose.yaml#L15-L24"
+    },
+    {
+      "path": "infra/aws-dev/compose.yaml",
+      "start": 56,
+      "end": 62,
+      "excerpt": "      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1\n      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1\n      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1\n      KAFKA_LOG_DIRS: /var/lib/kafka/data\n      KAFKA_HEAP_OPTS: -Xmx512m -Xms256m\n      CLUSTER_ID: MDEyMzQ1Njc4OWFiY2RlZg\n    volumes: [kafka-data:/var/lib/kafka/data]",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/compose.yaml#L56-L62"
+    },
+    {
+      "path": "infra/aws-dev/compose.yaml",
+      "start": 8,
+      "end": 15,
+      "excerpt": "  healthcheck:\n    test: [CMD, node, -e, \"fetch('http://127.0.0.1:'+process.env.PORT+'/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\"]\n    interval: 10s\n    timeout: 5s\n    retries: 18\n    start_period: 30s\n  depends_on:\n    postgres: {condition: service_healthy}",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/compose.yaml#L8-L15"
+    },
+    {
+      "path": "infra/aws-dev/compose.yaml",
+      "start": 17,
+      "end": 17,
+      "excerpt": "  logging: {driver: json-file, options: {max-size: 10m, max-file: '3'}}",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/compose.yaml#L17-L17"
+    },
+    {
+      "path": "docs/short-run.md",
+      "start": 16,
+      "end": 16,
+      "excerpt": "At the deadline, save required test/release evidence and export any database contents worth retaining. Check the account again. Create a fresh **saved destroy plan** from `infra/aws-dev`, review its exact resource list, then apply that same plan. The dev ECR repositories use `force_delete=true` and the versioned release bucket uses `force_destroy=true` so images and release objects are removed with the dev stack. The instance root disk has `delete_on_termination=true`. The secret enters its seven-day recovery window; [AWS says a secret marked for deletion has no charge](https://docs.aws.amazon.com/secretsmanager/latest/userguide/manage_delete-secret.html). These settings intentionally discard demo data and release images during final cleanup. They do not run until an approved destroy is executed.",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/docs/short-run.md#L16-L16"
+    },
+    {
+      "path": "infra/bootstrap/main.tf",
+      "start": 10,
+      "end": 10,
+      "excerpt": "  lifecycle { prevent_destroy = true }",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/bootstrap/main.tf#L10-L10"
+    },
+    {
+      "path": "docs/aws-dev.md",
+      "start": 5,
+      "end": 8,
+      "excerpt": "## Why one EC2 host\n\nThe four Node services, PostgreSQL, Kafka, and frontend run on one `m7i-flex.large` Amazon Linux 2023 x86_64 host (2 vCPU, 8 GiB RAM) in `us-east-2` for the selected 24-hour Free plan demonstration. Each service still owns a distinct database and role. A single host keeps a small dev environment explainable and avoids an ALB, NAT gateway, RDS, and managed Kafka baseline bill. ECS/Fargate plus RDS/MSK would improve service lifecycle and database resilience, but brings more infrastructure and a higher minimum bill. This deployment has no high availability, automated backups, or production SLO claim. Database and Kafka volumes live on the encrypted root disk: replacing/terminating the instance loses them. Snapshot/export before replacement.\n",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/docs/aws-dev.md#L5-L8"
+    },
+    {
+      "path": "infra/aws-dev/main.tf",
+      "start": 100,
+      "end": 107,
+      "excerpt": "resource \"aws_instance\" \"dev\" {\n  depends_on             = [aws_route_table_association.dev, aws_iam_role_policy.host, aws_iam_role_policy_attachment.ssm]\n  ami                    = data.aws_ssm_parameter.ami.value\n  instance_type          = var.instance_type\n  subnet_id              = aws_subnet.dev.id\n  vpc_security_group_ids = [aws_security_group.dev.id]\n  iam_instance_profile   = aws_iam_instance_profile.host.name\n  metadata_options {",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/main.tf#L100-L107"
+    },
+    {
+      "path": "scripts/aws-release-local.mjs",
+      "start": 58,
+      "end": 64,
+      "excerpt": "  requireThat(String(run.id) === runId && run.path === '.github/workflows/deploy-dev.yml' && run.head_repository?.full_name === repository && run.head_sha === sha && run.head_branch === 'main' && run.event === 'workflow_dispatch' && run.status === 'completed' && run.conclusion === 'success', 'Require a successful Deploy AWS dev workflow_dispatch run for this exact repository/main/SHA');\n  const jobs = json('gh', ['api', `repos/${repository}/actions/runs/${runId}/jobs?filter=latest`]);\n  await saved('github-jobs.json', jobs);\n  const verification = jobs.jobs?.filter(job => job.name === 'verify');\n  const deployment = jobs.jobs?.filter(job => job.name === 'deploy');\n  requireThat(verification?.length === 1 && verification[0].conclusion === 'success' && deployment?.length === 1 && deployment[0].conclusion === 'skipped', 'Require successful verification-only CI with the AWS deploy job skipped');\n  const artifactDir = join(evidence, 'verification');",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/scripts/aws-release-local.mjs#L58-L64"
+    },
+    {
+      "path": ".github/workflows/deploy-dev.yml",
+      "start": 5,
+      "end": 15,
+      "excerpt": "      deploy:\n        description: 'Deploy to AWS after verification (false runs verification only)'\n        type: boolean\n        default: false\n        required: true\npermissions:\n  contents: read\nconcurrency:\n  group: aws-dev-release\n  cancel-in-progress: false\njobs:",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/.github/workflows/deploy-dev.yml#L5-L15"
+    },
+    {
+      "path": "scripts/aws-remote-deploy.sh",
+      "start": 7,
+      "end": 13,
+      "excerpt": "exec 9>/opt/marketplace/deploy.lock\nflock -n 9 || { echo 'Another deployment is running'; exit 1; }\nsecret_arn=$(jq -er .secret_arn manifest.json)\nregion=$(jq -er .region manifest.json)\nregistry=$(jq -er .backend manifest.json | cut -d/ -f1)\ntrap 'rm -f \"$release_dir/secret.json\"' EXIT\naws secretsmanager get-secret-value --region \"$region\" --secret-id \"$secret_arn\" --query SecretString --output text >secret.json",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/scripts/aws-remote-deploy.sh#L7-L13"
+    },
+    {
+      "path": "infra/aws-dev/variables.tf",
+      "start": 22,
+      "end": 31,
+      "excerpt": "variable \"oidc_provider_arn\" {\n  type        = string\n  default     = null\n  nullable    = true\n  description = \"Existing account GitHub OIDC provider ARN; required only for GitHub deployment.\"\n  validation {\n    condition     = !var.enable_github_deployment || can(regex(\"^arn:aws[a-z-]*:iam::[0-9]{12}:oidc-provider/token\\\\.actions\\\\.githubusercontent\\\\.com$\", var.oidc_provider_arn))\n    error_message = \"GitHub deployment requires an existing GitHub OIDC provider ARN. For temporary local login deployment, set enable_github_deployment = false.\"\n  }\n}",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/variables.tf#L22-L31"
+    },
+    {
+      "path": "scripts/aws-release-local.mjs",
+      "start": 71,
+      "end": 74,
+      "excerpt": "  requireThat(backendMetadata.backend?.type === 's3' && backendMetadata.backend.config?.key === 'linked-in-node/dev/terraform.tfstate' && backendMetadata.backend.config?.bucket, 'Require initialized isolated AWS dev S3 Terraform state');\n  requireThat(execute('terraform', ['-chdir=infra/aws-dev', 'workspace', 'show']).trim() === 'default', 'Require the default workspace with the explicit AWS dev state key');\n  const outputs = json('terraform', ['-chdir=infra/aws-dev', 'output', '-json']);\n  const value = name => outputs[name]?.value;",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/scripts/aws-release-local.mjs#L71-L74"
+    },
+    {
+      "path": "infra/aws-dev/tests/security.tftest.hcl",
+      "start": 16,
+      "end": 26,
+      "excerpt": "run \"private_management\" {\n  command = plan\n  assert {\n    condition     = length(aws_security_group.dev.ingress) == 0\n    error_message = \"Dev must have no inbound access, including SSH and HTTP.\"\n  }\n  assert {\n    condition     = aws_instance.dev.metadata_options[0].http_tokens == \"required\" && aws_instance.dev.root_block_device[0].encrypted\n    error_message = \"Require IMDSv2 and encrypted disk.\"\n  }\n  assert {",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/infra/aws-dev/tests/security.tftest.hcl#L16-L26"
+    },
+    {
+      "path": "scripts/aws-release-local.mjs",
+      "start": 27,
+      "end": 29,
+      "excerpt": "function validateAcceptance(report) {\n  requireThat(report.expected === 48 && report.passed === 48 && report.failed === 0 && report.results?.length === 48 && report.results.every(result => result.status === 'PASS'), 'CI acceptance evidence must contain exactly 48 PASS results and zero failures');\n}",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/scripts/aws-release-local.mjs#L27-L29"
+    },
+    {
+      "path": "scripts/aws-remote-deploy.sh",
+      "start": 56,
+      "end": 65,
+      "excerpt": "if [[ \"$healthy\" != true ]]; then\n  echo 'Health verification failed; restoring previous application images.'\n  if [[ -n \"$previous\" && -f \"$previous/compose.yaml\" ]]; then\n    cd \"$previous\"\n    marketplace-compose -f compose.yaml up -d --wait --wait-timeout 180\n    bash ./aws-smoke.sh\n  fi\n  exit 1\nfi\nln -sfn \"$release_dir\" /opt/marketplace/current",
+      "url": "https://github.com/robertovalencia/linked-in-node-and-aws/blob/9bb88515f14067feb23611c6851c03ca8fbc89b6/scripts/aws-remote-deploy.sh#L56-L65"
+    }
+  ]
+}

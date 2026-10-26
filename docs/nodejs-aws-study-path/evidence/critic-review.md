@@ -1,0 +1,17 @@
+# Independent review: AWS and Terraform study extension
+
+Date: 2026-10-26. Decision: **approved for documentation publication and local learning scope**. The reviewer is separate from the builders.
+
+I read all 24 new lessons (20–43), the replacement overview, study index and coverage additions, the local lab implementation/tests/runner, actual AWS Terraform roots, selected tfvars, deployment workflow, release scripts and operating/cost/cleanup guides. The lessons explain prerequisites, mechanisms, observable practice, failure cases and recall answers while tying claims to the real Node.js project.
+
+Independent source verification checked 51 unique pinned GitHub line ranges against commit `9bb88515f14067feb23611c6851c03ca8fbc89b6`; all resolved to existing paths and valid ranges. Forty adjacent source fences matched the corresponding pinned source content. These checks validate repository content; private GitHub access and publication are separate checks performed by the publisher.
+
+I independently executed the credential-free `terraform_data` runner using Terraform 1.17.0. All 27 CLI invocations returned their expected exit codes: creation, unchanged plan, in-place update, replacement with a new ID, moved address with preserved ID, no-op follow-up, three configuration test runs, destruction and empty state. See [independent local lab evidence](critic-local-lab.json). I inspected the separately recorded source-mock output: initialization/validation and two bootstrap plus five aws-dev test runs passed with AWS provider 6.69.1. That latter evidence was produced by the builder; I did not independently duplicate its external-provider execution. The original sandbox provider-handshake failure is retained.
+
+Security and truthfulness checks passed for the important boundaries: the subnet is public for outbound connectivity; security-group ingress is empty; browser access uses SSM to a loopback listener; selected local credentials differ from optional GitHub OIDC; provider defaults differ from selected tfvars; bootstrap and application state are separate; native S3 writer locking differs from provider dependency locking; secret metadata differs from secret values; instance replacement can destroy database/broker data; image rollback does not reverse migrations; production additions are proposals. Costs are dated assumptions, and stopping compute is distinct from complete cleanup. No lesson or local/mock result is accepted as evidence of a live cloud deployment.
+
+The largest teaching gap found during review was the weak rollback excerpt, which initially displayed only a success message. The repair places the actual failure/restore branch and current-pointer update in lesson 41. Other repairs clarified `.tflock` identity and backend permissions, distinguished dependency lock files, and corrected missing spaces in prose. The revised source is accepted.
+
+The largest remaining delivery check at this source-review point is the reader import: nested lab-file links would fail in the study app without rewriting. The importer is intended to map lesson links to `/guide/` and lab/source assets to the newly published immutable GitHub revision. Runtime rendering, search and those links must be verified after publication/import; this document does not pre-claim that result.
+
+No AWS resources were created, no real AWS integration was exercised, and no teardown was scheduled by this review. Actual saved-plan approval, provisioning, SSM connectivity, cloud acceptance and recovery remain separate authorized work.

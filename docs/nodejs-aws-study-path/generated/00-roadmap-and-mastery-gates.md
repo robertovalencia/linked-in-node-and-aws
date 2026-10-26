@@ -165,3 +165,8 @@ Local source paths below are relative to /Users/robertovalencia/Documents/Busine
 - [Project source: frontend/package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/frontend/package.json#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
 - [Project source: docs/architecture.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/architecture.md#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
 - [Project source: docs/interview-topics/java-to-nestjs.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/fbf61d81f9d240e2d974f1bcf21789ac6f2b21fa/docs/interview-topics/java-to-nestjs.md#L1-L8) — local baseline inspected 2026-10-22; private published source may lag.
+
+
+## AWS and Terraform deep-learning route
+
+The original twelve-week route introduces cloud concepts in lesson 15. For hands-on depth, add the [24-session AWS/Terraform extension](20-cloud-roadmap-and-lab.md). Complete AWS foundations 21–27, operations and tradeoffs 28–31, Terraform fundamentals and local experiments 32–39, then release/troubleshooting/interview 40–43. Sessions are a suggested pace; repeat a lab until its evidence and explanation are correct. This extends the study path to 44 lessons without changing existing lesson IDs or personal notes.
