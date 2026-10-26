@@ -1,0 +1,105 @@
+Compose can now delegate builds to bake for better performance.
+ To do so, set COMPOSE_BAKE=true.
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [identity internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.09kB done
+#1 DONE 0.0s
+
+#2 [identity internal] load metadata for docker.io/library/node:22.23.4-alpine3.24@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+#2 DONE 0.4s
+
+#3 [identity internal] load .dockerignore
+#3 transferring context: 133B done
+#3 DONE 0.0s
+
+#4 [identity build 1/7] FROM docker.io/library/node:22.23.4-alpine3.24@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+#4 resolve docker.io/library/node:22.23.4-alpine3.24@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 0.0s done
+#4 CACHED
+
+#5 [identity internal] load build context
+#5 transferring context: 318.64kB 0.0s done
+#5 DONE 0.0s
+
+#6 [identity build 2/7] WORKDIR /app
+#6 CACHED
+
+#7 [identity build 3/7] COPY package*.json ./
+#7 DONE 0.0s
+
+#8 [identity build 4/7] RUN npm ci
+#8 ...
+
+#9 [identity stage-1 2/8] RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack /opt/yarn-*     && rm -f /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack       /usr/local/bin/yarn /usr/local/bin/yarnpkg /usr/local/bin/pnpm /usr/local/bin/pnpx
+#9 DONE 1.0s
+
+#10 [identity stage-1 3/8] WORKDIR /app
+#10 DONE 0.2s
+
+#8 [identity build 4/7] RUN npm ci
+#8 4.004 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+#8 7.127 
+#8 7.127 added 517 packages, and audited 518 packages in 7s
+#8 7.127 
+#8 7.127 124 packages are looking for funding
+#8 7.127   run `npm fund` for details
+#8 7.127 
+#8 7.127 found 0 vulnerabilities
+#8 7.129 npm notice
+#8 7.129 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#8 7.129 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#8 7.129 npm notice To update run: npm install -g npm@12.2.1
+#8 7.129 npm notice
+#8 DONE 7.3s
+
+#11 [identity build 5/7] COPY tsconfig.json ./
+#11 DONE 0.5s
+
+#12 [identity build 6/7] COPY src ./src
+#12 DONE 0.0s
+
+#13 [identity build 7/7] RUN npm run build && npm prune --omit=dev
+#13 0.334 
+#13 0.334 > marketplace-backend@1.0.0 build
+#13 0.334 > tsc -p tsconfig.json
+#13 0.334 
+#13 2.931 
+#13 2.931 up to date, audited 127 packages in 1s
+#13 2.931 
+#13 2.931 44 packages are looking for funding
+#13 2.931   run `npm fund` for details
+#13 2.931 
+#13 2.931 found 0 vulnerabilities
+#13 DONE 2.9s
+
+#14 [identity stage-1 4/8] COPY --from=build --chown=node:node /app/node_modules ./node_modules
+#14 DONE 0.2s
+
+#15 [identity stage-1 5/8] COPY --from=build --chown=node:node /app/dist ./dist
+#15 DONE 0.0s
+
+#16 [identity stage-1 6/8] COPY --chown=node:node migrations ./migrations
+#16 DONE 0.0s
+
+#17 [identity stage-1 7/8] COPY --chown=node:node seeds ./seeds
+#17 DONE 0.0s
+
+#18 [identity stage-1 8/8] COPY --chown=node:node package.json ./
+#18 DONE 0.0s
+
+#19 [identity] exporting to image
+#19 exporting layers
+#19 exporting layers 0.4s done
+#19 exporting manifest sha256:6a183cc236bf7302850039e059762b55785005a1d6c47f9593d3611f3106a835
+#19 exporting manifest sha256:6a183cc236bf7302850039e059762b55785005a1d6c47f9593d3611f3106a835 done
+#19 exporting config sha256:315e06087c35779da8ce6c3ce16d40766b23790f956d7ca20dc9c2a46b65a972 done
+#19 exporting attestation manifest sha256:45753b9c41f6f7d5b4923cc927ffee61c2b773aa666d11d86cd6cbf67f1eec31 done
+#19 exporting manifest list sha256:63b55cb079f6ac11d06f6aa97f08bc6d155cf3844471cfd181b1bc8cf31f28af done
+#19 naming to docker.io/linked-in-node/backend:local done
+#19 unpacking to docker.io/linked-in-node/backend:local
+#19 unpacking to docker.io/linked-in-node/backend:local 0.2s done
+#19 DONE 0.7s
+
+#20 [identity] resolving provenance for metadata file
+#20 DONE 0.0s
+ identity  Built

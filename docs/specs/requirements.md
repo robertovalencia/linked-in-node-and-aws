@@ -25,3 +25,8 @@ The original suite has conditional checks. A successful process alone is insuffi
 ## R12 learning acceptance: AWS/Terraform extension
 
 The NodeJS/AWS path contains 44 lessons, including 24 ordered AWS/Terraform lessons (20–43). New lessons must distinguish current resources from proposed services, link real pinned GitHub examples, teach prerequisites/mechanisms, include observable practice and answered recall questions. The credential-free local Terraform lab must demonstrate create, idempotence, update, replacement, moved identity, tests and cleanup. The real Terraform mock checks must report actual execution. Study Desk navigation must expose the lessons and preserve all personal/saved content. Validate local links and pinned source ranges with `python3 scripts/check-cloud-study.py`; do not provision cloud infrastructure for documentation verification.
+
+
+## R11 dependency repair acceptance
+
+Production npm audit remains enforced at high severity for root/backend/frontend. Preserve NestJS 12.2.0 and API contracts while upgrading body-parser to 2.4.0 and scoping a temporary Multer 2.5.0 override to `@nestjs/platform-express`. Require a valid dependency tree, reproducible `npm ci`, passing existing 64 backend and 28 frontend tests/builds/checks, the unchanged 48-check running API suite, and actual hosted Verify results. Hosted SonarCloud remains separately owner-configured; missing credentials must not be marked as a successful analysis.

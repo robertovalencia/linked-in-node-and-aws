@@ -1,0 +1,18 @@
+
+> expertly-node-aws-frontend@1.0.0 check
+> npm run lint && npm run format:check && npm run typecheck
+
+
+> expertly-node-aws-frontend@1.0.0 lint
+> eslint .
+
+
+> expertly-node-aws-frontend@1.0.0 format:check
+> prettier --check src vite.config.ts tsconfig.json package.json
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> expertly-node-aws-frontend@1.0.0 typecheck
+> tsc --noEmit
+

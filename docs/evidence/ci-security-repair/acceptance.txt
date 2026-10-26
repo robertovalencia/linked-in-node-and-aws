@@ -1,0 +1,49 @@
+PASS Login company
+PASS Login individual
+PASS Login ava
+PASS Login leo
+PASS Invalid password rejected
+PASS Anonymous identity denied
+PASS Tampered bearer denied
+PASS Verified identity returns correct role
+PASS Anonymous provider discovery uses persistent seed data
+PASS Public provider fields cover service showcase without private identity
+PASS Name search narrows providers
+PASS Category filter
+PASS Skill filter
+PASS Maximum rate filter
+PASS Availability filter
+PASS Rate sort and deterministic pagination
+PASS No-match query has empty items and zero total
+PASS Missing provider 404
+PASS Anonymous provider editor denied
+PASS Client provider editor denied
+PASS Provider reads own editor profile
+PASS Cross-owner provider update rejected
+PASS Client provider update denied
+PASS Negative provider price rejected
+PASS Provider update survives subsequent independent read
+PASS Restore provider demonstration data
+PASS Anonymous inquiry submission denied
+PASS Provider cannot submit client inquiry
+PASS Invalid inquiry budget rejected
+PASS Missing target provider rejected
+PASS Company creates a durable inquiry
+PASS Repeated submission returns same inquiry
+PASS Changed payload with same key conflicts
+PASS Concurrent duplicate submissions converge
+PASS Sender can list persisted inquiry
+PASS Other client cannot list inquiry
+PASS Other provider cannot list inquiry
+PASS Other provider cannot change inquiry
+PASS Sender cannot accept own inquiry
+PASS Target provider accepts inquiry
+PASS Client sees persisted acceptance
+PASS Invalid status rejected
+PASS Kafka eventually delivers provider notification
+PASS Other provider cannot mark notification read
+PASS Recipient marks notification read durably
+PASS Individual creates inquiry
+PASS Target provider declines individual inquiry
+PASS Anonymous inquiries and notifications denied
+{"runId":"acceptance-1793056734095","passed":48,"failed":0,"createdInquiryIds":["e93622f7-e159-4c64-a1d0-b847700dab2e","de7f4c2f-59b1-445f-b3ba-e3153baf7da0"]}

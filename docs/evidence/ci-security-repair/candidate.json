@@ -1,0 +1,20 @@
+{
+  "base_revision": "31bd614d32a2e82dcdb39166d27eb098c48bc916",
+  "files": {
+    "backend/package.json": "b22b09f975bd55e53ffb60eca9ff9b031d310426e8a20dd072b7b298e55559da",
+    "backend/package-lock.json": "73613a317cb0d5849a89dea4bcdd631d79c9e64879c727e0cc4d462bb448dedf"
+  },
+  "changed_resolved_packages": {
+    "body-parser": {
+      "from": "2.3.0",
+      "to": "2.4.0"
+    },
+    "multer": {
+      "from": "2.4.0",
+      "to": "2.5.0"
+    }
+  },
+  "framework": "NestJS12.2.0 unchanged",
+  "runtime_source_and_existing_tests": "unchanged",
+  "sonarcloud": "owner setup pending; gate unchanged"
+}

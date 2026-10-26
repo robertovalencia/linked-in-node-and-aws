@@ -1,0 +1,9 @@
+marketplace-backend@1.0.0 /Users/robertovalencia/Documents/Codex/2026-10-24/gauntlet-loop-users-robertovalencia-codex-skills-2/work/node-ci-repair/backend
+├─┬ @nestjs/core@12.2.0
+│ └── @nestjs/platform-express@12.2.0 deduped
+└─┬ @nestjs/platform-express@12.2.0
+  ├── @nestjs/core@12.2.0 deduped
+  ├─┬ express@5.3.0
+  │ └── body-parser@2.4.0
+  └── multer@2.5.0 overridden
+

@@ -78,7 +78,10 @@
     }
   },
   "overrides": {
-    "js-yaml": "^4.1.1"
+    "js-yaml": "^4.1.1",
+    "@nestjs/platform-express": {
+      "multer": "2.5.0"
+    }
   },
   "type": "module"
 }

@@ -1,0 +1,25 @@
+{
+  "completedAt": "2026-10-26T23:20:00.548Z",
+  "base": "http://127.0.0.1:8181",
+  "passed": 4,
+  "failed": 0,
+  "results": [
+    {
+      "name": "valid gzip login preserves authentication behavior",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed gzip rejected with HTTP400",
+      "status": "PASS"
+    },
+    {
+      "name": "truncated gzip rejected with HTTP400",
+      "status": "PASS"
+    },
+    {
+      "name": "same identity process answers after parser errors",
+      "status": "PASS"
+    }
+  ],
+  "limits": "Bounded local compressed-body checks, not a complete reproduction of every upstream advisory condition."
+}

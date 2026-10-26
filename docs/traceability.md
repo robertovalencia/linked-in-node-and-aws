@@ -25,3 +25,8 @@ For a new change use branch/commit naming such as `R05: preserve idempotency acr
 ## Cloud study extension evidence
 
 R12 → `docs/nodejs-aws-study-path/generated/20–43` → `scripts/check-cloud-study.py` → `labs/terraform-local/run.py` and `evidence/` → independent curriculum review. These are teaching/local verification results, not AWS deployment evidence. The app imports managed guides with profile-scoped IDs and preserves personal notes/expansions/comments.
+
+
+## Production dependency advisory repair
+
+R11 → `backend/package.json` scoped override and `backend/package-lock.json` patched parser/upload dependencies → production audits, valid dependency tree, existing unit suites and unchanged real API contract → `docs/evidence/ci-security-repair/` → independent review. Hosted SonarCloud configuration/status is tracked separately in `docs/sonarqube-cloud.md`; its gate remains required when that workflow runs.

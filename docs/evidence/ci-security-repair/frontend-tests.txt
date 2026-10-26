@@ -1,0 +1,13 @@
+
+> expertly-node-aws-frontend@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /Users/robertovalencia/Documents/Business/linked-in-node-and-aws/frontend
+
+
+ Test Files  8 passed (8)
+      Tests  28 passed (28)
+   Start at  19:18:28
+   Duration  2.38s (tests 38%, environment 36%, setup 12%, transform 9%, import 4%)
+
