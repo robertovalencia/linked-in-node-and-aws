@@ -1,0 +1,255 @@
+TAP version 13
+# Subtest: preserves exact SSM command, invocation, and all 48 acceptance results
+ok 1 - preserves exact SSM command, invocation, and all 48 acceptance results
+  ---
+  duration_ms: 802.092667
+  ...
+# Subtest: rejects missing or truncated evidence
+ok 2 - rejects missing or truncated evidence
+  ---
+  duration_ms: 470.496583
+  ...
+# Subtest: rejects partial acceptance suite
+ok 3 - rejects partial acceptance suite
+  ---
+  duration_ms: 500.250708
+  ...
+# Subtest: rejects failed check hidden by summary
+ok 4 - rejects failed check hidden by summary
+  ---
+  duration_ms: 584.90325
+  ...
+# Subtest: rejects different command identity
+ok 5 - rejects different command identity
+  ---
+  duration_ms: 435.137208
+  ...
+# Subtest: rejects nonzero response despite Success
+ok 6 - rejects nonzero response despite Success
+  ---
+  duration_ms: 438.609958
+  ...
+# Subtest: rejects terminal SSM failure
+ok 7 - rejects terminal SSM failure
+  ---
+  duration_ms: 499.030792
+  ...
+# Subtest: preserves failed remote acceptance evidence without approving the release
+ok 8 - preserves failed remote acceptance evidence without approving the release
+  ---
+  duration_ms: 505.622292
+  ...
+# Subtest: publishes exact verified digests after matching account/region, architecture and clean scans
+ok 9 - publishes exact verified digests after matching account/region, architecture and clean scans
+  ---
+  duration_ms: 2782.858209
+  ...
+# Subtest: builds missing immutable SHA tags from Git archive for linux/amd64 before scanning
+ok 10 - builds missing immutable SHA tags from Git archive for linux/amd64 before scanning
+  ---
+  duration_ms: 2397.02475
+  ...
+# Subtest: rejects dirty before registry publication or SSM
+ok 11 - rejects dirty before registry publication or SSM
+  ---
+  duration_ms: 332.874959
+  ...
+# Subtest: rejects wrong-sha before registry publication or SSM
+ok 12 - rejects wrong-sha before registry publication or SSM
+  ---
+  duration_ms: 929.809167
+  ...
+# Subtest: rejects wrong-workflow before registry publication or SSM
+ok 13 - rejects wrong-workflow before registry publication or SSM
+  ---
+  duration_ms: 1020.270667
+  ...
+# Subtest: rejects verify-failed before registry publication or SSM
+ok 14 - rejects verify-failed before registry publication or SSM
+  ---
+  duration_ms: 1028.954042
+  ...
+# Subtest: rejects ci-deployed before registry publication or SSM
+ok 15 - rejects ci-deployed before registry publication or SSM
+  ---
+  duration_ms: 990.189291
+  ...
+# Subtest: rejects partial-suite before registry publication or SSM
+ok 16 - rejects partial-suite before registry publication or SSM
+  ---
+  duration_ms: 1012.424417
+  ...
+# Subtest: rejects wrong-analysis-sha before registry publication or SSM
+ok 17 - rejects wrong-analysis-sha before registry publication or SSM
+  ---
+  duration_ms: 1020.963
+  ...
+# Subtest: rejects low-coverage before registry publication or SSM
+ok 18 - rejects low-coverage before registry publication or SSM
+  ---
+  duration_ms: 980.685333
+  ...
+# Subtest: rejects missing-sonar-condition before registry publication or SSM
+ok 19 - rejects missing-sonar-condition before registry publication or SSM
+  ---
+  duration_ms: 1018.744125
+  ...
+# Subtest: rejects local-state before registry publication or SSM
+ok 20 - rejects local-state before registry publication or SSM
+  ---
+  duration_ms: 978.543917
+  ...
+# Subtest: rejects legacy-state before registry publication or SSM
+ok 21 - rejects legacy-state before registry publication or SSM
+  ---
+  duration_ms: 993.896
+  ...
+# Subtest: rejects wrong-account before registry publication or SSM
+ok 22 - rejects wrong-account before registry publication or SSM
+  ---
+  duration_ms: 1431.82925
+  ...
+# Subtest: rejects wrong-region before registry publication or SSM
+ok 23 - rejects wrong-region before registry publication or SSM
+  ---
+  duration_ms: 1336.2955
+  ...
+# Subtest: rejects mutable-tags before deployment
+ok 24 - rejects mutable-tags before deployment
+  ---
+  duration_ms: 1493.447166
+  ...
+# Subtest: rejects wrong-image-label before deployment
+ok 25 - rejects wrong-image-label before deployment
+  ---
+  duration_ms: 1640.576458
+  ...
+# Subtest: rejects wrong-architecture before deployment
+ok 26 - rejects wrong-architecture before deployment
+  ---
+  duration_ms: 1593.411917
+  ...
+# Subtest: rejects vulnerable-image before deployment
+ok 27 - rejects vulnerable-image before deployment
+  ---
+  duration_ms: 1663.894709
+  ...
+# Subtest: rejects scan-failure before deployment
+ok 28 - rejects scan-failure before deployment
+  ---
+  duration_ms: 1628.477833
+  ...
+# Subtest: does not invoke ECS, SSM, Terraform apply or deploy a service
+ok 29 - does not invoke ECS, SSM, Terraform apply or deploy a service
+  ---
+  duration_ms: 1591.393
+  ...
+# Subtest: deploys exact verified digests after matching account/region, architecture and clean scans
+ok 30 - deploys exact verified digests after matching account/region, architecture and clean scans
+  ---
+  duration_ms: 2577.853208
+  ...
+# Subtest: builds missing immutable SHA tags from Git archive for linux/amd64 before scanning
+ok 31 - builds missing immutable SHA tags from Git archive for linux/amd64 before scanning
+  ---
+  duration_ms: 2524.790583
+  ...
+# Subtest: rejects dirty before registry publication or SSM
+ok 32 - rejects dirty before registry publication or SSM
+  ---
+  duration_ms: 294.724042
+  ...
+# Subtest: rejects wrong-sha before registry publication or SSM
+ok 33 - rejects wrong-sha before registry publication or SSM
+  ---
+  duration_ms: 925.023791
+  ...
+# Subtest: rejects wrong-workflow before registry publication or SSM
+ok 34 - rejects wrong-workflow before registry publication or SSM
+  ---
+  duration_ms: 1015.164125
+  ...
+# Subtest: rejects verify-failed before registry publication or SSM
+ok 35 - rejects verify-failed before registry publication or SSM
+  ---
+  duration_ms: 1029.4005
+  ...
+# Subtest: rejects ci-deployed before registry publication or SSM
+ok 36 - rejects ci-deployed before registry publication or SSM
+  ---
+  duration_ms: 991.27625
+  ...
+# Subtest: rejects partial-suite before registry publication or SSM
+ok 37 - rejects partial-suite before registry publication or SSM
+  ---
+  duration_ms: 1012.01175
+  ...
+# Subtest: rejects wrong-analysis-sha before registry publication or SSM
+ok 38 - rejects wrong-analysis-sha before registry publication or SSM
+  ---
+  duration_ms: 985.873625
+  ...
+# Subtest: rejects low-coverage before registry publication or SSM
+ok 39 - rejects low-coverage before registry publication or SSM
+  ---
+  duration_ms: 1042.49425
+  ...
+# Subtest: rejects missing-sonar-condition before registry publication or SSM
+ok 40 - rejects missing-sonar-condition before registry publication or SSM
+  ---
+  duration_ms: 991.345167
+  ...
+# Subtest: rejects local-state before registry publication or SSM
+ok 41 - rejects local-state before registry publication or SSM
+  ---
+  duration_ms: 982.031666
+  ...
+# Subtest: rejects wrong-account before registry publication or SSM
+ok 42 - rejects wrong-account before registry publication or SSM
+  ---
+  duration_ms: 1438.629333
+  ...
+# Subtest: rejects wrong-region before registry publication or SSM
+ok 43 - rejects wrong-region before registry publication or SSM
+  ---
+  duration_ms: 1270.619
+  ...
+# Subtest: rejects mutable-tags before deployment
+ok 44 - rejects mutable-tags before deployment
+  ---
+  duration_ms: 1671.375875
+  ...
+# Subtest: rejects wrong-image-label before deployment
+ok 45 - rejects wrong-image-label before deployment
+  ---
+  duration_ms: 1634.474834
+  ...
+# Subtest: rejects wrong-architecture before deployment
+ok 46 - rejects wrong-architecture before deployment
+  ---
+  duration_ms: 1574.556833
+  ...
+# Subtest: rejects vulnerable-image before deployment
+ok 47 - rejects vulnerable-image before deployment
+  ---
+  duration_ms: 1619.661792
+  ...
+# Subtest: rejects scan-failure before deployment
+ok 48 - rejects scan-failure before deployment
+  ---
+  duration_ms: 1634.234959
+  ...
+# Subtest: preserves remote failure output and fails the local release
+ok 49 - preserves remote failure output and fails the local release
+  ---
+  duration_ms: 1822.808459
+  ...
+1..49
+# tests 49
+# suites 0
+# pass 49
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 27911.437791

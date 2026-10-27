@@ -1,0 +1,128 @@
+{
+  "timestamp": "2026-10-27T21:10:30.909207+00:00",
+  "scope": "Local disposable Docker PostgreSQL 17 with required TLS; no AWS execution",
+  "checks": [
+    {
+      "name": "bootstrap_initial",
+      "status": "PASS"
+    },
+    {
+      "name": "bootstrap_idempotent_rerun",
+      "status": "PASS"
+    },
+    {
+      "name": "verified_tls_owned_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "checksummed_migrations_rerun_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_identity_to_catalog",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_identity_to_inquiries",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_identity_to_notifications",
+      "status": "PASS"
+    },
+    {
+      "name": "verified_tls_owned_catalog",
+      "status": "PASS"
+    },
+    {
+      "name": "checksummed_migrations_rerun_catalog",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_catalog_to_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_catalog_to_inquiries",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_catalog_to_notifications",
+      "status": "PASS"
+    },
+    {
+      "name": "verified_tls_owned_inquiries",
+      "status": "PASS"
+    },
+    {
+      "name": "checksummed_migrations_rerun_inquiries",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_inquiries_to_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_inquiries_to_catalog",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_inquiries_to_notifications",
+      "status": "PASS"
+    },
+    {
+      "name": "verified_tls_owned_notifications",
+      "status": "PASS"
+    },
+    {
+      "name": "checksummed_migrations_rerun_notifications",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_notifications_to_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_notifications_to_catalog",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_notifications_to_inquiries",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_plaintext",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_wrong_ca",
+      "status": "PASS"
+    },
+    {
+      "name": "deny_wrong_hostname",
+      "status": "PASS"
+    },
+    {
+      "name": "broker_loss_outbox_replay_preserves_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "replay_metadata_reset_idempotent",
+      "status": "PASS"
+    },
+    {
+      "name": "replayed_event_has_one_durable_notification_effect",
+      "status": "PASS"
+    },
+    {
+      "name": "bootstrap_failure_redacts_sql_and_passwords",
+      "status": "PASS"
+    },
+    {
+      "name": "database_logs_do_not_disclose_bootstrap_passwords",
+      "status": "PASS"
+    }
+  ],
+  "passed": 30,
+  "failed": 0
+}

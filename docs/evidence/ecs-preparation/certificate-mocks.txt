@@ -1,0 +1,7 @@
+tests/certificate.tftest.hcl... in progress
+  run "request_only_nonexportable_public_dns_certificate"... pass
+  run "reject_non_dns_hostname"... pass
+tests/certificate.tftest.hcl... tearing down
+tests/certificate.tftest.hcl... pass
+
+Success! 2 passed, 0 failed.

@@ -1,5 +1,7 @@
 # AWS dev: deployment and operating guide
 
+> The owner selected [private ECS/RDS + one NAT preparation](aws-ecs-dev.md) on 27 October. This page retains the earlier EC2/SSM baseline; use the new guide and current saved-plan cost ledger before any changed topology. No deployment is implied.
+
 This environment is an isolated interview/development target. Local Compose needs no AWS account and never selects AWS credentials. AWS preparation is source code, not proof of a deployment: account-specific preparation is recorded separately from apply, image publication, and AWS business journeys. No deployment is claimed from a plan or a workflow definition. Read [cost assumptions](costs.md), [toolchain gates](toolchain.md), and [Azure discussion](azure-mapping.md).
 
 ## Why one EC2 host

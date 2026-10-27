@@ -1,5 +1,7 @@
 # 24-hour AWS dev demonstration and teardown
 
+> The owner selected [private ECS/RDS + one NAT preparation](aws-ecs-dev.md) on 27 October. This page retains the earlier EC2/SSM baseline; use the new guide and current saved-plan cost ledger before any changed topology. No deployment is implied.
+
 The user selected **24 hours**, an active AWS Free plan, and the temporary-local-login release path in `us-east-2`. The prepared host is `m7i-flex.large` (2 vCPU, 8 GiB), reported Free Tier eligible by live discovery. No resources have been provisioned. GitHub runs source/runtime/Sonar verification; the operator's temporary AWS login publishes verified images and invokes SSM. Hosted Sonar Cloud remains configured but pending.
 
 The [current official-price model](costs.md) estimates approximately **$2.54 of credits for the 24-hour core infrastructure**, plus ECR/S3/API/transfer usage and any applicable CI charges. The $100 credit balance was observed during preparation; recheck before apply. This estimate is not a spending cap. Do not switch the account to Paid or try to bypass its service control policies.

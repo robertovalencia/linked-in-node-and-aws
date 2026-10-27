@@ -3,22 +3,12 @@ import { Pool, PoolClient, QueryResultRow } from 'pg';
 import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-import { serviceName, required } from './config.js';
+import { serviceName } from './config.js';
+import { databaseOptions } from './connections.js';
 
 @Injectable()
 export class Database implements OnModuleInit, OnModuleDestroy {
-  readonly pool = new Pool({
-    connectionString: required('DB_URL'),
-    max: 10,
-    connectionTimeoutMillis: 5000,
-    ssl:
-      process.env.DB_SSL === 'true'
-        ? {
-            rejectUnauthorized: true,
-            ...(process.env.DB_SSL_CA ? { ca: process.env.DB_SSL_CA } : {}),
-          }
-        : undefined,
-  });
+  readonly pool = new Pool(databaseOptions());
   constructor() {
     this.pool.on('error', (error: Error) =>
       console.error(

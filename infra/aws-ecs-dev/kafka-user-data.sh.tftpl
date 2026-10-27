@@ -1,0 +1,158 @@
+#!/bin/bash
+set -euo pipefail
+# No credentials in user-data/state. The instance role reads only this broker secret.
+umask 077
+dnf install -y docker python3 awscli-2 amazon-cloudwatch-agent iptables-nft
+# Guard precedes Docker at every boot, so restart policies cannot race metadata isolation.
+cat >/etc/systemd/system/marketplace-broker-imds-guard.service <<'GUARD'
+[Unit]
+Description=Deny Kafka UID access to the EC2 instance profile
+Before=docker.service
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/sh -c 'iptables -C OUTPUT -d 169.254.169.254/32 -m owner --uid-owner 1000 -j REJECT 2>/dev/null || iptables -I OUTPUT 1 -d 169.254.169.254/32 -m owner --uid-owner 1000 -j REJECT'
+[Install]
+WantedBy=multi-user.target
+GUARD
+install -d /etc/systemd/system/docker.service.d
+cat >/etc/systemd/system/docker.service.d/metadata-guard.conf <<'ORDER'
+[Unit]
+Requires=marketplace-broker-imds-guard.service
+After=marketplace-broker-imds-guard.service
+ORDER
+systemctl daemon-reload
+systemctl enable --now marketplace-broker-imds-guard.service
+systemctl enable --now docker amazon-ssm-agent
+install -d -m 0700 /opt/marketplace-kafka
+cat >/opt/marketplace-kafka/bootstrap.sh <<'BOOTSTRAP'
+#!/bin/bash
+set -euo pipefail
+umask 077
+install -d -m 0700 /opt/marketplace-kafka /opt/marketplace-kafka/config
+install -d -o 1000 -g 1000 -m 0700 /var/lib/marketplace-kafka
+aws secretsmanager get-secret-value --region '${aws_region}' --secret-id '${broker_secret_arn}' --query SecretString --output text > /opt/marketplace-kafka/broker-secret.json
+BROKER_DNS='${broker_dns}' python3 - <<'CONFIG'
+import json, os, re
+from pathlib import Path
+root=Path('/opt/marketplace-kafka'); secret=json.loads((root/'broker-secret.json').read_text()); config=root/'config'
+for key in ['KAFKA_ADMIN_PASSWORD','INQUIRIES_KAFKA_PASSWORD','NOTIFICATIONS_KAFKA_PASSWORD']:
+    if not re.fullmatch(r'[A-Za-z0-9]{64,128}', secret[key]): raise SystemExit('Invalid broker credential format')
+if not re.fullmatch(r'[A-Za-z0-9_-]{22}', secret['CLUSTER_ID']): raise SystemExit('Invalid cluster ID')
+for name,key in [('server.pem','KAFKA_SERVER_CERT'),('server-key.pem','KAFKA_SERVER_KEY'),('ca.pem','KAFKA_SSL_CA')]:
+    (config/name).write_text(secret[key])
+# Kafka PEM key store requires unencrypted PKCS#8 key and its certificate chain.
+(config/'keystore.pem').write_text(secret['KAFKA_SERVER_KEY']+'\n'+secret['KAFKA_SERVER_CERT'])
+password=secret['KAFKA_ADMIN_PASSWORD']; dns=os.environ['BROKER_DNS']
+properties=f"""process.roles=broker,controller
+node.id=1
+listeners=SECURE://0.0.0.0:9093,CONTROLLER://127.0.0.1:9094
+advertised.listeners=SECURE://{dns}:9093
+listener.security.protocol.map=SECURE:SASL_SSL,CONTROLLER:PLAINTEXT
+controller.listener.names=CONTROLLER
+controller.quorum.voters=1@127.0.0.1:9094
+inter.broker.listener.name=SECURE
+sasl.enabled.mechanisms=SCRAM-SHA-512
+sasl.mechanism.inter.broker.protocol=SCRAM-SHA-512
+listener.name.secure.scram-sha-512.sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="broker-admin" password="{password}";
+ssl.keystore.type=PEM
+ssl.keystore.location=/run/kafka/keystore.pem
+ssl.truststore.type=PEM
+ssl.truststore.location=/run/kafka/ca.pem
+ssl.client.auth=none
+ssl.endpoint.identification.algorithm=https
+authorizer.class.name=org.apache.kafka.metadata.authorizer.StandardAuthorizer
+super.users=User:broker-admin;User:ANONYMOUS
+allow.everyone.if.no.acl.found=false
+auto.create.topics.enable=false
+num.partitions=1
+default.replication.factor=1
+min.insync.replicas=1
+offsets.topic.replication.factor=1
+offsets.topic.num.partitions=1
+transaction.state.log.replication.factor=1
+transaction.state.log.num.partitions=1
+transaction.state.log.min.isr=1
+group.initial.rebalance.delay.ms=0
+log.dirs=/var/lib/kafka/data
+log.retention.hours=24
+log.retention.bytes=1073741824
+log.segment.bytes=134217728
+log.segment.ms=3600000
+log.retention.check.interval.ms=60000
+message.max.bytes=1048576
+"""
+(config/'server.properties').write_text(properties)
+(config/'admin.properties').write_text(f"""security.protocol=SASL_SSL
+sasl.mechanism=SCRAM-SHA-512
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="broker-admin" password="{password}";
+ssl.truststore.type=PEM
+ssl.truststore.location=/run/kafka/ca.pem
+ssl.endpoint.identification.algorithm=https
+""")
+# Format arguments never enter Terraform, user-data or console output.
+(config/'format.sh').write_text('''#!/bin/bash
+set -euo pipefail
+if [ ! -f /var/lib/kafka/data/meta.properties ]; then
+  /opt/kafka/bin/kafka-storage.sh format --config /run/kafka/server.properties --cluster-id ''' +secret['CLUSTER_ID']+''' --add-scram 'SCRAM-SHA-512=[name=broker-admin,password='''+password+''']' --add-scram 'SCRAM-SHA-512=[name=inquiries,password='''+secret['INQUIRIES_KAFKA_PASSWORD']+''']' --add-scram 'SCRAM-SHA-512=[name=notifications,password='''+secret['NOTIFICATIONS_KAFKA_PASSWORD']+''']' >/dev/null
+fi
+exec /opt/kafka/bin/kafka-server-start.sh /run/kafka/server.properties
+''')
+for file in config.iterdir(): file.chmod(0o600); os.chown(file,1000,1000)
+config.chmod(0o700); os.chown(config,1000,1000)
+(root/'broker-secret.json').unlink()
+CONFIG
+# Root is encrypted gp3; Kafka state survives container restart but not instance destruction.
+# Host networking has no extra IMDS hop. Deny metadata to the unprivileged broker UID; root host agents retain access.
+iptables -C OUTPUT -d 169.254.169.254/32 -m owner --uid-owner 1000 -j REJECT 2>/dev/null || iptables -I OUTPUT 1 -d 169.254.169.254/32 -m owner --uid-owner 1000 -j REJECT
+docker pull '${kafka_image}'
+# Retry/reboot reuses the encrypted data directory; never replace the EC2 disk to retry secret loading.
+docker rm -f marketplace-kafka >/dev/null 2>&1 || true
+docker run -d --name marketplace-kafka --restart unless-stopped --network host --user 1000:1000 \
+  --memory 1536m --cpus 1.5 --cap-drop ALL --security-opt no-new-privileges:true \
+  --read-only --tmpfs /tmp:rw,noexec,nosuid,size=128m --tmpfs /opt/kafka/logs:rw,nosuid,size=64m,uid=1000,gid=1000 \
+  -e KAFKA_HEAP_OPTS='-Xms256m -Xmx768m' \
+  -v /opt/marketplace-kafka/config:/run/kafka:ro -v /var/lib/marketplace-kafka:/var/lib/kafka/data \
+  --log-driver awslogs --log-opt awslogs-region='${aws_region}' --log-opt awslogs-group='${log_group}' \
+  --log-opt awslogs-stream=kafka --log-opt mode=non-blocking --log-opt max-buffer-size=4m \
+  --entrypoint /bin/bash '${kafka_image}' /run/kafka/format.sh
+# Bounded startup; fail rather than declare a broker ready without authenticated topic+ACL setup.
+for attempt in $(seq 1 90); do
+  if docker exec marketplace-kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server '${broker_dns}:9093' --command-config /run/kafka/admin.properties --list >/dev/null 2>&1; then break; fi
+  if [ "$attempt" = 90 ]; then exit 1; fi
+  sleep 5
+done
+docker exec marketplace-kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server '${broker_dns}:9093' --command-config /run/kafka/admin.properties --create --if-not-exists --topic inquiry.created.v1 --partitions 1 --replication-factor 1 --config retention.ms=86400000 --config retention.bytes=1073741824
+for operation in Write Describe; do
+  docker exec marketplace-kafka /opt/kafka/bin/kafka-acls.sh --bootstrap-server '${broker_dns}:9093' --command-config /run/kafka/admin.properties --add --allow-principal User:inquiries --operation "$operation" --topic inquiry.created.v1
+done
+for operation in Read Describe; do
+  docker exec marketplace-kafka /opt/kafka/bin/kafka-acls.sh --bootstrap-server '${broker_dns}:9093' --command-config /run/kafka/admin.properties --add --allow-principal User:notifications --operation "$operation" --topic inquiry.created.v1
+done
+docker exec marketplace-kafka /opt/kafka/bin/kafka-acls.sh --bootstrap-server '${broker_dns}:9093' --command-config /run/kafka/admin.properties --add --allow-principal User:notifications --operation Read --group marketplace-notifications-v1
+cat >/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<'METRICS'
+{"agent":{"metrics_collection_interval":60},"metrics":{"namespace":"Marketplace/ECSDev","append_dimensions":{"InstanceId":"$${aws:InstanceId}"},"aggregation_dimensions":[["InstanceId"]],"metrics_collected":{"disk":{"measurement":["used_percent"],"resources":["/"],"drop_device":true,"drop_original_metrics":["disk_used_percent"]},"mem":{"measurement":["used_percent"],"drop_original_metrics":["mem_used_percent"]},"procstat":[{"pattern":"kafka[.]Kafka","measurement":["pid_count"],"drop_original_metrics":["procstat_lookup_pid_count"]}]}}}
+METRICS
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+BOOTSTRAP
+chmod 0700 /opt/marketplace-kafka/bootstrap.sh
+cat >/etc/systemd/system/marketplace-kafka-bootstrap.service <<'UNIT'
+[Unit]
+Description=Private marketplace Kafka TLS/SCRAM bootstrap (retry until runtime secret exists)
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+StartLimitIntervalSec=0
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/marketplace-kafka/bootstrap.sh
+Restart=on-failure
+RestartSec=30
+TimeoutStartSec=900
+[Install]
+WantedBy=multi-user.target
+UNIT
+systemctl daemon-reload
+systemctl enable marketplace-kafka-bootstrap.service
+systemctl start --no-block marketplace-kafka-bootstrap.service

@@ -24,6 +24,7 @@ jobs:
             backend/package-lock.json
             frontend/package-lock.json
       - run: npm ci && npm --prefix backend ci && npm --prefix frontend ci
+      - run: node --test scripts/aws-deploy.test.mjs scripts/aws-release-local.test.mjs scripts/aws-ecs-publish-local.test.mjs
       - run: npm run check
       - run: npm --prefix backend run test:coverage
       - run: npm --prefix frontend run test:coverage
@@ -48,6 +49,10 @@ jobs:
       - run: npm run setup
       - run: docker compose up -d --build --wait --wait-timeout 240
       - run: node scripts/acceptance.mjs http://localhost:8180 work/ci-acceptance.json
+      - run: python3 scripts/aws-ecs-frontend-dns-test.py --frontend-image linked-in-node/frontend:local
+      - run: npm --prefix backend ci
+      - run: python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json
+      - run: python3 scripts/aws-ecs-kafka-integration.py --report work/ecs-kafka-integration.json
       - run: npm run test:browser
       - if: failure()
         run: docker compose logs --no-color
@@ -57,6 +62,9 @@ jobs:
           name: integration-evidence
           path: |
             work/ci-acceptance.json
+            work/ecs-database-integration.json
+            work/ecs-kafka-integration.json
+            work/aws-ecs-preparation/frontend-dns.json
             docs/evidence/browser-smoke.json
             docs/evidence/browser/*.png
       - if: always()
@@ -76,3 +84,6 @@ jobs:
       - run: terraform validate
       - run: terraform test
       - run: terraform -chdir=../bootstrap init -backend=false -input=false && terraform -chdir=../bootstrap validate && terraform -chdir=../bootstrap test
+
+      - run: terraform -chdir=../aws-ecs-dev init -backend=false -input=false && terraform -chdir=../aws-ecs-dev validate && terraform -chdir=../aws-ecs-dev test
+      - run: terraform -chdir=../aws-ecs-certificate init -backend=false -input=false && terraform -chdir=../aws-ecs-certificate validate && terraform -chdir=../aws-ecs-certificate test

@@ -18,3 +18,7 @@ work/
 .idea/
 
 infra/aws-dev/backend.hcl
+
+infra/aws-ecs-dev/backend.hcl
+
+__pycache__/

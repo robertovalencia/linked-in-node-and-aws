@@ -13,7 +13,7 @@ This document defines the local application boundaries and the API behavior that
 | Inquiries     | `8183` | `/api/inquiries`     | Client requests and provider decisions                |
 | Notifications | `8184` | `/api/notifications` | Provider inbox and read state                         |
 
-The production frontend serves through nginx on port `8180`; local Vite development uses port `5183`. Both proxy the listed API routes to the corresponding service. Each Nest service exposes `/health/live` and `/health/ready`; the frontend `/health` checks nginx. Management routes are not forwarded by nginx.
+The production frontend serves through nginx on port `8180`; local Vite development uses port `5183`. Both proxy the listed API routes to the corresponding service. Each Nest service exposes `/health/live`, `/health/serve` (database-dependent serving health) and `/health/ready` (database plus messaging readiness where applicable); the frontend `/health` checks nginx. Management routes are not forwarded by nginx.
 
 Each service owns a PostgreSQL database and a distinct database user on one local PostgreSQL server. Kafka carries the inquiry-created event to notifications. Services do not share domain tables.
 
@@ -152,3 +152,7 @@ The frontend shows success only after an API response. It may keep a token and c
 The local environment supplies `JWT_SECRET`, `INTERNAL_API_KEY`, `DB_URL` (service-specific URI), `KAFKA_BROKERS`, and `CATALOG_URL`. Each service receives its own database credentials. These are demo runtime values, not real user credentials.
 
 Acceptance requires strict types, ESLint/Prettier, Jest/Vitest behavior tests, reproducible builds and all 48 real HTTP checks with zero failures. See [testing](docs/testing.md) and [results](docs/results.md). AWS execution is separately reported; prepared configuration is not a deployed environment.
+
+## Selected ECS runtime adaptation
+
+Public API/event payloads and all 48 acceptance checks remain unchanged. ECS uses field-based database settings with verified PostgreSQL TLS and a separate owned role/database per capability; local DB_URL remains supported. Kafka clients authenticate with separate SCRAM-SHA-512 identities over verified TLS. TLS-downgrading database URL settings are rejected. ECS health checks use `/health/serve` so a broker outage does not evict durable inquiry HTTP serving; `/health/ready` retains strict messaging diagnostics. Seed accounts require explicit demo activation. See [runtime/security/recovery boundaries](docs/aws-ecs-dev.md). These definitions and local checks do not establish cloud execution.

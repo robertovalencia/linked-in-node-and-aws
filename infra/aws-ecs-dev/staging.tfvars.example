@@ -1,0 +1,13 @@
+# Hostname-free infrastructure REVIEW only. This would cost money if applied.
+# No listener/client ingress/application services are created in this stage.
+owner = "REPLACE_WITH_TEARDOWN_OPERATOR"
+expires_at = "2026-10-29T18:00:00Z" # Proposed only; refresh at actual approved start +24h.
+approved_client_cidrs = []
+application_hostname = null
+certificate_arn = null
+deploy_application = false
+seed_demo = false
+protect_database = true
+recovery_snapshot_suffix = "review-20261027"
+# Official apache/kafka 4.0.1 linux/amd64 manifest, verified 2026-10-27.
+kafka_image = "apache/kafka:4.0.1@sha256:9d71149303e87843482fa0e2095ed2a991739bfdbcd5333f4295a53d667338b4"

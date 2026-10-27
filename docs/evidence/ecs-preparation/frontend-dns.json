@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-10-27T20:57:58.602611+00:00",
+  "scope": "Local disposable Docker DNS; no AWS execution",
+  "frontendImage": "linked-in-node/frontend:local",
+  "passed": 5,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "configured_private_dns_and_preserved_nginx_host_variable",
+      "status": "PASS"
+    },
+    {
+      "name": "proxy_recovers_when_backend_ip_changes",
+      "status": "PASS"
+    },
+    {
+      "name": "upstream_config_injection",
+      "status": "PASS"
+    },
+    {
+      "name": "resolver_config_injection",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid_resolver_octet",
+      "status": "PASS"
+    }
+  ]
+}

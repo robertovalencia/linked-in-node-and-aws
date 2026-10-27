@@ -14,6 +14,15 @@ export class HealthController {
   @Get(['health/live', 'actuator/health/liveness']) live() {
     return { status: 'UP', service: serviceName() };
   }
+  // Routing readiness preserves durable inquiry writes while Kafka retries asynchronously.
+  @Get('health/serve') async serving() {
+    try {
+      await this.db.query('SELECT 1');
+    } catch {
+      throw new ServiceUnavailableException('Database dependency unavailable');
+    }
+    return { status: 'UP', service: serviceName(), database: 'UP' };
+  }
   @Get(['health/ready', 'health', 'actuator/health', 'actuator/health/readiness']) async ready() {
     try {
       await this.db.query('SELECT 1');

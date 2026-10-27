@@ -1,0 +1,15 @@
+tests/security.tftest.hcl... in progress
+  run "infrastructure_without_unpublished_images"... pass
+  run "staged_images_and_least_privilege"... pass
+  run "explicit_activation"... pass
+  run "reject_public_exposure"... pass
+  run "reject_activation_without_images"... pass
+  run "reject_mutable_kafka_image"... pass
+  run "approved_existing_notification_topic"... pass
+  run "explicit_synthetic_demo_seeding"... pass
+  run "owner_has_no_hostname_safe_staging"... pass
+  run "reject_activation_without_hostname_or_certificate"... pass
+tests/security.tftest.hcl... tearing down
+tests/security.tftest.hcl... pass
+
+Success! 10 passed, 0 failed.

@@ -13,7 +13,7 @@ The stable identifiers below map the interview specification to source, tests an
 | R07 notifications | outbox publisher + notifications consumer | Kafka acceptance; failure-drill replay/outage | Kafka topic + notifications runtime |
 | R08 React separation | frontend/src/{components,services,routes,types,contexts,hooks} | lint/types; Vitest stale-request and error tests | Frontend digest |
 | R09 local setup | compose.yaml, scripts/local.sh, scripts/dev.mjs | full Compose acceptance; hot-reload readiness | Local project linked-in-node-local |
-| R10 AWS dev | infra/aws-dev (local-login/GitHub modes), scripts/aws-* | Five dev and two bootstrap mock runs pass; account-specific bootstrap plan and local-backend dev preview prepared; final S3-backed plan/apply/cloud smoke pending approval | Selected us-east-2 dev; source/digest manifest and exact SSM command/48-check report required; [preparation boundaries](results.md) |
+| R10 AWS dev | infra/aws-ecs-dev, infra/aws-ecs-certificate; owned TLS connections/bootstrap/replay; scripts/aws-ecs-* | [Fresh local preparation evidence](evidence/ecs-preparation/verification-manifest.json), 10+2 mock runs, PG30/Kafka9/DNS5, saved-plan negative controls and independent critic | [Selected ECS guide](aws-ecs-dev.md); local-backend 108-create preview only; final S3 plan, exact-source CI and all cloud gates tracked separately |
 | R11 toolchain | .github, .vscode, sonar-project.properties, compose.ci-quality.yaml, scripts/sonar-ci.mjs | Prior local/Verify gates pass; fresh exact-SHA verification with isolated CI Sonar 80% gate required; hosted Cloud remains pending | Successful verification-only run ID checked by local release helper; optional protected GitHub deploy mode retained |
 | R12 learning/AI | AGENTS.md, docs/specs, docs/prompts, guides | independent critic; docs link check; interview rehearsal | docs/releases/current.json |
 
@@ -35,3 +35,7 @@ R11 → `backend/package.json` scoped override and `backend/package-lock.json` p
 ## Cost-first deployment redesign
 
 R10 → [phased ADR and cost review](aws-cost-review-2026-10-27/README.md) → `model.py` / `rates.json` / exact scenario ledger → independent `critic_audit.py` (42 platform + six streaming cases) / `critic.md` → sanitized October 27 account and baseline-preview summaries. Cost/topology selection, hardened infrastructure, final S3-backed plan approval, cloud recovery/security/48-check execution and teardown are pending. No Jira import or new release is implied by these local requirement links.
+
+## Selected ECS scope
+
+R10 selection supersedes the earlier proposed SSM recommendation for preparation only. [Requirements](specs/requirements.md) → [runtime/Terraform source](../infra/aws-ecs-dev/README.md) → [local execution manifest](evidence/ecs-preparation/verification-manifest.json) → [sanitized actual plan/costs](evidence/ecs-preparation/staging-plan-cost-review.json) → [critic record](reviews.md). The new publisher validates exact-SHA GitHub/Sonar/48-API evidence and isolated ECS state before ECR writes; no AWS publication or deployment occurred. Jira import and actual deployment/release identities remain pending.

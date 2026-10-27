@@ -1,0 +1,17 @@
+# EXAMPLE ONLY. .invalid, documentation CIDR and all-zero digests are not deployable evidence.
+region = "us-east-2"
+project = "linked-in-node"
+owner = "REPLACE_WITH_TEARDOWN_OPERATOR"
+expires_at = "2026-10-29T18:00:00Z" # Replace at actual approved start +24 hours.
+approved_client_cidrs = ["192.0.2.1/32"]
+application_hostname = "marketplace.example.invalid"
+certificate_arn = "arn:aws:acm:us-east-2:123456789012:certificate/00000000-0000-0000-0000-000000000000"
+kafka_image = "apache/kafka:4.0.1@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+recovery_snapshot_suffix = "review-20261027"
+protect_database = true
+deploy_application = false
+# Supply only after exact-SHA CI, image push, immutable digest/architecture/security verification.
+# image_digests = { backend = "sha256:...64hex...", frontend = "sha256:...64hex..." }
+
+seed_demo = false # Explicitly approve true only for the synthetic interview demonstration.
+# notification_topic_arn = "arn:aws:sns:us-east-2:123456789012:OWNER_APPROVED_EXISTING_TOPIC"

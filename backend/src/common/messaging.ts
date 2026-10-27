@@ -2,7 +2,7 @@ import { Injectable, Logger, OnApplicationBootstrap, OnModuleDestroy } from '@ne
 import { Kafka, Producer, Consumer, logLevel } from 'kafkajs';
 import { Database } from './database.js';
 import { WorkerHealth } from './health.js';
-import { required, serviceName } from './config.js';
+import { kafkaOptions } from './connections.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
 export const INQUIRY_TOPIC = 'inquiry.created.v1';
 const pause = (ms: number) =>
@@ -42,7 +42,9 @@ export class OutboxPublisher implements OnApplicationBootstrap, OnModuleDestroy 
   private async run(): Promise<void> {
     while (!this.stopping) {
       try {
-        this.producer = kafka().producer({ allowAutoTopicCreation: true });
+        this.producer = kafka().producer({
+          allowAutoTopicCreation: process.env.DEPLOYMENT_MODE !== 'aws-ecs',
+        });
         await this.producer.connect();
         while (!this.stopping) {
           await this.publishBatch();
@@ -84,7 +86,7 @@ export class InquiryConsumer implements OnApplicationBootstrap, OnModuleDestroy 
       try {
         this.consumer = kafka().consumer({
           groupId: 'marketplace-notifications-v1',
-          allowAutoTopicCreation: true,
+          allowAutoTopicCreation: process.env.DEPLOYMENT_MODE !== 'aws-ecs',
           retry: { retries: 5 },
         });
         this.consumer.on(this.consumer.events.CRASH, (event) => {
@@ -130,15 +132,5 @@ export class InquiryConsumer implements OnApplicationBootstrap, OnModuleDestroy 
   }
 }
 function kafka(): Kafka {
-  return new Kafka({
-    clientId: `marketplace-${serviceName()}`,
-    brokers: required('KAFKA_BROKERS')
-      .split(',')
-      .map((v) => v.trim()),
-    logLevel: logLevel.ERROR,
-    connectionTimeout: 5000,
-    requestTimeout: 10000,
-    retry: { retries: 4 },
-    ssl: process.env.KAFKA_SSL === 'true',
-  });
+  return new Kafka({ ...kafkaOptions(), logLevel: logLevel.ERROR });
 }
