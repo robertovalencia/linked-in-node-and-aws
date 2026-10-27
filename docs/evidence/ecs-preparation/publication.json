@@ -1,0 +1,16 @@
+{
+  "implementationCommit": "d84c77318b946e9999f2eb3184568023e6fb3c50",
+  "planReviewedAgainstCleanCommit": "d84c77318b946e9999f2eb3184568023e6fb3c50",
+  "planBinarySha256": "afce0049b278669990eb2c09f511a5af6f5ccc41ecb04eaa370527fc69436591",
+  "planJsonSha256": "e99e17c2726003d2d35240336f308c9a4dfa4c11b551be38f1970fb45463da1e",
+  "scope": "Preparation and hostname-free local-backend preview only; no AWS writes",
+  "privateRepository": "robertovalencia/linked-in-node-and-aws",
+  "critic": "critic.md",
+  "hostedVerification": "Pending for publication revision; no hosted pass claimed",
+  "nextGates": [
+    "Owned hostname and issued Ohio ACM certificate; approved client CIDRs",
+    "Current credits/permissions/costs and final S3-backed plan approval",
+    "Exact-source hosted CI, scanned images, bootstrap and explicit activation approval",
+    "Live cloud security, recovery, 48-check smoke, rollback and 24-hour teardown"
+  ]
+}

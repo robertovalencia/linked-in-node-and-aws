@@ -143,10 +143,13 @@
     "local-acceptance.json": "11d07c25557b8c819be1f809d5ec96a27fcca763739620ac3695dcb5b8506fc8",
     "plan-negative-controls.json": "ff969b22c5d5a029357fc0ee5a79e7e1d86c81e31f9d6fbbab7c47db4ee2f01a",
     "postgres-tls-ownership-replay.json": "ce14394d2672f0d2e02a8e5c67883a302f88df1fc8c09f0b1fafdba3834e6846",
+    "publication.json": "10e37496ab4a674e8114655a1f4c43b271b20f9b44f5c41cf32c4cad123c03a1",
     "release-contracts.txt": "d071f4dca3ea0dee30f92b3709b9b73ec7a3104b304ab8345552f33e05c15c62",
     "source-check.txt": "32b9ada92f4bacfd7e2d53503e5c4817e9cf4ee6ff4bfec26d3b9061fb473a68",
-    "staging-plan-cost-review.json": "154c7c421442a9bef4a4b684378f4e27cef3b7404cdb72e58bb452b97365e38a",
+    "staging-plan-cost-review.json": "b8f3234fb9460671ece87ddceb444a3ff018fc41ca7e9e58dbf6925c0a372d9a",
     "terraform-mocks.txt": "66faa144880189c9289217578b06922bf46c7eeff509ededb4e44fc9de744087",
     "unit-tests.txt": "bceaae33189276a0080f74d4505c4a7c9a0ea93d1b439f6d0ed7c02d6f2d4046"
-  }
+  },
+  "implementationCommit": "d84c77318b946e9999f2eb3184568023e6fb3c50",
+  "planReviewedAgainstCleanCommit": "d84c77318b946e9999f2eb3184568023e6fb3c50"
 }
