@@ -2,13 +2,13 @@
 
 **Selected for preparation on 27 October 2026; not provisioned.** This implements the private ECS/RDS + one NAT option from the [cost-first review](aws-cost-review-2026-10-27/README.md). The existing `infra/aws-dev` EC2/SSM root is preserved. Local Compose keeps its original ports, credentials and volumes.
 
-The first saved plan was prepared before hostname registration and therefore has **no ALB listener, no client CIDR ingress, no application task definitions/services, and no invented domain or certificate ARN**. It creates paid infrastructure if applied, but it cannot serve the marketplace. Do not apply this staging preview merely to wait for a domain. The free zone `linked-in-node-rv.dynv6.net` is now registered, and a [certificate-only plan](evidence/certificate-request/plan-review.json) for `app.linked-in-node-rv.dynv6.net` proposes one create. Certificate request/validation and a fresh S3-backed infrastructure plan remain pending approval. No HTTP fallback, domain purchase, account upgrade or AWS mutation was performed.
+The first saved plan was prepared before hostname registration and therefore has **no ALB listener, no client CIDR ingress, no application task definitions/services, and no invented domain or certificate ARN**. It creates paid infrastructure if applied, but it cannot serve the marketplace. Do not apply this staging preview merely to wait for a domain. The free zone `linked-in-node-rv.dynv6.net` is registered. After explicit approval, Terraform created its one nonexportable public certificate and the actual validation CNAME was added; ACM now reports [ISSUED with DNS SUCCESS](evidence/certificate-request/issuance.json). This is the only approved AWS resource so far. A fresh S3-backed infrastructure plan/current costs and provisioning approval remain pending. No application infrastructure, domain purchase or account upgrade was performed.
 
 ## Architecture and cost
 
 ```mermaid
 flowchart LR
-  C[Approved client CIDRs — pending] -->|HTTPS 443 — pending certificate| A[ALB: two public AZ subnets]
+  C[Approved client CIDRs — pending] -->|HTTPS 443 planned / certificate issued| A[ALB: two public AZ subnets]
   A -->|SG trust / 8180| F[Private nginx Fargate]
   F -->|Cloud Map DNS / per-service ports| S[Four private NestJS services]
   S -->|Verified TLS / owned DB credentials| D[(Private RDS PostgreSQL: four DBs)]
@@ -87,7 +87,7 @@ The binary, JSON, scratch template and current source must agree. Negative rule 
 
 ## Step 1 — obtain a hostname before paid infrastructure
 
-For the temporary lab, use the [free dynv6 hostname setup](aws-free-test-hostname.md): reserve a free zone in your account and use its `app` child for the ALB and ACM DNS validation. A zone must actually be reserved before using it in a real plan. Alternatively, choose a DNS name you already control; AWS does not need to be its registrar. The ALB's generated `*.elb.amazonaws.com` name is not a domain you control for an ACM certificate. No purchase or DNS-account change is authorized here.
+For the temporary lab, use the [free dynv6 hostname setup](aws-free-test-hostname.md): reserve a free zone in your account and use its `app` child for the ALB and ACM DNS validation. A zone must actually be reserved before using it in a real plan. Alternatively, choose a DNS name you already control; AWS does not need to be its registrar. The ALB's generated `*.elb.amazonaws.com` name is not a domain you control for an ACM certificate. No domain purchase or provider account change is required. The approved certificate validation CNAME is the only provider DNS record added by this work.
 
 Once an owned name is available, prepare a **certificate-only** plan:
 
@@ -152,7 +152,7 @@ ECS circuit-breaker rollback needs a prior completed deployment. First deploymen
 
 ## 24-hour teardown
 
-Start the actual deadline when the first billable resource starts, not when this plan is generated. No AWS resources exist from this preparation and no deadline/timer has started. Before apply, arrange teardown ownership and the follow-up; budget alarms are not hard spending caps.
+Start the actual deadline when the first billable resource starts, not when this plan is generated. Only the approved no-additional-fee ACM certificate exists from this preparation; no billable application infrastructure exists and no deadline/timer has started. Before apply, arrange teardown ownership and the follow-up; budget alarms are not hard spending caps.
 
 Stop traffic and new writes, capture sanitized evidence, complete the approved restore/replay exercise, and review the destroy plan. RDS deletion protection must be removed in a separate reviewed change; retained final snapshots and automated backups keep charging. Remove ALB, NAT/EIP, services/tasks, broker and other dev resources after the selected retention decision. No unrelated resources or local data may be removed.
 

@@ -1,12 +1,12 @@
 # Free testing hostname for the HTTPS ALB
 
-**Zone registration verified on 27 October 2026; AWS certificate and deployment pending.** Use a free [dynv6 zone](https://dynv6.com/) for this short development lab. Its [official DNS API](https://dynv6.github.io/api-spec/) supports CNAME and CAA records; the [changelog](https://dynv6.com/docs/changelog) documents underscore-label support. This fits [ACM DNS validation](https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html) while preserving the selected ALB → private ECS → RDS/Kafka architecture.
+**Zone registration and ACM issuance verified on 27 October 2026; ALB/application deployment pending.** Use a free [dynv6 zone](https://dynv6.com/) for this short development lab. Its [official DNS API](https://dynv6.github.io/api-spec/) supports CNAME and CAA records; the [changelog](https://dynv6.com/docs/changelog) documents underscore-label support. This fits [ACM DNS validation](https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html) while preserving the selected ALB → private ECS → RDS/Kafka architecture.
 
 Registered zone: `linked-in-node-rv.dynv6.net`
 
 Selected application name: `app.linked-in-node-rv.dynv6.net`
 
-Before registration, the candidate returned NXDOMAIN; that did not prove availability. The development chat has now verified the zone in the owner’s signed-in provider account and confirmed public A/authoritative SOA responses. The IPv4 value in the provider is an address, not the zone name, and is not an ALB target. The existing apex address does not conflict with a later `app` CNAME. These observations do not prove ACM issuance or ALB reachability.
+Before registration, the candidate returned NXDOMAIN; that did not prove availability. The development chat has now verified the zone in the owner’s signed-in provider account and confirmed public A/authoritative SOA responses. The IPv4 value in the provider is an address, not the zone name, and is not an ALB target. The existing apex address does not conflict with a later `app` CNAME. Certificate issuance has now been verified separately through the live ACM API. ALB reachability is still unverified.
 
 ## Cost and scope
 
@@ -16,11 +16,17 @@ The reviewed AWS estimates are unchanged: expected staging $6.71/24h and future 
 
 [Provider terms](https://dynv6.com/terms) provide no SLA and permit inactive-account deletion. Use this for the temporary demonstration, rather than depending on it for durable production DNS. Certificate issuance and actual provider record behavior must be verified before paid infrastructure starts.
 
-## Current checkpoint: certificate-only plan ready for review
+## Current checkpoint: certificate issued after approved request
 
-[Saved-plan receipt](evidence/certificate-request/plan-review.json) and [independent plan review](evidence/certificate-request/critic.md): one create, `aws_acm_certificate.application`, exact application name above, account `772641336063`, region `us-east-2`, RSA2048, DNS validation, export disabled. Binary SHA256 `5c040631a18c64beb6d912c05ae6e270df4a752e84e4b996470b5ce31ed1b701`. The binary/JSON remain ignored under `work/aws-ecs-certificate-2026-10-27/`. No certificate was requested and no provider DNS record was changed by the development agent.
+The user approved the exact [one-create saved certificate plan](evidence/certificate-request/plan-review.json) and its DNS validation. Terraform created only `aws_acm_certificate.application` in account `772641336063`, region `us-east-2`. [Live issuance evidence](evidence/certificate-request/issuance.json) reports **ISSUED**, DNS validation **SUCCESS**, RSA2048 and export disabled. The authoritative nameserver and two public resolvers all return the exact ACM CNAME. A post-issuance Terraform plan reports no changes. [Independent operational review](evidence/certificate-request/issuance-critic.md).
 
-The exact same effective credential environment must be used by both STS and Terraform, with account `772641336063`, region `us-east-2` and saved-plan/source hashes rechecked immediately before an approved apply. A CLI-only `--profile` override is insufficient if Terraform inherits different environment credentials; this certificate root has no intrinsic allowed-account guard. After the request, add only the actual ACM validation record, verify public DNS and wait for ISSUED before reviewing paid infrastructure.
+Certificate ARN: `arn:aws:acm:us-east-2:772641336063:certificate/ae18667c-47ac-4fda-8039-e877bafe9705`
+
+The original approved binary SHA256 is `5c040631a18c64beb6d912c05ae6e270df4a752e84e4b996470b5ce31ed1b701`. Its private plan/outputs and **live local Terraform state** remain ignored under `work/aws-ecs-certificate-2026-10-27/`. Preserve that directory until deliberate state migration or reviewed certificate destruction; it is no longer disposable generated output. Do not reapply the consumed create plan. State contains certificate/DNS metadata, not the AWS-managed private key. The request-phase state may still say PENDING_VALIDATION; live ACM status is the issuance evidence.
+
+STS and Terraform used the same effective credential environment, with account, region, source/provider-lock and approved-plan hashes checked immediately before apply. The selected certificate has no additional integrated-service fee. It is not yet attached (`InUseBy=[]`, renewal eligibility currently INELIGIBLE); the validation CNAME alone does not establish automatic renewal while unused. No ALB, application tasks, NAT, RDS or Kafka host was provisioned. Approved client CIDRs, a final S3-backed infrastructure plan/current costs, images/bootstrap and actual cloud smoke remain separate gates.
+
+The remaining numbered sections are the repeatable procedure for another hostname; reservation and certificate request are already completed for this one.
 
 ## 1. Reserve a zone in your own account
 
@@ -75,4 +81,4 @@ At the approved teardown deadline, remove the application CNAME as part of closi
 
 ## Verification boundary
 
-Current evidence establishes provider feature/pricing documentation, zone registration visible in the owner account, read-only DNS observations and a concrete certificate-only saved plan. It does not establish agent-created DNS records, ACM issuance, AWS creation or ALB success. The [independent hostname review](evidence/free-hostname/critic.md) records this remaining gap. Infrastructure source, saved plan hashes, application source and learning-owned study files are unchanged by this guide.
+Current evidence establishes owner-account zone registration, the approved one-resource Terraform apply, one saved provider validation CNAME, matching authoritative/public DNS, live ACM ISSUED/DNS SUCCESS and no-change post-issuance planning. It does not establish ALB/application deployment, actual HTTPS serving, renewal eligibility while unused, cloud recovery or billable-resource teardown. The [independent issuance review](evidence/certificate-request/issuance-critic.md) confirms the completed certificate stage and the remaining ALB/application gap. The earlier free-hostname review is retained as historical preparation evidence. Infrastructure source, saved plan hashes, application source and learning-owned study files are unchanged by this guide.

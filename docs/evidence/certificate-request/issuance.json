@@ -1,0 +1,71 @@
+{
+  "verifiedAt": "2026-10-27T22:27:57.522086+00:00",
+  "scope": "User-approved certificate request and one DNS validation CNAME only",
+  "status": "ISSUED",
+  "certificateArn": "arn:aws:acm:us-east-2:772641336063:certificate/ae18667c-47ac-4fda-8039-e877bafe9705",
+  "hostname": "app.linked-in-node-rv.dynv6.net",
+  "account": "772641336063",
+  "region": "us-east-2",
+  "type": "AMAZON_ISSUED",
+  "keyAlgorithm": "RSA-2048",
+  "export": "DISABLED",
+  "notBefore": "2026-10-26T20:00:00-04:00",
+  "notAfter": "2027-05-12T19:59:59-04:00",
+  "validationStatus": "SUCCESS",
+  "validationMethod": "DNS",
+  "dnsRecord": {
+    "Name": "_7e2b23f03e5658438c2cd91f2423bb6f.app.linked-in-node-rv.dynv6.net.",
+    "Type": "CNAME",
+    "Value": "_7204d2a213d88c9d4c09dda7e63c568e.wzccmgtwzk.acm-validations.aws."
+  },
+  "dnsChecks": [
+    {
+      "resolver": "ns1.dynv6.com",
+      "cnameMatchesACM": true,
+      "answer": "_7204d2a213d88c9d4c09dda7e63c568e.wzccmgtwzk.acm-validations.aws."
+    },
+    {
+      "resolver": "1.1.1.1",
+      "cnameMatchesACM": true,
+      "answer": "_7204d2a213d88c9d4c09dda7e63c568e.wzccmgtwzk.acm-validations.aws."
+    },
+    {
+      "resolver": "8.8.8.8",
+      "cnameMatchesACM": true,
+      "answer": "_7204d2a213d88c9d4c09dda7e63c568e.wzccmgtwzk.acm-validations.aws."
+    }
+  ],
+  "terraformApply": {
+    "added": 1,
+    "changed": 0,
+    "destroyed": 0,
+    "approvedPlanSha256": "5c040631a18c64beb6d912c05ae6e270df4a752e84e4b996470b5ce31ed1b701",
+    "postIssuancePlanExitCode": 0,
+    "postIssuancePlanChanges": 0,
+    "stateManagedResourceCount": 1,
+    "stateStorage": "Ignored private local state; never committed"
+  },
+  "sameEffectiveCredentialsVerified": true,
+  "providerDnsRecordCreated": true,
+  "dnsManagedBy": "Approved manual dynv6 browser entry, outside Terraform",
+  "certificateFeeUSD": "0",
+  "feeSource": "https://aws.amazon.com/certificate-manager/pricing/",
+  "inUseBy": [],
+  "albDeployed": false,
+  "applicationInfrastructureDeployed": false,
+  "teardownClockStarted": false,
+  "remainingGates": [
+    "Approved client CIDRs",
+    "Reviewed state bootstrap and fresh S3-backed infrastructure plan/current costs",
+    "Exact-source images/bootstrap/application activation",
+    "Actual ALB TLS health, cloud security/recovery/rollback/48-check smoke",
+    "24-hour billable-resource deadline and reviewed teardown"
+  ],
+  "renewalEligibility": "INELIGIBLE",
+  "operationalNotes": [
+    "Certificate is not attached to an AWS service; issuance does not prove ALB or application TLS",
+    "Renewal is not yet eligible while unused; keeping CNAME alone is insufficient",
+    "Preserve the live private local certificate state in work/aws-ecs-certificate-2026-10-27 until deliberate migration or reviewed destruction",
+    "Request-phase local state may show pending; live ACM describe-certificate is authoritative for issuance"
+  ]
+}
