@@ -87,7 +87,7 @@ The binary, JSON, scratch template and current source must agree. Negative rule 
 
 ## Step 1 — obtain a hostname before paid infrastructure
 
-Choose a DNS name you control, possibly a subdomain of an existing domain; AWS does not need to be its registrar. The ALB's generated `*.elb.amazonaws.com` name is not a domain you control for an ACM certificate. No purchase or DNS-account change is authorized here.
+For the temporary lab, use the [free dynv6 hostname setup](aws-free-test-hostname.md): reserve a free zone in your account and use its `app` child for the ALB and ACM DNS validation. A zone must actually be reserved before using it in a real plan. Alternatively, choose a DNS name you already control; AWS does not need to be its registrar. The ALB's generated `*.elb.amazonaws.com` name is not a domain you control for an ACM certificate. No purchase or DNS-account change is authorized here.
 
 Once an owned name is available, prepare a **certificate-only** plan:
 

@@ -39,3 +39,7 @@ R10 → [phased ADR and cost review](aws-cost-review-2026-10-27/README.md) → `
 ## Selected ECS scope
 
 R10 selection supersedes the earlier proposed SSM recommendation for preparation only. [Requirements](specs/requirements.md) → [runtime/Terraform source](../infra/aws-ecs-dev/README.md) → [local execution manifest](evidence/ecs-preparation/verification-manifest.json) → [sanitized actual plan/costs](evidence/ecs-preparation/staging-plan-cost-review.json) → [critic record](reviews.md). The new publisher validates exact-SHA GitHub/Sonar/48-API evidence and isolated ECS state before ECR writes; no AWS publication or deployment occurred. Jira import and actual deployment/release identities remain pending.
+
+## R10 free test hostname preparation, 27 October 2026
+
+[Free hostname guide](aws-free-test-hostname.md) → dynv6 primary CNAME/CAA/underscore documentation and public/authoritative DNS checks → owner account/zone reservation → reviewed certificate-only plan and actual ACM ISSUED → new final S3-backed infrastructure plan. The candidate is not claimed reserved. No AWS or provider records were created, no application/Terraform source changed and no free-DNS feature removes the cloud approval or security gates.

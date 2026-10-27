@@ -94,3 +94,9 @@ The first new hosted Verify run [40586119114](https://github.com/robertovalencia
 ### Final KMS request accounting correction
 
 Final official-price recheck found that the otherwise zero customer-managed-key scope did not account for billable AWS-managed-key API use. The current ledger adds a separate symmetric-request meter using the already retrieved Ohio rate $0.000003/call, one call per modeled Secrets read plus100storage/lifecyclecalls per24h as an explicit unmeasured allowance. It deducts no shared free allowance. No key-month charge or infrastructure change is introduced. This raises expected staging to$6.71/24h/$187.40per720h and future activation to$8.32/24h/$235.68per720h. The original critic numbers remain historical in its initial section; its final appendix reviews this correction.
+
+## 2026-10-27: Free hostname for the existing ALB design
+
+Prepared a dynv6 free-zone path for the temporary HTTPS ALB test, preserving the selected topology and AWS estimate. Primary provider documentation supports free hostnames, CNAME/CAA and underscore labels; primary AWS documentation defines validation/issuance gates. Independent public and authoritative DNS checks returned NXDOMAIN for the candidate and no parent CAA answer. Neither proves zone availability/control or ACM issuance.
+
+The [independent critic](evidence/free-hostname/critic.md) approves documentation/preparation scope. The guide keeps the app CNAME below the zone apex, checks the exact final owner/target instead of assuming provider form parsing, requires ACM ISSUED before paid infrastructure, preserves approved CIDR restrictions and removes dangling DNS on teardown. The owner must create/confirm their provider account and reserve an actual zone; no credential was requested. Provider record writes, certificate request, ALB creation and HTTPS testing have not occurred. The largest remaining gap is registered zone control followed by actual certificate validation.
