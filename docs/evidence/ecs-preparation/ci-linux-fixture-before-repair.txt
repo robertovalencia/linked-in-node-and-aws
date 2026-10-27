@@ -1,0 +1,11 @@
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	﻿2026-10-27T21:23:35.2477373Z ##[group]Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	2026-10-27T21:23:35.2478061Z ^[[36;1mpython3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json^[[0m
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	2026-10-27T21:23:35.2542937Z shell: /usr/bin/bash -e {0}
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	2026-10-27T21:23:35.2543173Z ##[endgroup]
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	2026-10-27T21:24:39.1364809Z Traceback (most recent call last):
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	2026-10-27T21:24:39.1365791Z   File "/home/runner/work/linked-in-node-and-aws/linked-in-node-and-aws/scripts/aws-ecs-runtime-integration.py", line 122, in <module>
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	2026-10-27T21:24:39.1366514Z     main(parser.parse_args().report.resolve())
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	2026-10-27T21:24:39.1367143Z   File "/home/runner/work/linked-in-node-and-aws/linked-in-node-and-aws/scripts/aws-ecs-runtime-integration.py", line 37, in main
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	2026-10-27T21:24:39.1367792Z     raise RuntimeError("Local TLS PostgreSQL did not become ready")
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	2026-10-27T21:24:39.1368268Z RuntimeError: Local TLS PostgreSQL did not become ready
+integration	Run python3 scripts/aws-ecs-runtime-integration.py --report work/ecs-database-integration.json	2026-10-27T21:24:39.1494492Z ##[error]Process completed with exit code 1.

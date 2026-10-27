@@ -98,7 +98,7 @@
     "scripts/aws-ecs-publish-local.test.mjs": "70e620222b5c777efef8148994bf3cb134cf31f56096accccfdf199c5d15509c",
     "scripts/aws-ecs-review-plan.py": "77181ed18d78a6cd0c5c5f0d4b6532eda320944150685a5d4758bc5eccc8a3fe",
     "scripts/aws-ecs-review-plan.test.py": "945f45ea9105661f714527a93e900291ea1a38543b88611e018005a1810b6f54",
-    "scripts/aws-ecs-runtime-integration.py": "9be73f806cbbdb6028d4083c3f439918ca0ffd594a31f0fe5875b5ce6c826bd8"
+    "scripts/aws-ecs-runtime-integration.py": "6a9ec07019b4491e490dc335ad9512641b461d4b4df993c92f321414e27073b5"
   },
   "freshChecks": {
     "backendUnit": 88,
@@ -135,14 +135,16 @@
     "browser-smoke.json": "f447dabc356297c476ea309250c79451f9e6ba2e21007da896e9aa27136f6623",
     "build.txt": "fa15e2a711594d900634033a1a212ddee00508f76719598bdf529d7c0eccfcb2",
     "certificate-mocks.txt": "8ea0831764483661549e5d03c4e6cf6213cb183e55542969098e81213ffcebc8",
-    "critic.md": "ff4c1294b32f2e7cc180fa2ca18f282d7d37e8325788e13f4119e72380153b56",
+    "ci-linux-fixture-before-repair.json": "aeec14386ddc6bc6752d4d05de405bdb0f50e54ee6e57b2f45316db418dbc237",
+    "ci-linux-fixture-before-repair.txt": "f063459dba7e95961534cc715ab7abda16cc76a57f8e1d8f7cb9a70b1b2138d5",
+    "critic.md": "ed8a828997b4dfee59e34fd4c0afd9a712feffa1b53a8d5cf14e5e662999d1c0",
     "failure-drill.json": "affcb9985b1ff2a4e17a51faf41536fb5df4d59853cf54200202686e9fb73ab9",
     "frontend-dns.json": "dbb515e8d20417cdba33c024e50ced66c31c7bd9197cf18429bb22d6f46e51b1",
     "iam-analysis-summary.json": "e7ba49295c65e8753cfbb0bd7a48ef665b759dc29d39fdc19ef5ef694731e2d1",
     "kafka-tls-scram-acl.json": "f4da449b88ee6cd170f6c46e03719168084f31bcf3fd67a3f9abadfce0e20c5d",
     "local-acceptance.json": "11d07c25557b8c819be1f809d5ec96a27fcca763739620ac3695dcb5b8506fc8",
     "plan-negative-controls.json": "ff969b22c5d5a029357fc0ee5a79e7e1d86c81e31f9d6fbbab7c47db4ee2f01a",
-    "postgres-tls-ownership-replay.json": "ce14394d2672f0d2e02a8e5c67883a302f88df1fc8c09f0b1fafdba3834e6846",
+    "postgres-tls-ownership-replay.json": "57b2b094e5891712e0826489d69aeb87ee26ec687a5d54bf73256472ed921778",
     "publication.json": "10e37496ab4a674e8114655a1f4c43b271b20f9b44f5c41cf32c4cad123c03a1",
     "release-contracts.txt": "d071f4dca3ea0dee30f92b3709b9b73ec7a3104b304ab8345552f33e05c15c62",
     "source-check.txt": "32b9ada92f4bacfd7e2d53503e5c4817e9cf4ee6ff4bfec26d3b9061fb473a68",

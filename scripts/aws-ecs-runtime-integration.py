@@ -26,8 +26,10 @@ def main(report: Path) -> None:
         (fixtures / "pg_hba.conf").write_text("local all all trust\nhostssl all all 0.0.0.0/0 scram-sha-256\nhostnossl all all 0.0.0.0/0 reject\n")
         admin_password = secrets.token_hex(32)
         environment = {**os.environ, "POSTGRES_PASSWORD": admin_password}
+        # Linux bind mounts retain the 0700 host temp-directory owner. Copy the HBA
+        # file alongside the TLS key before dropping to the image PostgreSQL UID.
         try:
-            run(["docker", "run", "-d", "--name", container, "--memory", "384m", "--tmpfs", "/var/lib/postgresql/data:rw,nosuid,size=256m", "-p", "127.0.0.1::5432", "-e", "POSTGRES_PASSWORD", "-e", "POSTGRES_USER=marketplace_admin", "-v", f"{fixtures}:/fixtures:ro", "--entrypoint", "/bin/sh", "postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94", "-c", "cp /fixtures/server.* /tmp/; chown postgres:postgres /tmp/server.*; chmod 600 /tmp/server.key; exec docker-entrypoint.sh postgres -c ssl=on -c ssl_cert_file=/tmp/server.crt -c ssl_key_file=/tmp/server.key -c hba_file=/fixtures/pg_hba.conf -c log_min_error_statement=panic"], env=environment)
+            run(["docker", "run", "-d", "--name", container, "--memory", "384m", "--tmpfs", "/var/lib/postgresql/data:rw,nosuid,size=256m", "-p", "127.0.0.1::5432", "-e", "POSTGRES_PASSWORD", "-e", "POSTGRES_USER=marketplace_admin", "-v", f"{fixtures}:/fixtures:ro", "--entrypoint", "/bin/sh", "postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94", "-c", "set -eu; cp /fixtures/server.* /fixtures/pg_hba.conf /tmp/; chown postgres:postgres /tmp/server.* /tmp/pg_hba.conf; chmod 600 /tmp/server.key /tmp/pg_hba.conf; exec docker-entrypoint.sh postgres -c ssl=on -c ssl_cert_file=/tmp/server.crt -c ssl_key_file=/tmp/server.key -c hba_file=/tmp/pg_hba.conf -c log_min_error_statement=panic"], env=environment)
             port = run(["docker", "port", container, "5432/tcp"]).stdout.strip().rsplit(":", 1)[1]
             for attempt in range(60):
                 if run(["docker", "exec", container, "pg_isready", "-U", "marketplace_admin"], check=False).returncode == 0:
