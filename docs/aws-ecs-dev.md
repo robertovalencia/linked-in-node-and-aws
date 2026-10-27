@@ -91,12 +91,12 @@ Once an owned name is available, prepare a **certificate-only** plan:
 
 ```bash
 terraform -chdir=infra/aws-ecs-certificate init -input=false
-terraform -chdir=infra/aws-ecs-certificate plan \
+AWS_PROFILE=marketplace-dev terraform -chdir=infra/aws-ecs-certificate plan \
   -var='owner=robertovalencia' -var='application_hostname=YOUR_OWNED_HOSTNAME' \
   -out=certificate.tfplan
 ```
 
-Do not run apply before the request plan is reviewed and approved. The module requests only a nonexportable public DNS certificate; it creates no domain/hosted zone or paid compute. After an explicitly approved certificate request, `terraform output -json dns_validation_records` supplies the exact CNAME to add at the owner's DNS provider. Never substitute an A record for certificate validation. Recheck ACM status with read-only `aws acm describe-certificate --region us-east-2 --certificate-arn ...`; proceed only when ISSUED. Keep the validation CNAME for renewal. Local state and saved plans stay ignored.
+Do not run apply before the request plan is reviewed and approved. The module requests only a nonexportable public DNS certificate; it creates no domain/hosted zone or paid compute. After an explicitly approved certificate request, `terraform output -json dns_validation_records` supplies the exact CNAME to add at the owner's DNS provider. Never substitute an A record for certificate validation. Recheck ACM status with read-only `AWS_PROFILE=marketplace-dev aws acm describe-certificate --region us-east-2 --certificate-arn ...`; proceed only when ISSUED. Keep the validation CNAME for renewal. Local state and saved plans stay ignored.
 
 ## Step 2 — review state, configuration and the final infrastructure plan
 
