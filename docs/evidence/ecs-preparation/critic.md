@@ -19,8 +19,8 @@ Independently recomputed all 12 idle/expected/higher cost ledgers directly again
 
 | Expected gross estimate, before credits | 24 hours | 720 hours |
 |---|---:|---:|
-| Actual zero-task staging preview | $6.70 | $187.07 |
-| Future five-task activation, not planned here | $8.31 | $235.52 |
+| Actual zero-task staging preview, including KMS allowance | $6.71 | $187.40 |
+| Future five-task activation, including KMS allowance; not planned here | $8.32 | $235.68 |
 
 These are consumption assumptions, not spending caps. Staging still bills ALB/NAT/RDS/EC2 even without a visitor path. The later estimate removes the old ordinary cross-AZ backend allowance because task/broker/RDS primary traffic is in one AZ; usage outside that topology, restore rehearsals, domain registration and retained resources remain separate. The private hosted zone's nonprorated calendar-month cost remains included. Credits do not make resources free.
 
@@ -85,3 +85,17 @@ The first hosted Verify run `40586119114` failed while waiting for the disposabl
 Independently reproduced the failure mechanism inside the pinned PostgreSQL image on its native Linux filesystem: fixture directory owner UID/GID1001, mode0700; HBA file owner1001, mode0644; image PostgreSQL UID/GID70. `gosu postgres cat` on the original path failed with `Permission denied`. Copying the HBA into `/tmp`, assigning owner70:70 and mode0600 made the same read succeed. This establishes the directory-traversal mismatch that a host-private Linux bind mount preserves; macOS Docker sharing had concealed it. An initial diagnostic assumed `su-exec`; the pinned image actually provides `gosu`, and the corrected diagnostic passed.
 
 Independently reran the repaired complete drill in a temporary source copy: **30 passed, zero failed**, including verified TLS, all twelve cross-DB denials, bootstrap/migration idempotence, negative TLS, replay/deduplication and CLI/server-log password checks. The temporary container/files were cleaned. No marketplace data or AWS calls were involved. Preparation-readiness verdict is unchanged; a new successful hosted Verify run is still required before claiming CI success or publishing images.
+
+
+## Appendix — KMS API accounting correction
+
+The earlier totals omitted API requests on AWS-managed KMS keys while correctly excluding customer-managed key-month charges. Current [AWS KMS pricing](https://aws.amazon.com/kms/pricing/) explicitly distinguishes free managed-key creation/storage from chargeable managed-key API use. The saved Ohio `kms_api` tariff is $0.000003/request ($0.03/10,000). This correction changes accounting only: Terraform source, the 108-create plan, binary hash and JSON hash above are unchanged.
+
+Independently checked `work/aws-ecs-preparation/kms-inclusive-review.json` and recalculated all twelve cases without importing the builder model. Every case contains exactly one KMS allowance line; quantity × saved rate, every other line product, final sum and delta from the previous non-KMS ledger agree. The allowance is:
+
+- Staging: 150 modeled Secrets reads/hour plus 100 storage/lifecycle calls per 24 hours. That is 3,700 calls/$0.01110 for 24h or 111,000 calls/$0.33300 for 720h.
+- Later activation: 70 modeled Secrets reads/hour plus the same storage/lifecycle allowance. That is 1,780 calls/$0.00534 for 24h or 53,400 calls/$0.16020 for 720h.
+
+The ledger clearly labels this **conservative, unmeasured usage**, rather than actual KMS telemetry or a one-to-one billing guarantee. Empty-secret failures may never decrypt; service caching and lifecycle behavior vary. The arbitrary 100-call/day buffer is an assumption, not capacity proof or an upper bound. No customer-managed key-month charge is added. The shared 20,000-request monthly allowance is deliberately not deducted because its availability to this project is unverified.
+
+Corrected expected gross totals are **$6.71/24h and $187.40/720h for staging**, and **$8.32/24h and $235.68/720h for future activation**. These supersede the earlier KMS-exclusive figures; the main comparison above has been updated. Publish matching ledgers/docs/manifests together. Preparation-review verdict and all approval boundaries are unchanged; no AWS API or mutation was required for this audit.

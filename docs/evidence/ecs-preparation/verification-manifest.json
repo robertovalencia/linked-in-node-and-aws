@@ -96,7 +96,7 @@
     "scripts/aws-ecs-prepare-secrets.py": "cc03da7e1796c6dd1bbe922fae28e17fc046d74a86f2141788f82fd1b2781c6f",
     "scripts/aws-ecs-publish-local.mjs": "93323c162fd871b1e030d19a476eee663964b5ab32ccd47d0723d420991441f1",
     "scripts/aws-ecs-publish-local.test.mjs": "70e620222b5c777efef8148994bf3cb134cf31f56096accccfdf199c5d15509c",
-    "scripts/aws-ecs-review-plan.py": "77181ed18d78a6cd0c5c5f0d4b6532eda320944150685a5d4758bc5eccc8a3fe",
+    "scripts/aws-ecs-review-plan.py": "604d9b36b7e321be1cc652bab078d5e900ed77a5639b6f9f9d144eb15d072b2d",
     "scripts/aws-ecs-review-plan.test.py": "945f45ea9105661f714527a93e900291ea1a38543b88611e018005a1810b6f54",
     "scripts/aws-ecs-runtime-integration.py": "6a9ec07019b4491e490dc335ad9512641b461d4b4df993c92f321414e27073b5"
   },
@@ -137,7 +137,7 @@
     "certificate-mocks.txt": "8ea0831764483661549e5d03c4e6cf6213cb183e55542969098e81213ffcebc8",
     "ci-linux-fixture-before-repair.json": "aeec14386ddc6bc6752d4d05de405bdb0f50e54ee6e57b2f45316db418dbc237",
     "ci-linux-fixture-before-repair.txt": "f063459dba7e95961534cc715ab7abda16cc76a57f8e1d8f7cb9a70b1b2138d5",
-    "critic.md": "ed8a828997b4dfee59e34fd4c0afd9a712feffa1b53a8d5cf14e5e662999d1c0",
+    "critic.md": "646f6d64b4a0c3658133958af93e84223c5c5e516c129d63398bfdd6ef89c562",
     "failure-drill.json": "affcb9985b1ff2a4e17a51faf41536fb5df4d59853cf54200202686e9fb73ab9",
     "frontend-dns.json": "dbb515e8d20417cdba33c024e50ced66c31c7bd9197cf18429bb22d6f46e51b1",
     "iam-analysis-summary.json": "e7ba49295c65e8753cfbb0bd7a48ef665b759dc29d39fdc19ef5ef694731e2d1",
@@ -148,7 +148,7 @@
     "publication.json": "10e37496ab4a674e8114655a1f4c43b271b20f9b44f5c41cf32c4cad123c03a1",
     "release-contracts.txt": "d071f4dca3ea0dee30f92b3709b9b73ec7a3104b304ab8345552f33e05c15c62",
     "source-check.txt": "32b9ada92f4bacfd7e2d53503e5c4817e9cf4ee6ff4bfec26d3b9061fb473a68",
-    "staging-plan-cost-review.json": "b8f3234fb9460671ece87ddceb444a3ff018fc41ca7e9e58dbf6925c0a372d9a",
+    "staging-plan-cost-review.json": "c6696b4b1998ab519295e5c073f9542dc4dd527f2f1a644f0a07bdc3c731c598",
     "terraform-mocks.txt": "66faa144880189c9289217578b06922bf46c7eeff509ededb4e44fc9de744087",
     "unit-tests.txt": "bceaae33189276a0080f74d4505c4a7c9a0ea93d1b439f6d0ed7c02d6f2d4046"
   },

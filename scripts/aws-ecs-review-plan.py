@@ -107,6 +107,8 @@ def review(plan_file, plan_binary, output):
                     if key == 'cloudwatch_alarm_standard': item['note'] = 'Seven standard alarms; no notification topic provisioned.'
                     if key == 'cross_az': item['note'] = 'Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent.'
                     item['usd'] = str(D(item['quantity']) * model.rate(key))
+                kms_requests = D(70 if active else 150)*h + D(100)*h/D(24)
+                c['items'].append({'meter':'KMS symmetric API allowance (AWS-managed keys)', 'rate_key':'kms_api', 'quantity':str(kms_requests), 'units':'requests', 'usd':str(kms_requests*model.rate('kms_api')), 'note':'Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt.'})
                 c['mode'] = 'future_five_task_activation_NOT_PLANNED' if active else 'actual_infrastructure_staging'
                 c['total_usd'] = str(sum(D(x['usd']) for x in c['items']))
                 cases.append(c)

@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-10-27T21:21:13.106978+00:00",
+  "checkedAt": "2026-10-27T21:33:58.863673+00:00",
   "status": "STAGING_PREVIEW_ONLY_NOT_APPROVED",
-  "sourceCommit": "d84c77318b946e9999f2eb3184568023e6fb3c50",
-  "sourceDirty": false,
+  "sourceCommit": "ab907ba4823f0bec13384698f7750c4cfd96242d",
+  "sourceDirty": true,
   "sourceFilesSha256": {
     "infra/aws-ecs-dev/.terraform.lock.hcl": "795c03ec138135bd2913276060c796ab9b3588715e55d3f4081f65879ee67693",
     "infra/aws-ecs-dev/compute.tf": "5c17d5bf45445cf2ba97989fc9752ccccef728535b86a885ca2b70d88294916f",
@@ -95,7 +95,7 @@
       "hours": "24",
       "profile": "idle",
       "lcu": "0.001666666666666666666666666667",
-      "total_usd": "5.929440109589041095890410960",
+      "total_usd": "5.940540109589041095890410960",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -336,6 +336,14 @@
           "units": "GB",
           "usd": "0E-10",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "3700",
+          "units": "requests",
+          "usd": "0.0111000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -357,7 +365,7 @@
       "hours": "24",
       "profile": "expected",
       "lcu": "0.1",
-      "total_usd": "6.696579726027397260273972605",
+      "total_usd": "6.707679726027397260273972605",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -598,6 +606,14 @@
           "units": "GB",
           "usd": "0E-10",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "3700",
+          "units": "requests",
+          "usd": "0.0111000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -619,7 +635,7 @@
       "hours": "24",
       "profile": "higher",
       "lcu": "2",
-      "total_usd": "18.58031780821917808219178081",
+      "total_usd": "18.59141780821917808219178081",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -860,6 +876,14 @@
           "units": "GB",
           "usd": "0E-10",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "3700",
+          "units": "requests",
+          "usd": "0.0111000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -881,7 +905,7 @@
       "hours": "720",
       "profile": "idle",
       "lcu": "0.001666666666666666666666666667",
-      "total_usd": "163.8874641095890410958904110",
+      "total_usd": "164.2204641095890410958904110",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -1122,6 +1146,14 @@
           "units": "GB",
           "usd": "0E-10",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "111000",
+          "units": "requests",
+          "usd": "0.3330000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -1143,7 +1175,7 @@
       "hours": "720",
       "profile": "expected",
       "lcu": "0.1",
-      "total_usd": "187.0678246575342465753424658",
+      "total_usd": "187.4008246575342465753424658",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -1384,6 +1416,14 @@
           "units": "GB",
           "usd": "0E-10",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "111000",
+          "units": "requests",
+          "usd": "0.3330000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -1405,7 +1445,7 @@
       "hours": "720",
       "profile": "higher",
       "lcu": "2",
-      "total_usd": "545.5399452054794520547945206",
+      "total_usd": "545.8729452054794520547945206",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -1646,6 +1686,14 @@
           "units": "GB",
           "usd": "0E-10",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "111000",
+          "units": "requests",
+          "usd": "0.3330000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -1667,7 +1715,7 @@
       "hours": "24",
       "profile": "idle",
       "lcu": "0.001666666666666666666666666667",
-      "total_usd": "7.419858465753424657534246576",
+      "total_usd": "7.425198465753424657534246576",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -1908,6 +1956,14 @@
           "units": "GB",
           "usd": "0.0021600000000",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "1780",
+          "units": "requests",
+          "usd": "0.0053400000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -1929,7 +1985,7 @@
       "hours": "24",
       "profile": "expected",
       "lcu": "0.1",
-      "total_usd": "8.311718082191780821917808221",
+      "total_usd": "8.317058082191780821917808221",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -2170,6 +2226,14 @@
           "units": "GB",
           "usd": "0.108000000000",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "1780",
+          "units": "requests",
+          "usd": "0.0053400000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -2191,7 +2255,7 @@
       "hours": "24",
       "profile": "higher",
       "lcu": "2",
-      "total_usd": "22.61225616438356164383561643",
+      "total_usd": "22.61759616438356164383561643",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -2432,6 +2496,14 @@
           "units": "GB",
           "usd": "2.1600000000",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "1780",
+          "units": "requests",
+          "usd": "0.0053400000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -2453,7 +2525,7 @@
       "hours": "720",
       "profile": "idle",
       "lcu": "0.001666666666666666666666666667",
-      "total_usd": "208.6000147945205479452054795",
+      "total_usd": "208.7602147945205479452054795",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -2694,6 +2766,14 @@
           "units": "GB",
           "usd": "0.0648000000000",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "53400",
+          "units": "requests",
+          "usd": "0.1602000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -2715,7 +2795,7 @@
       "hours": "720",
       "profile": "expected",
       "lcu": "0.1",
-      "total_usd": "235.5219753424657534246575343",
+      "total_usd": "235.6821753424657534246575343",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -2956,6 +3036,14 @@
           "units": "GB",
           "usd": "3.240000000000",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "53400",
+          "units": "requests",
+          "usd": "0.1602000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [
@@ -2977,7 +3065,7 @@
       "hours": "720",
       "profile": "higher",
       "lcu": "2",
-      "total_usd": "666.4980958904109589041095891",
+      "total_usd": "666.6582958904109589041095891",
       "items": [
         {
           "meter": "EC2 Kafka host (single point of failure)",
@@ -3218,6 +3306,14 @@
           "units": "GB",
           "usd": "64.8000000000",
           "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "53400",
+          "units": "requests",
+          "usd": "0.1602000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
         }
       ],
       "zero_scope": [

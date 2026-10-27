@@ -21,10 +21,12 @@ The private application subnet, RDS primary and Kafka host are in one AZ. RDS al
 
 | Scope / expected usage | 24 hours | 720 hours |
 |---|---:|---:|
-| Actual hostname-free infrastructure staging | $6.70 | $187.07 |
-| Future five-task application activation, not in this plan | $8.31 | $235.52 |
+| Actual hostname-free infrastructure staging | $6.71 | $187.40 |
+| Future five-task application activation, not in this plan | $8.32 | $235.68 |
 
 Gross list-price estimates before credits, not limits. [Exact itemized idle/expected/higher scenarios](evidence/ecs-preparation/staging-plan-cost-review.json) use the dated Ohio rates from the previous review. The concrete implementation has **seven secrets, three host custom metrics and seven standard alarm metrics**. The earlier $8.37 model used five secrets, eight metrics, ten alarms and a cross-AZ allowance. Actual backend/database/broker traffic is same-AZ; ALB-to-target transfer is not charged as ordinary cross-AZ. API/image NAT traffic, logs, storage, backups, queries, ECR/S3 requests, IPs and egress remain explicit consumption inputs. Secret cost is conservatively counted even before every runtime value is populated.
+
+The ledger now explicitly includes AWS-managed-key KMS API requests at the dated Ohio $0.000003/call rate. Its conservative, unmeasured allowance is one call per modeled Secrets read plus 100 storage/lifecycle calls per 24 hours, without deducting the shared 20,000/month allowance. Empty-secret failures may not decrypt; actual storage/secret calls vary. AWS-managed keys have no storage fee, but API use can be billed. This corrects the earlier $6.70/$8.31 daily and $187.07/$235.52 monthly figures by $0.0111/$0.00534 daily or $0.333/$0.1602 monthly respectively. [Official KMS pricing](https://aws.amazon.com/kms/pricing/).
 
 Add approximately $0.048 per extra hour for a small RDS clone plus validation task, its actual backup/log/network use, and any additional restore time. A nonexportable ACM public certificate integrated with ALB has no additional certificate fee. Domain registration is not included or purchased. A new private Cloud Map zone incurs nonprorated Route53 zone charges; the 30-day example conservatively crosses two calendar months. No MSK, WAF, customer KMS key, interface endpoints, public database, SSH or public Kafka is enabled.
 
