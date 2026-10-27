@@ -1,0 +1,48 @@
+{
+  "reviewedAt": "2026-10-27T22:16:07.808392+00:00",
+  "status": "PREPARED_NOT_APPLIED_USER_APPROVAL_REQUIRED",
+  "sourceCommit": "096fce967e85e5382666797da8cd0d34aff8d6d2",
+  "sourceMainSha256": "26bebdbcb98c3c211c257fb8d5188a2413c5a209382db0ab0502ba50121a251c",
+  "providerLockSha256": "795c03ec138135bd2913276060c796ab9b3588715e55d3f4081f65879ee67693",
+  "planBinarySha256": "5c040631a18c64beb6d912c05ae6e270df4a752e84e4b996470b5ce31ed1b701",
+  "planJsonSha256": "f09404e54299588a61246f433c487e6f61c092ba29128752268e47702237f252",
+  "changes": {
+    "create": 1
+  },
+  "resourceAddress": "aws_acm_certificate.application",
+  "hostname": "app.linked-in-node-rv.dynv6.net",
+  "accountVerifiedBySTS": "772641336063",
+  "region": "us-east-2",
+  "validationMethod": "DNS",
+  "keyAlgorithm": "RSA_2048",
+  "export": "DISABLED",
+  "certificateFeeUSD": "0",
+  "feeSource": "https://aws.amazon.com/certificate-manager/pricing/",
+  "scope": "One public nonexportable ACM certificate only; no ALB/compute/DNSzone/database resource",
+  "awsMutations": false,
+  "providerDnsMutations": false,
+  "observations": {
+    "zoneListedInOwnerAccount": true,
+    "authoritativeSOAObserved": true,
+    "publicZoneARecordPresent": true,
+    "appCAARestrictionObserved": false,
+    "existingACMCertificatesForHostname": 0
+  },
+  "preApplyGates": [
+    "User approves this exact certificate-only plan",
+    "Reverify selected AWS profile is account772641336063 and regionus-east-2 immediately before apply; plan has no allowed_account_ids guard",
+    "Compare current source/provider-lock and saved plan SHA256",
+    "Use only this saved certificate plan; do not apply ECS preview"
+  ],
+  "afterApprovedRequest": [
+    "Add exact ACM validation CNAME at dynv6; no invented tokens",
+    "Verify public CNAME and actual ACM ISSUED",
+    "Review a fresh final S3-backed ECS infrastructure plan and costs before billable resources"
+  ],
+  "limitations": [
+    "Zone ownership established in provider UI; a public A record alone does not prove it",
+    "No AWS certificate request, DNS validation or live ALB test performed",
+    "Free certificate price excludes existing billable AWS infrastructure",
+    "An issued certificate remains a separate gate from ALB/app deployment"
+  ]
+}

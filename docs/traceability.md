@@ -43,3 +43,5 @@ R10 selection supersedes the earlier proposed SSM recommendation for preparation
 ## R10 free test hostname preparation, 27 October 2026
 
 [Free hostname guide](aws-free-test-hostname.md) → dynv6 primary CNAME/CAA/underscore documentation and public/authoritative DNS checks → owner account/zone reservation → reviewed certificate-only plan and actual ACM ISSUED → new final S3-backed infrastructure plan. The candidate is not claimed reserved. No AWS or provider records were created, no application/Terraform source changed and no free-DNS feature removes the cloud approval or security gates.
+
+R10 registered-zone checkpoint → owner-account/public DNS evidence → `infra/aws-ecs-certificate` (unchanged source) → two passing mock tests → [one-create saved certificate plan receipt](evidence/certificate-request/plan-review.json) → user approval pending → actual CNAME/ISSUED → fresh reviewed infrastructure plan. The old hostname-free preview is not an activation approval.

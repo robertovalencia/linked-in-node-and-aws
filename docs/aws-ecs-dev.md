@@ -2,7 +2,7 @@
 
 **Selected for preparation on 27 October 2026; not provisioned.** This implements the private ECS/RDS + one NAT option from the [cost-first review](aws-cost-review-2026-10-27/README.md). The existing `infra/aws-dev` EC2/SSM root is preserved. Local Compose keeps its original ports, credentials and volumes.
 
-The owner has no hostname yet. The first saved plan therefore has **no ALB listener, no client CIDR ingress, no application task definitions/services, and no invented domain or certificate ARN**. It creates paid infrastructure if applied, but it cannot serve the marketplace. Do not apply this staging preview merely to wait for a domain. No HTTP fallback, domain purchase, account upgrade or AWS mutation was performed.
+The first saved plan was prepared before hostname registration and therefore has **no ALB listener, no client CIDR ingress, no application task definitions/services, and no invented domain or certificate ARN**. It creates paid infrastructure if applied, but it cannot serve the marketplace. Do not apply this staging preview merely to wait for a domain. The free zone `linked-in-node-rv.dynv6.net` is now registered, and a [certificate-only plan](evidence/certificate-request/plan-review.json) for `app.linked-in-node-rv.dynv6.net` proposes one create. Certificate request/validation and a fresh S3-backed infrastructure plan remain pending approval. No HTTP fallback, domain purchase, account upgrade or AWS mutation was performed.
 
 ## Architecture and cost
 

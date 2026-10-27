@@ -1,11 +1,12 @@
 # Free testing hostname for the HTTPS ALB
 
-**Proposed on 27 October 2026; not registered or deployed.** Use a free [dynv6 zone](https://dynv6.com/) for this short development lab. Its [official DNS API](https://dynv6.github.io/api-spec/) supports CNAME and CAA records; the [changelog](https://dynv6.com/docs/changelog) documents underscore-label support. This fits [ACM DNS validation](https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html) while preserving the selected ALB → private ECS → RDS/Kafka architecture.
+**Zone registration verified on 27 October 2026; AWS certificate and deployment pending.** Use a free [dynv6 zone](https://dynv6.com/) for this short development lab. Its [official DNS API](https://dynv6.github.io/api-spec/) supports CNAME and CAA records; the [changelog](https://dynv6.com/docs/changelog) documents underscore-label support. This fits [ACM DNS validation](https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html) while preserving the selected ALB → private ECS → RDS/Kafka architecture.
 
-Proposed zone: `linked-in-node-rv.dynv6.net`  
-Proposed application name: `app.linked-in-node-rv.dynv6.net`
+Registered zone: `linked-in-node-rv.dynv6.net`
 
-The candidate returned NXDOMAIN in public and provider-authoritative DNS checks. **That does not prove availability, reservation, ownership or certificate eligibility.** Only a successful reservation in your account establishes control. If it is unavailable, choose another zone and substitute that zone consistently below.
+Selected application name: `app.linked-in-node-rv.dynv6.net`
+
+Before registration, the candidate returned NXDOMAIN; that did not prove availability. The development chat has now verified the zone in the owner’s signed-in provider account and confirmed public A/authoritative SOA responses. The IPv4 value in the provider is an address, not the zone name, and is not an ALB target. The existing apex address does not conflict with a later `app` CNAME. These observations do not prove ACM issuance or ALB reachability.
 
 ## Cost and scope
 
@@ -14,6 +15,12 @@ The provider currently offers the hostname/DNS service free. The existing nonexp
 The reviewed AWS estimates are unchanged: expected staging $6.71/24h and future five-task activation $8.32/24h; their 720-hour comparisons are $187.40/$235.68 before credits, plus recovery exercises. See the [itemized ledger](evidence/ecs-preparation/staging-plan-cost-review.json). A free hostname does not make the ALB/NAT/RDS/EC2 deployment free or authorize applying the old preview.
 
 [Provider terms](https://dynv6.com/terms) provide no SLA and permit inactive-account deletion. Use this for the temporary demonstration, rather than depending on it for durable production DNS. Certificate issuance and actual provider record behavior must be verified before paid infrastructure starts.
+
+## Current checkpoint: certificate-only plan ready for review
+
+[Saved-plan receipt](evidence/certificate-request/plan-review.json) and [independent plan review](evidence/certificate-request/critic.md): one create, `aws_acm_certificate.application`, exact application name above, account `772641336063`, region `us-east-2`, RSA2048, DNS validation, export disabled. Binary SHA256 `5c040631a18c64beb6d912c05ae6e270df4a752e84e4b996470b5ce31ed1b701`. The binary/JSON remain ignored under `work/aws-ecs-certificate-2026-10-27/`. No certificate was requested and no provider DNS record was changed by the development agent.
+
+The exact same effective credential environment must be used by both STS and Terraform, with account `772641336063`, region `us-east-2` and saved-plan/source hashes rechecked immediately before an approved apply. A CLI-only `--profile` override is insufficient if Terraform inherits different environment credentials; this certificate root has no intrinsic allowed-account guard. After the request, add only the actual ACM validation record, verify public DNS and wait for ISSUED before reviewing paid infrastructure.
 
 ## 1. Reserve a zone in your own account
 
@@ -68,4 +75,4 @@ At the approved teardown deadline, remove the application CNAME as part of closi
 
 ## Verification boundary
 
-Current evidence establishes provider feature/pricing documentation and read-only DNS observations. It does not establish a reserved account zone, live record writes, ACM issuance, AWS creation or ALB success. The [independent hostname review](evidence/free-hostname/critic.md) records this remaining gap. Infrastructure source, saved plan hashes, application source and learning-owned study files are unchanged by this guide.
+Current evidence establishes provider feature/pricing documentation, zone registration visible in the owner account, read-only DNS observations and a concrete certificate-only saved plan. It does not establish agent-created DNS records, ACM issuance, AWS creation or ALB success. The [independent hostname review](evidence/free-hostname/critic.md) records this remaining gap. Infrastructure source, saved plan hashes, application source and learning-owned study files are unchanged by this guide.
