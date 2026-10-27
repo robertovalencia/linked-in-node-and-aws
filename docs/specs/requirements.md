@@ -30,3 +30,8 @@ The NodeJS/AWS path contains 44 lessons, including 24 ordered AWS/Terraform less
 ## R11 dependency repair acceptance
 
 Production npm audit remains enforced at high severity for root/backend/frontend. Preserve NestJS 12.2.0 and API contracts while upgrading body-parser to 2.4.0 and scoping a temporary Multer 2.5.0 override to `@nestjs/platform-express`. Require a valid dependency tree, reproducible `npm ci`, passing existing 64 backend and 28 frontend tests/builds/checks, the unchanged 48-check running API suite, and actual hosted Verify results. Hosted SonarCloud remains separately owner-configured; missing credentials must not be marked as a successful analysis.
+
+
+## R10 cost-first phased deployment acceptance
+
+Before implementing a changed topology or provisioning, compare the actual zero-ingress EC2/SSM baseline with proportionate hardening, ALB/TLS, private ECS/Fargate + RDS and separately optional MSK. Require dated Ohio prices, deterministic 24-hour/720-hour idle/expected/higher-use calculations, all compute/network/data/observability/security/storage meters, account eligibility/credits and scoped deployment inventory, traffic/identity/recovery tests, and explicit residual/rollback/teardown boundaries. Preserve Kafka and service-owned DB contracts; do not deploy named services merely for curriculum coverage. No AWS mutations, account upgrades, changed exposure or paid-service enablement are authorized by the cost review. A chosen implementation needs a new source-bound final plan, updated costs and separate provisioning approval. The [27 October reviewed packet](../aws-cost-review-2026-10-27/README.md) satisfies the decision-support scope; implementation/runtime gates remain pending.

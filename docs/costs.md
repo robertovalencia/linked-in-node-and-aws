@@ -1,5 +1,7 @@
 # AWS dev cost model
 
+> **Current review: 27 October 2026.** The [phased cost/design packet](aws-cost-review-2026-10-27/README.md) supersedes the currentness of this historical core estimate. It includes refreshed Free-plan/credit/resource checks, 24-hour and 30-day idle/expected/higher comparisons, itemized regional rates, proposed architecture/recovery gates and fresh baseline-only previews. Cost/topology selection is pending; no AWS apply occurred.
+
 Updated 23 October 2026 for the selected **24-hour Free plan demonstration in `us-east-2`**: one Linux On Demand `m7i-flex.large`, one 40 GiB gp3 root disk, one public IPv4, and one Secrets Manager secret. The account preflight reported an active Free plan with $100 available credits. Live EC2 discovery reported this instance as Free Tier eligible with 2 vCPU and 8 GiB RAM. No resources have been provisioned. These are list-price credit-consumption estimates, not an account invoice or a guarantee of remaining balance.
 
 | Meter | Current modeled rate | 24 hours | 48 hours for comparison |

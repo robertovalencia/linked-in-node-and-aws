@@ -67,3 +67,14 @@ The largest teaching gap was a rollback excerpt that showed only a success messa
 ## Independent dependency-security review, 2026-10-26
 
 The critic approved the minimal compatible dependency repair: exactly two resolved package entries changed, NestJS 12.2.0 remains, and all existing application/test source is unchanged. The critic independently checked the installed tree and reran the 64 backend tests, then inspected actual zero-audit and 48-check runtime evidence plus the preserved fail-closed gates. [Detailed review](evidence/ci-security-repair/critic.md). The largest remaining gap is hosted SonarCloud owner configuration; a fresh published-commit Verify outcome must be observed separately rather than inferred from local passes.
+
+
+## 2026-10-27: Cost-first phased AWS redesign review
+
+Prepared an independent cost/architecture packet for the existing zero-ingress EC2/SSM design versus proposed hardening, ALB/TLS, private ECS/RDS with explicit Kafka and DNS dependencies, NAT/endpoints per AZ and optional MSK. Renewed authorized AWS login and performed read-only checks: FREE/ACTIVE/$100; no project resources found in queried scopes; MSK/OIDC explicit SCP denials; Ohio Logs read succeeded. No secret values, account upgrades, paid-service enablement, Terraform source changes or AWS mutations.
+
+Separate architecture and regional-price builders supplied drafts; a fresh critic independently inspected the real source and executed a Decimal audit. Material repairs: retained Kafka cost in ECS alternatives, full replicated higher-use MSK storage, correct charged cross-AZ SKU, private DNS/Cloud Map costs, and complete endpoint/account caveats. All 42 platform and six streaming cases, itemized totals, artifact links and both private saved plan hashes passed. See [review record](aws-cost-review-2026-10-27/critic.md) and [reproducible audit](aws-cost-review-2026-10-27/critic_audit.py).
+
+Fresh local-only saved plans bind unchanged source 8b2c3e0: bootstrap five creates; dev local-backend preview 21 creates, zero ingress, Ohio, no OIDC. Plans/state remain ignored under work/aws-cost-review-2026-10-27; only sanitized summaries are published. A scratch backend override syntax error was corrected; provider schema inspection required normal local permissions. Neither preparation issue changed infrastructure source. No inherited test evidence is claimed as new cloud execution.
+
+The critic recommends proposed phase A at $3.21 expected/24h plus about $0.11 restore rehearsal, with an approximately $4 planning allowance rather than a hard cap. Biggest remaining gap: owner-selected cost scope, hardened implementation and a fresh final S3-backed plan, followed by real cloud security/recovery/48-check evidence and teardown. Cost/design review readiness does not authorize provisioning. The study-path directory and learning/import tools were not edited.

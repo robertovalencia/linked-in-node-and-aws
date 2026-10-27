@@ -30,3 +30,8 @@ R12 → `docs/nodejs-aws-study-path/generated/20–43` → `scripts/check-cloud-
 ## Production dependency advisory repair
 
 R11 → `backend/package.json` scoped override and `backend/package-lock.json` patched parser/upload dependencies → production audits, valid dependency tree, existing unit suites and unchanged real API contract → `docs/evidence/ci-security-repair/` → independent review. Hosted SonarCloud configuration/status is tracked separately in `docs/sonarqube-cloud.md`; its gate remains required when that workflow runs.
+
+
+## Cost-first deployment redesign
+
+R10 → [phased ADR and cost review](aws-cost-review-2026-10-27/README.md) → `model.py` / `rates.json` / exact scenario ledger → independent `critic_audit.py` (42 platform + six streaming cases) / `critic.md` → sanitized October 27 account and baseline-preview summaries. Cost/topology selection, hardened infrastructure, final S3-backed plan approval, cloud recovery/security/48-check execution and teardown are pending. No Jira import or new release is implied by these local requirement links.

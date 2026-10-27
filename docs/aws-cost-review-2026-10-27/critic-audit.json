@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "platform_cases": 42,
+  "streaming_cases": 6,
+  "checks": [
+    "all item products and ledger sums",
+    "closed-form expected baseline",
+    "IPv4/task/NAT/endpoint/DNS topology quantities",
+    "maximum ALB LCU dimension",
+    "paired equivalent-traffic NAT/endpoint deltas",
+    "replicated MSK capacity and service cost",
+    "displayed comparison/itemized totals and local links",
+    "current Free-plan and explicit-denial evidence",
+    "baseline preview scope/zero ingress and available private plan hashes"
+  ],
+  "decimal_tolerance_usd": "1E-22",
+  "network_break_even": [
+    {
+      "active_azs": 1,
+      "equivalent_api_gb_per_hour": "0.2857142857142857142857142857"
+    },
+    {
+      "active_azs": 2,
+      "equivalent_api_gb_per_hour": "0.5714285714285714285714285714"
+    }
+  ],
+  "private_plan_binary_hashes_checked": [
+    "bootstrap",
+    "aws-dev"
+  ],
+  "limits": [
+    "No cloud provisioning or runtime test",
+    "No capacity/throughput proof",
+    "Account reads do not verify create grants",
+    "Totals exclude explicitly named optional add-ons"
+  ],
+  "sha256": {
+    "model.py": "84e6d27fdce4d7fe89e666477fb14b0c00453d1a8c9821e8a9d84103781b1c45",
+    "rates.json": "9b2715194fa1281fe961486f06283082fdd94a0bcf259acfac4e69d9d5a14fb6",
+    "comparison.json": "1b6532bd000db64ab863ad5b6de42bbfa26b7be0d6b677acecea1e0e17c7dcf2",
+    "tables.md": "a81a1befef78d7f89e02ac7255afd7f06d6120f75740989c574ceeab9a7bfee3",
+    "line-items.md": "2c0ad2916ba470db72733280319f3588d431d5ece8f4c06f5544f1d1073f8afb",
+    "account-summary.json": "3347465430c4b443716f4dec6cefa9a0f03e915419a66403abace8a0c7e58478",
+    "baseline-plan-summary.json": "b2e2481c49dce91b94b81e5fb845bbe64a055d8b1f5fd167db3ef79b2e5fc0f5",
+    "architecture.md": "a7d03da27c638be5b5a2c67d19a111d18d0f193085a3ad95ed1bd5bc68b1495b",
+    "README.md": "415ab817eaf752b5daaf14a60ebd569b69cd95ebcaf9f25f10c4f0b52d6d1ccb",
+    "critic.md": "7795cdf980b09b87b8d71db0c94861cffaa73b9847589733697c7f90976a90c6"
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "checkedAt": "2026-10-27T20:19:31.774052+00:00",
+  "account": "772641336063",
+  "region": "us-east-2",
+  "plan": {
+    "accountId": "772641336063",
+    "accountPlanType": "FREE",
+    "accountPlanStatus": "ACTIVE",
+    "accountPlanRemainingCredits": {
+      "amount": 100.0,
+      "unit": "USD"
+    },
+    "accountPlanExpirationDate": "2027-04-21T17:52:26.416000+00:00"
+  },
+  "checks": {
+    "usage": {
+      "checkedAt": "2026-10-27T20:12:00.070453+00:00",
+      "result": "success",
+      "data": {
+        "freeTierUsages": []
+      }
+    },
+    "instances": {
+      "checkedAt": "2026-10-27T20:12:00.025802+00:00",
+      "result": "success",
+      "data": []
+    },
+    "vpcs": {
+      "checkedAt": "2026-10-27T20:12:01.597519+00:00",
+      "result": "success",
+      "data": []
+    },
+    "volumes": {
+      "checkedAt": "2026-10-27T20:12:01.031551+00:00",
+      "result": "success",
+      "data": []
+    },
+    "nat": {
+      "checkedAt": "2026-10-27T20:12:01.019612+00:00",
+      "result": "success",
+      "data": []
+    },
+    "endpoints": {
+      "checkedAt": "2026-10-27T20:12:01.070372+00:00",
+      "result": "success",
+      "data": []
+    },
+    "ecs": {
+      "checkedAt": "2026-10-27T20:12:01.895429+00:00",
+      "result": "success",
+      "data": {
+        "clusterArns": []
+      }
+    },
+    "rds": {
+      "checkedAt": "2026-10-27T20:12:01.974052+00:00",
+      "result": "success",
+      "data": []
+    },
+    "msk": {
+      "checkedAt": "2026-10-27T20:12:01.973945+00:00",
+      "result": "denied",
+      "reason": "Explicit AWS-managed SCP denial; inventory unknown"
+    },
+    "alb": {
+      "checkedAt": "2026-10-27T20:12:02.473749+00:00",
+      "result": "success",
+      "data": []
+    },
+    "ecr": {
+      "checkedAt": "2026-10-27T20:12:02.863828+00:00",
+      "result": "success",
+      "data": []
+    },
+    "buckets": {
+      "checkedAt": "2026-10-27T20:12:02.855063+00:00",
+      "result": "success",
+      "data": []
+    },
+    "logs_ohio": {
+      "checkedAt": "2026-10-27T20:12:02.849508+00:00",
+      "result": "success",
+      "data": []
+    },
+    "logs_virginia": {
+      "checkedAt": "2026-10-27T20:12:03.350541+00:00",
+      "result": "success",
+      "data": []
+    },
+    "oidc": {
+      "checkedAt": "2026-10-27T20:12:03.798743+00:00",
+      "result": "denied",
+      "reason": "Explicit AWS-managed SCP denial; inventory unknown"
+    },
+    "instance_eligibility": {
+      "checkedAt": "2026-10-27T20:12:03.793883+00:00",
+      "result": "success",
+      "data": [
+        {
+          "Type": "m7i-flex.large",
+          "FreeTier": true,
+          "Vcpu": 2,
+          "MemoryMiB": 8192
+        }
+      ]
+    },
+    "quota": {
+      "checkedAt": "2026-10-27T20:12:03.799283+00:00",
+      "result": "success",
+      "data": {
+        "Name": "Running On-Demand Standard (A, C, D, H, I, M, R, T, Z) instances",
+        "Value": 64.0
+      }
+    },
+    "snapshots": {
+      "checkedAt": "2026-10-27T20:19:30.917965+00:00",
+      "result": "success",
+      "data": []
+    },
+    "secrets": {
+      "checkedAt": "2026-10-27T20:19:30.810360+00:00",
+      "result": "success",
+      "data": []
+    },
+    "addresses": {
+      "checkedAt": "2026-10-27T20:19:31.081379+00:00",
+      "result": "success",
+      "data": 0
+    },
+    "active_instances_unfiltered": {
+      "checkedAt": "2026-10-27T20:19:30.896435+00:00",
+      "result": "success",
+      "data": 0
+    },
+    "host_role": {
+      "checkedAt": "2026-10-27T20:19:31.696882+00:00",
+      "result": "absent",
+      "reason": "Host role does not exist"
+    },
+    "fargate_quota": {
+      "checkedAt": "2026-10-27T20:19:31.774052+00:00",
+      "result": "success",
+      "data": {
+        "Name": "Fargate On-Demand vCPU resource count",
+        "Value": 64.0
+      }
+    }
+  },
+  "scopeLimit": "Project tag/name filters except regional ECS/RDS/ALB inventories and active EC2/address counts. Not all-region/all-service billing audit. No secret values read. No AWS mutation."
+}

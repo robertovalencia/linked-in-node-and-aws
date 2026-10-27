@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-10-27T20:21:07.151457+00:00",
+  "sourceSha": "8b2c3e087014d76f9025dc47f5ede7837d73bfe6",
+  "terraformVersion": "1.17.0",
+  "approvalStatus": "NOT APPROVED; NO APPLY",
+  "plans": {
+    "bootstrap": {
+      "path": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-cost-review-2026-10-27/bootstrap/bootstrap.tfplan",
+      "sha256": "250033525ca68bfa232eb57cdcc055a783692a71b55bf14803457a57295ce202",
+      "changes": {
+        "create": 5
+      },
+      "resources": [
+        "aws_s3_bucket.state",
+        "aws_s3_bucket_policy.state_tls",
+        "aws_s3_bucket_public_access_block.state",
+        "aws_s3_bucket_server_side_encryption_configuration.state",
+        "aws_s3_bucket_versioning.state"
+      ],
+      "mode": "BOOTSTRAP LOCAL PLAN; SEPARATE APPROVAL REQUIRED",
+      "providerLockSha256": "7ca1a0fdf5f142072e6d0f3403c0d84e4ffcfbeffb36175ff7e6965ab8baf795",
+      "sourceFilesMatchRepository": true
+    },
+    "aws-dev": {
+      "path": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-cost-review-2026-10-27/aws-dev/current-baseline-preview.tfplan",
+      "sha256": "9064d249cc39207814addc0db2715fc01c11387ceba49700c495fb9a497666fd",
+      "changes": {
+        "create": 21
+      },
+      "resources": [
+        "aws_ecr_lifecycle_policy.app[\"backend\"]",
+        "aws_ecr_lifecycle_policy.app[\"frontend\"]",
+        "aws_ecr_repository.app[\"backend\"]",
+        "aws_ecr_repository.app[\"frontend\"]",
+        "aws_iam_instance_profile.host",
+        "aws_iam_role.host",
+        "aws_iam_role_policy.host",
+        "aws_iam_role_policy_attachment.ssm",
+        "aws_instance.dev",
+        "aws_internet_gateway.dev",
+        "aws_route_table.dev",
+        "aws_route_table_association.dev",
+        "aws_s3_bucket.releases",
+        "aws_s3_bucket_policy.releases_tls",
+        "aws_s3_bucket_public_access_block.releases",
+        "aws_s3_bucket_server_side_encryption_configuration.releases",
+        "aws_s3_bucket_versioning.releases",
+        "aws_secretsmanager_secret.runtime",
+        "aws_security_group.dev",
+        "aws_subnet.dev",
+        "aws_vpc.dev"
+      ],
+      "mode": "LOCAL BACKEND BASELINE PREVIEW ONLY",
+      "providerLockSha256": "7ca1a0fdf5f142072e6d0f3403c0d84e4ffcfbeffb36175ff7e6965ab8baf795",
+      "sgIngress": [],
+      "instanceType": "m7i-flex.large",
+      "subnetAutoAssignPublicIp": true,
+      "ami": "ami-052b3645c2c811821",
+      "region": "us-east-2",
+      "oidcCreated": false,
+      "sourceFilesMatchRepository": true
+    }
+  }
+}
