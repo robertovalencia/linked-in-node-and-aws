@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-10-27T21:33:58.863673+00:00",
+  "checkedAt": "2026-10-27T21:34:52.487064+00:00",
   "status": "STAGING_PREVIEW_ONLY_NOT_APPROVED",
-  "sourceCommit": "ab907ba4823f0bec13384698f7750c4cfd96242d",
-  "sourceDirty": true,
+  "sourceCommit": "89e9f7dbab723e0d2196b091ab63a6b6bee2ca10",
+  "sourceDirty": false,
   "sourceFilesSha256": {
     "infra/aws-ecs-dev/.terraform.lock.hcl": "795c03ec138135bd2913276060c796ab9b3588715e55d3f4081f65879ee67693",
     "infra/aws-ecs-dev/compute.tf": "5c17d5bf45445cf2ba97989fc9752ccccef728535b86a885ca2b70d88294916f",
