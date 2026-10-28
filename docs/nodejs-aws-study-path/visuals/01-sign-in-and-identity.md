@@ -42,3 +42,12 @@ For a traditional account that supports IAM console users, the generic path is *
 ## A different screen: IAM user creation
 
 The user later supplied an actual **IAM → Create user → Set permissions** screenshot. This is a creation wizard, not the email sign-in page pictured above. The assumed CLI role alone did not establish the account’s sign-up model or whether an IAM console password can be enabled. Read [the exact permissions-screen walkthrough](03-iam-user-permissions.md), then verify Step 1’s console-access option before assuming a newly created identity can sign in. Seeing this wizard does not by itself prove console-password support.
+
+
+## Confirmed sign-in and MFA after the user completed setup
+
+The signed-in AWS Settings page identified the existing Array of Sunshine project and linked its console role. The personal **Manage security and sign-in** page then explicitly showed **Sign-in method: Google**. Password management for this login belongs to Google; there is no separate AWS Builder ID password-change step for third-party sign-in. After the user completed registration, the AWS Builder ID security page listed one TOTP MFA device dated 28 October 2026. That is evidence of registration, not an independent sign-out/sign-in challenge test or proof of Google two-step verification settings.
+
+From the project page: profile menu → **Manage security and sign-in** → **Security** → **Register device**. Add/verify a recovery email if prompted, then complete authenticator or security-key enrollment yourself. Those steps concern personal authentication, not the project’s IAM permissions. No recovery email, device name, signed-in device/IP table, QR code, secret seed or one-time code was captured for publication. No credential or MFA setting was changed by the documentation agent.
+
+[Official third-party password guidance](https://docs.aws.amazon.com/signin/latest/userguide/change-password-builder-id.html) · [Official Builder ID MFA guidance](https://docs.aws.amazon.com/signin/latest/userguide/mfa-builder-id.html).

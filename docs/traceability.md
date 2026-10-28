@@ -64,3 +64,6 @@ R12 visual learning → `docs/nodejs-aws-study-path/visuals/README.md`, identity
 
 
 R12 IAM screenshot clarification → visual guide 03 and user-provided permissions-screen PNG → independent image/policy review, managed-link/ZIP validation, no IAM writes. The guide distinguishes an attached permission grant from a boundary and checks Step 1 console availability without inferring the account model from its role alone.
+
+
+R12 actual console learning → visual guide 04 and signed-in project captures → independent privacy/caption review, scope-aware observation record, source/ZIP/link checks and managed reader refresh. User-completed TOTP registration is reported separately from untested sign-in challenge behavior; no authentication secrets or device/IP details are published.

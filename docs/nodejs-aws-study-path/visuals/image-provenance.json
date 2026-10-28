@@ -19,6 +19,126 @@
       "image_sha256": "e7ab0e2d481fd411b35041aeb246af90a302767feaaaf4bc3f242057f88498ec",
       "private_content": "no credentials, username, email, account menu or approved private client address visible",
       "inspected_by": "release owner and independent critic inspected original attachment"
+    },
+    {
+      "path": "images/03-array-of-sunshine-project.png",
+      "kind": "actual signed-in read-only project browser capture",
+      "capture_date": "2026-10-28",
+      "title": "AWS Settings project overview",
+      "observed": "existing Array of Sunshine project; account772641336063; Ohio; Manage invitations0",
+      "scope": "project settings; not a member or IAM user count",
+      "image_sha256": "54db54723c8a54d024be45cbe8f62fde93ed77aee87ed9412bf8f7c6f8e42967",
+      "image_processing": "unaltered browser screenshot; some wide content may be outside viewport",
+      "privacy": "no passwords, MFA secrets/codes, recovery email, device/IP history, private client address or billing details",
+      "inspected_by": "release owner and separate visual critic"
+    },
+    {
+      "path": "images/04-acm-project-certificate.png",
+      "kind": "actual signed-in read-only project browser capture",
+      "capture_date": "2026-10-28",
+      "title": "ACM existing project certificate",
+      "observed": "Issued; DNS Success; In use No; renewal Ineligible; export Disabled",
+      "scope": "regional Ohio certificate detail; CNAME columns partly clipped",
+      "image_sha256": "ef557483fd80f53aee4f34c3495011d4fbe0be7ca811c8c295e2dd872bf06e2d",
+      "image_processing": "unaltered browser screenshot; some wide content may be outside viewport",
+      "privacy": "no passwords, MFA secrets/codes, recovery email, device/IP history, private client address or billing details",
+      "inspected_by": "release owner and separate visual critic"
+    },
+    {
+      "path": "images/05-vpc-existing-network.png",
+      "kind": "actual signed-in read-only project browser capture",
+      "capture_date": "2026-10-28",
+      "title": "VPC existing default network",
+      "observed": "Default VPC Yes;172.31.0.0/16; Available;3Ohio subnets",
+      "scope": "default VPC, not unapplied10.85.0.0/16 application VPC; map edges clipped",
+      "image_sha256": "a3d290b6bc7f7956ea1aa3fe0f14787cac2ff8b0747f61440d9c23c99572af2a",
+      "image_processing": "unaltered browser screenshot; some wide content may be outside viewport",
+      "privacy": "no passwords, MFA secrets/codes, recovery email, device/IP history, private client address or billing details",
+      "inspected_by": "release owner and separate visual critic"
+    },
+    {
+      "path": "images/06-ecs-clusters.png",
+      "kind": "actual signed-in read-only project browser capture",
+      "capture_date": "2026-10-28",
+      "title": "ECS clusters inventory",
+      "observed": "Clusters0; No clusters; blank search",
+      "scope": "selected project and Ohio service view",
+      "image_sha256": "79c4cc0c406d648a7f4368056e3d66320e357816aaae4fe1d7e6f523be04f34b",
+      "image_processing": "unaltered browser screenshot; some wide content may be outside viewport",
+      "privacy": "no passwords, MFA secrets/codes, recovery email, device/IP history, private client address or billing details",
+      "inspected_by": "release owner and separate visual critic"
+    },
+    {
+      "path": "images/07-rds-databases.png",
+      "kind": "actual signed-in read-only project browser capture",
+      "capture_date": "2026-10-28",
+      "title": "RDS databases inventory",
+      "observed": "Databases0; No resources; blank database filter",
+      "scope": "selected project and Ohio service view",
+      "image_sha256": "7ad5b778b0935ee62e9e473f52156f4005ea84f9c17d0cba42e20e44b5dbfbfb",
+      "image_processing": "unaltered browser screenshot; some wide content may be outside viewport",
+      "privacy": "no passwords, MFA secrets/codes, recovery email, device/IP history, private client address or billing details",
+      "inspected_by": "release owner and separate visual critic"
+    },
+    {
+      "path": "images/08-ecr-private-repositories.png",
+      "kind": "actual signed-in read-only project browser capture",
+      "capture_date": "2026-10-28",
+      "title": "ECR private repositories inventory",
+      "observed": "No repositories found",
+      "scope": "private repository view, selected project/Ohio; not public repositories",
+      "image_sha256": "086caf9fe2f96a6d17bc336c19a2cc84781f117296598c2d54d877a7ede775fa",
+      "image_processing": "unaltered browser screenshot; some wide content may be outside viewport",
+      "privacy": "no passwords, MFA secrets/codes, recovery email, device/IP history, private client address or billing details",
+      "inspected_by": "release owner and separate visual critic"
+    },
+    {
+      "path": "images/09-s3-general-purpose-buckets.png",
+      "kind": "actual signed-in read-only project browser capture",
+      "capture_date": "2026-10-28",
+      "title": "S3 general-purpose buckets inventory",
+      "observed": "General purpose buckets0; All AWS Regions; blank name filter",
+      "scope": "all Regions for general-purpose buckets only; not Directory/other bucket types",
+      "image_sha256": "f1c73ff09f5825d97b11aef2d8c03b52e01c633edd39da53c7ec8c70060e49dd",
+      "image_processing": "unaltered browser screenshot; some wide content may be outside viewport",
+      "privacy": "no passwords, MFA secrets/codes, recovery email, device/IP history, private client address or billing details",
+      "inspected_by": "release owner and separate visual critic"
+    },
+    {
+      "path": "images/10-cloudwatch-log-groups.png",
+      "kind": "actual signed-in read-only project browser capture",
+      "capture_date": "2026-10-28",
+      "title": "CloudWatch Log Management",
+      "observed": "Log groups0; There are no log groups; no entered search pattern",
+      "scope": "Ohio log-group view; no claims about metrics/alarms or other telemetry",
+      "image_sha256": "b6f96e27268c3611b91d34356135bee3b17317704e3f28288cc53bcc9347ca95",
+      "image_processing": "unaltered browser screenshot; some wide content may be outside viewport",
+      "privacy": "no passwords, MFA secrets/codes, recovery email, device/IP history, private client address or billing details",
+      "inspected_by": "release owner and separate visual critic"
+    },
+    {
+      "path": "images/11-vpc-nat-gateways.png",
+      "kind": "actual signed-in read-only project browser capture",
+      "capture_date": "2026-10-28",
+      "title": "VPC NAT gateways inventory",
+      "observed": "No NAT gateways found; blank filter",
+      "scope": "Ohio NAT gateway view; not NAT instances or other Regions",
+      "image_sha256": "e1bbf5b519c178db206f20837858b785bb402cfb14908acf2d4520a0f675aa51",
+      "image_processing": "unaltered browser screenshot; some wide content may be outside viewport",
+      "privacy": "no passwords, MFA secrets/codes, recovery email, device/IP history, private client address or billing details",
+      "inspected_by": "release owner and separate visual critic"
+    },
+    {
+      "path": "images/12-ec2-load-balancers.png",
+      "kind": "actual signed-in read-only project browser capture",
+      "capture_date": "2026-10-28",
+      "title": "EC2 load-balancers inventory",
+      "observed": "No load balancers in us-east-2; blank filter",
+      "scope": "regional load-balancer view; not CloudFront/API Gateway inventory",
+      "image_sha256": "1a79cecb26cfea2f34f3b21266927b739f0eebadd9e38a7604b4b7be6c7fd39b",
+      "image_processing": "unaltered browser screenshot; some wide content may be outside viewport",
+      "privacy": "no passwords, MFA secrets/codes, recovery email, device/IP history, private client address or billing details",
+      "inspected_by": "release owner and separate visual critic"
     }
   ],
   "official_example_assets": [
@@ -76,5 +196,13 @@
       "kind": "official AWS training example, not user account",
       "inspected_by": "source research agent; independent critic inspected image and official source DOM on 2026-10-28"
     }
-  ]
+  ],
+  "current_identity_observation": {
+    "date": "2026-10-28",
+    "sign_in_method": "Google, explicitly displayed by AWS Builder ID security page",
+    "mfa": "one TOTP device registered, observed after user-operated enrollment",
+    "verification_limit": "registration list only; no independent sign-out/sign-in challenge test; no claim about Google2step settings",
+    "security_screenshot_published": false,
+    "personal_authentication_changes_by_agent": false
+  }
 }

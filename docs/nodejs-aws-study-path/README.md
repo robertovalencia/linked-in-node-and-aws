@@ -10,7 +10,7 @@ Start with [How this project was set up and verified](walkthroughs/README.md): e
 
 ## Learn the AWS console visually
 
-Open the [AWS screenshot study guide](visuals/README.md) for an actual blank sign-in capture and nine official AWS service examples, with small field explanations, source links, related lessons and recall questions. Official examples are clearly marked as unrelated to this account; remote example images require internet access. The guide includes the account-ID/IAM-user/role distinction and the user-provided IAM permissions wizard, explaining policy grants versus permission boundaries.
+Open the [AWS screenshot study guide](visuals/README.md) for actual project/console captures, the user-provided IAM wizard, and nine official AWS service examples, with small field explanations, source links, related lessons and recall questions. Official examples are clearly marked as unrelated to this account; remote example images require internet access. The guide includes the account-ID/IAM-user/role distinction and the user-provided IAM permissions wizard, explaining policy grants versus permission boundaries.
 
 ## Read or download
 
