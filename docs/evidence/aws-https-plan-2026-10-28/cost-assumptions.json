@@ -1,0 +1,3762 @@
+{
+  "date": "2026-10-28",
+  "region": "us-east-2",
+  "currency": "USD",
+  "status": "COST_INPUTS_ONLY_NOT_PLAN_APPROVAL",
+  "normalization_hours": "730",
+  "durations_hours": [
+    "24",
+    "720"
+  ],
+  "date_window_note": "24h from October28 proposed start ends October29 at same UTC instant. 720h is30x24 hours: October28-November27, crosses October/November; private zone charged at creation and November1 (2x$0.50). If expressing Eastern wall-clock, DST fallback means end wall-clock time is1h earlier. Use absolute UTC deadline from final plan.",
+  "traffic_assumptions": {
+    "idle": {
+      "log_gb_h": "0.001",
+      "network_gb_h": "0.01",
+      "out_gb_h": "0.001",
+      "cross_az_gb_h": "0",
+      "new_connections_s": "0.01",
+      "active_connections": "5",
+      "alb_gb_h": "0.001",
+      "rules_evaluated_s": "0",
+      "requests_h": "10",
+      "excess_backup_gb": "0",
+      "cpu_surplus_vcpu_h": "0"
+    },
+    "expected": {
+      "log_gb_h": "0.04",
+      "network_gb_h": "0.25",
+      "out_gb_h": "0.05",
+      "cross_az_gb_h": "0.05",
+      "new_connections_s": "1",
+      "active_connections": "100",
+      "alb_gb_h": "0.1",
+      "rules_evaluated_s": "0",
+      "requests_h": "3600",
+      "excess_backup_gb": "5",
+      "cpu_surplus_vcpu_h": "0"
+    },
+    "higher": {
+      "log_gb_h": "0.5",
+      "network_gb_h": "5",
+      "out_gb_h": "1",
+      "cross_az_gb_h": "1",
+      "new_connections_s": "50",
+      "active_connections": "1000",
+      "alb_gb_h": "2",
+      "rules_evaluated_s": "0",
+      "requests_h": "180000",
+      "excess_backup_gb": "20",
+      "cpu_surplus_vcpu_h": "0.5"
+    }
+  },
+  "cases": [
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "24",
+      "profile": "idle",
+      "lcu": "0.001666666666666666666666666667",
+      "total_usd": "5.943020109589041095890410960",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "24",
+          "units": "host-hours",
+          "usd": "2.2982400000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "1.315068493150684931506849315",
+          "units": "GB-month",
+          "usd": "0.1052054794520547945205479452",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "0",
+          "units": "resource-month",
+          "usd": "0.00",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "1",
+          "units": "zone-month-charges",
+          "usd": "0.50",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "24",
+          "units": "instance-hours",
+          "usd": "0.7680000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "0.6575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.07561643835616438356164383561",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "0",
+          "units": "GB-month",
+          "usd": "0E-10",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "24",
+          "units": "AZ-hours",
+          "usd": "1.0800000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "0.24",
+          "units": "GB",
+          "usd": "0.010800000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "72",
+          "units": "address-hours",
+          "usd": "0.3600000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "24",
+          "units": "ALB-hours",
+          "usd": "0.5400000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "0.04000000000000000000000000001",
+          "units": "LCU-hours",
+          "usd": "0.0003200000000000000000000000001",
+          "note": "Conservative inherited profile envelope for TLS/403/503 probes; no registered backend tasks. 25 new connections/s, 3000 active connections/min, 1 GB/h each per LCU, <=10 rules ignored; RSA<=2048/ECDSA<=256, no mTLS/reservation/target optimizer."
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "secret-month",
+          "usd": "0.09205479452054794520547945204",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "3600",
+          "units": "requests",
+          "usd": "0.0180000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "0.06575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.006575342465753424657534246575",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "0.3287671232876712328767123288",
+          "units": "GB-month",
+          "usd": "0.007561643835616438356164383562",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.03287671232876712328767123288",
+              "units": "GB-month",
+              "usd": "0.0007561643835616438356164383562"
+            },
+            "operations_releases_backups": {
+              "quantity": "0.2958904109589041095890410959",
+              "units": "GB-month",
+              "usd": "0.006805479452054794520547945206"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "240",
+          "units": "requests",
+          "usd": "0.0012000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "24",
+              "units": "requests",
+              "usd": "0.0001200000"
+            },
+            "operations_releases_backups": {
+              "quantity": "216",
+              "units": "requests",
+              "usd": "0.0010800000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "2400",
+          "units": "requests",
+          "usd": "0.0009600000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "240",
+              "units": "requests",
+              "usd": "0.0000960000"
+            },
+            "operations_releases_backups": {
+              "quantity": "2160",
+              "units": "requests",
+              "usd": "0.0008640000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "0.024",
+          "units": "GB",
+          "usd": "0.0120000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "0.0007890410958904109589041095890",
+          "units": "GB-month",
+          "usd": "0.00002367123287671232876712328767",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "0.120",
+          "units": "GB scanned",
+          "usd": "0.0006000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "0.09863013698630136986301369863",
+          "units": "metric-month",
+          "usd": "0.02958904109589041095890410959",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "alarm-metric-month",
+          "usd": "0.02301369863013698630136986301",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "0.024",
+          "units": "GB",
+          "usd": "0.0021600000000",
+          "note": "Gross paid-tier internet egress allowance for TLS/403/503 probes, inherited from profile; shared 100GB/month free allowance not deducted; not NAT bytes."
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "3700",
+          "units": "requests",
+          "usd": "0.0111000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "proposed_https_probe_stage_NOT_APPLIED",
+      "prior_total_usd": "5.940540109589041095890410960",
+      "delta_usd": "0.002480000000000000000000000"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "24",
+      "profile": "expected",
+      "lcu": "0.1",
+      "total_usd": "6.834879726027397260273972605",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "24",
+          "units": "host-hours",
+          "usd": "2.2982400000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "1.315068493150684931506849315",
+          "units": "GB-month",
+          "usd": "0.1052054794520547945205479452",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "0",
+          "units": "resource-month",
+          "usd": "0.00",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "1",
+          "units": "zone-month-charges",
+          "usd": "0.50",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "24",
+          "units": "instance-hours",
+          "usd": "0.7680000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "0.6575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.07561643835616438356164383561",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "0.1643835616438356164383561644",
+          "units": "GB-month",
+          "usd": "0.01561643835616438356164383562",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "24",
+          "units": "AZ-hours",
+          "usd": "1.0800000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "6.00",
+          "units": "GB",
+          "usd": "0.270000000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "72",
+          "units": "address-hours",
+          "usd": "0.3600000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "24",
+          "units": "ALB-hours",
+          "usd": "0.5400000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "2.4",
+          "units": "LCU-hours",
+          "usd": "0.01920000000",
+          "note": "Conservative inherited profile envelope for TLS/403/503 probes; no registered backend tasks. 25 new connections/s, 3000 active connections/min, 1 GB/h each per LCU, <=10 rules ignored; RSA<=2048/ECDSA<=256, no mTLS/reservation/target optimizer."
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "secret-month",
+          "usd": "0.09205479452054794520547945204",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "3600",
+          "units": "requests",
+          "usd": "0.0180000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "0.06575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.006575342465753424657534246575",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "0.3287671232876712328767123288",
+          "units": "GB-month",
+          "usd": "0.007561643835616438356164383562",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.03287671232876712328767123288",
+              "units": "GB-month",
+              "usd": "0.0007561643835616438356164383562"
+            },
+            "operations_releases_backups": {
+              "quantity": "0.2958904109589041095890410959",
+              "units": "GB-month",
+              "usd": "0.006805479452054794520547945206"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "240",
+          "units": "requests",
+          "usd": "0.0012000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "24",
+              "units": "requests",
+              "usd": "0.0001200000"
+            },
+            "operations_releases_backups": {
+              "quantity": "216",
+              "units": "requests",
+              "usd": "0.0010800000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "2400",
+          "units": "requests",
+          "usd": "0.0009600000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "240",
+              "units": "requests",
+              "usd": "0.0000960000"
+            },
+            "operations_releases_backups": {
+              "quantity": "2160",
+              "units": "requests",
+              "usd": "0.0008640000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "0.96",
+          "units": "GB",
+          "usd": "0.480000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "0.03156164383561643835616438356",
+          "units": "GB-month",
+          "usd": "0.0009468493150684931506849315068",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "4.80",
+          "units": "GB scanned",
+          "usd": "0.024000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "0.09863013698630136986301369863",
+          "units": "metric-month",
+          "usd": "0.02958904109589041095890410959",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "alarm-metric-month",
+          "usd": "0.02301369863013698630136986301",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "1.20",
+          "units": "GB",
+          "usd": "0.108000000000",
+          "note": "Gross paid-tier internet egress allowance for TLS/403/503 probes, inherited from profile; shared 100GB/month free allowance not deducted; not NAT bytes."
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "3700",
+          "units": "requests",
+          "usd": "0.0111000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "proposed_https_probe_stage_NOT_APPLIED",
+      "prior_total_usd": "6.707679726027397260273972605",
+      "delta_usd": "0.127200000000000000000000000"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "24",
+      "profile": "higher",
+      "lcu": "2",
+      "total_usd": "21.13541780821917808219178081",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "24",
+          "units": "host-hours",
+          "usd": "2.2982400000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "1.315068493150684931506849315",
+          "units": "GB-month",
+          "usd": "0.1052054794520547945205479452",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "0",
+          "units": "resource-month",
+          "usd": "0.00",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "1",
+          "units": "zone-month-charges",
+          "usd": "0.50",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "24",
+          "units": "instance-hours",
+          "usd": "0.7680000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "0.6575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.07561643835616438356164383561",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "0.6575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.06246575342465753424657534246",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "12.0",
+          "units": "vCPU-hours",
+          "usd": "0.90000000000",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "24",
+          "units": "AZ-hours",
+          "usd": "1.0800000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "120",
+          "units": "GB",
+          "usd": "5.4000000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "72",
+          "units": "address-hours",
+          "usd": "0.3600000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "24",
+          "units": "ALB-hours",
+          "usd": "0.5400000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "48",
+          "units": "LCU-hours",
+          "usd": "0.3840000000",
+          "note": "Conservative inherited profile envelope for TLS/403/503 probes; no registered backend tasks. 25 new connections/s, 3000 active connections/min, 1 GB/h each per LCU, <=10 rules ignored; RSA<=2048/ECDSA<=256, no mTLS/reservation/target optimizer."
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "secret-month",
+          "usd": "0.09205479452054794520547945204",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "3600",
+          "units": "requests",
+          "usd": "0.0180000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "0.06575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.006575342465753424657534246575",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "0.3287671232876712328767123288",
+          "units": "GB-month",
+          "usd": "0.007561643835616438356164383562",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.03287671232876712328767123288",
+              "units": "GB-month",
+              "usd": "0.0007561643835616438356164383562"
+            },
+            "operations_releases_backups": {
+              "quantity": "0.2958904109589041095890410959",
+              "units": "GB-month",
+              "usd": "0.006805479452054794520547945206"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "240",
+          "units": "requests",
+          "usd": "0.0012000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "24",
+              "units": "requests",
+              "usd": "0.0001200000"
+            },
+            "operations_releases_backups": {
+              "quantity": "216",
+              "units": "requests",
+              "usd": "0.0010800000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "2400",
+          "units": "requests",
+          "usd": "0.0009600000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "240",
+              "units": "requests",
+              "usd": "0.0000960000"
+            },
+            "operations_releases_backups": {
+              "quantity": "2160",
+              "units": "requests",
+              "usd": "0.0008640000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "12.0",
+          "units": "GB",
+          "usd": "6.00000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "0.3945205479452054794520547945",
+          "units": "GB-month",
+          "usd": "0.01183561643835616438356164384",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "60.0",
+          "units": "GB scanned",
+          "usd": "0.30000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "0.09863013698630136986301369863",
+          "units": "metric-month",
+          "usd": "0.02958904109589041095890410959",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "alarm-metric-month",
+          "usd": "0.02301369863013698630136986301",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "24",
+          "units": "GB",
+          "usd": "2.1600000000",
+          "note": "Gross paid-tier internet egress allowance for TLS/403/503 probes, inherited from profile; shared 100GB/month free allowance not deducted; not NAT bytes."
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "3700",
+          "units": "requests",
+          "usd": "0.0111000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "proposed_https_probe_stage_NOT_APPLIED",
+      "prior_total_usd": "18.59141780821917808219178081",
+      "delta_usd": "2.54400000000000000000000000"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "720",
+      "profile": "idle",
+      "lcu": "0.001666666666666666666666666667",
+      "total_usd": "164.2948641095890410958904110",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "720",
+          "units": "host-hours",
+          "usd": "68.9472000000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "39.45205479452054794520547945",
+          "units": "GB-month",
+          "usd": "3.156164383561643835616438356",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "0",
+          "units": "resource-month",
+          "usd": "0.00",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "2",
+          "units": "zone-month-charges",
+          "usd": "1.00",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "720",
+          "units": "instance-hours",
+          "usd": "23.0400000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "19.72602739726027397260273973",
+          "units": "GB-month",
+          "usd": "2.268493150684931506849315069",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "0",
+          "units": "GB-month",
+          "usd": "0E-10",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "720",
+          "units": "AZ-hours",
+          "usd": "32.4000000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "7.20",
+          "units": "GB",
+          "usd": "0.324000000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "2160",
+          "units": "address-hours",
+          "usd": "10.8000000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "720",
+          "units": "ALB-hours",
+          "usd": "16.2000000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "1.200000000000000000000000000",
+          "units": "LCU-hours",
+          "usd": "0.009600000000000000000000000000",
+          "note": "Conservative inherited profile envelope for TLS/403/503 probes; no registered backend tasks. 25 new connections/s, 3000 active connections/min, 1 GB/h each per LCU, <=10 rules ignored; RSA<=2048/ECDSA<=256, no mTLS/reservation/target optimizer."
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "6.904109589041095890410958904",
+          "units": "secret-month",
+          "usd": "2.761643835616438356164383562",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "108000",
+          "units": "requests",
+          "usd": "0.5400000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "1.972602739726027397260273973",
+          "units": "GB-month",
+          "usd": "0.1972602739726027397260273973",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "9.863013698630136986301369863",
+          "units": "GB-month",
+          "usd": "0.2268493150684931506849315068",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.9863013698630136986301369863",
+              "units": "GB-month",
+              "usd": "0.02268493150684931506849315068"
+            },
+            "operations_releases_backups": {
+              "quantity": "8.876712328767123287671232877",
+              "units": "GB-month",
+              "usd": "0.2041643835616438356164383562"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "7200",
+          "units": "requests",
+          "usd": "0.0360000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "720",
+              "units": "requests",
+              "usd": "0.0036000000"
+            },
+            "operations_releases_backups": {
+              "quantity": "6480",
+              "units": "requests",
+              "usd": "0.0324000000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "72000",
+          "units": "requests",
+          "usd": "0.0288000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "7200",
+              "units": "requests",
+              "usd": "0.0028800000"
+            },
+            "operations_releases_backups": {
+              "quantity": "64800",
+              "units": "requests",
+              "usd": "0.0259200000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "0.720",
+          "units": "GB",
+          "usd": "0.3600000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "0.1656986301369863013698630137",
+          "units": "GB-month",
+          "usd": "0.004970958904109589041095890411",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "3.600",
+          "units": "GB scanned",
+          "usd": "0.0180000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "2.958904109589041095890410959",
+          "units": "metric-month",
+          "usd": "0.8876712328767123287671232877",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "6.904109589041095890410958904",
+          "units": "alarm-metric-month",
+          "usd": "0.6904109589041095890410958904",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "0.720",
+          "units": "GB",
+          "usd": "0.0648000000000",
+          "note": "Gross paid-tier internet egress allowance for TLS/403/503 probes, inherited from profile; shared 100GB/month free allowance not deducted; not NAT bytes."
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "111000",
+          "units": "requests",
+          "usd": "0.3330000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "proposed_https_probe_stage_NOT_APPLIED",
+      "prior_total_usd": "164.2204641095890410958904110",
+      "delta_usd": "0.0744000000000000000000000"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "720",
+      "profile": "expected",
+      "lcu": "0.1",
+      "total_usd": "191.2168246575342465753424658",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "720",
+          "units": "host-hours",
+          "usd": "68.9472000000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "39.45205479452054794520547945",
+          "units": "GB-month",
+          "usd": "3.156164383561643835616438356",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "0",
+          "units": "resource-month",
+          "usd": "0.00",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "2",
+          "units": "zone-month-charges",
+          "usd": "1.00",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "720",
+          "units": "instance-hours",
+          "usd": "23.0400000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "19.72602739726027397260273973",
+          "units": "GB-month",
+          "usd": "2.268493150684931506849315069",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "4.931506849315068493150684932",
+          "units": "GB-month",
+          "usd": "0.4684931506849315068493150685",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "720",
+          "units": "AZ-hours",
+          "usd": "32.4000000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "180.00",
+          "units": "GB",
+          "usd": "8.100000000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "2160",
+          "units": "address-hours",
+          "usd": "10.8000000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "720",
+          "units": "ALB-hours",
+          "usd": "16.2000000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "72.0",
+          "units": "LCU-hours",
+          "usd": "0.57600000000",
+          "note": "Conservative inherited profile envelope for TLS/403/503 probes; no registered backend tasks. 25 new connections/s, 3000 active connections/min, 1 GB/h each per LCU, <=10 rules ignored; RSA<=2048/ECDSA<=256, no mTLS/reservation/target optimizer."
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "6.904109589041095890410958904",
+          "units": "secret-month",
+          "usd": "2.761643835616438356164383562",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "108000",
+          "units": "requests",
+          "usd": "0.5400000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "1.972602739726027397260273973",
+          "units": "GB-month",
+          "usd": "0.1972602739726027397260273973",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "9.863013698630136986301369863",
+          "units": "GB-month",
+          "usd": "0.2268493150684931506849315068",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.9863013698630136986301369863",
+              "units": "GB-month",
+              "usd": "0.02268493150684931506849315068"
+            },
+            "operations_releases_backups": {
+              "quantity": "8.876712328767123287671232877",
+              "units": "GB-month",
+              "usd": "0.2041643835616438356164383562"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "7200",
+          "units": "requests",
+          "usd": "0.0360000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "720",
+              "units": "requests",
+              "usd": "0.0036000000"
+            },
+            "operations_releases_backups": {
+              "quantity": "6480",
+              "units": "requests",
+              "usd": "0.0324000000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "72000",
+          "units": "requests",
+          "usd": "0.0288000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "7200",
+              "units": "requests",
+              "usd": "0.0028800000"
+            },
+            "operations_releases_backups": {
+              "quantity": "64800",
+              "units": "requests",
+              "usd": "0.0259200000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "28.80",
+          "units": "GB",
+          "usd": "14.400000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "6.627945205479452054794520548",
+          "units": "GB-month",
+          "usd": "0.1988383561643835616438356164",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "144.00",
+          "units": "GB scanned",
+          "usd": "0.720000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "2.958904109589041095890410959",
+          "units": "metric-month",
+          "usd": "0.8876712328767123287671232877",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "6.904109589041095890410958904",
+          "units": "alarm-metric-month",
+          "usd": "0.6904109589041095890410958904",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "36.00",
+          "units": "GB",
+          "usd": "3.240000000000",
+          "note": "Gross paid-tier internet egress allowance for TLS/403/503 probes, inherited from profile; shared 100GB/month free allowance not deducted; not NAT bytes."
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "111000",
+          "units": "requests",
+          "usd": "0.3330000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "proposed_https_probe_stage_NOT_APPLIED",
+      "prior_total_usd": "187.4008246575342465753424658",
+      "delta_usd": "3.8160000000000000000000000"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "720",
+      "profile": "higher",
+      "lcu": "2",
+      "total_usd": "622.1929452054794520547945206",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "720",
+          "units": "host-hours",
+          "usd": "68.9472000000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "39.45205479452054794520547945",
+          "units": "GB-month",
+          "usd": "3.156164383561643835616438356",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "0",
+          "units": "resource-month",
+          "usd": "0.00",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "2",
+          "units": "zone-month-charges",
+          "usd": "1.00",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "720",
+          "units": "instance-hours",
+          "usd": "23.0400000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "19.72602739726027397260273973",
+          "units": "GB-month",
+          "usd": "2.268493150684931506849315069",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "19.72602739726027397260273973",
+          "units": "GB-month",
+          "usd": "1.873972602739726027397260274",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "360.0",
+          "units": "vCPU-hours",
+          "usd": "27.00000000000",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "720",
+          "units": "AZ-hours",
+          "usd": "32.4000000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "3600",
+          "units": "GB",
+          "usd": "162.0000000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "2160",
+          "units": "address-hours",
+          "usd": "10.8000000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "720",
+          "units": "ALB-hours",
+          "usd": "16.2000000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "1440",
+          "units": "LCU-hours",
+          "usd": "11.5200000000",
+          "note": "Conservative inherited profile envelope for TLS/403/503 probes; no registered backend tasks. 25 new connections/s, 3000 active connections/min, 1 GB/h each per LCU, <=10 rules ignored; RSA<=2048/ECDSA<=256, no mTLS/reservation/target optimizer."
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "6.904109589041095890410958904",
+          "units": "secret-month",
+          "usd": "2.761643835616438356164383562",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "108000",
+          "units": "requests",
+          "usd": "0.5400000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "1.972602739726027397260273973",
+          "units": "GB-month",
+          "usd": "0.1972602739726027397260273973",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "9.863013698630136986301369863",
+          "units": "GB-month",
+          "usd": "0.2268493150684931506849315068",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.9863013698630136986301369863",
+              "units": "GB-month",
+              "usd": "0.02268493150684931506849315068"
+            },
+            "operations_releases_backups": {
+              "quantity": "8.876712328767123287671232877",
+              "units": "GB-month",
+              "usd": "0.2041643835616438356164383562"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "7200",
+          "units": "requests",
+          "usd": "0.0360000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "720",
+              "units": "requests",
+              "usd": "0.0036000000"
+            },
+            "operations_releases_backups": {
+              "quantity": "6480",
+              "units": "requests",
+              "usd": "0.0324000000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "72000",
+          "units": "requests",
+          "usd": "0.0288000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "7200",
+              "units": "requests",
+              "usd": "0.0028800000"
+            },
+            "operations_releases_backups": {
+              "quantity": "64800",
+              "units": "requests",
+              "usd": "0.0259200000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "360.0",
+          "units": "GB",
+          "usd": "180.00000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "82.84931506849315068493150685",
+          "units": "GB-month",
+          "usd": "2.485479452054794520547945206",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "1800.0",
+          "units": "GB scanned",
+          "usd": "9.00000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "2.958904109589041095890410959",
+          "units": "metric-month",
+          "usd": "0.8876712328767123287671232877",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "6.904109589041095890410958904",
+          "units": "alarm-metric-month",
+          "usd": "0.6904109589041095890410958904",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "720",
+          "units": "GB",
+          "usd": "64.8000000000",
+          "note": "Gross paid-tier internet egress allowance for TLS/403/503 probes, inherited from profile; shared 100GB/month free allowance not deducted; not NAT bytes."
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "111000",
+          "units": "requests",
+          "usd": "0.3330000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "proposed_https_probe_stage_NOT_APPLIED",
+      "prior_total_usd": "545.8729452054794520547945206",
+      "delta_usd": "76.3200000000000000000000000"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "24",
+      "profile": "idle",
+      "lcu": "0.001666666666666666666666666667",
+      "total_usd": "7.425198465753424657534246576",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "24",
+          "units": "host-hours",
+          "usd": "2.2982400000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "1.315068493150684931506849315",
+          "units": "GB-month",
+          "usd": "0.1052054794520547945205479452",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "0.1643835616438356164383561644",
+          "units": "resource-month",
+          "usd": "0.01643835616438356164383561644",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "1",
+          "units": "zone-month-charges",
+          "usd": "0.50",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "30.00",
+          "units": "vCPU-hours",
+          "usd": "1.214400000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "60.0",
+          "units": "GB-hours",
+          "usd": "0.26670000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "24",
+          "units": "instance-hours",
+          "usd": "0.7680000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "0.6575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.07561643835616438356164383561",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "0",
+          "units": "GB-month",
+          "usd": "0E-10",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "24",
+          "units": "AZ-hours",
+          "usd": "1.0800000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "0.24",
+          "units": "GB",
+          "usd": "0.010800000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "72",
+          "units": "address-hours",
+          "usd": "0.3600000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "24",
+          "units": "ALB-hours",
+          "usd": "0.5400000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "0.04000000000000000000000000001",
+          "units": "LCU-hours",
+          "usd": "0.0003200000000000000000000000001",
+          "note": "No reserved LCUs; <=10 rules, ordinary certificate sizes, no mTLS trust store"
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "secret-month",
+          "usd": "0.09205479452054794520547945204",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "1680",
+          "units": "requests",
+          "usd": "0.0084000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "0.06575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.006575342465753424657534246575",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "0.3287671232876712328767123288",
+          "units": "GB-month",
+          "usd": "0.007561643835616438356164383562",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.03287671232876712328767123288",
+              "units": "GB-month",
+              "usd": "0.0007561643835616438356164383562"
+            },
+            "operations_releases_backups": {
+              "quantity": "0.2958904109589041095890410959",
+              "units": "GB-month",
+              "usd": "0.006805479452054794520547945206"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "240",
+          "units": "requests",
+          "usd": "0.0012000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "24",
+              "units": "requests",
+              "usd": "0.0001200000"
+            },
+            "operations_releases_backups": {
+              "quantity": "216",
+              "units": "requests",
+              "usd": "0.0010800000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "2400",
+          "units": "requests",
+          "usd": "0.0009600000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "240",
+              "units": "requests",
+              "usd": "0.0000960000"
+            },
+            "operations_releases_backups": {
+              "quantity": "2160",
+              "units": "requests",
+              "usd": "0.0008640000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "0.024",
+          "units": "GB",
+          "usd": "0.0120000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "0.0007890410958904109589041095890",
+          "units": "GB-month",
+          "usd": "0.00002367123287671232876712328767",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "0.120",
+          "units": "GB scanned",
+          "usd": "0.0006000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "0.09863013698630136986301369863",
+          "units": "metric-month",
+          "usd": "0.02958904109589041095890410959",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "alarm-metric-month",
+          "usd": "0.02301369863013698630136986301",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "0.024",
+          "units": "GB",
+          "usd": "0.0021600000000",
+          "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "1780",
+          "units": "requests",
+          "usd": "0.0053400000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "future_five_task_activation_NOT_PLANNED",
+      "prior_total_usd": "7.425198465753424657534246576",
+      "delta_usd": "0E-27"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "24",
+      "profile": "expected",
+      "lcu": "0.1",
+      "total_usd": "8.317058082191780821917808221",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "24",
+          "units": "host-hours",
+          "usd": "2.2982400000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "1.315068493150684931506849315",
+          "units": "GB-month",
+          "usd": "0.1052054794520547945205479452",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "0.1643835616438356164383561644",
+          "units": "resource-month",
+          "usd": "0.01643835616438356164383561644",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "1",
+          "units": "zone-month-charges",
+          "usd": "0.50",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "30.00",
+          "units": "vCPU-hours",
+          "usd": "1.214400000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "60.0",
+          "units": "GB-hours",
+          "usd": "0.26670000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "24",
+          "units": "instance-hours",
+          "usd": "0.7680000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "0.6575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.07561643835616438356164383561",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "0.1643835616438356164383561644",
+          "units": "GB-month",
+          "usd": "0.01561643835616438356164383562",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "24",
+          "units": "AZ-hours",
+          "usd": "1.0800000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "6.00",
+          "units": "GB",
+          "usd": "0.270000000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "72",
+          "units": "address-hours",
+          "usd": "0.3600000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "24",
+          "units": "ALB-hours",
+          "usd": "0.5400000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "2.4",
+          "units": "LCU-hours",
+          "usd": "0.01920000000",
+          "note": "No reserved LCUs; <=10 rules, ordinary certificate sizes, no mTLS trust store"
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "secret-month",
+          "usd": "0.09205479452054794520547945204",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "1680",
+          "units": "requests",
+          "usd": "0.0084000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "0.06575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.006575342465753424657534246575",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "0.3287671232876712328767123288",
+          "units": "GB-month",
+          "usd": "0.007561643835616438356164383562",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.03287671232876712328767123288",
+              "units": "GB-month",
+              "usd": "0.0007561643835616438356164383562"
+            },
+            "operations_releases_backups": {
+              "quantity": "0.2958904109589041095890410959",
+              "units": "GB-month",
+              "usd": "0.006805479452054794520547945206"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "240",
+          "units": "requests",
+          "usd": "0.0012000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "24",
+              "units": "requests",
+              "usd": "0.0001200000"
+            },
+            "operations_releases_backups": {
+              "quantity": "216",
+              "units": "requests",
+              "usd": "0.0010800000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "2400",
+          "units": "requests",
+          "usd": "0.0009600000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "240",
+              "units": "requests",
+              "usd": "0.0000960000"
+            },
+            "operations_releases_backups": {
+              "quantity": "2160",
+              "units": "requests",
+              "usd": "0.0008640000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "0.96",
+          "units": "GB",
+          "usd": "0.480000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "0.03156164383561643835616438356",
+          "units": "GB-month",
+          "usd": "0.0009468493150684931506849315068",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "4.80",
+          "units": "GB scanned",
+          "usd": "0.024000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "0.09863013698630136986301369863",
+          "units": "metric-month",
+          "usd": "0.02958904109589041095890410959",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "alarm-metric-month",
+          "usd": "0.02301369863013698630136986301",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "1.20",
+          "units": "GB",
+          "usd": "0.108000000000",
+          "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "1780",
+          "units": "requests",
+          "usd": "0.0053400000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "future_five_task_activation_NOT_PLANNED",
+      "prior_total_usd": "8.317058082191780821917808221",
+      "delta_usd": "0E-27"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "24",
+      "profile": "higher",
+      "lcu": "2",
+      "total_usd": "22.61759616438356164383561643",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "24",
+          "units": "host-hours",
+          "usd": "2.2982400000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "1.315068493150684931506849315",
+          "units": "GB-month",
+          "usd": "0.1052054794520547945205479452",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "0.1643835616438356164383561644",
+          "units": "resource-month",
+          "usd": "0.01643835616438356164383561644",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "1",
+          "units": "zone-month-charges",
+          "usd": "0.50",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "30.00",
+          "units": "vCPU-hours",
+          "usd": "1.214400000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "60.0",
+          "units": "GB-hours",
+          "usd": "0.26670000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "24",
+          "units": "instance-hours",
+          "usd": "0.7680000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "0.6575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.07561643835616438356164383561",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "0.6575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.06246575342465753424657534246",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "12.0",
+          "units": "vCPU-hours",
+          "usd": "0.90000000000",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "24",
+          "units": "AZ-hours",
+          "usd": "1.0800000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "120",
+          "units": "GB",
+          "usd": "5.4000000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "72",
+          "units": "address-hours",
+          "usd": "0.3600000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "24",
+          "units": "ALB-hours",
+          "usd": "0.5400000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "48",
+          "units": "LCU-hours",
+          "usd": "0.3840000000",
+          "note": "No reserved LCUs; <=10 rules, ordinary certificate sizes, no mTLS trust store"
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "secret-month",
+          "usd": "0.09205479452054794520547945204",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "1680",
+          "units": "requests",
+          "usd": "0.0084000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "0.06575342465753424657534246575",
+          "units": "GB-month",
+          "usd": "0.006575342465753424657534246575",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "0.3287671232876712328767123288",
+          "units": "GB-month",
+          "usd": "0.007561643835616438356164383562",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.03287671232876712328767123288",
+              "units": "GB-month",
+              "usd": "0.0007561643835616438356164383562"
+            },
+            "operations_releases_backups": {
+              "quantity": "0.2958904109589041095890410959",
+              "units": "GB-month",
+              "usd": "0.006805479452054794520547945206"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "240",
+          "units": "requests",
+          "usd": "0.0012000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "24",
+              "units": "requests",
+              "usd": "0.0001200000"
+            },
+            "operations_releases_backups": {
+              "quantity": "216",
+              "units": "requests",
+              "usd": "0.0010800000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "2400",
+          "units": "requests",
+          "usd": "0.0009600000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "240",
+              "units": "requests",
+              "usd": "0.0000960000"
+            },
+            "operations_releases_backups": {
+              "quantity": "2160",
+              "units": "requests",
+              "usd": "0.0008640000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "12.0",
+          "units": "GB",
+          "usd": "6.00000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "0.3945205479452054794520547945",
+          "units": "GB-month",
+          "usd": "0.01183561643835616438356164384",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "60.0",
+          "units": "GB scanned",
+          "usd": "0.30000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "0.09863013698630136986301369863",
+          "units": "metric-month",
+          "usd": "0.02958904109589041095890410959",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "0.2301369863013698630136986301",
+          "units": "alarm-metric-month",
+          "usd": "0.02301369863013698630136986301",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "24",
+          "units": "GB",
+          "usd": "2.1600000000",
+          "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "1780",
+          "units": "requests",
+          "usd": "0.0053400000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "future_five_task_activation_NOT_PLANNED",
+      "prior_total_usd": "22.61759616438356164383561643",
+      "delta_usd": "0E-26"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "720",
+      "profile": "idle",
+      "lcu": "0.001666666666666666666666666667",
+      "total_usd": "208.7602147945205479452054795",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "720",
+          "units": "host-hours",
+          "usd": "68.9472000000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "39.45205479452054794520547945",
+          "units": "GB-month",
+          "usd": "3.156164383561643835616438356",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "4.931506849315068493150684932",
+          "units": "resource-month",
+          "usd": "0.4931506849315068493150684932",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "2",
+          "units": "zone-month-charges",
+          "usd": "1.00",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "900.00",
+          "units": "vCPU-hours",
+          "usd": "36.432000000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "1800.0",
+          "units": "GB-hours",
+          "usd": "8.00100000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "720",
+          "units": "instance-hours",
+          "usd": "23.0400000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "19.72602739726027397260273973",
+          "units": "GB-month",
+          "usd": "2.268493150684931506849315069",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "0",
+          "units": "GB-month",
+          "usd": "0E-10",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "720",
+          "units": "AZ-hours",
+          "usd": "32.4000000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "7.20",
+          "units": "GB",
+          "usd": "0.324000000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "2160",
+          "units": "address-hours",
+          "usd": "10.8000000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "720",
+          "units": "ALB-hours",
+          "usd": "16.2000000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "1.200000000000000000000000000",
+          "units": "LCU-hours",
+          "usd": "0.009600000000000000000000000000",
+          "note": "No reserved LCUs; <=10 rules, ordinary certificate sizes, no mTLS trust store"
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "6.904109589041095890410958904",
+          "units": "secret-month",
+          "usd": "2.761643835616438356164383562",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "50400",
+          "units": "requests",
+          "usd": "0.2520000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "1.972602739726027397260273973",
+          "units": "GB-month",
+          "usd": "0.1972602739726027397260273973",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "9.863013698630136986301369863",
+          "units": "GB-month",
+          "usd": "0.2268493150684931506849315068",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.9863013698630136986301369863",
+              "units": "GB-month",
+              "usd": "0.02268493150684931506849315068"
+            },
+            "operations_releases_backups": {
+              "quantity": "8.876712328767123287671232877",
+              "units": "GB-month",
+              "usd": "0.2041643835616438356164383562"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "7200",
+          "units": "requests",
+          "usd": "0.0360000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "720",
+              "units": "requests",
+              "usd": "0.0036000000"
+            },
+            "operations_releases_backups": {
+              "quantity": "6480",
+              "units": "requests",
+              "usd": "0.0324000000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "72000",
+          "units": "requests",
+          "usd": "0.0288000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "7200",
+              "units": "requests",
+              "usd": "0.0028800000"
+            },
+            "operations_releases_backups": {
+              "quantity": "64800",
+              "units": "requests",
+              "usd": "0.0259200000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "0.720",
+          "units": "GB",
+          "usd": "0.3600000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "0.1656986301369863013698630137",
+          "units": "GB-month",
+          "usd": "0.004970958904109589041095890411",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "3.600",
+          "units": "GB scanned",
+          "usd": "0.0180000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "2.958904109589041095890410959",
+          "units": "metric-month",
+          "usd": "0.8876712328767123287671232877",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "6.904109589041095890410958904",
+          "units": "alarm-metric-month",
+          "usd": "0.6904109589041095890410958904",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "0.720",
+          "units": "GB",
+          "usd": "0.0648000000000",
+          "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "53400",
+          "units": "requests",
+          "usd": "0.1602000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "future_five_task_activation_NOT_PLANNED",
+      "prior_total_usd": "208.7602147945205479452054795",
+      "delta_usd": "0E-25"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "720",
+      "profile": "expected",
+      "lcu": "0.1",
+      "total_usd": "235.6821753424657534246575343",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "720",
+          "units": "host-hours",
+          "usd": "68.9472000000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "39.45205479452054794520547945",
+          "units": "GB-month",
+          "usd": "3.156164383561643835616438356",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "4.931506849315068493150684932",
+          "units": "resource-month",
+          "usd": "0.4931506849315068493150684932",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "2",
+          "units": "zone-month-charges",
+          "usd": "1.00",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "900.00",
+          "units": "vCPU-hours",
+          "usd": "36.432000000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "1800.0",
+          "units": "GB-hours",
+          "usd": "8.00100000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "720",
+          "units": "instance-hours",
+          "usd": "23.0400000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "19.72602739726027397260273973",
+          "units": "GB-month",
+          "usd": "2.268493150684931506849315069",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "4.931506849315068493150684932",
+          "units": "GB-month",
+          "usd": "0.4684931506849315068493150685",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "0",
+          "units": "vCPU-hours",
+          "usd": "0E-10",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "720",
+          "units": "AZ-hours",
+          "usd": "32.4000000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "180.00",
+          "units": "GB",
+          "usd": "8.100000000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "2160",
+          "units": "address-hours",
+          "usd": "10.8000000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "720",
+          "units": "ALB-hours",
+          "usd": "16.2000000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "72.0",
+          "units": "LCU-hours",
+          "usd": "0.57600000000",
+          "note": "No reserved LCUs; <=10 rules, ordinary certificate sizes, no mTLS trust store"
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "6.904109589041095890410958904",
+          "units": "secret-month",
+          "usd": "2.761643835616438356164383562",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "50400",
+          "units": "requests",
+          "usd": "0.2520000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "1.972602739726027397260273973",
+          "units": "GB-month",
+          "usd": "0.1972602739726027397260273973",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "9.863013698630136986301369863",
+          "units": "GB-month",
+          "usd": "0.2268493150684931506849315068",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.9863013698630136986301369863",
+              "units": "GB-month",
+              "usd": "0.02268493150684931506849315068"
+            },
+            "operations_releases_backups": {
+              "quantity": "8.876712328767123287671232877",
+              "units": "GB-month",
+              "usd": "0.2041643835616438356164383562"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "7200",
+          "units": "requests",
+          "usd": "0.0360000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "720",
+              "units": "requests",
+              "usd": "0.0036000000"
+            },
+            "operations_releases_backups": {
+              "quantity": "6480",
+              "units": "requests",
+              "usd": "0.0324000000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "72000",
+          "units": "requests",
+          "usd": "0.0288000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "7200",
+              "units": "requests",
+              "usd": "0.0028800000"
+            },
+            "operations_releases_backups": {
+              "quantity": "64800",
+              "units": "requests",
+              "usd": "0.0259200000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "28.80",
+          "units": "GB",
+          "usd": "14.400000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "6.627945205479452054794520548",
+          "units": "GB-month",
+          "usd": "0.1988383561643835616438356164",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "144.00",
+          "units": "GB scanned",
+          "usd": "0.720000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "2.958904109589041095890410959",
+          "units": "metric-month",
+          "usd": "0.8876712328767123287671232877",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "6.904109589041095890410958904",
+          "units": "alarm-metric-month",
+          "usd": "0.6904109589041095890410958904",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "36.00",
+          "units": "GB",
+          "usd": "3.240000000000",
+          "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "53400",
+          "units": "requests",
+          "usd": "0.1602000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "future_five_task_activation_NOT_PLANNED",
+      "prior_total_usd": "235.6821753424657534246575343",
+      "delta_usd": "0E-25"
+    },
+    {
+      "option": "3 Private ECS/RDS + one NAT",
+      "hours": "720",
+      "profile": "higher",
+      "lcu": "2",
+      "total_usd": "666.6582958904109589041095891",
+      "items": [
+        {
+          "meter": "EC2 Kafka host (single point of failure)",
+          "rate_key": "ec2_host",
+          "quantity": "720",
+          "units": "host-hours",
+          "usd": "68.9472000000",
+          "note": "m7i-flex.large, Linux x86; retained size is conservative, not benchmarked"
+        },
+        {
+          "meter": "EC2 root gp3",
+          "rate_key": "ebs_gp3",
+          "quantity": "39.45205479452054794520547945",
+          "units": "GB-month",
+          "usd": "3.156164383561643835616438356",
+          "note": ""
+        },
+        {
+          "meter": "Cloud Map registered task resources",
+          "rate_key": "cloudmap_resource",
+          "quantity": "4.931506849315068493150684932",
+          "units": "resource-month",
+          "usd": "0.4931506849315068493150684932",
+          "note": "ECS service discovery in one private DNS namespace; no proxy sidecars"
+        },
+        {
+          "meter": "Private DNS hosted zone",
+          "rate_key": "route53_zone",
+          "quantity": "2",
+          "units": "zone-month-charges",
+          "usd": "1.00",
+          "note": "Nonprorated: one charge for 24h, conservatively two calendar-month charges for a 30-day run starting near month end"
+        },
+        {
+          "meter": "Cloud Map API discovery requests",
+          "rate_key": "cloudmap_lookup",
+          "quantity": "0",
+          "units": "requests",
+          "usd": "0.000000",
+          "note": "Clients use DNS instead; private Route53 queries have no additional charge under current Route53 tariff"
+        },
+        {
+          "meter": "Fargate CPU: five tasks per replica",
+          "rate_key": "fargate_cpu",
+          "quantity": "900.00",
+          "units": "vCPU-hours",
+          "usd": "36.432000000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate RAM: five tasks per replica",
+          "rate_key": "fargate_memory",
+          "quantity": "1800.0",
+          "units": "GB-hours",
+          "usd": "8.00100000000",
+          "note": ""
+        },
+        {
+          "meter": "Fargate additional ephemeral storage",
+          "rate_key": "fargate_extra_disk",
+          "quantity": "0",
+          "units": "GB-hours",
+          "usd": "0E-10",
+          "note": "20 GiB included per task; no durable DB/Kafka on ephemeral disks"
+        },
+        {
+          "meter": "RDS PostgreSQL db.t4g.small",
+          "rate_key": "rds_small_single",
+          "quantity": "720",
+          "units": "instance-hours",
+          "usd": "23.0400000000",
+          "note": "Four databases/roles on one physical primary; Multi-AZ standby when replicas=2"
+        },
+        {
+          "meter": "RDS 20 GiB gp3",
+          "rate_key": "rds_gp3_single",
+          "quantity": "19.72602739726027397260273973",
+          "units": "GB-month",
+          "usd": "2.268493150684931506849315069",
+          "note": "Multi-AZ rate already includes both copies; do not double count"
+        },
+        {
+          "meter": "RDS excess backups",
+          "rate_key": "rds_backup",
+          "quantity": "19.72602739726027397260273973",
+          "units": "GB-month",
+          "usd": "1.873972602739726027397260274",
+          "note": "Explicit chargeable GB above regional running-DB allowance, not total snapshot size"
+        },
+        {
+          "meter": "RDS burst CPU surplus",
+          "rate_key": "rds_cpu_surplus",
+          "quantity": "360.0",
+          "units": "vCPU-hours",
+          "usd": "27.00000000000",
+          "note": "Higher case surcharge assumption; observe credits, not a performance prediction"
+        },
+        {
+          "meter": "NAT gateway AZ-hours",
+          "rate_key": "nat_hour",
+          "quantity": "720",
+          "units": "AZ-hours",
+          "usd": "32.4000000000",
+          "note": ""
+        },
+        {
+          "meter": "NAT data processed",
+          "rate_key": "nat_gb",
+          "quantity": "3600",
+          "units": "GB",
+          "usd": "162.0000000000",
+          "note": "Excludes S3 gateway traffic and inbound ALB path"
+        },
+        {
+          "meter": "Billable cross-AZ data (two charged sides)",
+          "rate_key": "cross_az",
+          "quantity": "0",
+          "units": "side-GB",
+          "usd": "0E-10",
+          "note": "Backend tasks, broker and RDS primary in one AZ; user ingress/other-AZ traffic remains usage-dependent."
+        },
+        {
+          "meter": "Public IPv4",
+          "rate_key": "ipv4",
+          "quantity": "2160",
+          "units": "address-hours",
+          "usd": "10.8000000000",
+          "note": "ALB minimum two; NAT one/AZ; private tasks/DB/Kafka no public IP; existing host one"
+        },
+        {
+          "meter": "ALB hourly",
+          "rate_key": "alb_hour",
+          "quantity": "720",
+          "units": "ALB-hours",
+          "usd": "16.2000000000",
+          "note": ""
+        },
+        {
+          "meter": "ALB maximum LCU dimension",
+          "rate_key": "alb_lcu",
+          "quantity": "1440",
+          "units": "LCU-hours",
+          "usd": "11.5200000000",
+          "note": "No reserved LCUs; <=10 rules, ordinary certificate sizes, no mTLS trust store"
+        },
+        {
+          "meter": "Secrets Manager storage",
+          "rate_key": "secrets_store",
+          "quantity": "6.904109589041095890410958904",
+          "units": "secret-month",
+          "usd": "2.761643835616438356164383562",
+          "note": "Six runtime secret resources plus the RDS-managed master secret; conservative full storage pricing."
+        },
+        {
+          "meter": "Secrets Manager API",
+          "rate_key": "secrets_api",
+          "quantity": "50400",
+          "units": "requests",
+          "usd": "0.2520000000",
+          "note": "Modeled runtime/bootstrap/broker API reads; actual calls vary with retries and rotation."
+        },
+        {
+          "meter": "ECR images",
+          "rate_key": "ecr_storage",
+          "quantity": "1.972602739726027397260273973",
+          "units": "GB-month",
+          "usd": "0.1972602739726027397260273973",
+          "note": "Two GB combined repos including rollback images; basic scanning, not paid Inspector"
+        },
+        {
+          "meter": "S3 releases/state/backups",
+          "rate_key": "s3_storage",
+          "quantity": "9.863013698630136986301369863",
+          "units": "GB-month",
+          "usd": "0.2268493150684931506849315068",
+          "note": "Versions count; hardened includes logical backups; no archive minimum-storage class Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "0.9863013698630136986301369863",
+              "units": "GB-month",
+              "usd": "0.02268493150684931506849315068"
+            },
+            "operations_releases_backups": {
+              "quantity": "8.876712328767123287671232877",
+              "units": "GB-month",
+              "usd": "0.2041643835616438356164383562"
+            }
+          }
+        },
+        {
+          "meter": "S3 PUT/LIST",
+          "rate_key": "s3_put",
+          "quantity": "7200",
+          "units": "requests",
+          "usd": "0.0360000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "720",
+              "units": "requests",
+              "usd": "0.0036000000"
+            },
+            "operations_releases_backups": {
+              "quantity": "6480",
+              "units": "requests",
+              "usd": "0.0324000000"
+            }
+          }
+        },
+        {
+          "meter": "S3 GET",
+          "rate_key": "s3_get",
+          "quantity": "72000",
+          "units": "requests",
+          "usd": "0.0288000000",
+          "note": " Shared allowance split: state 1GB with versions, 1PUT/LIST and 10GET per hour; operations 9GB,9PUT/LIST and90GET per hour. Empty new state bucket starts at0 bytes; these are cost reserves, not measured objects. No extra second S3 charge.",
+          "allocation": {
+            "terraform_state": {
+              "quantity": "7200",
+              "units": "requests",
+              "usd": "0.0028800000"
+            },
+            "operations_releases_backups": {
+              "quantity": "64800",
+              "units": "requests",
+              "usd": "0.0259200000"
+            }
+          }
+        },
+        {
+          "meter": "CloudWatch standard logs ingest",
+          "rate_key": "cloudwatch_logs_ingest",
+          "quantity": "360.0",
+          "units": "GB",
+          "usd": "180.00000000000",
+          "note": "App/system/audit/flow log total; no payloads/tokens; Free allowance not deducted"
+        },
+        {
+          "meter": "CloudWatch logs seven-day retention",
+          "rate_key": "cloudwatch_logs_store",
+          "quantity": "82.84931506849315068493150685",
+          "units": "GB-month",
+          "usd": "2.485479452054794520547945206",
+          "note": "Uncompressed upper bound with immediate-full-window storage; real billed compressed volume varies"
+        },
+        {
+          "meter": "Logs Insights queries",
+          "rate_key": "cloudwatch_logs_query",
+          "quantity": "1800.0",
+          "units": "GB scanned",
+          "usd": "9.00000000000",
+          "note": "Five times ingest volume queried during period"
+        },
+        {
+          "meter": "CloudWatch custom metrics",
+          "rate_key": "cloudwatch_metric",
+          "quantity": "2.958904109589041095890410959",
+          "units": "metric-month",
+          "usd": "0.8876712328767123287671232877",
+          "note": "Three agent host metrics: memory, disk, Kafka Java process."
+        },
+        {
+          "meter": "CloudWatch standard alarms",
+          "rate_key": "cloudwatch_alarm_standard",
+          "quantity": "6.904109589041095890410958904",
+          "units": "alarm-metric-month",
+          "usd": "0.6904109589041095890410958904",
+          "note": "Seven standard alarms; no notification topic provisioned."
+        },
+        {
+          "meter": "Internet egress, first paid tier",
+          "rate_key": "internet_out",
+          "quantity": "720",
+          "units": "GB",
+          "usd": "64.8000000000",
+          "note": "Gross before any shared 100GB/month allowance; transfer in free; not NAT processing"
+        },
+        {
+          "meter": "KMS symmetric API allowance (AWS-managed keys)",
+          "rate_key": "kms_api",
+          "quantity": "53400",
+          "units": "requests",
+          "usd": "0.1602000000",
+          "note": "Conservative unmeasured allowance: one KMS call per modeled Secrets read plus 100 storage/lifecycle calls per 24h; no customer key, no shared free allowance deducted. Empty-secret failures may not decrypt."
+        }
+      ],
+      "zero_scope": [
+        "WAF",
+        "customer-managed KMS keys",
+        "GuardDuty/Inspector/Security Hub/Config",
+        "MSK",
+        "new public DNS zone/domain (managed private zone included)",
+        "EFS",
+        "RDS Proxy",
+        "CloudWatch Container Insights/detailed EC2 monitoring/dashboards/traces",
+        "EBS snapshots (logical backups modeled in S3 instead)",
+        "extra gp3 IOPS/throughput"
+      ],
+      "mode": "future_five_task_activation_NOT_PLANNED",
+      "prior_total_usd": "666.6582958904109589041095891",
+      "delta_usd": "0E-25"
+    }
+  ],
+  "acm_condition": "Integrated ACM public non-exportable certificate no separate certificate charge, conditional on certificate type/export mode verification. No Private CA/exportable/ACME issuance modeled.",
+  "public_dns_condition": "Hostname ownership/DNS must be verified. Existing zone/domain shared costs not silently included; a newly created public hosted zone or domain registration would be incremental, outside this selected design.",
+  "limits": [
+    "Gross public list price before credits, shared free allowances, taxes or promotions; no account/service eligibility inferred.",
+    "Original prior price/case evidence preserved.",
+    "Traffic profiles are conservative spending envelopes; 403/503/TLS completion is not marketplace/application health.",
+    "ALB bytes/connections are separate billing dimensions; internet egress is charged separately, not added to ALB LCU dimensions again.",
+    "All existing idle/expected/higher non-traffic assumptions retained, including2GB ECR and conservative Secrets/KMS allowances despite no app images/tasks.",
+    "S3 standard state encryption assumedSSE-S3; no state customer-managed KMS key added. Prior AWS-managed KMS API allowance retained.",
+    "No AWS provisioning, upgrades or writes executed."
+  ]
+}

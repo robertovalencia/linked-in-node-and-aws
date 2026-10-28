@@ -1,0 +1,100 @@
+{
+  "passed": 23,
+  "failed": 0,
+  "validFixtureAccepted": true,
+  "fixtureScope": "Private saved-plan fixture; rule mutations stub only terraform show, never AWS",
+  "checks": [
+    {
+      "name": "public_database",
+      "status": "PASS"
+    },
+    {
+      "name": "public_broker",
+      "status": "PASS"
+    },
+    {
+      "name": "unprotected_database",
+      "status": "PASS"
+    },
+    {
+      "name": "unencrypted_database",
+      "status": "PASS"
+    },
+    {
+      "name": "inline_public_ssh",
+      "status": "PASS"
+    },
+    {
+      "name": "inline_wide_egress",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown_sg_reference_ssh",
+      "status": "PASS"
+    },
+    {
+      "name": "public_cidr_ingress",
+      "status": "PASS"
+    },
+    {
+      "name": "wide_ingress_protocol",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_http_listener",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_other_listener_port",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_other_certificate",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_weaker_tls_policy",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_other_hostname",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_default_success",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_https_wrong_owner_sg",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_db_wrong_source_sg",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_forward_wrong_target",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_listener_wrong_alb",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_rule_wrong_listener",
+      "status": "PASS"
+    },
+    {
+      "name": "approved_cidr_cannot_open_ssh",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_non_private_plan_input",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_optimized_python_validation_bypass",
+      "status": "PASS"
+    }
+  ]
+}

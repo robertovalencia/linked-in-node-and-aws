@@ -1,6 +1,14 @@
 # Results and verification boundary
 
-## Current ECS preparation — 27 October 2026
+## Current plan preparation — 28 October 2026
+
+The owner approved one HTTPS client /32 for planning, not provisioning. Read-only checks after temporary-login renewal confirm Free/ACTIVE/$100 credits, the existing certificate ISSUED and no app infrastructure in queried scopes. Prepared a source-bound five-create state-bootstrap plan plus a 111-create HTTPS local-backend infrastructure preview with no app tasks. [Actual review packet](aws-https-plan-review-2026-10-28.md). No AWS writes occurred today.
+
+All 31 selected rates/units remain unchanged. Current probe stage expected $6.83/24h/$191.22 per 720h includes TLS/403/503 allowance; future five-task activation remains $8.32/$235.68 plus recovery. Shared S3 costs explicitly allocate state within existing totals. Both real valid plan fixtures pass the reviewer; 23 HTTPS and 11 legacy negative controls reject unsafe variants. The fresh critic checks actual binaries/source, privacy, security graph and all 12 cost ledgers. [Evidence index](evidence/aws-https-plan-2026-10-28/README.md).
+
+No app/infra definitions were changed. The final S3-backed saved plan cannot exist until approved state bootstrap, then needs new cost/source/input review before provisioning. Neither the historical no-listener plan nor today's local preview is an apply approval. The planning expiry proposal must be refreshed at the actual agreed start; no demo timer has started.
+
+## Historical ECS preparation — 27 October 2026
 
 The owner selected private ECS/RDS + one NAT for plan review. **Only the separately approved ACM certificate has been created; no application infrastructure is deployed.** The historical local-backend preview proposes 108 creates, no changes/destroys, no listener, no client ingress and no app task definitions/services; it predates the registered hostname/issued certificate and is not an activation plan. Expected gross staging cost is $6.71/24h or $187.40/720h. Future five-task activation is $8.32/24h or $235.68/720h plus recovery exercises; it is not in this plan. [Itemized current plan/cost summary](evidence/ecs-preparation/staging-plan-cost-review.json).
 

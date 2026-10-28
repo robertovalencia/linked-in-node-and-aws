@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-10-28T13:47:34.746475+00:00",
+  "account": "772641336063",
+  "region": "us-east-2",
+  "readOnly": true,
+  "accountPlan": {
+    "accountId": "772641336063",
+    "accountPlanType": "FREE",
+    "accountPlanStatus": "ACTIVE",
+    "accountPlanRemainingCredits": {
+      "amount": 100.0,
+      "unit": "USD"
+    },
+    "accountPlanExpirationDate": "2027-04-21T17:52:26.416000+00:00"
+  },
+  "certificate": {
+    "Arn": "arn:aws:acm:us-east-2:772641336063:certificate/ae18667c-47ac-4fda-8039-e877bafe9705",
+    "Domain": "app.linked-in-node-rv.dynv6.net",
+    "Status": "ISSUED",
+    "Export": "DISABLED",
+    "InUseBy": []
+  },
+  "inventories": {
+    "vpcs": [],
+    "ec2": [],
+    "nat": [],
+    "volumes": [],
+    "ecs": {
+      "clusterArns": []
+    },
+    "rds": [],
+    "alb": [],
+    "s3": [],
+    "ecr": []
+  },
+  "ec2Eligibility": [
+    {
+      "Type": "m7i-flex.large",
+      "FreeTierEligible": true,
+      "VCpu": 2,
+      "MemoryMiB": 8192
+    }
+  ],
+  "orderablePostgresPin": "17.6 / db.t4g.small / gp3",
+  "scopeLimit": "Project-tag/name filters, plus regional ECS/RDS/ALB lists and explicit project state-bucket checks; not all-region/all-service billing inventory. No AWS writes. RDS create eligibility is not proved by orderable-version metadata.",
+  "stateBucketExistence": {
+    "checkedAt": "2026-10-28T14:14:43.625364+00:00",
+    "ok": true,
+    "result": "HEAD404_NOT_FOUND",
+    "bucket": "772641336063-linked-in-node-terraform-state"
+  }
+}

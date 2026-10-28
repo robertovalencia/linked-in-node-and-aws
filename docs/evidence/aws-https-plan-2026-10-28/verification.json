@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-10-28T14:10:15.458189+00:00",
+  "scope": "Read-only preflight/plans and offline reviews; no AWS mutations on28October",
+  "sourceCommit": "319392bea09e75f78edd196bcb8eed3ffc1f5b95",
+  "checkerSha256": "fa6b9d1c1f2546cdd61087879c58f59080c0e230d4243a376ec5b933da7fe8ea",
+  "controlSuiteSha256": "1c57341fc08b4b73c26f9ce6d35f463119438ec68ad0bef78c609137191c714d",
+  "privacy": {
+    "privateWorkDirectory": "0700",
+    "privatePlansJSONContextLogsDraft": "0600",
+    "exactClientCidrPublished": false
+  },
+  "executedChecks": {
+    "httpsNegativeControls": 23,
+    "legacyNegativeControls": 11,
+    "positiveValidPlanAcceptedInBothSuites": true,
+    "refreshedRateKeys": 31,
+    "costLedgers": 12,
+    "bootstrapCreateOnlyResources": 5,
+    "httpsPreviewCreateOnlyResources": 111
+  },
+  "unchangedSource": [
+    "infra/aws-ecs-dev",
+    "infra/bootstrap",
+    "infra/aws-ecs-certificate",
+    "backend",
+    "frontend",
+    "docs/nodejs-aws-study-path"
+  ],
+  "unverified": [
+    "Final S3-backed plan and any infrastructure apply",
+    "ECR publication/digest scans and secret/bootstrap/app activation",
+    "ALB application health and all cloud security/recovery/rollback/48-check smoke/teardown"
+  ],
+  "evidenceFilesSha256": {
+    "README.md": "ec95930b85257ed59f52caa7f3697b8c8a1c94adb12dd45f849868cb7bdf01be",
+    "account-preflight.json": "91b02e29a0d2f8bf7206c77ead3ab7e367d9c8afa04b4cc01570e09cbbc085fc",
+    "bootstrap.json": "182615f098acf017a9bd8130266502ac85118b9a0772a05a5c0978b3206c6e70",
+    "cost-assumptions.json": "dcb2218018696584173ab36dc1bde0d33963749c13476f96adc5937b272bb9eb",
+    "critic.md": "db421f16a89fef40019a2dad608809f8995a6ec451c79e0890b1f703e5ede796",
+    "https-negative-controls.json": "1c9c8e8eb7c98821a52e81ade5153e5813edfb007267e3b82ec257e7852849e5",
+    "https-preview.json": "27f4c89df4a56c47d4d09b30417de587006fd9aa6585e79ac86dc1be77b1a86a",
+    "iam-draft-warnings.json": "cb8b916d0fd5ab988d504b05a45a2417a6823fc2d39bb7ea63ac3b22203cd398",
+    "legacy-negative-controls.json": "c33efc7637b672d8a99b09e37e49a52eafdea4c52fdb048a100a7afab8b6cdba",
+    "price-refresh.json": "7ec2cc3aefbae566611e28d4992cbf352639ed41d40d526d0e9e9905459f777e",
+    "rates.json": "fcb2d10a4d5ffd8c72a2984ecfa0f538c6863bbbcd4f62f7363a1865a413e58a"
+  }
+}

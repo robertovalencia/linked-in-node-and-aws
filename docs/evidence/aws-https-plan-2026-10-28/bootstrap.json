@@ -1,0 +1,50 @@
+{
+  "reviewedAt": "2026-10-28T14:03:18.489173+00:00",
+  "status": "BOOTSTRAP_PLAN_PREPARED_NOT_APPROVED",
+  "account": "772641336063",
+  "region": "us-east-2",
+  "stateBucket": "772641336063-linked-in-node-terraform-state",
+  "changes": {
+    "create": 5,
+    "update": 0,
+    "destroy": 0
+  },
+  "resourceTypes": [
+    "aws_s3_bucket",
+    "aws_s3_bucket_policy",
+    "aws_s3_bucket_public_access_block",
+    "aws_s3_bucket_server_side_encryption_configuration",
+    "aws_s3_bucket_versioning"
+  ],
+  "bucketControls": {
+    "sse": "AES256",
+    "versioning": "Enabled",
+    "allPublicAccessBlocks": true,
+    "denyInsecureTransport": true,
+    "preventDestroyInSource": true
+  },
+  "oidcProviderCreated": false,
+  "planBinarySha256": "7a3f061ac65e5ab5cabf73112298b029af9bd054e38ede9225d4fbb45ec1d745",
+  "planJsonSha256": "5914dc0b89d922475997376c91aaf64bea1b6014592938168f617f1d9dd647d9",
+  "sourceSha256": "809361fb4953042f8ece79597ce5fb56ffaacec0068e84a7d9806fcdc42ecd17",
+  "sourceCommit": "319392bea09e75f78edd196bcb8eed3ffc1f5b95",
+  "sourceDirty": true,
+  "savedSourceMatchesCurrent": true,
+  "privacy": {
+    "binaryMode": "0o600",
+    "jsonMode": "0o600"
+  },
+  "costModel": "No hourly bucket fee; state object storage/requests already carved from combined S3 meter, not added twice",
+  "stateUsageAllowanceUSD": {
+    "24h": "0.0009721643835616438356164383562",
+    "720h": "0.02916493150684931506849315068"
+  },
+  "stateKeyForECS": "linked-in-node/ecs-dev/terraform.tfstate",
+  "limits": [
+    "No AWS apply; bucket does not exist in refreshed owner inventory",
+    "Bootstrap is separate from live local certificate state; do not delete or migrate that state implicitly",
+    "After approved bootstrap, initialize actual ECS S3 backend with lockfile and generate a NEW final infrastructure plan",
+    "The local-backend 111-create HTTPS preview is never the final S3-backed apply artifact",
+    "Expiry tag proposal and cost assumptions must be reviewed at actual start; tags are not scheduled teardown"
+  ]
+}

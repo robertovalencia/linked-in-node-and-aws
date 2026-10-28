@@ -47,3 +47,7 @@ R10 selection supersedes the earlier proposed SSM recommendation for preparation
 Historical checkpoint before certificate approval: R10 registered-zone checkpoint → owner-account/public DNS evidence → `infra/aws-ecs-certificate` (unchanged source) → two passing mock tests → [one-create saved certificate plan receipt](evidence/certificate-request/plan-review.json) → user approval pending → actual CNAME/ISSUED → fresh reviewed infrastructure plan. The old hostname-free preview is not an activation approval.
 
 R10 approved certificate execution → exact reviewed plan/source/account guards → Terraform one-resource apply → actual provider CNAME → three-resolver DNS proof → live ACM ISSUED/DNS SUCCESS → no-change post-issuance plan → [execution evidence](evidence/certificate-request/issuance.json) / [independent critic](evidence/certificate-request/issuance-critic.md). Client CIDRs/final infrastructure plan and all application deployment gates remain pending.
+
+## R10 next review — 28 October 2026
+
+Approved client /32 and issued certificate → renewed read-only preflight → protected-state bootstrap (5 creates) / HTTPS infrastructure preview (111 creates) → exact-SKU price refresh (31 rates) / Decimal cost ledgers (12 cases) → positive plan checks + 23 HTTPS / 11 legacy adversarial controls → [review packet](aws-https-plan-review-2026-10-28.md). Actual S3 backend/final saved plan and all provisioning/application gates remain pending. The client address and raw plans/state remain private.

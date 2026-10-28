@@ -4,24 +4,28 @@
 
 The first saved plan was prepared before hostname registration and therefore has **no ALB listener, no client CIDR ingress, no application task definitions/services, and no invented domain or certificate ARN**. It creates paid infrastructure if applied, but it cannot serve the marketplace. Do not apply this staging preview merely to wait for a domain. The free zone `linked-in-node-rv.dynv6.net` is registered. After explicit approval, Terraform created its one nonexportable public certificate and the actual validation CNAME was added; ACM now reports [ISSUED with DNS SUCCESS](evidence/certificate-request/issuance.json). This is the only approved AWS resource so far. A fresh S3-backed infrastructure plan/current costs and provisioning approval remain pending. No application infrastructure, domain purchase or account upgrade was performed.
 
+The [28 October HTTPS/state-bootstrap review](aws-https-plan-review-2026-10-28.md) uses the issued certificate and the owner-approved client /32: five state-bootstrap creates and a separate 111-create local-backend HTTPS preview, with no running app tasks. Neither has been applied. It supersedes the hostname-free preview for the next review, while a final S3-backed plan still requires approved bootstrap.
+
 ## Architecture and cost
 
 ```mermaid
 flowchart LR
-  C[Approved client CIDRs — pending] -->|HTTPS 443 planned / certificate issued| A[ALB: two public AZ subnets]
+  CLIENT[One user-approved /32 planned] -->|HTTPS 443 planned / certificate issued| A[ALB: two public AZ subnets]
   A -->|SG trust / 8180| F[Private nginx Fargate]
-  F -->|Cloud Map DNS / per-service ports| S[Four private NestJS services]
-  S -->|Verified TLS / owned DB credentials| D[(Private RDS PostgreSQL: four DBs)]
-  S -->|Authenticated TLS / SCRAM ACLs| K[Private EC2 Kafka]
-  S & K --> N[One zonal NAT / outbound AWS and image APIs]
-  S & K --> G[Free S3 gateway / bounded AWS repository policy]
+  F -->|Cloud Map DNS / per-service ports| IC[Identity and Catalog]
+  F -->|Cloud Map DNS / per-service ports| I[Inquiries and Notifications]
+  IC & I -->|Verified TLS / owned DB credentials| D[(Private RDS PostgreSQL: four DBs)]
+  I -->|Authenticated TLS / SCRAM ACLs| K[Private EC2 Kafka]
+  IC & I & K --> N[One zonal NAT / outbound AWS and image APIs]
+  IC & I & K --> G[Free S3 gateway / bounded AWS repository policy]
 ```
 
 The private application subnet, RDS primary and Kafka host are in one AZ. RDS also needs a second subnet for its subnet group; that does not make this Single-AZ database resilient. Five separate Fargate services run at 0.25 vCPU/0.5 GiB each after activation. Each capability retains its own DB and login. Kafka is an explicit persistent dependency, not an ephemeral Fargate container or unpriced MSK service.
 
 | Scope / expected usage | 24 hours | 720 hours |
 |---|---:|---:|
-| Actual hostname-free infrastructure staging | $6.71 | $187.40 |
+| Historical hostname-free preview | $6.71 | $187.40 |
+| Current HTTPS probe infrastructure preview | $6.83 | $191.22 |
 | Future five-task application activation, not in this plan | $8.32 | $235.68 |
 
 Gross list-price estimates before credits, not limits. [Exact itemized idle/expected/higher scenarios](evidence/ecs-preparation/staging-plan-cost-review.json) use the dated Ohio rates from the previous review. The concrete implementation has **seven secrets, three host custom metrics and seven standard alarm metrics**. The earlier $8.37 model used five secrets, eight metrics, ten alarms and a cross-AZ allowance. Actual backend/database/broker traffic is same-AZ; ALB-to-target transfer is not charged as ordinary cross-AZ. API/image NAT traffic, logs, storage, backups, queries, ECR/S3 requests, IPs and egress remain explicit consumption inputs. Secret cost is conservatively counted even before every runtime value is populated.
@@ -115,7 +119,7 @@ AWS_PROFILE=marketplace-dev terraform -chdir=infra/aws-ecs-dev show -json review
 chmod 600 work/ecs-final-plan.json infra/aws-ecs-dev/reviewed-ecs-dev.tfplan
 ```
 
-This plan and current itemized costs need explicit approval before apply. Source/plan hashes, account, region, network exposure, replacement/destroy actions and retention must match. `scripts/aws-ecs-review-plan.py` checks the first create-only, hostname-free staging shape; it deliberately rejects an activation plan and is not an apply command. The local IAM Autopilot draft has unresolved warnings and was not attached to any role; do not treat generated wildcard permissions as an approved operator policy.
+This plan and current itemized costs need explicit approval before apply. Source/plan hashes, account, region, network exposure, replacement/destroy actions and retention must match. `scripts/aws-ecs-review-plan.py` defaults to the strict hostname-free shape. An explicit private `--https-context` enables the approved /32/certificate/hostname review, and `--rates-file` supplies current preserved tariffs. Both modes reject application activation, verify source/binary/security graph/privacy, and never apply resources. The local IAM Autopilot draft has unresolved warnings and was not attached to any role; do not treat generated wildcard permissions as an approved operator policy.
 
 ## Step 3 — future approved publication and bootstrap
 
