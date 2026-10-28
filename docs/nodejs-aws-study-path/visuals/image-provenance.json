@@ -9,6 +9,16 @@
       "authentication": "not signed in",
       "image_sha256": "686d875b97a2f5a098475071343622c5956aa0563fa48ca4a1f0666c57c9b020",
       "private_content": "no credentials, entered email, private account menu or unrelated browser content"
+    },
+    {
+      "path": "images/02-iam-user-permissions.png",
+      "kind": "user-provided IAM create-user Step2 screenshot; copied without edits",
+      "received_date": "2026-10-28",
+      "account_region": "not visible; no account association inferred",
+      "status": "wizard only; no completed user creation or console password support proved",
+      "image_sha256": "e7ab0e2d481fd411b35041aeb246af90a302767feaaaf4bc3f242057f88498ec",
+      "private_content": "no credentials, username, email, account menu or approved private client address visible",
+      "inspected_by": "release owner and independent critic inspected original attachment"
     }
   ],
   "official_example_assets": [

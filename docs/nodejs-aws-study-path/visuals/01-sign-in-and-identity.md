@@ -37,3 +37,8 @@ For a new-experience project, an authorized owner uses **AWS Settings → Team �
 For a traditional account that supports IAM console users, the generic path is **IAM → Users → Create user → enable console access → assign reviewed group permissions → configure password → review/create → MFA**. That is a conditional explanation, not a recommendation to create an administrator here. Prefer federation/temporary credentials for human access, and create only credentials required for the chosen use case. The exact account model and permission scope must be decided before making an access change. [AWS identity guidance](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html).
 
 **Recall:** Why will entering `AccountFullAccessRole` in the IAM username box fail? Which part of the read-only check proves the account identifier, and which part proves that no IAM users were listed?
+
+
+## A different screen: IAM user creation
+
+The user later supplied an actual **IAM → Create user → Set permissions** screenshot. This is a creation wizard, not the email sign-in page pictured above. The assumed CLI role alone did not establish the account’s sign-up model or whether an IAM console password can be enabled. Read [the exact permissions-screen walkthrough](03-iam-user-permissions.md), then verify Step 1’s console-access option before assuming a newly created identity can sign in. Seeing this wizard does not by itself prove console-password support.

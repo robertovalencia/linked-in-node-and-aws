@@ -61,3 +61,6 @@ R12 setup/process teaching → `docs/nodejs-aws-study-path/walkthroughs/README.m
 
 
 R12 visual learning → `docs/nodejs-aws-study-path/visuals/README.md`, identity guide and nine official screenshot cards → image/provenance review, extended local-link validation, archive-byte checks and published-reader-link verification. The visual guide makes no provisioning or IAM-access change.
+
+
+R12 IAM screenshot clarification → visual guide 03 and user-provided permissions-screen PNG → independent image/policy review, managed-link/ZIP validation, no IAM writes. The guide distinguishes an attached permission grant from a boundary and checks Step 1 console availability without inferring the account model from its role alone.

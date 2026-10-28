@@ -49,7 +49,7 @@ node scripts/failure-drill.mjs
 
 ## Learn and rehearse
 
-The [AWS visual study guide](docs/nodejs-aws-study-path/visuals/README.md) adds console screenshots with field explanations and explicit provenance, plus guidance for the new AWS email/provider sign-in experience.
+The [AWS visual study guide](docs/nodejs-aws-study-path/visuals/README.md) adds console screenshots with field explanations and explicit provenance, plus guidance for email/provider sign-in and the actual IAM user-permissions wizard.
 
 New to the setup process? Read [How this project was set up and verified](docs/nodejs-aws-study-path/walkthroughs/README.md). Eight small-concept chapters connect every stage—from local credentials and source review through Terraform/DNS/certificate preparation, pending deployment and GitHub/Study Desk publication—to real files and evidence.
 

@@ -5,6 +5,7 @@ Use this guide alongside the [setup walkthrough](../walkthroughs/README.md) and 
 ## Start here
 
 - [Recognize AWS sign-in and identity](01-sign-in-and-identity.md): actual blank sign-in capture and the role-versus-user distinction.
+- [Your IAM Set permissions screen](03-iam-user-permissions.md): understand Copy permissions, attached policies and the optional boundary.
 - [Nine official service screenshots](02-console-service-examples.md): VPC, security groups, ECS, ECR, ALB, RDS, CloudWatch Logs, S3 and ACM.
 
 The official example images are online links and require internet access even in the ZIP. They are not copies of your account or deployment evidence.
