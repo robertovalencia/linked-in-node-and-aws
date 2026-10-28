@@ -30,7 +30,7 @@ def source(commit, path):
     return cache[key]
 links = 0
 pinned = set()
-for path in [*all_lessons, pack / 'README.md', pack / 'deployment-handoff.md', *(pack / 'labs').rglob('*.md')]:
+for path in [*all_lessons, pack / 'README.md', pack / 'deployment-handoff.md', *(pack / 'labs').rglob('*.md'), *(pack / 'walkthroughs').glob('*.md')]:
     text = path.read_text()
     for href in re.findall(r'\[[^\]]*\]\(([^)]+)\)', text):
         parsed = urlsplit(href)

@@ -55,3 +55,6 @@ Approved client /32 and issued certificate → renewed read-only preflight → p
 ## Full professional cloud learning extension
 
 R12 → lessons 44–83 and `cloud-coverage.json` → source/link/manifest validation, foundation and advanced Terraform labs, network reasoning lab, 85-guide reader/import isolation checks → independent full-curriculum review. Current project source, new illustrations, local evidence and pending deployment-owner decisions are distinct. No new cloud price or provisioned resource is claimed.
+
+
+R12 setup/process teaching → `docs/nodejs-aws-study-path/walkthroughs/README.md` and chapters01–08 → managed source/link validation, archive completeness and committed-reader-link refresh → separate walkthrough critic. The companion explains recorded steps and pending gates without modifying infrastructure or personal study data.

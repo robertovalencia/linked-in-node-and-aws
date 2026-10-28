@@ -172,3 +172,8 @@ Local source paths below are relative to /Users/robertovalencia/Documents/Busine
 ## AWS and Terraform deep-learning route
 
 The original twelve-week route introduces cloud concepts in lesson 15. For hands-on depth, add the [24-session AWS/Terraform extension](20-cloud-roadmap-and-lab.md). Complete AWS foundations 21–27, operations and tradeoffs 28–31, Terraform fundamentals and local experiments 32–39, then release/troubleshooting/interview 40–43. Sessions are a suggested pace; repeat a lab until its evidence and explanation are correct. This extends the study path to 84 lessons without changing existing lesson IDs or personal notes.
+
+
+## Follow the setup process in small steps
+
+The [setup and delivery walkthrough](../walkthroughs/README.md) connects these concepts to the actual repository process: local tools, application verification, AWS identity/cost decisions, Terraform state/plans, DNS/certificate, pending deployment gates, independent review and publication. Read it alongside this lesson when a tool name feels abstract.

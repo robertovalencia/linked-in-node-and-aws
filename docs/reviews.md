@@ -134,3 +134,10 @@ The remaining gap is liveAWS operating evidence: IAM/connectivity, availability,
 
 
 Final R12 release gate completed: the independent critic verified85guides,85internal destinations,8scoped searches,166protected files unchanged and114safe archive members matching source. Actual54Python/11JavaScript reader/import/isolation checks passed. The expansion wins; liveAWS operational evidence remains outside the learning release. [Final independent audit](evidence/cloud-study-release-2026-10-28/independent-audit.md) records exact source revision and evidence limits.
+
+
+## R12 setup and process walkthrough · 2026-10-28
+
+The GitHub study path now links eight short companion chapters plus their index. They explain the real local setup, contract-preserving migration, account/cost ownership, Terraform roots/state/private plans, verified DNS/certificate issuance, pending application/security/recovery steps, independent curriculum review and GitHub/Study Desk import. Numbered lesson IDs remain unchanged.
+
+A separate critic reviewed all nine files against actual scripts and published evidence, then independently passed the full validator (84 lessons, 64 cloud, 321 concept entries, 663 local links, 190 pinned ranges, 31 excerpts) and inspected 123 archive members, including all nine walkthrough files, with bytes matching source. The largest gap was a beginner following integrated startup without host backend/frontend dependencies before local checks; chapter2 now includes both explicit npm ci commands. [Independent review](evidence/study-process-walkthrough-2026-10-28.md). No application runtime, infrastructure, real costs or credentials changed. Publication/import and fresh protected-data comparisons are verified separately at release.

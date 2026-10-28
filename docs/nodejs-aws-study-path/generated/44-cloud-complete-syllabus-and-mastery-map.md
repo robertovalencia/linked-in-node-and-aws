@@ -145,3 +145,8 @@ Explain each concept, complete its exercise, and record the remaining live evide
 | [81 · network-security-local-lab](81-network-security-local-lab.md) | Local network simulation, required/forbidden flows, reply state, route/NACL limits, no AWS proof |
 | [82 · terraform-advanced-local-lab](82-terraform-advanced-local-lab.md) | Advanced local modules, filtered for_each, validations, address moves, test expectations, cleanup |
 | [83 · professional-cloud-capstone-and-question-bank](83-professional-cloud-capstone-and-question-bank.md) | Architecture defense, random concept review, local evidence, requirements, limits and pending owner work |
+
+
+## Follow the setup process in small steps
+
+The [setup and delivery walkthrough](../walkthroughs/README.md) connects these concepts to the actual repository process: local tools, application verification, AWS identity/cost decisions, Terraform state/plans, DNS/certificate, pending deployment gates, independent review and publication. Read it alongside this lesson when a tool name feels abstract.

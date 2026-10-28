@@ -45,3 +45,8 @@ Acceptance for preparation: real disposable PostgreSQL TLS/ownership/idempotent 
 ### R12 professional core breadth
 
 The concept checklist covers identity/governance, networking/ingress/private access, managed compute/data/events, encryption/security/audit, telemetry/recovery/cost methods and advanced Terraform modules/state/collaboration. Absent project features still require primary-source teaching, clearly labeled new examples and observable local or design exercises. Three local labs must preserve existing behavior and pass their meaningful assertions; Study Desk exposes 85 guides including the index and preserves saved notes. The learning chat makes no actual cost estimate or infrastructure change; the acknowledged deployment owner supplies those after current evidence and cost review.
+
+
+### R12 process and setup companion
+
+The GitHub learning entry point must link a supplementary beginner walkthrough of the recorded process and reproducible setup. Cover tools/local credentials/startup, contract-preserving migration, account identity and dated cost ownership, Terraform roots/backends/private state and saved-plan review, DNS/TLS issuance, pending delivery/security/recovery gates, independent build/review evidence, Git/PR/quality tooling and Study Desk import. Each chapter uses small concepts, code links, expected observations, troubleshooting and a comprehension check. Preserve 84 numbered lesson IDs. Include the walkthrough in the managed download and validate its links. Never claim pending AWS or external-account configuration has completed.

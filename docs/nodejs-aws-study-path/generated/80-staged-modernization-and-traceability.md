@@ -90,3 +90,8 @@ Official sources checked on 2026-10-27. These teach mechanisms; any account-spec
 - [Terraform saved plans](https://developer.hashicorp.com/terraform/cli/commands/plan)
 - [AWS architecture decisions](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html)
 - [AWS cost optimization](https://docs.aws.amazon.com/wellarchitected/latest/framework/cost-optimization.html)
+
+
+## Follow the setup process in small steps
+
+The [setup and delivery walkthrough](../walkthroughs/README.md) connects these concepts to the actual repository process: local tools, application verification, AWS identity/cost decisions, Terraform state/plans, DNS/certificate, pending deployment gates, independent review and publication. Read it alongside this lesson when a tool name feels abstract.
