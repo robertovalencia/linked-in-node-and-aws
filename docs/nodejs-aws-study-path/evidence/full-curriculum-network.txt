@@ -1,0 +1,15 @@
+PASS approved documentation-range client reaches ALB HTTPS
+PASS unapproved client is denied ALB HTTPS
+PASS public SSH is denied
+PASS internet database access is denied
+PASS ALB group reaches application listener
+PASS external client cannot bypass ALB to application
+PASS application reaches database
+PASS SG references are not transitive: ALB cannot access database
+PASS established database reply needs no separate database outbound permission
+PASS unsolicited database-to-app connection is denied
+PASS SG permission does not create a missing route
+PASS an explicit NACL veto still denies a new connection
+PASS source egress is required for a new application database connection
+PASS no ingress remains deny-by-default, not a reason to add public access
+{"passed": 14, "failed": 0, "aws_calls": 0, "source_unchanged": true, "limits": "Partial TCP permission model; no AWS attachment, actual routing/NACL evaluation, listeners, TLS, IAM, or application authorization tested."}

@@ -100,3 +100,8 @@ Code excerpts are pinned to the inspected project revision `9bb8851`. They descr
 - [Terraform S3 backend](https://developer.hashicorp.com/terraform/language/backend/s3)
 - [Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html)
 - [GitHub OIDC with AWS](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws)
+
+
+## Next: professional core concepts beyond this baseline
+
+Continue to [44 · complete AWS/Terraform syllabus](44-cloud-complete-syllabus-and-mastery-map.md). This foundation capstone is not the end of the cloud path. Complete the professional modules and local labs before the final [83 · architecture defense](83-professional-cloud-capstone-and-question-bank.md).

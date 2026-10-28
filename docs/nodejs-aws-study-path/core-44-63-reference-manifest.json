@@ -1,0 +1,454 @@
+[
+  {
+    "lesson": 44,
+    "title": "Cloud curriculum: syllabus and mastery map",
+    "file": "44-cloud-complete-syllabus-and-mastery-map.md",
+    "references": [
+      {
+        "title": "AWS Well-Architected Framework",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
+      },
+      {
+        "title": "AWS Organizations overview",
+        "url": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html"
+      }
+    ]
+  },
+  {
+    "lesson": 45,
+    "title": "AWS accounts, governance, and landing zones",
+    "file": "45-aws-account-governance-and-landing-zones.md",
+    "references": [
+      {
+        "title": "AWS Organizations",
+        "url": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html"
+      },
+      {
+        "title": "AWS Control Tower",
+        "url": "https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html"
+      },
+      {
+        "title": "IAM Identity Center",
+        "url": "https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html"
+      },
+      {
+        "title": "SCP scope and behavior",
+        "url": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"
+      }
+    ]
+  },
+  {
+    "lesson": 46,
+    "title": "IAM policy evaluation, federation, and temporary access",
+    "file": "46-iam-policy-evaluation-and-federation.md",
+    "references": [
+      {
+        "title": "IAM policy evaluation",
+        "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"
+      },
+      {
+        "title": "IAM Identity Center",
+        "url": "https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html"
+      },
+      {
+        "title": "ECS task IAM roles",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html"
+      }
+    ]
+  },
+  {
+    "lesson": 47,
+    "title": "VPC addressing, IPv6, and subnet design",
+    "file": "47-vpc-cidr-ipv6-and-subnet-design.md",
+    "references": [
+      {
+        "title": "Configure a VPC",
+        "url": "https://docs.aws.amazon.com/vpc/latest/userguide/configure-your-vpc.html"
+      },
+      {
+        "title": "Fargate networking",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html"
+      },
+      {
+        "title": "NAT gateways",
+        "url": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html"
+      }
+    ]
+  },
+  {
+    "lesson": 48,
+    "title": "Ingress, egress, security groups, and network ACLs",
+    "file": "48-ingress-egress-security-groups-and-nacls.md",
+    "references": [
+      {
+        "title": "Security group rules",
+        "url": "https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html"
+      },
+      {
+        "title": "Network ACLs",
+        "url": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html"
+      },
+      {
+        "title": "ALB health checks",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html"
+      }
+    ]
+  },
+  {
+    "lesson": 49,
+    "title": "Private connectivity, NAT, and VPC endpoints",
+    "file": "49-private-connectivity-nat-and-endpoints.md",
+    "references": [
+      {
+        "title": "NAT gateways",
+        "url": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html"
+      },
+      {
+        "title": "AWS PrivateLink",
+        "url": "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"
+      },
+      {
+        "title": "Fargate networking",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html"
+      }
+    ]
+  },
+  {
+    "lesson": 50,
+    "title": "DNS, Route 53, ACM, and TLS",
+    "file": "50-dns-route53-acm-and-tls.md",
+    "references": [
+      {
+        "title": "Route 53 overview",
+        "url": "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html"
+      },
+      {
+        "title": "ACM overview",
+        "url": "https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html"
+      },
+      {
+        "title": "CloudFront origins",
+        "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistS3AndCustomOrigins.html"
+      },
+      {
+        "title": "CloudFront certificate requirements",
+        "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html"
+      }
+    ]
+  },
+  {
+    "lesson": 51,
+    "title": "ALB listeners, target groups, and health checks",
+    "file": "51-alb-target-groups-and-health-checks.md",
+    "references": [
+      {
+        "title": "ALB target-group health checks",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html"
+      },
+      {
+        "title": "Fargate task networking",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html"
+      },
+      {
+        "title": "Security group rules",
+        "url": "https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html"
+      },
+      {
+        "title": "ALB listener rules",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-rules.html"
+      }
+    ]
+  },
+  {
+    "lesson": 52,
+    "title": "CloudFront, private S3 origins, and cache correctness",
+    "file": "52-cloudfront-s3-origins-and-caching.md",
+    "references": [
+      {
+        "title": "CloudFront origins",
+        "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistS3AndCustomOrigins.html"
+      },
+      {
+        "title": "CloudFront cache key policies",
+        "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/controlling-the-cache-key.html"
+      },
+      {
+        "title": "Amazon S3 overview",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+      },
+      {
+        "title": "S3 origin access control",
+        "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html"
+      },
+      {
+        "title": "CloudFront TTL and key settings",
+        "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cache-key-understand-cache-policy.html"
+      }
+    ]
+  },
+  {
+    "lesson": 53,
+    "title": "ECS Fargate task definitions and services",
+    "file": "53-ecs-fargate-tasks-and-services.md",
+    "references": [
+      {
+        "title": "ECS task definitions",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html"
+      },
+      {
+        "title": "Fargate networking",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html"
+      },
+      {
+        "title": "ECS task execution role",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html"
+      },
+      {
+        "title": "ECS services",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html"
+      }
+    ]
+  },
+  {
+    "lesson": 54,
+    "title": "ECS networking, workload identity, and secrets",
+    "file": "54-ecs-networking-identity-and-secrets.md",
+    "references": [
+      {
+        "title": "Task execution IAM role",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html"
+      },
+      {
+        "title": "Task IAM role",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html"
+      },
+      {
+        "title": "Secrets Manager injection",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/secrets-envvar-secrets-manager.html"
+      },
+      {
+        "title": "Fargate networking",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html"
+      }
+    ]
+  },
+  {
+    "lesson": 55,
+    "title": "ECS service scaling and deployment strategies",
+    "file": "55-ecs-scaling-and-deployment-strategies.md",
+    "references": [
+      {
+        "title": "ECS service auto scaling",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-auto-scaling.html"
+      },
+      {
+        "title": "ECS deployment circuit breaker",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-circuit-breaker.html"
+      },
+      {
+        "title": "ECS Action Logs",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/action-logs.html"
+      }
+    ]
+  },
+  {
+    "lesson": 56,
+    "title": "EC2 Auto Scaling and EKS: choosing an operating model",
+    "file": "56-ec2-autoscaling-and-eks-comparison.md",
+    "references": [
+      {
+        "title": "EC2 Auto Scaling overview",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html"
+      },
+      {
+        "title": "Amazon EKS overview",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html"
+      },
+      {
+        "title": "ECS task definitions",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html"
+      },
+      {
+        "title": "ECS compute choices",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ManagedInstances.html"
+      }
+    ]
+  },
+  {
+    "lesson": 57,
+    "title": "RDS PostgreSQL: backups, failover, and connection recovery",
+    "file": "57-rds-postgresql-backups-and-failover.md",
+    "references": [
+      {
+        "title": "RDS backup and restore",
+        "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.BackupRestore.html"
+      },
+      {
+        "title": "Multi-AZ single-standby DB instances",
+        "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZSingleStandby.html"
+      },
+      {
+        "title": "RDS read replicas",
+        "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html"
+      }
+    ]
+  },
+  {
+    "lesson": 58,
+    "title": "Caching and DynamoDB access-pattern design",
+    "file": "58-data-caching-and-dynamodb-design.md",
+    "references": [
+      {
+        "title": "DynamoDB partition key design",
+        "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html"
+      },
+      {
+        "title": "ElastiCache caching strategies",
+        "url": "https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Strategies.html"
+      },
+      {
+        "title": "DynamoDB developer guide",
+        "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html"
+      },
+      {
+        "title": "DynamoDB TTL behavior",
+        "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html"
+      }
+    ]
+  },
+  {
+    "lesson": 59,
+    "title": "Amazon MSK: Kafka security and operations",
+    "file": "59-msk-kafka-security-and-operations.md",
+    "references": [
+      {
+        "title": "MSK security",
+        "url": "https://docs.aws.amazon.com/msk/latest/developerguide/security.html"
+      },
+      {
+        "title": "MSK monitoring",
+        "url": "https://docs.aws.amazon.com/msk/latest/developerguide/monitoring.html"
+      },
+      {
+        "title": "MSK IAM access control",
+        "url": "https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html"
+      },
+      {
+        "title": "MSK SCRAM secret requirements",
+        "url": "https://docs.aws.amazon.com/msk/latest/developerguide/msk-password-tutorial.html"
+      }
+    ]
+  },
+  {
+    "lesson": 60,
+    "title": "SQS, SNS, EventBridge, and workflow orchestration",
+    "file": "60-sqs-sns-eventbridge-and-workflows.md",
+    "references": [
+      {
+        "title": "SQS at-least-once delivery",
+        "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues-at-least-once-delivery.html"
+      },
+      {
+        "title": "SNS overview",
+        "url": "https://docs.aws.amazon.com/sns/latest/dg/welcome.html"
+      },
+      {
+        "title": "EventBridge overview",
+        "url": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html"
+      },
+      {
+        "title": "Step Functions overview",
+        "url": "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html"
+      },
+      {
+        "title": "Lambda SQS error handling",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html"
+      },
+      {
+        "title": "SQS FIFO deduplication",
+        "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-exactly-once-processing.html"
+      },
+      {
+        "title": "SQS message groups",
+        "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagegroupid-property.html"
+      }
+    ]
+  },
+  {
+    "lesson": 61,
+    "title": "Lambda, API Gateway, and serverless application design",
+    "file": "61-lambda-apigateway-and-serverless-design.md",
+    "references": [
+      {
+        "title": "Lambda overview and compute models",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
+      },
+      {
+        "title": "API Gateway HTTP versus REST APIs",
+        "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html"
+      },
+      {
+        "title": "Lambda SQS error handling",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html"
+      }
+    ]
+  },
+  {
+    "lesson": 62,
+    "title": "S3, EBS, EFS, and recoverable storage",
+    "file": "62-s3-ebs-efs-storage-and-recovery.md",
+    "references": [
+      {
+        "title": "Amazon S3",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+      },
+      {
+        "title": "EBS volumes",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes.html"
+      },
+      {
+        "title": "Amazon EFS",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      },
+      {
+        "title": "RDS backup and restore concepts",
+        "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.BackupRestore.html"
+      },
+      {
+        "title": "EBS deletion on termination",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/preserving-volumes-on-termination.html"
+      },
+      {
+        "title": "EFS mount diagnosis",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/troubleshooting-efs-mounting.html"
+      },
+      {
+        "title": "S3 access-denied diagnosis",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/troubleshoot-403-errors.html"
+      }
+    ]
+  },
+  {
+    "lesson": 63,
+    "title": "KMS, Secrets Manager, and credential rotation",
+    "file": "63-kms-secrets-and-rotation.md",
+    "references": [
+      {
+        "title": "KMS key concepts",
+        "url": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html"
+      },
+      {
+        "title": "Secrets Manager rotation",
+        "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html"
+      },
+      {
+        "title": "ECS injected secret behavior",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/secrets-envvar-secrets-manager.html"
+      },
+      {
+        "title": "Terraform sensitive data and state",
+        "url": "https://developer.hashicorp.com/terraform/language/manage-sensitive-data"
+      }
+    ]
+  }
+]

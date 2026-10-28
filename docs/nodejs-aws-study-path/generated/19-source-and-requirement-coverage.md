@@ -313,3 +313,8 @@ Local source paths below are relative to /Users/robertovalencia/Documents/Busine
 | Delivery and interview defense |40–43 |deploy-dev.yml, aws-release-local.mjs, aws-remote-deploy.sh |Exact-SHA gate trace, rollback limitations, scored rehearsal |
 
 Start the [cloud roadmap](20-cloud-roadmap-and-lab.md). These additions expand interview preparation; they do not claim a live AWS deployment or every AWS service is covered.
+
+
+## Professional cloud coverage beyond repository resources
+
+The [complete syllabus and checklist](44-cloud-complete-syllabus-and-mastery-map.md) maps core concepts to lessons 20–83. The [coverage manifest](../cloud-coverage.json) drives count/link validation. New concepts are not required to have an existing project file; clearly labeled illustrations and primary references provide the example until deployment evidence exists. [Owner coordination](80-staged-modernization-and-traceability.md) keeps cost planning separate.

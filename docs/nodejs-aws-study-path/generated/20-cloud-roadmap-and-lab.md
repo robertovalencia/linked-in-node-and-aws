@@ -32,7 +32,7 @@ Spend roughly 60–90 minutes per session: read a concept, open its source, pred
 
 The current source uses a public subnet for outbound access, no ingress security-group rules, and SSM port forwarding to a loopback-bound frontend. The selected runbook uses temporary local credentials with GitHub verification. Optional OIDC deployment is supported but is not the selected mode. There is no ALB, NAT gateway, RDS, MSK, ECS service, or CloudWatch agent in this stack.
 
-Production alternatives are studied as design exercises, not represented as implemented resources. Their configuration, costs and operation need separate work. The intended scope is mastery of this project's AWS/Terraform responsibilities, not every AWS service.
+Production alternatives are studied as design exercises, not represented as implemented resources. Their configuration, costs and operation need separate work. This foundation block explains the project’s AWS/Terraform responsibilities. Continue with [44 · the complete professional core syllabus](44-cloud-complete-syllabus-and-mastery-map.md) for important concepts beyond this repository; absent services receive explicitly illustrative examples.
 
 ## 4. Separate learning modes
 
@@ -56,7 +56,7 @@ Open the diagram in the full operating guide. Identify two paths: browser reques
 1. Create a personal table with columns: lesson, prediction, command/source, observed result, explanation, next question.
 2. Draw AWS account → region → VPC → subnet → EC2 → Docker services. Add S3/ECR/Secrets Manager beside it.
 3. Mark implemented resources in one color and proposed managed-service replacements in another.
-4. Begin21; defer cloud commands until their prerequisites are satisfied.
+4. Begin 21; defer cloud commands until their prerequisites are satisfied.
 
 **Expected evidence:** A labeled diagram, a personal evidence table and a clear distinction between local learning and cloud-changing operations.
 

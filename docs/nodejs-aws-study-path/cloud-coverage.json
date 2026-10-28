@@ -1,0 +1,916 @@
+{
+  "schema_version": 2,
+  "lesson_count": 84,
+  "cloud_first": 20,
+  "cloud_last": 83,
+  "scope": "Core professional AWS architecture/operations and Terraform; specialist service catalog study remains continuing learning, not a claim of every possible AWS feature.",
+  "cost_and_deployment_owner": "Create Node.js AWS LinkedIn project",
+  "owner_status": "reviewed costs and private plans published 2026-10-28; certificate issued; bootstrap and application resources not applied",
+  "coverage": [
+    {
+      "lesson": 20,
+      "slug": "20-cloud-roadmap-and-lab",
+      "title": "20 \u00b7 AWS and Terraform: a practical learning roadmap",
+      "concepts": [
+        "Learning gates",
+        "evidence boundaries",
+        "current implementation versus new examples"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 21,
+      "slug": "21-aws-accounts-regions-and-cli",
+      "title": "21 \u00b7 AWS accounts, regions, resource names and CLI identity",
+      "concepts": [
+        "Accounts",
+        "Regions and AZs",
+        "ARNs",
+        "CLI profiles",
+        "effective configuration"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 22,
+      "slug": "22-aws-iam-roles-and-policies",
+      "title": "22 \u00b7 IAM: principals, roles, trust and scoped permissions",
+      "concepts": [
+        "Principals",
+        "trust policies",
+        "permissions",
+        "instance profiles",
+        "STS",
+        "application roles"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 23,
+      "slug": "23-aws-vpc-subnets-and-routing",
+      "title": "23 \u00b7 Networking: CIDR, VPCs, subnets and route tables",
+      "concepts": [
+        "CIDR",
+        "subnets",
+        "route tables",
+        "IGW",
+        "public addressing",
+        "Docker versus VPC DNS"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 24,
+      "slug": "24-aws-security-groups-and-ssm",
+      "title": "24 \u00b7 Security groups, SSM access and encrypted tunnels",
+      "concepts": [
+        "Stateful SGs",
+        "no-ingress baseline",
+        "SSM agent/operator identity",
+        "port forwarding"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 25,
+      "slug": "25-aws-ec2-ebs-and-bootstrap",
+      "title": "25 \u00b7 EC2, AMIs, EBS, metadata and bootstrap",
+      "concepts": [
+        "AMI",
+        "CPU architecture",
+        "EBS data lifetime",
+        "IMDSv2",
+        "user data",
+        "replacement"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 26,
+      "slug": "26-aws-docker-and-ecr",
+      "title": "26 \u00b7 Docker images, ECR, tags, digests and scanning",
+      "concepts": [
+        "Images versus containers",
+        "ECR push/pull",
+        "tags versus digests",
+        "scanning",
+        "retention"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 27,
+      "slug": "27-aws-s3-artifacts-and-secrets",
+      "title": "27 \u00b7 S3 release objects, runtime secrets and state boundaries",
+      "concepts": [
+        "Release objects versus state",
+        "versioning",
+        "runtime secrets",
+        "file permissions",
+        "rotation"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 28,
+      "slug": "28-aws-data-and-messaging-decisions",
+      "title": "28 \u00b7 Cloud data choices: PostgreSQL, Kafka and managed alternatives",
+      "concepts": [
+        "Service-owned relational data",
+        "outbox/inbox",
+        "managed database/broker migration"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 29,
+      "slug": "29-aws-observability-and-incidents",
+      "title": "29 \u00b7 Observability: health, logs, metrics, audit and incidents",
+      "concepts": [
+        "Health versus business acceptance",
+        "logs/metrics/traces",
+        "incident hypothesis"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 30,
+      "slug": "30-aws-costs-and-cleanup",
+      "title": "30 \u00b7 AWS costs, budgets, retention and complete cleanup",
+      "concepts": [
+        "Cost quantity inventory",
+        "dated assumptions",
+        "cleanup versus stop",
+        "retained versions"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 31,
+      "slug": "31-aws-production-design-tradeoffs",
+      "title": "31 \u00b7 From this dev stack to a production design",
+      "concepts": [
+        "Requirements",
+        "availability",
+        "stateful scaling",
+        "production trust",
+        "recovery tradeoffs"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 32,
+      "slug": "32-terraform-hcl-and-first-local-lab",
+      "title": "Terraform: HCL and your first local lab",
+      "concepts": [
+        "HCL blocks",
+        "resource addresses",
+        "declarative lifecycle",
+        "local built-in provider lab"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 33,
+      "slug": "33-terraform-providers-versions-and-init",
+      "title": "Terraform: providers, version constraints and init",
+      "concepts": [
+        "Provider installation",
+        "version constraints",
+        "dependency lock",
+        "init versus backend"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 34,
+      "slug": "34-terraform-inputs-locals-and-outputs",
+      "title": "Terraform: inputs, locals and output contracts",
+      "concepts": [
+        "Variable types",
+        "validation",
+        "locals",
+        "outputs",
+        "input precedence",
+        "null"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 35,
+      "slug": "35-terraform-graph-loops-and-modules",
+      "title": "Terraform: dependency graphs, loops and module boundaries",
+      "concepts": [
+        "Dependency graph",
+        "implicit/explicit dependencies",
+        "count",
+        "for_each",
+        "module boundaries"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 36,
+      "slug": "36-terraform-state-locking-and-bootstrap",
+      "title": "Terraform: state, locking and the bootstrap boundary",
+      "concepts": [
+        "Resource state",
+        "S3 backend",
+        "native lockfile",
+        "bootstrap root",
+        "sensitive state"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 37,
+      "slug": "37-terraform-plan-apply-and-drift",
+      "title": "Terraform: plans, apply, drift and review",
+      "concepts": [
+        "Saved plans",
+        "detailed exit codes",
+        "apply",
+        "drift",
+        "refresh",
+        "partial failure"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 38,
+      "slug": "38-terraform-lifecycle-import-and-refactoring",
+      "title": "Terraform: lifecycle, import and safe address refactoring",
+      "concepts": [
+        "Lifecycle replacement",
+        "prevent_destroy limits",
+        "import",
+        "moved addresses"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 39,
+      "slug": "39-terraform-validation-and-mocked-tests",
+      "title": "Terraform: validation, mocked tests and evidence limits",
+      "concepts": [
+        "fmt",
+        "validate",
+        "terraform test",
+        "mocked provider limits",
+        "meaningful assertions"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 40,
+      "slug": "40-aws-release-pipeline-and-oidc",
+      "title": "40 \u00b7 Release delivery: GitHub verification, OIDC and exact identity",
+      "concepts": [
+        "Exact-source gates",
+        "CI versus release",
+        "OIDC trust",
+        "scopes",
+        "source-to-digest chain"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 41,
+      "slug": "41-aws-ssm-deployment-and-rollback",
+      "title": "41 \u00b7 Deployment on SSM: readiness, acceptance and rollback",
+      "concepts": [
+        "SSM invocation identity",
+        "readiness versus acceptance",
+        "rollout lock",
+        "rollback/data limits"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 42,
+      "slug": "42-aws-terraform-troubleshooting-workbook",
+      "title": "42 \u00b7 AWS and Terraform troubleshooting workbook",
+      "concepts": [
+        "Diagnostic layers",
+        "backend versus provider errors",
+        "policy denial",
+        "safe repair"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 43,
+      "slug": "43-aws-terraform-capstone-and-interview",
+      "title": "43 \u00b7 Capstone: explain, review and defend the AWS/Terraform design",
+      "concepts": [
+        "Five-minute defense",
+        "evidence packet",
+        "current topology",
+        "honest deployment limits"
+      ],
+      "learning_mode": "foundation project walkthrough",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 44,
+      "slug": "44-cloud-complete-syllabus-and-mastery-map",
+      "title": "44 \u00b7 Cloud curriculum: syllabus and mastery map",
+      "concepts": [
+        "Full syllabus",
+        "dependency order",
+        "concept evidence",
+        "core versus specialist scope"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 45,
+      "slug": "45-aws-account-governance-and-landing-zones",
+      "title": "45 \u00b7 AWS accounts, governance, and landing zones",
+      "concepts": [
+        "Shared responsibility",
+        "account isolation",
+        "Organizations",
+        "OUs",
+        "SCPs",
+        "landing zones",
+        "quotas"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 46,
+      "slug": "46-iam-policy-evaluation-and-federation",
+      "title": "46 \u00b7 IAM policy evaluation, federation, and temporary access",
+      "concepts": [
+        "IAM policy evaluation",
+        "resource/session permissions",
+        "federation",
+        "boundaries",
+        "ABAC",
+        "PassRole"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 47,
+      "slug": "47-vpc-cidr-ipv6-and-subnet-design",
+      "title": "47 \u00b7 VPC addressing, IPv6, and subnet design",
+      "concepts": [
+        "IPv4/IPv6",
+        "subnet sizing",
+        "AZ placement",
+        "route precedence",
+        "peering and hybrid awareness"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 48,
+      "slug": "48-ingress-egress-security-groups-and-nacls",
+      "title": "48 \u00b7 Ingress, egress, security groups, and network ACLs",
+      "concepts": [
+        "Ingress/egress",
+        "stateful SGs",
+        "stateless NACLs",
+        "ephemeral return ports",
+        "nontransitive references"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 49,
+      "slug": "49-private-connectivity-nat-and-endpoints",
+      "title": "49 \u00b7 Private connectivity, NAT, and VPC endpoints",
+      "concepts": [
+        "Private egress",
+        "NAT",
+        "gateway/interface endpoints",
+        "PrivateLink",
+        "private DNS",
+        "endpoint policies"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 50,
+      "slug": "50-dns-route53-acm-and-tls",
+      "title": "50 \u00b7 DNS, Route 53, ACM, and TLS",
+      "concepts": [
+        "DNS delegation",
+        "Route53 records/aliases/routing",
+        "ACM",
+        "TLS handshake",
+        "certificate regions"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 51,
+      "slug": "51-alb-target-groups-and-health-checks",
+      "title": "51 \u00b7 ALB listeners, target groups, and health checks",
+      "concepts": [
+        "ALB listeners/rules",
+        "target groups",
+        "health checks",
+        "SG chain",
+        "TLS termination",
+        "draining"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 52,
+      "slug": "52-cloudfront-s3-origins-and-caching",
+      "title": "52 \u00b7 CloudFront, private S3 origins, and cache correctness",
+      "concepts": [
+        "CloudFront origins",
+        "OAC",
+        "cache keys/TTL/invalidation",
+        "security headers",
+        "TLS and private origins"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 53,
+      "slug": "53-ecs-fargate-tasks-and-services",
+      "title": "53 \u00b7 ECS Fargate task definitions and services",
+      "concepts": [
+        "ECS cluster/task/service",
+        "Fargate versus EC2 capacity",
+        "task definitions",
+        "desired state"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 54,
+      "slug": "54-ecs-networking-identity-and-secrets",
+      "title": "54 \u00b7 ECS networking, workload identity, and secrets",
+      "concepts": [
+        "Task versus execution roles",
+        "awsvpc",
+        "app/data SGs",
+        "secret injection",
+        "service discovery"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 55,
+      "slug": "55-ecs-scaling-and-deployment-strategies",
+      "title": "55 \u00b7 ECS service scaling and deployment strategies",
+      "concepts": [
+        "Autoscaling",
+        "capacity providers",
+        "rolling/blue-green/canary",
+        "circuit breaker",
+        "health and actions"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 56,
+      "slug": "56-ec2-autoscaling-and-eks-comparison",
+      "title": "56 \u00b7 EC2 Auto Scaling and EKS: choosing an operating model",
+      "concepts": [
+        "EC2 ASG",
+        "launch templates",
+        "instance refresh",
+        "Spot interruption",
+        "EKS control plane and RBAC"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 57,
+      "slug": "57-rds-postgresql-backups-and-failover",
+      "title": "57 \u00b7 RDS PostgreSQL: backups, failover, and connection recovery",
+      "concepts": [
+        "RDS PostgreSQL",
+        "subnet groups",
+        "TLS",
+        "pools",
+        "backups/PITR",
+        "replicas/Multi-AZ",
+        "migrations"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 58,
+      "slug": "58-data-caching-and-dynamodb-design",
+      "title": "58 \u00b7 Caching and DynamoDB access-pattern design",
+      "concepts": [
+        "DynamoDB access patterns",
+        "keys/indexes",
+        "conditional writes",
+        "consistency",
+        "cache invalidation/TTL"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 59,
+      "slug": "59-msk-kafka-security-and-operations",
+      "title": "59 \u00b7 Amazon MSK: Kafka security and operations",
+      "concepts": [
+        "MSK Kafka",
+        "partitions/groups",
+        "listener authentication",
+        "TLS",
+        "retention",
+        "lag",
+        "replay",
+        "migration"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 60,
+      "slug": "60-sqs-sns-eventbridge-and-workflows",
+      "title": "60 \u00b7 SQS, SNS, EventBridge, and workflow orchestration",
+      "concepts": [
+        "SQS visibility/DLQ/idempotency",
+        "SNS fanout",
+        "EventBridge routing",
+        "Step Functions orchestration"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 61,
+      "slug": "61-lambda-apigateway-and-serverless-design",
+      "title": "61 \u00b7 Lambda, API Gateway, and serverless application design",
+      "concepts": [
+        "Lambda lifecycle/concurrency/retries",
+        "API Gateway auth/throttling",
+        "cold starts",
+        "tracing"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 62,
+      "slug": "62-s3-ebs-efs-storage-and-recovery",
+      "title": "62 \u00b7 S3, EBS, EFS, and recoverable storage",
+      "concepts": [
+        "Object/block/file storage",
+        "S3 lifecycle/versioning",
+        "EBS snapshots",
+        "EFS access",
+        "consistency"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 63,
+      "slug": "63-kms-secrets-and-rotation",
+      "title": "63 \u00b7 KMS, Secrets Manager, and credential rotation",
+      "concepts": [
+        "KMS envelope encryption",
+        "key and IAM policy",
+        "grants",
+        "secret rotation",
+        "state and key recovery"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 64,
+      "slug": "64-waf-shield-and-security-detection",
+      "title": "64 \u00b7 WAF, DDoS protection and security findings",
+      "concepts": [
+        "WAF web ACL/rate rules",
+        "Shield layers",
+        "GuardDuty",
+        "Inspector",
+        "Security Hub",
+        "prevention/detection"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 65,
+      "slug": "65-cloudwatch-agent-logs-metrics-and-alarms",
+      "title": "65 \u00b7 CloudWatch agent, logs, metrics and alarms",
+      "concepts": [
+        "CloudWatch agent",
+        "host/task collection",
+        "metric dimensions/statistics",
+        "logs",
+        "metric alarms",
+        "missing data"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 66,
+      "slug": "66-cloudtrail-config-and-audit-evidence",
+      "title": "66 \u00b7 CloudTrail, Config and audit evidence",
+      "concepts": [
+        "CloudTrail management/data events",
+        "Config history/rules",
+        "identity/outcome",
+        "audit retention"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 67,
+      "slug": "67-otel-tracing-slos-and-incidents",
+      "title": "67 \u00b7 OpenTelemetry, tracing, SLOs and incident response",
+      "concepts": [
+        "OpenTelemetry spans/context",
+        "async links",
+        "sampling/privacy",
+        "SLIs/SLOs",
+        "error budget",
+        "incident RCA"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 68,
+      "slug": "68-disaster-recovery-and-resilience-testing",
+      "title": "68 \u00b7 Disaster recovery, backup and resilience testing",
+      "concepts": [
+        "RTO/RPO",
+        "backup consistency",
+        "key recovery",
+        "restore testing",
+        "multi-AZ versus multi-region",
+        "fault drills"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 69,
+      "slug": "69-cloud-cost-allocation-and-optimization",
+      "title": "69 \u00b7 Cloud cost allocation and optimization concepts",
+      "concepts": [
+        "Allocation/ownership",
+        "quantity/unit drivers",
+        "budgets versus caps",
+        "right-sizing",
+        "idle/residual costs"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 70,
+      "slug": "70-terraform-expressions-and-type-system",
+      "title": "Terraform expressions and type system",
+      "concepts": [
+        "Expressions/functions",
+        "collection transformations",
+        "optional/default/null",
+        "unknown values",
+        "templates"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 71,
+      "slug": "71-terraform-modules-and-contracts",
+      "title": "Terraform modules and contracts",
+      "concepts": [
+        "Module contracts",
+        "root/child boundaries",
+        "source/version pinning",
+        "outputs",
+        "semantic compatibility"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 72,
+      "slug": "72-terraform-provider-aliases-and-environments",
+      "title": "Terraform provider aliases and environments",
+      "concepts": [
+        "Provider aliases",
+        "configuration_aliases",
+        "regions/accounts",
+        "environment state",
+        "workspace limits"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 73,
+      "slug": "73-terraform-remote-state-and-access-control",
+      "title": "Terraform remote state and access control",
+      "concepts": [
+        "Backend authentication",
+        "restricted remote state",
+        "output exposure",
+        "locking",
+        "state splitting",
+        "encryption"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 74,
+      "slug": "74-terraform-sensitive-and-ephemeral-values",
+      "title": "Terraform sensitive and ephemeral values",
+      "concepts": [
+        "Sensitive redaction versus state",
+        "ephemeral values",
+        "write-only arguments",
+        "version/provider support"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 75,
+      "slug": "75-terraform-import-moves-and-provider-upgrades",
+      "title": "Terraform import, moves and provider upgrades",
+      "concepts": [
+        "Imports",
+        "moved/removed blocks",
+        "stable identity",
+        "address changes",
+        "provider upgrades and lockfiles"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 76,
+      "slug": "76-terraform-testing-and-policy-as-code",
+      "title": "Terraform testing and policy as code",
+      "concepts": [
+        "Validation/pre/postconditions/checks",
+        "terraform test mocks versus apply",
+        "TFLint",
+        "OPA/Sentinel policy"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 77,
+      "slug": "77-terraform-team-ci-and-approval-workflows",
+      "title": "Terraform team CI and approval workflows",
+      "concepts": [
+        "PR/fork safety",
+        "OIDC",
+        "protected plan artifacts",
+        "saved-plan approval",
+        "CI separation",
+        "drift scheduling"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 78,
+      "slug": "78-terraform-drift-recovery-and-state-surgery",
+      "title": "Terraform drift recovery and state surgery",
+      "concepts": [
+        "Partial failure",
+        "refresh-only",
+        "backup/lineage",
+        "state repair",
+        "force-unlock ownership",
+        "recovery boundaries"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 79,
+      "slug": "79-cloud-threat-model-and-security-review",
+      "title": "79 \u00b7 Threat modeling and architecture security review",
+      "concepts": [
+        "Assets/actors/trust boundaries",
+        "data/control plane",
+        "threat model",
+        "allowed/denied tests",
+        "break-glass"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 80,
+      "slug": "80-staged-modernization-and-traceability",
+      "title": "80 \u00b7 Staged modernization and deployment-owner coordination",
+      "concepts": [
+        "Learning versus deployment scope",
+        "cost-first ownership",
+        "phased questions",
+        "coordination evidence"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 81,
+      "slug": "81-network-security-local-lab",
+      "title": "81 \u00b7 Local network-security reasoning lab",
+      "concepts": [
+        "Local network simulation",
+        "required/forbidden flows",
+        "reply state",
+        "route/NACL limits",
+        "no AWS proof"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 82,
+      "slug": "82-terraform-advanced-local-lab",
+      "title": "Terraform advanced local lab",
+      "concepts": [
+        "Advanced local modules",
+        "filtered for_each",
+        "validations",
+        "address moves",
+        "test expectations",
+        "cleanup"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    },
+    {
+      "lesson": 83,
+      "slug": "83-professional-cloud-capstone-and-question-bank",
+      "title": "83 \u00b7 Professional AWS/Terraform capstone and question bank",
+      "concepts": [
+        "Architecture defense",
+        "random concept review",
+        "local evidence",
+        "requirements",
+        "limits and pending owner work"
+      ],
+      "learning_mode": "professional concept and explicitly labeled example/local lab",
+      "deployment_status": "current code and execution limits stated per lesson; no new infrastructure deployed"
+    }
+  ],
+  "specialist_follow_on": [
+    "Hybrid DNS, VPN, Transit Gateway and Direct Connect deep dives",
+    "EKS operators, GitOps and workload/network policy implementation",
+    "Analytics/data-lake architectures: Glue, Athena, Kinesis and Lake Formation",
+    "Cloud migration tooling, DMS and organization-wide platform operations",
+    "AI/ML platform identity/data/observability constraints when relevant to a role"
+  ],
+  "evidence_policy": "A concept absent from the repository uses a clearly labeled new example and primary source; its absence does not remove it from study."
+}

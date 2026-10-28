@@ -51,3 +51,7 @@ R10 approved certificate execution → exact reviewed plan/source/account guards
 ## R10 next review — 28 October 2026
 
 Approved client /32 and issued certificate → renewed read-only preflight → protected-state bootstrap (5 creates) / HTTPS infrastructure preview (111 creates) → exact-SKU price refresh (31 rates) / Decimal cost ledgers (12 cases) → positive plan checks + 23 HTTPS / 11 legacy adversarial controls → [review packet](aws-https-plan-review-2026-10-28.md). Actual S3 backend/final saved plan and all provisioning/application gates remain pending. The client address and raw plans/state remain private.
+
+## Full professional cloud learning extension
+
+R12 → lessons 44–83 and `cloud-coverage.json` → source/link/manifest validation, foundation and advanced Terraform labs, network reasoning lab, 85-guide reader/import isolation checks → independent full-curriculum review. Current project source, new illustrations, local evidence and pending deployment-owner decisions are distinct. No new cloud price or provisioned resource is claimed.

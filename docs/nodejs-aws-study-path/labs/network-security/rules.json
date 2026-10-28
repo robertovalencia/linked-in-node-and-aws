@@ -1,0 +1,17 @@
+{
+  "description": "Illustrative local TCP permission model, not deployed AWS rules",
+  "groups": {
+    "alb": {
+      "ingress": [{"protocol": "tcp", "port": 443, "source_cidr": "203.0.113.0/24"}],
+      "egress": [{"protocol": "tcp", "port": 8180, "destination_group": "app"}]
+    },
+    "app": {
+      "ingress": [{"protocol": "tcp", "port": 8180, "source_group": "alb"}],
+      "egress": [{"protocol": "tcp", "port": 5432, "destination_group": "db"}]
+    },
+    "db": {
+      "ingress": [{"protocol": "tcp", "port": 5432, "source_group": "app"}],
+      "egress": []
+    }
+  }
+}

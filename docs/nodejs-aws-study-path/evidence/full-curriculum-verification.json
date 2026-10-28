@@ -1,0 +1,11 @@
+{
+  "scope": "Curriculum and credential-free local examples only",
+  "lessons": 84,
+  "cloud_lessons": 64,
+  "mapped_concept_entries": 321,
+  "app_fixture_tests": 48,
+  "fixture_result": "PASS after approved unsandboxed loopback binding; initial2sandbox socket failures retained in prior working log",
+  "live_aws_checks_by_learning_chat": 0,
+  "costs_and_deployment_owner": "Create Node.js AWS LinkedIn project",
+  "source_before_curriculum": "0f24d6d208701e7e4180a60dc8e99952bc2597d3"
+}

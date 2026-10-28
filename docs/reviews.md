@@ -122,3 +122,12 @@ A separate price builder refreshed all 31 selected Ohio prices/units and documen
 The largest remaining gap is approved state bootstrap followed by the actual locked S3 backend and freshly reviewed final infrastructure plan/current costs. Image publication/bootstrap/app activation, actual cloud health/security/restore/rollback/48-check smoke and teardown are still unverified. Scope/cost review is not authorization to provision.
 
 The [final independent HTTPS-plan critic](evidence/aws-https-plan-2026-10-28/critic.md) approves preparation review only. It confirms 23 HTTPS/11 legacy controls, original bypass rejection, six additional graph mutations, exact binary/source/rate privacy checks and all 12 cost ledgers. Next action requires separate approval of the five-create state-bootstrap saved plan.
+
+
+## R12 complete professional AWS/Terraform learning core ·2026-10-28
+
+A separate critic compared the original44-lesson pack with the expanded84-lesson pack and selected the expansion. The path now includes64cloud guides and321mapped concept entries, including important services absent from the pinned EC2 source. The biggest content gaps found were ALB examples with wrong project paths, Terraform file/template attribution and stale deployment status; these were repaired against actual contract/source and owner evidence. See `docs/nodejs-aws-study-path/evidence/full-curriculum-critic.md`.
+
+Actual evidence:3credential-free labs independently passed;19AWSlesson example checks passed (publicDNS/TLS exercise explicitly unrun);48isolated reader/import tests passed after rerunning2sandbox-blocked socket tests with approved loopback access. Validator passes84lessons/64cloud/321concepts/547relative links/190pinned source ranges/31exact historical excerpts. Importer independently passes7shape/link regressions and3realGit integrity tests. Final actualreader/import preservation verification follows publication.
+
+The remaining gap is liveAWS operating evidence: IAM/connectivity, availability, managed recovery and billable teardown are not proved by local simulations. These belong to the deployment owner. The owner's0f24d6d report establishes reviewed costs/private plans and earlier certificate issuance; bootstrap/application plans were not applied. No cloud changes were made by this curriculum change.

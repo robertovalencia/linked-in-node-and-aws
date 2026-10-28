@@ -1,0 +1,141 @@
+{
+  "results": [
+    {
+      "lesson": 44,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "infra/aws-dev/main.tf:8:resource \"aws_vpc\" \"dev\" {\ninfra/aws-dev/main.tf:100:resource \"aws_instance\" \"dev\" {\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 45,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "security: owner=security-team; access-review=required\ndev: owner=app-team; access-review=required\nprod: owner=app-team; access-review=required\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 46,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "ALLOW\nDENY\nDENY\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 47,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "[256, 256]\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 48,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "30:resource \"aws_security_group\" \"dev\" {\n31-  name        = local.name\n32-  description = \"No ingress. SSM manages host and tunnels browser traffic.\"\n33-  ingress     = []\n34-  vpc_id      = aws_vpc.dev.id\n35-  egress {\n36-    from_port   = 0\n37-    to_port     = 0\n38-    protocol    = \"-1\"\n39-    cidr_blocks = [\"0.0.0.0/0\"]\n40-  }\n41-}\n42-resource \"aws_secretsmanager_secret\" \"runtime\" {\n43-  name                    = \"${local.name}/runtime\"\n44-  recovery_window_in_days = 7\n45-}\n46-resource \"aws_ecr_repository\" \"app\" {\n47-  for_each             = toset([\"backend\", \"frontend\"])\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 49,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "missing: secrets\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 50,
+      "status": "not executed",
+      "reason": "Public DNS/TLS example requires public networking; no AWS access or account inspection performed"
+    },
+    {
+      "lesson": 51,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "200\n404\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 52,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "true\ntrue\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 53,
+      "status": "PASS",
+      "check": "Task definition illustrative fragment parses as JSON; semantic/runtime completeness not claimed"
+    },
+    {
+      "lesson": 54,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "image-pull => execution\nstartup-secret => execution\napplication-s3-read => task\noperator-debug => operator\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 55,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "maximum running: 6\nminimum healthy: 4\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 56,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "single-ec2 : app-health=?, data-recovery=?, host-patching=?, identity=?\nasg : app-health=?, data-recovery=?, host-patching=?, identity=?\necs-fargate : app-health=?, data-recovery=?, host-patching=?, identity=?\neks : app-health=?, data-recovery=?, host-patching=?, identity=?\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 57,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "RPO requirement: 5\nRTO met: False\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 58,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "[('TENANT#large', 90)]\ndistinct: 11\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 59,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "effect: event-7\neffect: event-8\neffects: 2\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 60,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "{\"batchItemFailures\":[{\"itemIdentifier\":\"b\"}]}\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 61,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "200 true\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 62,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "True\n",
+      "stderr": ""
+    },
+    {
+      "lesson": 63,
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "['v2']\n",
+      "stderr": ""
+    }
+  ],
+  "cloud_operations": 0
+}

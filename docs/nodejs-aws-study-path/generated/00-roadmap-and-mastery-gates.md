@@ -7,6 +7,8 @@ source_labels: Project source evidence; Interview PDF requirements; Official doc
 
 # NodeJs/AWS: from first JavaScript to defensible engineering decisions
 
+For comprehensive AWS/Terraform study beyond the current repository, open [44 · full syllabus and concept-level checklist](44-cloud-complete-syllabus-and-mastery-map.md). The path contains 84 lessons; foundations 20–43 lead into professional topics 44–83. All real cost/deployment redesign remains owned by the other chat, with no new AWS resources created here.
+
 Learn one technical mechanism at a time. Each lesson now gives a definition, the library/runtime behavior, a small source excerpt, a common trap and a recall question.
 
 Every concept links to verified lines in the real project. Reading is preparation; mastery requires explaining and testing the behavior yourself.
@@ -169,4 +171,4 @@ Local source paths below are relative to /Users/robertovalencia/Documents/Busine
 
 ## AWS and Terraform deep-learning route
 
-The original twelve-week route introduces cloud concepts in lesson 15. For hands-on depth, add the [24-session AWS/Terraform extension](20-cloud-roadmap-and-lab.md). Complete AWS foundations 21–27, operations and tradeoffs 28–31, Terraform fundamentals and local experiments 32–39, then release/troubleshooting/interview 40–43. Sessions are a suggested pace; repeat a lab until its evidence and explanation are correct. This extends the study path to 44 lessons without changing existing lesson IDs or personal notes.
+The original twelve-week route introduces cloud concepts in lesson 15. For hands-on depth, add the [24-session AWS/Terraform extension](20-cloud-roadmap-and-lab.md). Complete AWS foundations 21–27, operations and tradeoffs 28–31, Terraform fundamentals and local experiments 32–39, then release/troubleshooting/interview 40–43. Sessions are a suggested pace; repeat a lab until its evidence and explanation are correct. This extends the study path to 84 lessons without changing existing lesson IDs or personal notes.

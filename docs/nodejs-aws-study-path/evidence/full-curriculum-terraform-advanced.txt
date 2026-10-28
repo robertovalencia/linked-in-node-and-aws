@@ -1,0 +1,365 @@
+COMMAND 1: terraform version -> 0 (expected 0)
+Terraform v1.17.0
+on darwin_arm64
+
+COMMAND 2: terraform fmt -check -recursive -> 0 (expected 0)
+COMMAND 3: terraform init -input=false -no-color -> 0 (expected 0)
+Initializing the backend...
+
+Initializing modules...
+- service in modules/service
+
+Initializing provider plugins...
+- terraform.io/builtin/terraform is built in to Terraform
+
+Terraform has been successfully initialized!
+COMMAND 4: terraform validate -no-color -> 0 (expected 0)
+Success! The configuration is valid.
+
+COMMAND 5: terraform plan -input=false -no-color -detailed-exitcode -out=initial.tfplan -> 2 (expected 2)
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.service["catalog"].terraform_data.record will be created
+  + resource "terraform_data" "record" {
+      + id     = (known after apply)
+      + input  = {
+          + name  = "catalog"
+          + owner = "team-catalog"
+          + tier  = "standard"
+        }
+      + output = (known after apply)
+    }
+
+  # module.service["identity"].terraform_data.record will be created
+  + resource "terraform_data" "record" {
+      + id     = (known after apply)
+      + input  = {
+          + name  = "identity"
+          + owner = "team-identity"
+          + tier  = "critical"
+        }
+      + output = (known after apply)
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + contracts  = {
+      + catalog  = (known after apply)
+      + identity = (known after apply)
+    }
+  + identities = {
+      + catalog  = (known after apply)
+      + identity = (known after apply)
+    }
+COMMAND 6: terraform show -json initial.tfplan -> 0 (expected 0)
+ASSERT 1 PASS: exactly two child resources are created
+COMMAND 7: terraform apply -input=false -no-color initial.tfplan -> 0 (expected 0)
+module.service["catalog"].terraform_data.record: Creating...
+module.service["identity"].terraform_data.record: Creating...
+module.service["catalog"].terraform_data.record: Creation complete after 0s [id=25916bf9-9252-1573-37d0-696d561ca8cc]
+module.service["identity"].terraform_data.record: Creation complete after 0s [id=41e5088f-efb1-414a-17b9-a456af17fbf4]
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+contracts = {
+  "catalog" = {
+    "name" = "catalog"
+    "owner" = "team-catalog"
+    "tier" = "standard"
+  }
+  "identity" = {
+    "name" = "identity"
+    "owner" = "team-identity"
+    "tier" = "critical"
+  }
+}
+identities = {
+  "catalog" = "25916bf9-9252-1573-37d0-696d561ca8cc"
+  "identity" = "41e5088f-efb1-414a-17b9-a456af17fbf4"
+}
+COMMAND 8: terraform output -json -> 0 (expected 0)
+ASSERT 2 PASS: disabled preview has no module instance
+ASSERT 3 PASS: optional tier defaults in the child contract
+COMMAND 9: terraform plan -input=false -no-color -detailed-exitcode -> 0 (expected 0)
+module.service["identity"].terraform_data.record: Refreshing state... [id=41e5088f-efb1-414a-17b9-a456af17fbf4]
+module.service["catalog"].terraform_data.record: Refreshing state... [id=25916bf9-9252-1573-37d0-696d561ca8cc]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+COMMAND 10: terraform plan -input=false -no-color -detailed-exitcode -out=change.tfplan -> 2 (expected 2)
+module.service["identity"].terraform_data.record: Refreshing state... [id=41e5088f-efb1-414a-17b9-a456af17fbf4]
+module.service["catalog"].terraform_data.record: Refreshing state... [id=25916bf9-9252-1573-37d0-696d561ca8cc]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # module.service["catalog"].terraform_data.record will be updated in-place
+  ~ resource "terraform_data" "record" {
+        id     = "25916bf9-9252-1573-37d0-696d561ca8cc"
+      ~ input  = {
+            name  = "catalog"
+          ~ owner = "team-catalog" -> "team-catalog-v2"
+            # (1 unchanged attribute hidden)
+        }
+      ~ output = {
+          - name  = "catalog"
+          - owner = "team-catalog"
+          - tier  = "standard"
+        } -> (known after apply)
+    }
+
+  # module.service["search"].terraform_data.record will be created
+  + resource "terraform_data" "record" {
+      + id     = (known after apply)
+      + input  = {
+          + name  = "search"
+          + owner = "team-search"
+          + tier  = "standard"
+        }
+      + output = (known after apply)
+    }
+
+Plan: 1 to add, 1 to change, 0 to destroy.
+
+Changes to Outputs:
+  ~ contracts  = {
+      ~ catalog  = {
+          - name  = "catalog"
+          - owner = "team-catalog"
+          - tier  = "standard"
+        } -> (known after apply)
+      + search   = (known after apply)
+        # (1 unchanged attribute hidden)
+    }
+  ~ identities = {
+      + search   = (known after apply)
+        # (2 unchanged attributes hidden)
+    }
+COMMAND 11: terraform show -json change.tfplan -> 0 (expected 0)
+ASSERT 4 PASS: owner change updates the catalog instance
+ASSERT 5 PASS: unrelated identity instance remains unchanged
+ASSERT 6 PASS: new stable search key creates only its own instance
+COMMAND 12: terraform apply -input=false -no-color change.tfplan -> 0 (expected 0)
+module.service["search"].terraform_data.record: Creating...
+module.service["catalog"].terraform_data.record: Modifying... [id=25916bf9-9252-1573-37d0-696d561ca8cc]
+module.service["search"].terraform_data.record: Creation complete after 0s [id=eb02a559-e6da-147a-e679-c34897999fb5]
+module.service["catalog"].terraform_data.record: Modifications complete after 0s [id=25916bf9-9252-1573-37d0-696d561ca8cc]
+
+Apply complete! Resources: 1 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+contracts = {
+  "catalog" = {
+    "name" = "catalog"
+    "owner" = "team-catalog-v2"
+    "tier" = "standard"
+  }
+  "identity" = {
+    "name" = "identity"
+    "owner" = "team-identity"
+    "tier" = "critical"
+  }
+  "search" = {
+    "name" = "search"
+    "owner" = "team-search"
+    "tier" = "standard"
+  }
+}
+identities = {
+  "catalog" = "25916bf9-9252-1573-37d0-696d561ca8cc"
+  "identity" = "41e5088f-efb1-414a-17b9-a456af17fbf4"
+  "search" = "eb02a559-e6da-147a-e679-c34897999fb5"
+}
+COMMAND 13: terraform output -json -> 0 (expected 0)
+ASSERT 7 PASS: existing IDs survive value change and key addition
+COMMAND 14: terraform fmt -recursive -> 0 (expected 0)
+COMMAND 15: terraform validate -no-color -> 0 (expected 0)
+Success! The configuration is valid.
+
+COMMAND 16: terraform plan -input=false -no-color -detailed-exitcode -out=move.tfplan -> 2 (expected 2)
+module.service["search"].terraform_data.entry: Refreshing state... [id=eb02a559-e6da-147a-e679-c34897999fb5]
+module.service["catalog"].terraform_data.entry: Refreshing state... [id=25916bf9-9252-1573-37d0-696d561ca8cc]
+module.service["identity"].terraform_data.entry: Refreshing state... [id=41e5088f-efb1-414a-17b9-a456af17fbf4]
+
+Terraform will perform the following actions:
+
+  # module.service["catalog"].terraform_data.record has moved to module.service["catalog"].terraform_data.entry
+    resource "terraform_data" "entry" {
+        id     = "25916bf9-9252-1573-37d0-696d561ca8cc"
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.service["identity"].terraform_data.record has moved to module.service["identity"].terraform_data.entry
+    resource "terraform_data" "entry" {
+        id     = "41e5088f-efb1-414a-17b9-a456af17fbf4"
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.service["search"].terraform_data.record has moved to module.service["search"].terraform_data.entry
+    resource "terraform_data" "entry" {
+        id     = "eb02a559-e6da-147a-e679-c34897999fb5"
+        # (2 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 0 to destroy.
+COMMAND 17: terraform show -json move.tfplan -> 0 (expected 0)
+ASSERT 8 PASS: child moved block maps all three instances without replacement
+COMMAND 18: terraform apply -input=false -no-color move.tfplan -> 0 (expected 0)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+contracts = {
+  "catalog" = {
+    "name" = "catalog"
+    "owner" = "team-catalog-v2"
+    "tier" = "standard"
+  }
+  "identity" = {
+    "name" = "identity"
+    "owner" = "team-identity"
+    "tier" = "critical"
+  }
+  "search" = {
+    "name" = "search"
+    "owner" = "team-search"
+    "tier" = "standard"
+  }
+}
+identities = {
+  "catalog" = "25916bf9-9252-1573-37d0-696d561ca8cc"
+  "identity" = "41e5088f-efb1-414a-17b9-a456af17fbf4"
+  "search" = "eb02a559-e6da-147a-e679-c34897999fb5"
+}
+COMMAND 19: terraform output -json -> 0 (expected 0)
+ASSERT 9 PASS: every ID survives the child-module address migration
+COMMAND 20: terraform state pull -> 0 (expected 0)
+ASSERT 10 PASS: state snapshot includes serial and lineage
+COMMAND 21: terraform plan -input=false -no-color -refresh-only -detailed-exitcode -> 0 (expected 0)
+module.service["catalog"].terraform_data.entry: Refreshing state... [id=25916bf9-9252-1573-37d0-696d561ca8cc]
+module.service["identity"].terraform_data.entry: Refreshing state... [id=41e5088f-efb1-414a-17b9-a456af17fbf4]
+module.service["search"].terraform_data.entry: Refreshing state... [id=eb02a559-e6da-147a-e679-c34897999fb5]
+
+No changes. Your infrastructure still matches the configuration.
+
+Terraform has checked that the real remote objects still match the result of
+your most recent changes, and found no differences.
+COMMAND 22: terraform test -no-color -> 0 (expected 0)
+tests/contracts.tftest.hcl... in progress
+  run "default_contract"... pass
+  run "explicit_null_default"... pass
+  run "child_normalizes_owner"... pass
+  run "reject_invalid_tier"... pass
+  run "check_warning_is_observable"... pass
+tests/contracts.tftest.hcl... tearing down
+tests/contracts.tftest.hcl... pass
+
+Success! 5 passed, 0 failed.
+COMMAND 23: terraform destroy -input=false -no-color -auto-approve -> 0 (expected 0)
+module.service["search"].terraform_data.entry: Refreshing state... [id=eb02a559-e6da-147a-e679-c34897999fb5]
+module.service["catalog"].terraform_data.entry: Refreshing state... [id=25916bf9-9252-1573-37d0-696d561ca8cc]
+module.service["identity"].terraform_data.entry: Refreshing state... [id=41e5088f-efb1-414a-17b9-a456af17fbf4]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # module.service["catalog"].terraform_data.entry will be destroyed
+  - resource "terraform_data" "entry" {
+      - id     = "25916bf9-9252-1573-37d0-696d561ca8cc" -> null
+      - input  = {
+          - name  = "catalog"
+          - owner = "team-catalog-v2"
+          - tier  = "standard"
+        } -> null
+      - output = {
+          - name  = "catalog"
+          - owner = "team-catalog-v2"
+          - tier  = "standard"
+        } -> null
+    }
+
+  # module.service["identity"].terraform_data.entry will be destroyed
+  - resource "terraform_data" "entry" {
+      - id     = "41e5088f-efb1-414a-17b9-a456af17fbf4" -> null
+      - input  = {
+          - name  = "identity"
+          - owner = "team-identity"
+          - tier  = "critical"
+        } -> null
+      - output = {
+          - name  = "identity"
+          - owner = "team-identity"
+          - tier  = "critical"
+        } -> null
+    }
+
+  # module.service["search"].terraform_data.entry will be destroyed
+  - resource "terraform_data" "entry" {
+      - id     = "eb02a559-e6da-147a-e679-c34897999fb5" -> null
+      - input  = {
+          - name  = "search"
+          - owner = "team-search"
+          - tier  = "standard"
+        } -> null
+      - output = {
+          - name  = "search"
+          - owner = "team-search"
+          - tier  = "standard"
+        } -> null
+    }
+
+Plan: 0 to add, 0 to change, 3 to destroy.
+
+Changes to Outputs:
+  - contracts  = {
+      - catalog  = {
+          - name  = "catalog"
+          - owner = "team-catalog-v2"
+          - tier  = "standard"
+        }
+      - identity = {
+          - name  = "identity"
+          - owner = "team-identity"
+          - tier  = "critical"
+        }
+      - search   = {
+          - name  = "search"
+          - owner = "team-search"
+          - tier  = "standard"
+        }
+    } -> null
+  - identities = {
+      - catalog  = "25916bf9-9252-1573-37d0-696d561ca8cc"
+      - identity = "41e5088f-efb1-414a-17b9-a456af17fbf4"
+      - search   = "eb02a559-e6da-147a-e679-c34897999fb5"
+    } -> null
+module.service["identity"].terraform_data.entry: Destroying... [id=41e5088f-efb1-414a-17b9-a456af17fbf4]
+module.service["catalog"].terraform_data.entry: Destroying... [id=25916bf9-9252-1573-37d0-696d561ca8cc]
+module.service["search"].terraform_data.entry: Destroying... [id=eb02a559-e6da-147a-e679-c34897999fb5]
+module.service["catalog"].terraform_data.entry: Destruction complete after 0s
+module.service["identity"].terraform_data.entry: Destruction complete after 0s
+module.service["search"].terraform_data.entry: Destruction complete after 0s
+
+Destroy complete! Resources: 3 destroyed.
+COMMAND 24: terraform state list -> 0 (expected 0)
+ASSERT 11 PASS: normal local state is empty after cleanup
+PASS: 24 Terraform commands; 11 runner assertions; five Terraform test runs. No cloud provider, backend or credentials.

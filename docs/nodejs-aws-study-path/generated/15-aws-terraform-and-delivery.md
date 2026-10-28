@@ -6,7 +6,7 @@ last_researched: 2026-10-26
 
 # Infrastructure overview: how the cloud learning path fits together
 
-This lesson is the bridge from local containers to cloud responsibilities. Continue with [the detailed AWS/Terraform roadmap](20-cloud-roadmap-and-lab.md), which breaks the material into 24 ordered lessons with source walkthroughs, exercises and mastery checks.
+This lesson is the bridge from local containers to cloud responsibilities. Continue with [the detailed AWS/Terraform roadmap](20-cloud-roadmap-and-lab.md), which starts with 24 ordered foundation lessons with source walkthroughs, exercises and mastery checks.
 
 ## 1. Separate the responsibilities
 
@@ -40,3 +40,8 @@ Draw source SHA → verification → image digest → manifest → SSM → readi
 - [Terraform configuration language](https://developer.hashicorp.com/terraform/language)
 - [AWS IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)
 - [SSM Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html)
+
+
+## Continue beyond the current project
+
+The [full professional syllabus](44-cloud-complete-syllabus-and-mastery-map.md) adds 40 lessons on governance, advanced identity/networking, ALB/TLS, managed compute/data/streaming, security/telemetry/recovery and advanced Terraform. These concepts remain in the learning path even when they are not deployed. The total is 84 lessons (64 cloud/Terraform); actual modernization cost/planning belongs to the acknowledged deployment-owner chat.

@@ -1,0 +1,14 @@
+{
+  "as_of": "2026-10-28",
+  "owner_chat": "Create Node.js AWS LinkedIn project",
+  "owner_source_thread_id": "01a15e8a-86ed-7401-a6c1-314ccd9a6ad9",
+  "handoff_delivery": "acknowledged; subsequent owner reports received",
+  "latest_owner_commit": "0f24d6d208701e7e4180a60dc8e99952bc2597d3",
+  "account_verification": "owner reports renewed login and Free/ACTIVE/$100 read-only checks",
+  "certificate": "ISSUED and unused; DNS validated; not application HTTPS or renewal readiness",
+  "cost_report": "reviewed report published; consult owner report for dated assumptions, usage and recovery costs",
+  "private_plans": "5-create state bootstrap and111-create HTTPS preview prepared; neither applied",
+  "application_resources": "not deployed in owner queried scopes; all live application/security/recovery/smoke/teardown gates pending",
+  "next_decision": "owner requests separate state-bootstrap approval, then final S3-backed plan review before paid application resources",
+  "learning_chat_changes": "curriculum, local labs and reader integration only"
+}
