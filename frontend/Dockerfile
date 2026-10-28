@@ -4,7 +4,7 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
-FROM nginxinc/nginx-unprivileged:1.30-alpine
+FROM nginxinc/nginx-unprivileged:1.31-alpine
 ENV DNS_RESOLVER=127.0.0.11 \
     IDENTITY_UPSTREAM=identity \
     CATALOG_UPSTREAM=catalog \
