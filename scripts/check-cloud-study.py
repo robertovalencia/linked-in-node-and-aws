@@ -30,15 +30,15 @@ def source(commit, path):
     return cache[key]
 links = 0
 pinned = set()
-for path in [*all_lessons, pack / 'README.md', pack / 'deployment-handoff.md', *(pack / 'labs').rglob('*.md'), *(pack / 'walkthroughs').glob('*.md')]:
+for path in [*all_lessons, pack / 'README.md', pack / 'deployment-handoff.md', *(pack / 'labs').rglob('*.md'), *(pack / 'walkthroughs').glob('*.md'), *(pack / 'visuals').glob('*.md')]:
     text = path.read_text()
     for href in re.findall(r'\[[^\]]*\]\(([^)]+)\)', text):
         parsed = urlsplit(href)
         if parsed.scheme or href.startswith(('/', '#')) or not parsed.path:
             continue
         target = (path.parent / unquote(parsed.path)).resolve()
-        fallback = repo / target.relative_to(root) if target.is_relative_to(root) else target
-        assert target.exists() or fallback.exists(), f'{path.name}: broken local link {href}'
+        assert target.is_relative_to(pack.resolve()), f'{path.name}: link escapes downloadable pack; use a pinned source URL: {href}'
+        assert target.exists(), f'{path.name}: broken local link {href}'
         links += 1
     refs = re.findall(r'https://github.com/robertovalencia/linked-in-node-and-aws/blob/([0-9a-f]{40})/([^\s)#]+)(?:#L(\d+)(?:-L(\d+))?)?', text)
     if path in lessons and int(path.name[:2]) < 44:

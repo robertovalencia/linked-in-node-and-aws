@@ -25,7 +25,7 @@ An empty status means no tracked/untracked changes to report, not that the appli
 | AWS CLI | Account operations in the separate deployment workflow | `aws --version` |
 | GitHub CLI | Authenticated repository/workflow operations | `gh --version` |
 
-The last two tools are unnecessary for local marketplace use. Terraform labs require `>=1.10,<2.0`; the recorded lab runs used 1.17.0. Node dependencies are declared separately at the root, backend and frontend. Check the [actual toolchain guide](../../../docs/toolchain.md) for editor recommendations and quality tooling. A recommended VS Code extension is not proof it is installed or connected to an external account.
+The last two tools are unnecessary for local marketplace use. Terraform labs require `>=1.10,<2.0`; the recorded lab runs used 1.17.0. Node dependencies are declared separately at the root, backend and frontend. Check the [actual toolchain guide](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/toolchain.md) for editor recommendations and quality tooling. A recommended VS Code extension is not proof it is installed or connected to an external account.
 
 ## 3. Create local secrets once
 
@@ -33,7 +33,7 @@ The last two tools are unnecessary for local marketplace use. Terraform labs req
 npm run setup
 ```
 
-Follow [package.json](../../../package.json) to [setup-local.sh](../../../scripts/setup-local.sh). The script generates random database passwords and application keys in `.env`, with owner-only file permissions. If `.env` already exists, it keeps it. Rerunning setup is not a password-rotation procedure.
+Follow [package.json](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/package.json) to [setup-local.sh](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/scripts/setup-local.sh). The script generates random database passwords and application keys in `.env`, with owner-only file permissions. If `.env` already exists, it keeps it. Rerunning setup is not a password-rotation procedure.
 
 The file is ignored by Git. Check names in source and examples without printing real values. If a database volume already uses an older password, changing `.env` alone does not update that stored database account. Diagnose configuration mismatch before considering destructive reset.
 
@@ -44,9 +44,9 @@ npm run up
 bash scripts/local.sh status
 ```
 
-[local.sh](../../../scripts/local.sh) runs Docker Compose, builds images and waits for declared health checks. Open `http://localhost:8180`. The Compose project is `linked-in-node-local`; it keeps this project's containers distinct from other projects. Its named data volumes survive normal shutdown.
+[local.sh](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/scripts/local.sh) runs Docker Compose, builds images and waits for declared health checks. Open `http://localhost:8180`. The Compose project is `linked-in-node-local`; it keeps this project's containers distinct from other projects. Its named data volumes survive normal shutdown.
 
-The browser enters through the frontend/proxy. Four backend services own separate capability databases. See [compose.yaml](../../../compose.yaml) and [the full setup runbook](../../../docs/local-setup.md). Container health is a startup signal; the acceptance suite checks the business flows afterward.
+The browser enters through the frontend/proxy. Four backend services own separate capability databases. See [compose.yaml](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/compose.yaml) and [the full setup runbook](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/local-setup.md). Container health is a startup signal; the acceptance suite checks the business flows afterward.
 
 If Docker is unavailable, start Docker Desktop and check its engine. If startup fails, inspect `docker compose ps` and the relevant logs before retrying. A port conflict is different from invalid credentials or an unhealthy dependency.
 

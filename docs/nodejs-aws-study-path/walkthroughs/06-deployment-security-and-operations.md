@@ -2,7 +2,7 @@
 
 [Previous: certificate](05-hostname-dns-and-certificate.md) · [Index](README.md) · [Next: building the study path](07-building-and-reviewing-the-study-path.md)
 
-This is the **pending deployment sequence**, explained from prepared source and the owner's dated plan. It is not a report that these steps have run. The deployment owner must review costs/permissions and obtain the required concrete-plan approvals. The [selected ECS guide](../../../docs/aws-ecs-dev.md) is the detailed operator runbook.
+This is the **pending deployment sequence**, explained from prepared source and the owner's dated plan. It is not a report that these steps have run. The deployment owner must review costs/permissions and obtain the required concrete-plan approvals. The [selected ECS guide](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-ecs-dev.md) is the detailed operator runbook.
 
 ## 1. Give every traffic path a reason
 
@@ -34,17 +34,17 @@ In the preview, the selected host routes to an empty frontend target group; zero
 5. Verify target health, HTTPS, permitted/forbidden traffic and complete browser/API behavior.
 6. Exercise recovery/rollback, then complete the selected teardown and residual-resource review.
 
-This chapter supplies no cloud apply command. The [dated review](../../../docs/aws-https-plan-review-2026-10-28.md) defines the current pending decision: five-create bootstrap, then final infrastructure review. Do not apply the local-backend HTTPS preview merely because Terraform can read it.
+This chapter supplies no cloud apply command. The [dated review](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-https-plan-review-2026-10-28.md) defines the current pending decision: five-create bootstrap, then final infrastructure review. Do not apply the local-backend HTTPS preview merely because Terraform can read it.
 
 ## 4. Bind an image to reviewed source
 
-A tag is a human-friendly image label; a digest identifies image content. The [ECS publisher](../../../scripts/aws-ecs-publish-local.mjs) is prepared to verify a successful source run and publish/scans manifests/digests. Its name contains “local” because it runs on the operator's machine; it can call AWS and publish images. It is not a credential-free study lab.
+A tag is a human-friendly image label; a digest identifies image content. The [ECS publisher](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/scripts/aws-ecs-publish-local.mjs) is prepared to verify a successful source run and publish/scans manifests/digests. Its name contains “local” because it runs on the operator's machine; it can call AWS and publish images. It is not a credential-free study lab.
 
-The current `Deploy AWS dev` workflow's optional deployment path is the preserved EC2/SSM route. An existing workflow name is not evidence of ECS deployment support. Read [toolchain](../../../docs/toolchain.md) and [.github/workflows/deploy-dev.yml](../../../.github/workflows/deploy-dev.yml) before selecting it. No infrastructure apply path is supplied by these workflows.
+The current `Deploy AWS dev` workflow's optional deployment path is the preserved EC2/SSM route. An existing workflow name is not evidence of ECS deployment support. Read [toolchain](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/toolchain.md) and [.github/workflows/deploy-dev.yml](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/.github/workflows/deploy-dev.yml) before selecting it. No infrastructure apply path is supplied by these workflows.
 
 ## 5. Keep secret values out of Terraform input history
 
-Prepared secret resources are metadata, not proof that usable passwords/keys are populated. Runtime secret setup, TLS trust and service-owned database roles are distinct steps in the [ECS runbook](../../../docs/aws-ecs-dev.md). A task that starts with an empty secret is not ready to serve traffic.
+Prepared secret resources are metadata, not proof that usable passwords/keys are populated. Runtime secret setup, TLS trust and service-owned database roles are distinct steps in the [ECS runbook](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-ecs-dev.md). A task that starts with an empty secret is not ready to serve traffic.
 
 The plan reviewer also keeps generated operator IAM policy drafts separate from attached permissions. The published draft has wildcard warnings and was not attached. A generated policy is a proposal to review, not an authority to grant itself broad rights.
 
@@ -56,7 +56,7 @@ The selected single-AZ database/broker and one zonal NAT are cost/recovery compr
 
 ## 7. Recovery and teardown are part of delivery
 
-Image rollback can restore a binary; it does not reverse a database migration or recover lost events. The owner plans isolated database restore, replay and bad-release drills with measured RPO/RTO. A first deployment has no prior successful release to restore automatically. Read the [recovery boundaries](../../../docs/aws-ecs-dev.md) before running any operator script.
+Image rollback can restore a binary; it does not reverse a database migration or recover lost events. The owner plans isolated database restore, replay and bad-release drills with measured RPO/RTO. A first deployment has no prior successful release to restore automatically. Read the [recovery boundaries](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-ecs-dev.md) before running any operator script.
 
 Stopping tasks does not remove a NAT, ALB, database, secrets, image storage or retained state. An expiry tag is metadata, not a deletion timer. Agree on the demo start/teardown mechanism before billable provisioning; no such clock has started in the recorded status. Retain or remove certificate/state artifacts only through their separately reviewed lifecycle.
 

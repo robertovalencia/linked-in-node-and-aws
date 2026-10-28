@@ -12,11 +12,11 @@ Before adding a change, run `git status --short` and inspect the diff. Stage onl
 
 For normal feature work: create a small branch → implement a requirement → run affected checks → review the diff → open a PR → address review → merge under repository rules. A PR is the review conversation plus proposed source change. Branch protection and required reviewers are server settings, not merely YAML files.
 
-The recorded curriculum release used direct commits/pushes to main under the user's publication request. We do not invent a PR number, Jira issue or branch-protection configuration for it. [The toolchain guide](../../../docs/toolchain.md) describes the intended team workflow and pending owner integrations.
+The recorded curriculum release used direct commits/pushes to main under the user's publication request. We do not invent a PR number, Jira issue or branch-protection configuration for it. [The toolchain guide](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/toolchain.md) describes the intended team workflow and pending owner integrations.
 
 ## 3. Keep different GitHub checks separate
 
-[Verify](../../../.github/workflows/verify.yml) checks application source/runtime/infrastructure preparation. The separate [quality workflow](../../../.github/workflows/quality.yml) needs its actual hosted Sonar organization, project and token. A successful local Sonar scan does not configure those hosted values. The latest observed missing-configuration failure was not bypassed or called a pass.
+[Verify](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/.github/workflows/verify.yml) checks application source/runtime/infrastructure preparation. The separate [quality workflow](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/.github/workflows/quality.yml) needs its actual hosted Sonar organization, project and token. A successful local Sonar scan does not configure those hosted values. The latest observed missing-configuration failure was not bypassed or called a pass.
 
 A new main push can cancel an older Verify run under its concurrency rule. Record the exact revision/run status instead of treating cancellation as successful completion. This walkthrough update does not claim that all hosted gates are green. Configuration files demonstrate intended automation; artifacts establish a particular execution.
 
@@ -63,7 +63,7 @@ The reader tooling belongs to the separate app checkout; it is not secretly bund
 
 Open `http://127.0.0.1:8765` and choose **NodeJs/AWS**. The main syllabus is `/guide/nodejs-aws--44-cloud-complete-syllabus-and-mastery-map`; the index is `/guide/nodejs-aws--study-index`. Stop an old server normally before restarting on the same port; a bind error can mean another working instance already owns it.
 
-Verify a foundation guide, a new professional guide, a walkthrough GitHub link and scoped search. Check that saved notes are still accessible. The recorded release's [independent audit](../../../docs/evidence/cloud-study-release-2026-10-28/independent-audit.md) documents the 85-guide result and 166 preserved files. Source tests and a real reader audit provide different evidence.
+Verify a foundation guide, a new professional guide, a walkthrough GitHub link and scoped search. Check that saved notes are still accessible. The recorded release's [independent audit](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/evidence/cloud-study-release-2026-10-28/independent-audit.md) documents the 85-guide result and 166 preserved files. Source tests and a real reader audit provide different evidence.
 
 ## 8. Keep the setup reproducible
 

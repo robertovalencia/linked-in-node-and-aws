@@ -2,13 +2,13 @@
 
 [Previous: deployment](06-deployment-security-and-operations.md) · [Index](README.md) · [Next: publication and reader](08-publishing-and-study-desk.md)
 
-This chapter records the process used to produce the study material. It distinguishes preserved history from checks newly performed for a particular release. The [independent release audit](../../../docs/evidence/cloud-study-release-2026-10-28/independent-audit.md) is the concrete evidence for the 84-lesson expansion.
+This chapter records the process used to produce the study material. It distinguishes preserved history from checks newly performed for a particular release. The [independent release audit](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/evidence/cloud-study-release-2026-10-28/independent-audit.md) is the concrete evidence for the 84-lesson expansion.
 
 ## 1. Start from the working reference
 
 The migration used existing product flows and architecture as its reference. For the curriculum, we read source, contracts, tests, existing Node study notes and the related project chat before setting the learning scope. A requirement such as “explain how inquiries survive retry” is more useful than “mention Kafka.” The first describes a mechanism the reviewer can inspect.
 
-[Requirements](../../../docs/specs/requirements.md) define acceptance; [traceability](../../../docs/traceability.md) connects it to code/tests/evidence. Those documents also preserve earlier project stages. We do not treat an old Java-project test result as evidence for Node source.
+[Requirements](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/specs/requirements.md) define acceptance; [traceability](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/traceability.md) connects it to code/tests/evidence. Those documents also preserve earlier project stages. We do not treat an old Java-project test result as evidence for Node source.
 
 ## 2. Protect source and personal learning data
 
@@ -32,7 +32,7 @@ The three local labs inspect Terraform lifecycle, module identity and partial ne
 
 Builders drafted small lesson groups and examples. Separate critics inspected actual source, ran examples/labs and compared the expanded path against the prior path. The goal was to find the largest remaining gap and repair it, rather than have the author approve their own explanation.
 
-Concrete repairs included ALB example paths that did not match the API contract, confusion between static `file()` loading and `templatefile()`, and stale cost/deployment status. See [reviews](../../../docs/reviews.md) and [the curriculum critic report](../evidence/full-curriculum-critic.md). This comparison was a reviewer judgment, not a measured learner exam score. A blind visual comparison was not claimed for text whose project links reveal its source.
+Concrete repairs included ALB example paths that did not match the API contract, confusion between static `file()` loading and `templatefile()`, and stale cost/deployment status. See [reviews](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/reviews.md) and [the curriculum critic report](../evidence/full-curriculum-critic.md). This comparison was a reviewer judgment, not a measured learner exam score. A blind visual comparison was not claimed for text whose project links reveal its source.
 
 ## 6. Keep failures and their meaning
 

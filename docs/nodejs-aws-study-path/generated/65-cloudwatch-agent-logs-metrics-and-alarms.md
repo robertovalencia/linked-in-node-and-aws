@@ -89,3 +89,8 @@ Official sources checked on 2026-10-27. These teach mechanisms; any account-spec
 - [CloudWatch agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html)
 - [CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Alarms.html)
 - [Logs Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html)
+
+
+## Recognize the console screen
+
+Use the [AWS visual study guide](../visuals/README.md) to identify the console fields and connect them to source. Official AWS examples demonstrate concepts and are not screenshots of this project’s deployment.

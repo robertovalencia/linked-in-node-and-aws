@@ -58,3 +58,6 @@ R12 → lessons 44–83 and `cloud-coverage.json` → source/link/manifest valid
 
 
 R12 setup/process teaching → `docs/nodejs-aws-study-path/walkthroughs/README.md` and chapters01–08 → managed source/link validation, archive completeness and committed-reader-link refresh → separate walkthrough critic. The companion explains recorded steps and pending gates without modifying infrastructure or personal study data.
+
+
+R12 visual learning → `docs/nodejs-aws-study-path/visuals/README.md`, identity guide and nine official screenshot cards → image/provenance review, extended local-link validation, archive-byte checks and published-reader-link verification. The visual guide makes no provisioning or IAM-access change.

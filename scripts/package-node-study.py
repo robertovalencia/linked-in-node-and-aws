@@ -11,7 +11,7 @@ lessons = sorted((pack / 'generated').glob('[0-9][0-9]-*.md'))
 assert [int(p.name[:2]) for p in lessons] == list(range(manifest['lesson_count']))
 files = [pack / name for name in ('README.md','cloud-coverage.json','cloud-source-excerpts.json','core-44-63-reference-manifest.json','deployment-handoff.md','deployment-coordination.json')]
 files += lessons
-for directory in ('labs','evidence','walkthroughs'):
+for directory in ('labs','evidence','walkthroughs','visuals'):
     files += sorted(p for p in (pack / directory).rglob('*') if p.is_file() and not any(part in ('__pycache__','.terraform','personal','saved','comments') for part in p.parts) and not p.name.endswith(('.pyc','.tfstate','.tfstate.backup','.tfplan','.zip')))
 assert all(p.exists() for p in files)
 with ZipFile(output, 'w', compression=ZIP_DEFLATED) as archive:

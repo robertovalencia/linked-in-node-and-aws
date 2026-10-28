@@ -35,7 +35,7 @@ flowchart TD
     L --> M[Pending approval and live application verification]
 ```
 
-The migration history is recorded in [requirements](../../../docs/specs/requirements.md), [architecture](../../../docs/architecture.md), [AI development](../../../docs/ai-development.md) and [reviews](../../../docs/reviews.md). The curriculum release is reproducible from its [independent audit](../../../docs/evidence/cloud-study-release-2026-10-28/independent-audit.md). This walkthrough summarizes those artifacts; it does not claim to reconstruct every historical terminal command.
+The migration history is recorded in [requirements](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/specs/requirements.md), [architecture](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/architecture.md), [AI development](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/ai-development.md) and [reviews](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/reviews.md). The curriculum release is reproducible from its [independent audit](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/evidence/cloud-study-release-2026-10-28/independent-audit.md). This walkthrough summarizes those artifacts; it does not claim to reconstruct every historical terminal command.
 
 ## Read status words precisely
 
@@ -45,6 +45,11 @@ The migration history is recorded in [requirements](../../../docs/specs/requirem
 - **Applied:** an actual operation changed the environment and retained evidence.
 - **Operationally verified:** a named real behavior was tested in that environment.
 
-As of the recorded **28 October 2026** owner update, certificate issuance and DNS validation are verified. The five-create state bootstrap and 111-create HTTPS preview are prepared, not applied. Application HTTPS, tasks, live security/recovery and teardown gates remain pending. Consult the [dated owner report](../../../docs/aws-https-plan-review-2026-10-28.md) and [coordination record](../deployment-coordination.json) before treating this snapshot as current account state. The deployment chat, “Create Node.js AWS LinkedIn project,” owns costs and provisioning.
+As of the recorded **28 October 2026** owner update, certificate issuance and DNS validation are verified. The five-create state bootstrap and 111-create HTTPS preview are prepared, not applied. Application HTTPS, tasks, live security/recovery and teardown gates remain pending. Consult the [dated owner report](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-https-plan-review-2026-10-28.md) and [coordination record](../deployment-coordination.json) before treating this snapshot as current account state. The deployment chat, “Create Node.js AWS LinkedIn project,” owns costs and provisioning.
 
 **Start:** [1 · Tools, credentials and local startup](01-local-setup.md).
+
+
+## See the AWS tools
+
+The [visual companion](../visuals/README.md) connects screenshots to the setup steps. It distinguishes the actual blank sign-in page from official AWS example resources and explains what the visible fields do.

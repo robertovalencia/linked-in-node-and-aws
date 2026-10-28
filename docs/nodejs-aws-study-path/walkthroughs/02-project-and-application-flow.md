@@ -6,7 +6,7 @@
 
 The Node project replaced the Java backend while preserving the marketplace behavior. A **contract** is an observable agreement: URL, request fields, permissions, status codes and resulting data. A new framework is allowed to implement that agreement differently internally.
 
-Read [CONTRACT.md](../../../CONTRACT.md) and [requirements](../../../docs/specs/requirements.md) before reading framework code. Pick “client sends an inquiry.” Write who may call it, what constitutes duplicate submission and what must survive a restart. These become acceptance criteria. The [migration explanation](../../../docs/interview-topics/java-to-nestjs.md) describes the technology mapping; it is separate from proof that a particular runtime check passed.
+Read [CONTRACT.md](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/CONTRACT.md) and [requirements](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/specs/requirements.md) before reading framework code. Pick “client sends an inquiry.” Write who may call it, what constitutes duplicate submission and what must survive a restart. These become acceptance criteria. The [migration explanation](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/interview-topics/java-to-nestjs.md) describes the technology mapping; it is separate from proof that a particular runtime check passed.
 
 ## 2. Follow one request across the layers
 
@@ -32,18 +32,18 @@ sequenceDiagram
 
 The diagram explains mechanism, not a new execution result. The outbox joins business data and the intent to publish in one database transaction. It avoids pretending a database commit and Kafka publication are a single atomic cross-system operation. Retry/deduplication behavior still needs tests.
 
-Open [backend/src/inquiries](../../../backend/src/inquiries), [notifications](../../../backend/src/notifications) and the [architecture](../../../docs/architecture.md). Explain the successful path, then the failure after the database commits but before publication. See [lesson 09](../generated/09-inquiries-idempotency-and-outbox.md) and [lesson 10](../generated/10-kafka-inbox-and-notifications.md) for the code-level mechanism.
+Open [backend/src/inquiries](https://github.com/robertovalencia/linked-in-node-and-aws/tree/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/backend/src/inquiries), [notifications](https://github.com/robertovalencia/linked-in-node-and-aws/tree/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/backend/src/notifications) and the [architecture](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/architecture.md). Explain the successful path, then the failure after the database commits but before publication. See [lesson 09](../generated/09-inquiries-idempotency-and-outbox.md) and [lesson 10](../generated/10-kafka-inbox-and-notifications.md) for the code-level mechanism.
 
 ## 3. Give frontend files clear jobs
 
 | Directory | Question it answers |
 |---|---|
-| [routes](../../../frontend/src/routes) | Which page assembles this journey? |
-| [components](../../../frontend/src/components) | Which UI piece renders or handles interaction? |
-| [services](../../../frontend/src/services) | How is HTTP called and failure translated? |
-| [types](../../../frontend/src/types) | Which TypeScript shapes cross a boundary? |
-| [contexts](../../../frontend/src/contexts) | Which shared state, such as authentication, spans pages? |
-| [hooks](../../../frontend/src/hooks) | Which reusable state/effect behavior is extracted? |
+| [routes](https://github.com/robertovalencia/linked-in-node-and-aws/tree/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/frontend/src/routes) | Which page assembles this journey? |
+| [components](https://github.com/robertovalencia/linked-in-node-and-aws/tree/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/frontend/src/components) | Which UI piece renders or handles interaction? |
+| [services](https://github.com/robertovalencia/linked-in-node-and-aws/tree/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/frontend/src/services) | How is HTTP called and failure translated? |
+| [types](https://github.com/robertovalencia/linked-in-node-and-aws/tree/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/frontend/src/types) | Which TypeScript shapes cross a boundary? |
+| [contexts](https://github.com/robertovalencia/linked-in-node-and-aws/tree/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/frontend/src/contexts) | Which shared state, such as authentication, spans pages? |
+| [hooks](https://github.com/robertovalencia/linked-in-node-and-aws/tree/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/frontend/src/hooks) | Which reusable state/effect behavior is extracted? |
 
 A separate file has value when it gives a coherent responsibility a clear home. A file for every tiny function can make a request harder to follow. TypeScript shapes are erased at runtime, so the backend must validate incoming data and enforce ownership independently of the UI.
 
@@ -60,7 +60,7 @@ npm run build
 npm run acceptance
 ```
 
-`check` checks source rules/types. Tests execute unit/component behavior. Build produces runnable artifacts. Acceptance needs the integrated stack running on `localhost:8180` and exercises actual HTTP/data/event flows. Read [scripts/acceptance.mjs](../../../scripts/acceptance.mjs) before assuming a green process covers a particular requirement.
+`check` checks source rules/types. Tests execute unit/component behavior. Build produces runnable artifacts. Acceptance needs the integrated stack running on `localhost:8180` and exercises actual HTTP/data/event flows. Read [scripts/acceptance.mjs](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/scripts/acceptance.mjs) before assuming a green process covers a particular requirement.
 
 Browser journeys additionally need root tooling and the browser binary:
 
@@ -70,7 +70,7 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-These commands describe reproduction, not tests newly executed by this documentation update. Historical evidence lives in [results](../../../docs/results.md) and [testing](../../../docs/testing.md). Date and source revision matter.
+These commands describe reproduction, not tests newly executed by this documentation update. Historical evidence lives in [results](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/results.md) and [testing](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/testing.md). Date and source revision matter.
 
 ## 5. Diagnose one layer at a time
 

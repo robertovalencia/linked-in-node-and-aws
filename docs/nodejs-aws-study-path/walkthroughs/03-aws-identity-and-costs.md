@@ -8,11 +8,11 @@ This chapter explains the deployment owner's recorded process. It does not initi
 
 An **account** contains the resources and billing boundary. A **Region** selects a geographic service location. A **principal** is the identity making a request. Correct Terraform source can still operate in the wrong place if effective credentials or Region differ from the reviewed values.
 
-The project's recorded deployment planning uses Ohio, `us-east-2`. Its owner checked the account and certificate again on 28 October. Read the [account preflight receipt](../../../docs/evidence/aws-https-plan-2026-10-28/account-preflight.json); it is a dated observation, not a perpetual guarantee.
+The project's recorded deployment planning uses Ohio, `us-east-2`. Its owner checked the account and certificate again on 28 October. Read the [account preflight receipt](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/evidence/aws-https-plan-2026-10-28/account-preflight.json); it is a dated observation, not a perpetual guarantee.
 
 ## 2. A CLI profile is a name for configuration
 
-A profile such as `marketplace-dev` selects credential/configuration sources. The selected [AWS setup runbook](../../../docs/aws-dev.md) uses temporary CLI login rather than creating permanent access keys. That runbook contains the actual authentication steps; do not paste tokens or credentials into Markdown.
+A profile such as `marketplace-dev` selects credential/configuration sources. The selected [AWS setup runbook](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-dev.md) uses temporary CLI login rather than creating permanent access keys. That runbook contains the actual authentication steps; do not paste tokens or credentials into Markdown.
 
 After a valid authorized login, the owner verifies the effective identity. This is a read-only example for that operator, not a requirement for local study:
 
@@ -30,17 +30,17 @@ The CLI and Terraform must inherit the same intended credential environment. A p
 
 The operator prepares/reviews resources. A CI identity verifies or publishes an exact source revision. An ECS **execution role** supports tasks' platform operations; an application **task role** authorizes AWS calls made by application code. They have different jobs. The [official role explanation](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html) distinguishes these boundaries.
 
-The source also contains optional OIDC setup. A Terraform definition is not evidence that a GitHub identity provider or protected environment is active. The 28 October bootstrap preview does not create OIDC. See [bootstrap source](../../../infra/bootstrap/main.tf) and [toolchain setup](../../../docs/toolchain.md).
+The source also contains optional OIDC setup. A Terraform definition is not evidence that a GitHub identity provider or protected environment is active. The 28 October bootstrap preview does not create OIDC. See [bootstrap source](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/infra/bootstrap/main.tf) and [toolchain setup](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/toolchain.md).
 
 ## 4. Inventory before proposing a new service
 
 The original EC2/SSM design and the prepared ECS design are separate alternatives in source. The owner checked actual account resources before planning. Grepping a repository proves only what source mentions; account inventory needs authorized service queries, with their scope recorded.
 
-On 28 October, the owner reported the certificate issued/unused and no application infrastructure in queried scopes. That is narrower than “the entire account has no resources.” The [dated plan review](../../../docs/aws-https-plan-review-2026-10-28.md) is the current recorded reference for this walkthrough.
+On 28 October, the owner reported the certificate issued/unused and no application infrastructure in queried scopes. That is narrower than “the entire account has no resources.” The [dated plan review](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-https-plan-review-2026-10-28.md) is the current recorded reference for this walkthrough.
 
 ## 5. Convert architecture into billable quantities
 
-The process was: inventory the baseline → propose alternatives → identify meters → retrieve dated regional prices → calculate scenarios → review costs before apply. The [27 October comparison](../../../docs/aws-cost-review-2026-10-27/README.md) explains EC2 versus ECS/RDS, NAT versus endpoints and optional MSK. The [28 October review](../../../docs/aws-https-plan-review-2026-10-28.md) updates the selected HTTPS preview and assumptions.
+The process was: inventory the baseline → propose alternatives → identify meters → retrieve dated regional prices → calculate scenarios → review costs before apply. The [27 October comparison](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-cost-review-2026-10-27/README.md) explains EC2 versus ECS/RDS, NAT versus endpoints and optional MSK. The [28 October review](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-https-plan-review-2026-10-28.md) updates the selected HTTPS preview and assumptions.
 
 A NAT gateway can have time and traffic charges. A load balancer has time/capacity dimensions. Storage can persist after a process stops. These are categories to inspect, not a new price quote. Read the linked itemized model before deciding whether the learning benefit justifies a service. MSK and WAF remain conceptual study topics even when not selected for this demo.
 

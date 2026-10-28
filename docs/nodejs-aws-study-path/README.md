@@ -8,9 +8,13 @@ Start with the [roadmap](generated/00-roadmap-and-mastery-gates.md), or choose I
 
 Start with [How this project was set up and verified](walkthroughs/README.md): eight short chapters explaining tools/local startup, application flow, AWS identity and cost decisions, Terraform roots/state/plans, hostname/DNS/certificate setup, future deployment/security/recovery, lesson building/review, and GitHub/Study Desk publication. Each chapter breaks the work into small concepts, links the real files, explains expected observations and common failures, and ends with a comprehension check. Historical execution, safe local reproduction and pending cloud work are explicitly separated. These supplementary chapters are included in the ZIP without changing existing numbered lesson IDs.
 
+## Learn the AWS console visually
+
+Open the [AWS screenshot study guide](visuals/README.md) for an actual blank sign-in capture and nine official AWS service examples, with small field explanations, source links, related lessons and recall questions. Official examples are clearly marked as unrelated to this account; remote example images require internet access. The guide includes the account-ID/IAM-user/role distinction that explained our sign-in issue.
+
 ## Read or download
 
-Read these guides directly on GitHub, or [download the complete study pack](NodeJs-AWS-study-pack.zip). The [service technical handbooks](../nodejs-beginner/README.md) organize tools by capability.
+Read these guides directly on GitHub, or [download the complete study pack](NodeJs-AWS-study-pack.zip). The [service technical handbooks](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/nodejs-beginner/README.md) organize tools by capability.
 
 ## Guides
 

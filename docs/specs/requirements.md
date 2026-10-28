@@ -50,3 +50,8 @@ The concept checklist covers identity/governance, networking/ingress/private acc
 ### R12 process and setup companion
 
 The GitHub learning entry point must link a supplementary beginner walkthrough of the recorded process and reproducible setup. Cover tools/local credentials/startup, contract-preserving migration, account identity and dated cost ownership, Terraform roots/backends/private state and saved-plan review, DNS/TLS issuance, pending delivery/security/recovery gates, independent build/review evidence, Git/PR/quality tooling and Study Desk import. Each chapter uses small concepts, code links, expected observations, troubleshooting and a comprehension check. Preserve 84 numbered lesson IDs. Include the walkthrough in the managed download and validate its links. Never claim pending AWS or external-account configuration has completed.
+
+
+### R12 visual AWS learning companion
+
+The GitHub study path must include real screenshots or attributed official AWS screenshots with small concept captions, related source/lesson links and recall questions. Distinguish an actual account capture, an unauthenticated sign-in screen and an official example. Never imply example resources are this project, expose credentials/private client addresses, or create resources for a screenshot. Include managed local images in the ZIP, state the online-only boundary for externally hosted examples, and validate the new local Markdown/image targets. Preserve existing numbered lesson IDs and saved notes.

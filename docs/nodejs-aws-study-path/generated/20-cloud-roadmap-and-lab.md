@@ -78,3 +78,8 @@ Code excerpts are pinned to the inspected project revision `9bb8851`. They descr
 
 - [AWS service overview](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/introduction.html)
 - [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan)
+
+
+## Recognize the console screen
+
+Use the [AWS visual study guide](../visuals/README.md) to identify the console fields and connect them to source. Official AWS examples demonstrate concepts and are not screenshots of this project’s deployment.

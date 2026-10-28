@@ -82,3 +82,8 @@ Primary official documentation was checked on 2026-10-27. Source links are pinne
 ## Later project evidence: certificate gate only
 
 The original source anchors above describe the EC2/SSM baseline. On 2026-10-28 the deployment owner reported the later certificate as ISSUED and unused. Study the [sanitized issuance evidence](https://github.com/robertovalencia/linked-in-node-and-aws/blob/319392bea09e75f78edd196bcb8eed3ffc1f5b95/docs/evidence/certificate-request/issuance.json) and [DNS/certificate guide](https://github.com/robertovalencia/linked-in-node-and-aws/blob/319392bea09e75f78edd196bcb8eed3ffc1f5b95/docs/aws-free-test-hostname.md). An unused issued certificate proves neither application HTTPS nor renewal readiness. ALB, application and operational gates remain pending; see the [owner coordination record](../deployment-coordination.json).
+
+
+## Recognize the console screen
+
+Use the [AWS visual study guide](../visuals/README.md) to identify the console fields and connect them to source. Official AWS examples demonstrate concepts and are not screenshots of this project’s deployment.

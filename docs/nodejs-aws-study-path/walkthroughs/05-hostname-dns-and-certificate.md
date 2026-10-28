@@ -4,15 +4,15 @@
 
 ## 1. A name and a server are separate things
 
-A hostname is a human-readable label such as `app.example.com`. DNS records help clients find a destination. A name can exist before any application server is running. The owner registered the free test zone `linked-in-node-rv.dynv6.net` and selected its `app` child; [the hostname guide](../../../docs/aws-free-test-hostname.md) records that process.
+A hostname is a human-readable label such as `app.example.com`. DNS records help clients find a destination. A name can exist before any application server is running. The owner registered the free test zone `linked-in-node-rv.dynv6.net` and selected its `app` child; [the hostname guide](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-free-test-hostname.md) records that process.
 
-That guide contains historical planning snapshots. Use the [28 October plan review](../../../docs/aws-https-plan-review-2026-10-28.md) for the later selected preview/cost assumptions. This chapter makes no new provider availability or price promise.
+That guide contains historical planning snapshots. Use the [28 October plan review](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-https-plan-review-2026-10-28.md) for the later selected preview/cost assumptions. This chapter makes no new provider availability or price promise.
 
 ## 2. Control of DNS is different from AWS credentials
 
 The DNS provider holds the zone records. ACM belongs to AWS. To validate a certificate, the operator must be authorized to update the name's authoritative DNS as well as request the AWS certificate. Owning one login does not grant the other permission.
 
-The recorded workflow used a manual approved dynv6 browser entry. DNS was not silently added to the certificate Terraform root. The [root](../../../infra/aws-ecs-certificate/main.tf) requests the certificate and exposes validation metadata; the [issuance receipt](../../../docs/evidence/certificate-request/issuance.json) records the separate DNS operation.
+The recorded workflow used a manual approved dynv6 browser entry. DNS was not silently added to the certificate Terraform root. The [root](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/infra/aws-ecs-certificate/main.tf) requests the certificate and exposes validation metadata; the [issuance receipt](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/evidence/certificate-request/issuance.json) records the separate DNS operation.
 
 ## 3. A certificate binds a name to a public key
 
@@ -53,7 +53,7 @@ dig @1.1.1.1 CNAME VALIDATION_RECORD_NAME
 
 ## 6. What the actual issuance proved
 
-The [sanitized receipt](../../../docs/evidence/certificate-request/issuance.json) records one certificate added, DNS validation success, export disabled, no associated AWS service and a no-change post-issuance plan. Its [independent critic](../../../docs/evidence/certificate-request/issuance-critic.md) reviewed the actual result.
+The [sanitized receipt](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/evidence/certificate-request/issuance.json) records one certificate added, DNS validation success, export disabled, no associated AWS service and a no-change post-issuance plan. Its [independent critic](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/evidence/certificate-request/issuance-critic.md) reviewed the actual result.
 
 The certificate was unused; renewal was not yet eligible in that observation. No ALB or application deployment was created by that apply. Keep the private state that manages the certificate; deleting a local directory does not safely transfer resource ownership.
 
