@@ -1,0 +1,126 @@
+{
+  "retrievedAt": "2026-10-29T17:45:05.571875+00:00",
+  "status": "PROPOSAL_ONLY_NOT_IMPLEMENTED_OR_APPROVED",
+  "region": "us-east-2",
+  "priceSource": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/CodeBuild/current/us-east-2/index.json",
+  "catalogPublicationDate": "2026-09-11T12:46:25Z",
+  "rawSha256": "2cdc9a8a574bc23055c149d9814ac42996ebb0a9249d8274c8e3ffab9eeb7818",
+  "codebuild": {
+    "sku": "9343EGWDZJRG5FR6",
+    "attributes": {
+      "servicecode": "CodeBuild",
+      "location": "US East (Ohio)",
+      "locationType": "AWS Region",
+      "vcpu": "2",
+      "memory": "3 GB",
+      "operatingSystem": "Linux",
+      "usagetype": "USE2-Build-Min:Linux:g1.small",
+      "operation": "",
+      "architecture": "x86-64",
+      "computeFamily": "OnDemand-EC2",
+      "computeType": "general1.small",
+      "regionCode": "us-east-2",
+      "servicename": "CodeBuild"
+    },
+    "dimension": {
+      "rateCode": "9343EGWDZJRG5FR6.JRTCKXETXF.6YS6EN2CT7",
+      "description": "AWS CodeBuild - Build minutes on build.general1.small - US East (Ohio)",
+      "beginRange": "0",
+      "endRange": "Inf",
+      "unit": "minutes",
+      "pricePerUnit": {
+        "USD": "0.0050000000"
+      },
+      "appliesTo": []
+    }
+  },
+  "officialPages": {
+    "codebuild-pricing": {
+      "url": "https://aws.amazon.com/codebuild/pricing/",
+      "sha256": "aa9fa60a0b1abb09d2ed5b20af9c24287119821fbccea1c2a445a65a9f47e319"
+    },
+    "scheduler-pricing": {
+      "url": "https://aws.amazon.com/eventbridge/pricing/",
+      "sha256": "4d5e8faef09992df81455f2ef6d38df51095def33dc87a8fa50e7b0a2aeb9dc1"
+    },
+    "cli-login": {
+      "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sign-in.html",
+      "sha256": "de03a2382073690783d0d749ee43fcd6e583e8f6992a420bb4d26d0f37d8cc4f"
+    }
+  },
+  "schedulerGrossRateUSDPerInvocation": "0.000001",
+  "schedulerNote": "Public service tariff beyond shared allowance; no free allowance deducted",
+  "cases": [
+    {
+      "name": "idle_before_run",
+      "runs": 0,
+      "totalBuildMinutes": 0,
+      "totalLogGB": "0",
+      "usdItems": {
+        "build_total_minutes": "0E-10",
+        "scheduler_invocations_gross": "0.000000",
+        "logs_ingestion_gb": "0E-10",
+        "logs_retention_one_day": "0E-10",
+        "control_bundle_10MB_one_day": "0.000007561643835616438356164383562",
+        "s3_20puts_200gets": "0.0001800000"
+      },
+      "totalUSD": "0.0001875616438356164383561643836"
+    },
+    {
+      "name": "one_cleanup_expected",
+      "runs": 1,
+      "totalBuildMinutes": 30,
+      "totalLogGB": ".1",
+      "usdItems": {
+        "build_total_minutes": "0.1500000000",
+        "scheduler_invocations_gross": "0.000001",
+        "logs_ingestion_gb": "0.05000000000",
+        "logs_retention_one_day": "0.00009863013698630136986301369864",
+        "control_bundle_10MB_one_day": "0.000007561643835616438356164383562",
+        "s3_20puts_200gets": "0.0001800000"
+      },
+      "totalUSD": "0.2002871917808219178082191781"
+    },
+    {
+      "name": "rehearsal_and_cleanup",
+      "runs": 2,
+      "totalBuildMinutes": 45,
+      "totalLogGB": ".2",
+      "usdItems": {
+        "build_total_minutes": "0.2250000000",
+        "scheduler_invocations_gross": "0.000002",
+        "logs_ingestion_gb": "0.10000000000",
+        "logs_retention_one_day": "0.0001972602739726027397260273972",
+        "control_bundle_10MB_one_day": "0.000007561643835616438356164383562",
+        "s3_20puts_200gets": "0.0001800000"
+      },
+      "totalUSD": "0.3253868219178082191780821918"
+    },
+    {
+      "name": "three_attempt_higher",
+      "runs": 3,
+      "totalBuildMinutes": 180,
+      "totalLogGB": "1",
+      "usdItems": {
+        "build_total_minutes": "0.9000000000",
+        "scheduler_invocations_gross": "0.000003",
+        "logs_ingestion_gb": "0.5000000000",
+        "logs_retention_one_day": "0.0009863013698630136986301369864",
+        "control_bundle_10MB_one_day": "0.000007561643835616438356164383562",
+        "s3_20puts_200gets": "0.0001800000"
+      },
+      "totalUSD": "1.401176863013698630136986301"
+    }
+  ],
+  "limits": [
+    "Comparison-only; no AWS-native controller source or resources created",
+    "On-demandLinuxsmall minutes rounded up per build; no reserved capacity",
+    "Shared Free Tier/credits not deducted; account service eligibility and SCP/create permissions unproved",
+    "IAM/S3/CloudWatch/controller roles must undergo separate design/plan review before implementation",
+    "Scheduler dispatch retry does not retry a failed CodeBuild cleanup; success must mean zero remaining app resources",
+    "No dedicated NAT/ALB/database added for controller; proposed CodeBuild uses AWS APIs outside application VPC",
+    "Failure notification destination/retry implementation not selected or costed as deployed",
+    "Source-bundle and logs allowances are gross unmeasured usage, not caps",
+    "Application infrastructure continues charging until actual deletion completes"
+  ]
+}

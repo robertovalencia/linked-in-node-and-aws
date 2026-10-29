@@ -1,0 +1,30 @@
+{
+  "status": "LIVE_PREFLIGHT_STOPPED_NO_NEW_PLAN",
+  "humanRetentionChoice": "24 hours; delete demo data; preserve Terraform state",
+  "shutdownMethod": "OPERATOR_ASSISTED_HUMAN_RETURN_RENEW_AND_APPROVE_TEARDOWN",
+  "preflightFailure": "Observed CLI egress differs from previously approved /32",
+  "followupLookup": "Automatic approval review rejected additional IP lookup/private recording; no retry or workaround",
+  "ingressChanged": false,
+  "freshPlanCreated": false,
+  "applicationApplyPerformed": false,
+  "old8cfPlan": "Historical; now refuses source binding after explicit cleanup-mode source changes",
+  "sourceChanges": {
+    "teardownDefaultSafe": true,
+    "teardownMocksPassed": 12,
+    "operatorFakeCliTestsPassed": 28
+  },
+  "statesPreserved": [
+    "bootstrap localstate",
+    "certificate localstate",
+    "protected S3 state bucket"
+  ],
+  "privateTranscript": "work/aws-operator-preparation-2026-10-29/operator-run/transcript.txt",
+  "next": [
+    "Human approves lookup or supplies exact desired CIDR",
+    "Refresh private inputs/plan/cost/exact hash and independent review",
+    "Separate exact application apply approval",
+    "Record actual UTC first-billable start and24h deadline; human returns early for reviewed teardown"
+  ],
+  "reminderCreated": false,
+  "nativeControllerRequestedOrCreated": false
+}

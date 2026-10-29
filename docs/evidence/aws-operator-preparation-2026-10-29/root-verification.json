@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-10-29T20:28:49.362918+00:00",
+  "helperTests": {
+    "passed": 28,
+    "exitCode": 0,
+    "realAwsCalls": false
+  },
+  "runbookSyntax": [
+    {
+      "block": 1,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 2,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 3,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    },
+    {
+      "block": 4,
+      "bashSyntaxExitCode": 0,
+      "executed": false
+    }
+  ],
+  "sourceHashes": {
+    "scripts/aws-ecs-operator.py": "01e4e136eb707ee58b9a060c920af1b0a4001b2333593c276f5ed6d05a735df3",
+    "scripts/aws-ecs-operator.test.py": "9ff252dd1d51ce029bc6a54efbb8866c14e1aa9726b8bd973700325b87fbecc6",
+    "infra/aws-ecs-dev/variables.tf": "13b397b316efe8401ba87861ed6ac10988dedfe44c0e29e326954479ce1f7e33",
+    "infra/aws-ecs-dev/data.tf": "8cdac5ae4004fab18a7c73719ca9c34da8d3d849f4499f65f4dc910bafb81fea",
+    "infra/aws-ecs-dev/tests/security.tftest.hcl": "954a6659bb23ea47f890d9b4203e96286bb6e84a3d6a1742528c519f11a0b4dd"
+  },
+  "noNewPlanOrApply": true
+}

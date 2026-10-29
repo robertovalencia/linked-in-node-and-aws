@@ -1,7 +1,7 @@
 resource "aws_secretsmanager_secret" "runtime" {
   for_each                = local.secret_names
   name                    = "${local.name}/${each.key}"
-  recovery_window_in_days = 7
+  recovery_window_in_days = var.teardown_discard_demo_data ? 0 : 7
 }
 # Secret values are populated out of band after provisioning. Never declare secret versions or passwords here.
 resource "aws_db_subnet_group" "dev" {
@@ -55,10 +55,10 @@ resource "aws_db_instance" "dev" {
   backup_window                   = "05:00-05:30"
   maintenance_window              = "sun:06:00-sun:07:00"
   auto_minor_version_upgrade      = true
-  deletion_protection             = var.protect_database
-  skip_final_snapshot             = false
-  final_snapshot_identifier       = "${local.name}-final-${var.recovery_snapshot_suffix}"
-  delete_automated_backups        = false
+  deletion_protection             = var.teardown_discard_demo_data ? false : var.protect_database
+  skip_final_snapshot             = var.teardown_discard_demo_data
+  final_snapshot_identifier       = var.teardown_discard_demo_data ? null : "${local.name}-final-${var.recovery_snapshot_suffix}"
+  delete_automated_backups        = var.teardown_discard_demo_data
   copy_tags_to_snapshot           = true
   enabled_cloudwatch_logs_exports = ["postgresql"]
   monitoring_interval             = 0
@@ -69,7 +69,8 @@ resource "aws_ecr_repository" "app" {
   for_each             = toset(["backend", "frontend"])
   name                 = "${local.name}/${each.key}"
   image_tag_mutability = "IMMUTABLE"
-  force_delete         = true
+  # Existing lab behavior: destroying a repository also removes its images.
+  force_delete = true
   image_scanning_configuration { scan_on_push = true }
   encryption_configuration { encryption_type = "AES256" }
 }
@@ -80,7 +81,9 @@ resource "aws_ecr_lifecycle_policy" "app" {
 }
 resource "aws_s3_bucket" "operations" {
   bucket_prefix = "${local.name}-ops-"
-  force_destroy = false
+  # Provider requires a successful transition apply before destroy can empty it.
+  # This is the operations bucket only; bootstrap Terraform state stays separate.
+  force_destroy = var.teardown_discard_demo_data
 }
 resource "aws_s3_bucket_public_access_block" "operations" {
   bucket                  = aws_s3_bucket.operations.id

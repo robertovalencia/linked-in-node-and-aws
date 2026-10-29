@@ -1,0 +1,111 @@
+{
+  "checkedAt": "2026-10-29T17:44:55.996087+00:00",
+  "status": "SOURCE_AND_MOCK_PREPARATION_PASS_NO_CLOUD_EXECUTION",
+  "variable": {
+    "name": "teardown_discard_demo_data",
+    "type": "bool",
+    "default": false,
+    "nullable": false,
+    "validation": "!teardown_discard_demo_data || !deploy_application"
+  },
+  "resources": {
+    "aws_db_instance.dev": {
+      "normal": {
+        "deletion_protection": "var.protect_database (default true)",
+        "skip_final_snapshot": false,
+        "final_snapshot_identifier": "existing generated final-snapshot name",
+        "delete_automated_backups": false
+      },
+      "discard": {
+        "deletion_protection": false,
+        "skip_final_snapshot": true,
+        "final_snapshot_identifier": null,
+        "delete_automated_backups": true
+      }
+    },
+    "aws_s3_bucket.operations": {
+      "normal_force_destroy": false,
+      "discard_force_destroy": true,
+      "requiresSuccessfulTransitionApplyBeforeDestroy": true
+    },
+    "aws_secretsmanager_secret.runtime (six resources)": {
+      "normal_recovery_window_in_days": 7,
+      "discard_recovery_window_in_days": 0
+    },
+    "aws_ecr_repository.app (two resources)": {
+      "normal_force_delete": true,
+      "discard_force_delete": true,
+      "change": "None: already true before this work"
+    },
+    "aws_instance.broker.root_block_device": {
+      "delete_on_termination": true,
+      "change": "None: already true before this work"
+    }
+  },
+  "stateRetention": "Bootstrap state bucket and existing certificate local state are separate roots; no source or state change performed there.",
+  "limits": [
+    "The boolean changes planned settings; it is not a timer, destroy command or proof services stopped. The operator must verify actual zero running tasks and absent one-off bootstrap tasks before destructive actions.",
+    "Apply a separately reviewed non-destructive transition first, then prepare and review a distinct actual-state destroy plan. No destroy plan or real Terraform apply was run by this task.",
+    "Normal deployment source bytes changed, so regenerate the initial saved application plan rather than applying an older source-bound artifact.",
+    "Skipping the final snapshot and deleting current automated backups does not remove existing manual/recovery snapshots, old retained backups, restore-test instances or copied data; inventory and review those separately.",
+    "The six Terraform-managed runtime secret recovery settings do not control the RDS-managed master secret. AWS states RDS deletes that secret and associated metadata when the database instance is deleted; verify actual deletion afterward.",
+    "Forced secret deletion is irreversible and asynchronous; changing this setting alone does not delete a secret or establish eventual removal. Scheduled-deletion secrets have no charges while marked for deletion; do not invent a seven-day recovery storage charge.",
+    "S3 force_destroy removes operations objects and versions irreversibly on eventual destroy; it must be successfully applied into resource state beforehand. Retained Terraform state remains independent and sensitive.",
+    "Encryption, private networking, logging/retention and task execution behavior are otherwise unchanged. No new services or telemetry enablement is included."
+  ],
+  "officialSources": [
+    {
+      "topic": "RDS deletion protection, final snapshot and automated-backup deletion flags",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.70.0/website/docs/r/db_instance.html.markdown"
+    },
+    {
+      "topic": "S3 force_destroy and required prior successful apply",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.70.0/website/docs/r/s3_bucket.html.markdown"
+    },
+    {
+      "topic": "Secrets recovery0 forced-deletion parameter",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.70.0/website/docs/r/secretsmanager_secret.html.markdown"
+    },
+    {
+      "topic": "ECR force_delete includes images",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.70.0/website/docs/r/ecr_repository.html.markdown"
+    },
+    {
+      "topic": "RDS-managed secret and metadata deleted with DB instance",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-secrets-manager.html"
+    },
+    {
+      "topic": "Secrets asynchronous deletion/recovery and no charge while marked for deletion",
+      "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/manage_delete-secret.html"
+    },
+    {
+      "topic": "Disable RDS protection before deletion and recoverability boundaries",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_DeleteInstance.html"
+    }
+  ],
+  "mockEvidence": "teardown-mock-receipt.json",
+  "mockSummary": [
+    {
+      "@level": "info",
+      "@message": "Success! 12 passed, 0 failed.",
+      "@module": "terraform.ui",
+      "@timestamp": "2026-10-29T13:43:29.733223-04:00",
+      "test_summary": {
+        "status": "pass",
+        "passed": 12,
+        "failed": 0,
+        "errored": 0,
+        "skipped": 0
+      },
+      "type": "test_summary"
+    }
+  ],
+  "changedFilesSha256": {
+    "infra/aws-ecs-dev/variables.tf": "13b397b316efe8401ba87861ed6ac10988dedfe44c0e29e326954479ce1f7e33",
+    "infra/aws-ecs-dev/data.tf": "8cdac5ae4004fab18a7c73719ca9c34da8d3d849f4499f65f4dc910bafb81fea",
+    "infra/aws-ecs-dev/tests/security.tftest.hcl": "954a6659bb23ea47f890d9b4203e96286bb6e84a3d6a1742528c519f11a0b4dd"
+  },
+  "awsMutations": 0,
+  "destroyPlansGenerated": 0,
+  "commitsCreated": 0
+}

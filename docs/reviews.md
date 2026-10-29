@@ -196,3 +196,8 @@ The new eleventh companion chapter records actual login renewal, effective-accou
 The biggest gap found by the fresh independent critic was the distinction between the earlier successful direct offline reviewer and the current expected rejection of the original saved artifact after the deployment owner edited retention source. The journal now labels both observations, forbids forcing the historical plan through source checks, and requires a newly reviewed plan. Bash syntax, all seven pinned targets, full-overlay local links and fail-fast/private-artifact boundaries pass. [Independent review](evidence/aws-execution-journal-review-2026-10-29.md).
 
 The human selected a 24-hour demo, demo-data removal and preserved Terraform state. The shutdown mechanism and exact refreshed artifact are still unresolved; no application apply, task activation or runtime success is claimed. This learning review made no cloud mutation. The archive/import are verified independently of the deployment owner's pending operational work.
+
+
+## Visible operator and discard-policy preparation — 29 October 2026
+
+Independent review reproduced 12 mocked Terraform tests and 28 helper failure-path tests and inspected the actual stopped preflight. Config-file/optimization environment handling was tightened; the reviewer correctly rejects optimization, and an initial hypothetical bypass concern was withdrawn after actual refusal proof. Source-safe default retention remains intact; explicit discard transitions need successful apply before destruction. Largest unresolved gap: intended client range and credible chosen shutdown mechanism, followed by a fresh plan and exact apply approval. [Evidence](evidence/aws-operator-preparation-2026-10-29/README.md).

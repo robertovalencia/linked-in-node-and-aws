@@ -1,0 +1,177 @@
+{
+  "status": "STOPPED_NO_APPLY",
+  "detail": "Current client differs from the approved /32. Ask for a new explicitly approved CIDR; do not broaden access.",
+  "recordedAt": "2026-10-29T17:49:51.961092+00:00",
+  "scope": "PREPARATION_ONLY_NOT_APPLY_APPROVAL",
+  "steps": [
+    {
+      "purpose": "1. Confirm the actual AWS account with the same environment used by Terraform.",
+      "command": [
+        "aws",
+        "sts",
+        "get-caller-identity",
+        "--query",
+        "{Account:Account}",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "exitCode": 0,
+      "seconds": 1.6,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "2. Read current plan/credits; the result is not a spending cap or service eligibility guarantee.",
+      "command": [
+        "aws",
+        "freetier",
+        "get-account-plan-state",
+        "--region",
+        "us-east-1",
+        "--output",
+        "json"
+      ],
+      "exitCode": 0,
+      "seconds": 1.184,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "3. Verify the initialized default ECS workspace.",
+      "command": [
+        "terraform",
+        "workspace",
+        "show"
+      ],
+      "exitCode": 0,
+      "seconds": 0.245,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "4. Require no existing application state before first provisioning.",
+      "command": [
+        "aws",
+        "s3api",
+        "head-object",
+        "--bucket",
+        "772641336063-linked-in-node-terraform-state",
+        "--key",
+        "linked-in-node/ecs-dev/terraform.tfstate",
+        "--expected-bucket-owner",
+        "772641336063",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "exitCode": 254,
+      "seconds": 1.031,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "5. Verify the real certificate identity, issued status and nonexportable setting.",
+      "command": [
+        "aws",
+        "acm",
+        "describe-certificate",
+        "--certificate-arn",
+        "arn:aws:acm:us-east-2:772641336063:certificate/ae18667c-47ac-4fda-8039-e877bafe9705",
+        "--query",
+        "Certificate.{Status:Status,DomainName:DomainName,Export:Options.Export}",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "exitCode": 0,
+      "seconds": 1.007,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "6. Check the exact proposed ECS cluster is absent (not a complete account inventory).",
+      "command": [
+        "aws",
+        "ecs",
+        "describe-clusters",
+        "--clusters",
+        "linked-in-node-ecs-dev",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "exitCode": 0,
+      "seconds": 0.92,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "Check the exact proposed RDS instance is absent.",
+      "command": [
+        "aws",
+        "rds",
+        "describe-db-instances",
+        "--db-instance-identifier",
+        "linked-in-node-ecs-dev",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "exitCode": 254,
+      "seconds": 0.989,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "Check the exact proposed ALB is absent.",
+      "command": [
+        "aws",
+        "elbv2",
+        "describe-load-balancers",
+        "--names",
+        "linked-in-node-ecs-dev",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "exitCode": 254,
+      "seconds": 1.02,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "Check the project-tagged VPC scope is empty; the unrelated default VPC is preserved.",
+      "command": [
+        "aws",
+        "ec2",
+        "describe-vpcs",
+        "--filters",
+        "Name=tag:Project,Values=linked-in-node",
+        "Name=tag:Environment,Values=ecs-dev",
+        "--query",
+        "Vpcs[].VpcId",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "exitCode": 0,
+      "seconds": 1.307,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "7. Compare current client egress to the approved /32 without displaying the address.",
+      "command": [
+        "curl",
+        "--fail",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "15",
+        "https://checkip.amazonaws.com"
+      ],
+      "exitCode": 0,
+      "seconds": 0.195,
+      "responseRedacted": true
+    }
+  ]
+}

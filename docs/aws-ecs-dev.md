@@ -4,7 +4,7 @@
 
 The historical hostname-free local preview has no ALB listener/client ingress/app tasks and must never be applied. The free hostname's certificate is now ISSUED. On 29 October the human approved only the exact five-create S3 state bootstrap; it was applied and independently verified. [Actual execution evidence](evidence/aws-state-bootstrap-2026-10-29/README.md). Certificate state remains separately preserved.
 
-The [new 29 October actual S3-backed plan review](aws-s3-plan-review-2026-10-29.md) has 111 creates/0 updates/0 deletes, issued-certificate HTTPS and the approved /32, with zero app tasks. Its encrypted/locked/account-bound real S3 backend replaces scratch preview planning. Application provisioning/activation remain unapproved and unverified. No 24-hour application clock has started. [28 October historical local preview](aws-https-plan-review-2026-10-28.md).
+The [historical 29 October actual S3-backed plan review](aws-s3-plan-review-2026-10-29.md) has 111 creates/0 updates/0 deletes, issued-certificate HTTPS and the approved /32, with zero app tasks. Its encrypted/locked/account-bound real S3 backend replaces scratch preview planning. Application provisioning/activation remain unapproved and unverified. No 24-hour application clock has started. [28 October historical local preview](aws-https-plan-review-2026-10-28.md).
 
 ## Architecture and cost
 
@@ -156,8 +156,13 @@ ECS circuit-breaker rollback needs a prior completed deployment. First deploymen
 
 ## 24-hour teardown
 
-Start the actual deadline when the first billable resource starts, not when this plan is generated. Only the approved no-additional-fee ACM certificate exists from this preparation; no billable application infrastructure exists and no deadline/timer has started. Before apply, arrange teardown ownership and the follow-up; budget alarms are not hard spending caps.
+Start the actual deadline when the first billable resource starts, not when this plan is generated. The approved no-additional-fee ACM certificate and protected S3 state bootstrap exist; no paid application infrastructure or actual demo deadline/timer has started. Before apply, arrange teardown ownership and the follow-up; budget alarms are not hard spending caps.
 
 Stop traffic and new writes, capture sanitized evidence, complete the approved restore/replay exercise, and review the destroy plan. RDS deletion protection must be removed in a separate reviewed change; retained final snapshots and automated backups keep charging. Remove ALB, NAT/EIP, services/tasks, broker and other dev resources after the selected retention decision. No unrelated resources or local data may be removed.
 
 The operations bucket has force_destroy=false and versioning. Its seven-day current expiration creates delete markers; noncurrent versions can remain another seven days, plus asynchronous processing. Explicit version-aware cleanup is required for prompt closure. Preserve only chosen backups/logs/images with owner, expiry and residual daily price. State bootstrap cleanup is a separate protected operation. A stopped RDS instance still bills storage/backups and restarts after seven days. Verify absence through control-plane inventory, then recheck delayed billing/credits.
+
+
+## Current visible execution and discard policy
+
+The user selected 24 hours, deletion of demo data at teardown and preservation of Terraform state. [Current command/runbook and actual stopped preflight](aws-operator-runbook-2026-10-29.md) supersede the older retained-snapshot cleanup assumption. `teardown_discard_demo_data=false` preserves normal protection defaults; an explicitly approved transition with the flag true permits no final RDS snapshot/retained automated backups, immediate-deletion requests for runtime secrets, and operations-bucket version cleanup before destroy. Existing manual/recovery snapshots require separate scoped review. Operator-assisted shutdown with human return/login renewal is selected; the old application plan refuses changed source and must not be applied.

@@ -1,0 +1,23 @@
+# Independent critic — interim, 29 October 2026
+
+Verdict: **preparation guards pass; execution blocked**. Terraform retention source and all 12 offline mock runs pass. All 28 fake-CLI operator tests pass on independent execution. The actual live preflight stopped at a changed client /32 before creating a plan. The final runbook remains pending review. No application apply or destroy is authorized by this report.
+
+## Corrected interim findings
+
+An initial assertion-bypass concern was withdrawn after reading the existing reviewer top-level guard (lines 17–18) and directly executing it under `PYTHONOPTIMIZE=1`. It refuses before processing arguments or plans, exit 1, so inherited optimization cannot silently yield approval. `critic-environment-control.json` establishes only that the wrapper inherited optimization; it is not bypass proof. Actual refusal evidence: `critic-optimized-reviewer.json`. The builder is nevertheless making environment normalization deterministic and testing it.
+
+Alternate AWS config path overrides originally survived normalization. The fixed account guard limited wrong-account risk. Builder cleared those overrides; I inspected the final implementation and independently ran all 28 fake-CLI tests, including observing overrides absent in executed child environments. No wrong-account plan was shown to pass. Source hashes and actual test counts are recorded in `critic-source-review.json`.
+
+## Reviewed retention behavior
+
+`teardown_discard_demo_data` defaults false and cannot be true with `deploy_application=true`. True changes only deletion controls: RDS protection false, skip final snapshot, delete automated backups, operations bucket force destroy, six Terraform-owned runtime secrets recovery zero. ECR force delete and broker root-volume delete-on-termination already existed. Encryption, private networking, and normal protective defaults remain.
+
+A successful separately reviewed transition apply is needed before destroy, especially because S3 force_destroy must be persisted into resource state. This is not an atomic shutdown or proof tasks stopped. Verify zero actual service/one-off tasks first. Manual/recovery snapshots, old retained backups, copied data and restore-test instances require separate inventory. The RDS-managed master secret is outside the six owned secret settings; RDS deletes it with the instance, and actual deletion must be checked. Forced secret deletion is asynchronous and irreversible. Terraform state and the certificate remain in separate preserved roots.
+
+## Actual independent checks
+
+Read AGENTS.md, README.md, CONTRACT.md, requirements, architecture; inspected actual Terraform diff, operator source and original private receipts/logs. Copied current Terraform sources into this report directory, disabled the backend, removed AWS credential/config environment, and reran the mock suite with the cached pinned provider. **12 passed, zero failures**. Initial registry DNS failure and sandbox provider IPC failure are preserved honestly; retry with allowed local provider IPC passed. See `critic-offline-check.json`, `critic-init.log`, `critic-test.log`, and `critic-test-retry.log`. No AWS CLI calls, login, apply, destroy, iTerm automation, Git writes or source edits were performed by the critic.
+
+Official references checked: [pinned provider RDS documentation](https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.70.0/website/docs/r/db_instance.html.markdown), [pinned S3 deletion behavior](https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.70.0/website/docs/r/s3_bucket.html.markdown), [RDS-managed secret lifecycle](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-secrets-manager.html), [Secrets Manager deletion](https://docs.aws.amazon.com/secretsmanager/latest/userguide/manage_delete-secret.html).
+
+The former source-bound saved plan cannot be reused after the Terraform source change. A fresh actual S3-backed initial plan must retain discard=false, protected RDS, six recovery=7 secrets, operations force_destroy=false, zero app tasks and 111 create-only changes. No fresh plan was created because the current client differs from the approved /32. Actual `operator-run/steps.json` and `transcript.txt` contain ten read-only steps then `STOPPED_NO_APPLY`; no plan, show, apply, destroy, login or reviewer invocation followed. I checked actual artifact absence and private file/directory modes. Receipt hashes and inspection results: `critic-live-guard-review.json`. Replanning requires the human to approve the current /32 or return to the previously approved network; access must not be broadened automatically.

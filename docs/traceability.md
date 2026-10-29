@@ -83,3 +83,8 @@ Approved five-resource state bootstrap → authenticated controls/post-apply cri
 
 
 R12 execution journal → walkthrough11 → original owner execution/read-back evidence, actual local reviewer success before retention changes, independently observed old-artifact source-drift rejection, Bash syntax/pinned links/private fail-fast checks and fresh critic → [independent review](evidence/aws-execution-journal-review-2026-10-29.md). No new cloud mutation or iTerm automation.
+
+
+## R10 visible commands and demo-data cleanup — 29 October 2026
+
+Human request for visible iTerm commands → iTerm automation denial/no workaround → manual command helper/private transcript → 28 fake-CLI tests → actual read-only preflight stopped at client mismatch → no new plan. Human 24-hour/delete-demo-data/preserve-state choice → explicit safe-default cleanup flag → 12 mocked transition tests → [runbook and shutdown cost comparison](aws-operator-runbook-2026-10-29.md) → intended-client/shutdown decisions pending → fresh exact plan/cost/critic/apply approval. Native cleanup remains proposal-only; no timer or app resource created.

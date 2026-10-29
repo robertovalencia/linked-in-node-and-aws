@@ -1,4 +1,6 @@
-# Actual S3-backed AWS plan review —29 October 2026
+# Actual S3-backed AWS plan review — 29 October 2026
+
+**Superseded application artifact:** subsequent user-directed demo-data cleanup source changes mean the recorded `8cf376...` plan now correctly refuses source binding. Do not apply it. The [current operator runbook and actual stopped preflight](aws-operator-runbook-2026-10-29.md) record the new work. A fresh saved plan is blocked on intended-client and shutdown decisions; the estimates below are historical dated models, not a new plan pass.
 
 **State bootstrap complete; application infrastructure pending approval.** The human approved only the exact five-create S3 bootstrap plan. It actually added 5 resources, changed/destroyed 0; authenticated controls and independent post-apply review pass. [Actual bootstrap execution evidence](evidence/aws-state-bootstrap-2026-10-29/README.md). Existing certificate state remains separate and preserved. No application apply, image publication, ALB endpoint or marketplace runtime verification has occurred.
 

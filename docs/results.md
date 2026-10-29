@@ -1,10 +1,14 @@
 # Results and verification boundary
 
-## Current state bootstrap and application plan — 29 October 2026
+## Current operator preparation — 29 October 2026
 
-The exact approved S3 bootstrap plan actually added 5 resources, changed/destroyed 0. Authenticated read-back plus independent critic verify its actual Ohio/versioning/AES256/public-block/TLS-deny configuration. [Actual execution evidence](evidence/aws-state-bootstrap-2026-10-29/README.md). Certificate state remains separate. No application infrastructure or runtime deployment is inferred; the new actual S3-backed plan remains separately reviewed and unapproved.
+The user selected 24 hours, delete demo data and preserve Terraform state. Twelve mocked cleanup plans and 28 fake-CLI operator tests pass. The actual visible preflight passed account/credits/backend/certificate/empty-state/scoped absence checks, then stopped at the approved-client mismatch before plan generation. An additional IP lookup/private record was rejected by automatic approval review and was not retried. The previous 8cf application plan correctly refuses changed source. [Current runbook](aws-operator-runbook-2026-10-29.md) and [actual evidence](evidence/aws-operator-preparation-2026-10-29/README.md). No fresh application plan, timer, paid application provisioning or unattended cleanup exists.
 
-The [new actual S3-backed application plan](aws-s3-plan-review-2026-10-29.md) contains 111 creates and zero updates/deletes, with zero application tasks. The source/binary/backend/quantities review passes; 54 S3, 23 HTTPS legacy and 11 hostname-free negative controls pass, each with a valid accepted fixture. Fresh 29 October tariffs retain the $6.83/24h infrastructure-probe and $8.32/24h future activation estimates before credits/recovery. Application apply, runtime gates and the actual 24-hour shutdown schedule remain pending. No application tests were rerun or relabeled as new execution for this plan-only change.
+## Earlier state bootstrap and application plan — 29 October 2026
+
+The exact approved S3 bootstrap plan actually added 5 resources, changed/destroyed 0. Authenticated read-back plus independent critic verify its actual Ohio/versioning/AES256/public-block/TLS-deny configuration. [Actual execution evidence](evidence/aws-state-bootstrap-2026-10-29/README.md). Certificate state remains separate. No application infrastructure or runtime deployment is inferred; the earlier application plan is now superseded; the current operator preflight is stopped and no matching new plan exists.
+
+The [historical, now superseded S3-backed application plan](aws-s3-plan-review-2026-10-29.md) contains 111 creates and zero updates/deletes, with zero application tasks. At that checkpoint the source/binary/backend/quantities review passed; 54 S3, 23 HTTPS legacy and 11 hostname-free negative controls passed, each with a valid accepted fixture. Fresh 29 October tariffs retain the $6.83/24h infrastructure-probe and $8.32/24h future activation estimates before credits/recovery. Application apply, runtime gates and the actual 24-hour shutdown schedule remain pending. No application tests were rerun or relabeled as new execution for this plan-only change.
 
 
 ## Historical plan preparation — 28 October 2026
@@ -13,7 +17,7 @@ The owner approved one HTTPS client /32 for planning, not provisioning. Read-onl
 
 All 31 selected rates/units remain unchanged. Current probe stage expected $6.83/24h/$191.22 per 720h includes TLS/403/503 allowance; future five-task activation remains $8.32/$235.68 plus recovery. Shared S3 costs explicitly allocate state within existing totals. Both real valid plan fixtures pass the reviewer; 23 HTTPS and 11 legacy negative controls reject unsafe variants. The fresh critic checks actual binaries/source, privacy, security graph and all 12 cost ledgers. [Evidence index](evidence/aws-https-plan-2026-10-28/README.md).
 
-No app/infra definitions were changed. At that checkpoint the final S3-backed saved plan depended on approved state bootstrap. That prerequisite is now complete; the new 29 October saved plan is linked above. Neither the historical no-listener plan nor today's local preview is an apply approval. The planning expiry proposal must be refreshed at the actual agreed start; no demo timer has started.
+No app/infra definitions were changed. At that checkpoint the final S3-backed saved plan depended on approved state bootstrap. That prerequisite is now complete; the historical 29 October artifact is linked above and now superseded by later source changes. Neither the historical no-listener plan nor today's local preview is an apply approval. The planning expiry proposal must be refreshed at the actual agreed start; no demo timer has started.
 
 ## Historical ECS preparation — 27 October 2026
 

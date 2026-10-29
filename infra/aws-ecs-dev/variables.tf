@@ -59,6 +59,16 @@ variable "deploy_application" {
   default     = false
   description = "False: infrastructure review/staging only, services have desired count zero. True requires verified images, migration and runtime-secret setup."
 }
+variable "teardown_discard_demo_data" {
+  type        = bool
+  default     = false
+  nullable    = false
+  description = "Explicit teardown-only choice to discard synthetic demo data after stopping application services. A separately reviewed transition must be applied before destroy; it does not delete resources or retained state by itself."
+  validation {
+    condition     = !var.teardown_discard_demo_data || !var.deploy_application
+    error_message = "Discarding demo data is allowed only with deploy_application=false; stop application services before teardown."
+  }
+}
 variable "image_digests" {
   type        = object({ backend = string, frontend = string })
   default     = null

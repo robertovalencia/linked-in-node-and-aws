@@ -1,0 +1,69 @@
+PREPARATION ONLY: no apply, destroy, login, secret reads or application provisioning.
+Runtime AWS_PROFILE=marketplace-dev AWS_REGION=us-east-2; conflicting credential/Terraform override variables cleared.
+
+1. Confirm the actual AWS account with the same environment used by Terraform.
+$ aws sts get-caller-identity --query '{Account:Account}' --region us-east-2 --output json
+{
+    "Account": "772641336063"
+}
+
+2. Read current plan/credits; the result is not a spending cap or service eligibility guarantee.
+$ aws freetier get-account-plan-state --region us-east-1 --output json
+{
+    "accountId": "772641336063",
+    "accountPlanType": "FREE",
+    "accountPlanStatus": "ACTIVE",
+    "accountPlanRemainingCredits": {
+        "amount": 100.0,
+        "unit": "USD"
+    },
+    "accountPlanExpirationDate": "2027-04-21T17:52:26.416000+00:00"
+}
+
+3. Verify the initialized default ECS workspace.
+$ terraform workspace show
+default
+
+4. Require no existing application state before first provisioning.
+$ aws s3api head-object --bucket 772641336063-linked-in-node-terraform-state --key linked-in-node/ecs-dev/terraform.tfstate --expected-bucket-owner 772641336063 --region us-east-2 --output json
+
+aws: [ERROR]: An error occurred (404) when calling the HeadObject operation: Not Found
+
+5. Verify the real certificate identity, issued status and nonexportable setting.
+$ aws acm describe-certificate --certificate-arn arn:aws:acm:us-east-2:772641336063:certificate/ae18667c-47ac-4fda-8039-e877bafe9705 --query 'Certificate.{Status:Status,DomainName:DomainName,Export:Options.Export}' --region us-east-2 --output json
+{
+    "Status": "ISSUED",
+    "DomainName": "app.linked-in-node-rv.dynv6.net",
+    "Export": "DISABLED"
+}
+
+6. Check the exact proposed ECS cluster is absent (not a complete account inventory).
+$ aws ecs describe-clusters --clusters linked-in-node-ecs-dev --region us-east-2 --output json
+{
+    "clusters": [],
+    "failures": [
+        {
+            "arn": "arn:aws:ecs:us-east-2:772641336063:cluster/linked-in-node-ecs-dev",
+            "reason": "MISSING"
+        }
+    ]
+}
+
+Check the exact proposed RDS instance is absent.
+$ aws rds describe-db-instances --db-instance-identifier linked-in-node-ecs-dev --region us-east-2 --output json
+
+aws: [ERROR]: An error occurred (DBInstanceNotFound) when calling the DescribeDBInstances operation: DBInstance linked-in-node-ecs-dev not found.
+
+Check the exact proposed ALB is absent.
+$ aws elbv2 describe-load-balancers --names linked-in-node-ecs-dev --region us-east-2 --output json
+
+aws: [ERROR]: An error occurred (LoadBalancerNotFound) when calling the DescribeLoadBalancers operation: Load balancers '[linked-in-node-ecs-dev]' not found
+
+Check the project-tagged VPC scope is empty; the unrelated default VPC is preserved.
+$ aws ec2 describe-vpcs --filters Name=tag:Project,Values=linked-in-node Name=tag:Environment,Values=ecs-dev --query 'Vpcs[].VpcId' --region us-east-2 --output json
+[]
+
+7. Compare current client egress to the approved /32 without displaying the address.
+$ curl --fail --silent --show-error --max-time 15 https://checkip.amazonaws.com
+[response suppressed; private result processed without echoing]
+STOP: Current client differs from the approved /32. Ask for a new explicitly approved CIDR; do not broaden access.

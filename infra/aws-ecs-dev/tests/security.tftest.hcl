@@ -68,6 +68,14 @@ run "infrastructure_without_unpublished_images" {
     error_message = "RDS must manage admin credentials, encrypt storage and require explicit recovery/teardown review."
   }
   assert {
+    condition     = !var.teardown_discard_demo_data && !aws_s3_bucket.operations.force_destroy && alltrue([for s in aws_secretsmanager_secret.runtime : s.recovery_window_in_days == 7]) && aws_db_instance.dev.final_snapshot_identifier == "${local.name}-final-${var.recovery_snapshot_suffix}"
+    error_message = "Normal deployment must preserve the protected operations bucket, seven-day runtime secret recovery and named final database snapshot."
+  }
+  assert {
+    condition     = alltrue([for repository in aws_ecr_repository.app : repository.force_delete])
+    error_message = "Preserve the existing explicit lab ECR image cleanup behavior; the new teardown toggle must not silently change it."
+  }
+  assert {
     condition     = length(aws_secretsmanager_secret.runtime) == 6 && output.cost_quantities.rds_managed_master_secrets == 1
     error_message = "Price six owned/runtime/broker secret resources plus the RDS-managed master secret."
   }
@@ -216,4 +224,39 @@ run "reject_activation_without_hostname_or_certificate" {
     image_digests         = { backend = "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", frontend = "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" }
   }
   expect_failures = [var.application_hostname, var.certificate_arn, var.approved_client_cidrs]
+}
+
+run "explicit_teardown_discards_only_demo_data" {
+  command = plan
+  variables {
+    deploy_application         = false
+    teardown_discard_demo_data = true
+    image_digests              = { backend = "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", frontend = "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" }
+  }
+  assert {
+    condition     = alltrue([for service in aws_ecs_service.app : service.desired_count == 0]) && length(aws_ecs_service.app) == 5
+    error_message = "Cleanup configuration must stop all five staged application services rather than allow active task counts."
+  }
+  assert {
+    condition     = !aws_db_instance.dev.deletion_protection && aws_db_instance.dev.skip_final_snapshot && aws_db_instance.dev.final_snapshot_identifier == null && aws_db_instance.dev.delete_automated_backups
+    error_message = "Explicit discard mode must remove RDS deletion protection and request no final snapshot or retained automated backups."
+  }
+  assert {
+    condition     = aws_s3_bucket.operations.force_destroy && alltrue([for secret in aws_secretsmanager_secret.runtime : secret.recovery_window_in_days == 0]) && alltrue([for repository in aws_ecr_repository.app : repository.force_delete])
+    error_message = "Discard mode must permit operations-object/image cleanup and irreversible deletion of the six owned runtime secrets."
+  }
+  assert {
+    condition     = aws_db_instance.dev.storage_encrypted && !aws_db_instance.dev.publicly_accessible && aws_db_instance.dev.manage_master_user_password && aws_instance.broker.root_block_device[0].delete_on_termination
+    error_message = "Teardown configuration must retain encryption/private managed credentials and remove the broker data volume when its host is eventually destroyed."
+  }
+}
+
+run "reject_discard_while_application_active" {
+  command = plan
+  variables {
+    deploy_application         = true
+    teardown_discard_demo_data = true
+    image_digests              = { backend = "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", frontend = "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" }
+  }
+  expect_failures = [var.teardown_discard_demo_data]
 }
