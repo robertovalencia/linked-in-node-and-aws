@@ -5,7 +5,7 @@
   "aws_bash_blocks_syntax_checked": 10,
   "aws_commands_executed": 0,
   "github_dispatches": 0,
-  "evidence": "local-commands.txt",
+  "evidence": "terraform-command-workbook-local.txt",
   "independent_shell_only_guard_probes_passed": 10,
   "cloud_execution": false,
   "local_manual_blocks": 8,
