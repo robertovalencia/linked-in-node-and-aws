@@ -55,3 +55,8 @@ The GitHub learning entry point must link a supplementary beginner walkthrough o
 ### R12 visual AWS learning companion
 
 The GitHub study path must include real screenshots or attributed official AWS screenshots with small concept captions, related source/lesson links and recall questions. Distinguish an actual account capture, an unauthenticated sign-in screen and an official example. Never imply example resources are this project, expose credentials/private client addresses, or create resources for a screenshot. Include managed local images in the ZIP, state the online-only boundary for externally hosted examples, and validate the new local Markdown/image targets. Preserve existing numbered lesson IDs and saved notes.
+
+
+### R12 Terraform command workbooks
+
+Provide an executable local command sequence using only the inspected built-in-resource lab, plus a separately labeled AWS operator reference. Explain command purpose, working directory, inputs, expected observations, state scope and failure handling. The local sequence must actually pass; cloud templates must be syntax-checked and independently reviewed without being executed. Existing artifact guards must stop execution before overwrites, and saved-plan apply must explain its lack of an extra prompt and require the approved hash/account. Distinguish GitHub verification from the legacy EC2 deployment and pending ECS activation. Include the workbooks in the ZIP and link them from the existing roadmap/lessons without renumbering them.

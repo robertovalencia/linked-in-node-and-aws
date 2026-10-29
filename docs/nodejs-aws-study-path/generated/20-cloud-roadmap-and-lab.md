@@ -83,3 +83,8 @@ Code excerpts are pinned to the inspected project revision `9bb8851`. They descr
 ## Recognize the console screen
 
 Use the [AWS visual study guide](../visuals/README.md) to identify the console fields and connect them to source. Official AWS examples demonstrate concepts and are not screenshots of this project’s deployment.
+
+
+## Type the commands and inspect the result
+
+The [local command workbook](../walkthroughs/09-terraform-local-commands.md) walks through a runnable isolated configuration from initialization to cleanup. The separate [AWS command workflow](../walkthroughs/10-terraform-aws-commands.md) explains owner/state/input prerequisites, protected saved plans, approval and later apply; it is not a cloud deployment authorization.

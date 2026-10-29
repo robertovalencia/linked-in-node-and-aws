@@ -51,9 +51,11 @@ node scripts/failure-drill.mjs
 
 The [AWS visual study guide](docs/nodejs-aws-study-path/visuals/README.md) adds actual project views and official console examples with field explanations and explicit provenance, plus guidance for email/provider sign-in and the actual IAM user-permissions wizard.
 
-New to the setup process? Read [How this project was set up and verified](docs/nodejs-aws-study-path/walkthroughs/README.md). Eight small-concept chapters connect every stage—from local credentials and source review through Terraform/DNS/certificate preparation, pending deployment and GitHub/Study Desk publication—to real files and evidence.
+New to the setup process? Read [How this project was set up and verified](docs/nodejs-aws-study-path/walkthroughs/README.md). Ten small-concept chapters connect every stage—from local credentials and source review through Terraform/DNS/certificate preparation, pending deployment and GitHub/Study Desk publication—to real files and evidence.
 
 Explore the [NodeJs/AWS study path](docs/nodejs-aws-study-path/README.md): 84 beginner-to-senior lessons covering JavaScript, TypeScript, Node.js/NestJS, PostgreSQL, Kafka, React, AWS/Terraform, testing, and AI-assisted delivery. Follow the [twelve-week roadmap and mastery gates](docs/nodejs-aws-study-path/generated/00-roadmap-and-mastery-gates.md), use the six-week or urgent interview route, or [download the complete study pack](docs/nodejs-aws-study-path/NodeJs-AWS-study-pack.zip). Lessons teach individual Node.js concepts and libraries with short explanations, exact source excerpts, fixed GitHub line links, recall questions, and practical labs. The coverage matrix maps tools and interview requirements to lessons.
+
+For copyable commands with expected results, start the [local Terraform command workbook](docs/nodejs-aws-study-path/walkthroughs/09-terraform-local-commands.md), then the [AWS command and approval workflow](docs/nodejs-aws-study-path/walkthroughs/10-terraform-aws-commands.md).
 
 For deeper cloud study, start the [24-lesson AWS/Terraform extension](docs/nodejs-aws-study-path/generated/20-cloud-roadmap-and-lab.md): AWS fundamentals, IAM/networking, EC2/ECR/S3/secrets, operations/costs, Terraform language/state/plans/testing, and deployment/rollback. Practice with the [credential-free local Terraform lab](docs/nodejs-aws-study-path/labs/terraform-local/README.md) before any account-backed work.
 

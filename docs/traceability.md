@@ -67,3 +67,6 @@ R12 IAM screenshot clarification → visual guide 03 and user-provided permissio
 
 
 R12 actual console learning → visual guide 04 and signed-in project captures → independent privacy/caption review, scope-aware observation record, source/ZIP/link checks and managed reader refresh. User-completed TOTP registration is reported separately from untested sign-in challenge behavior; no authentication secrets or device/IP details are published.
+
+
+R12 Terraform commands → walkthroughs 09–10 → exact local Markdown-block execution, saved-plan/action/output/cleanup assertions, cloud-template syntax and independent stubbed failure-path checks, managed-link/archive validation → separate command critic. No cloud execution, login or GitHub dispatch is performed by this documentation change.

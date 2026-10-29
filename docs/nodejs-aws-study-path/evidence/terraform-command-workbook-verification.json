@@ -1,0 +1,14 @@
+{
+  "local_markdown_sha256": "50cef351f09f551c0ec813c20809e02b29b3ab0c3c4a60db00fd071c5e596bea",
+  "local_bash_blocks_executed": 9,
+  "local_execution_exit": 0,
+  "aws_bash_blocks_syntax_checked": 10,
+  "aws_commands_executed": 0,
+  "github_dispatches": 0,
+  "evidence": "local-commands.txt",
+  "independent_shell_only_guard_probes_passed": 10,
+  "cloud_execution": false,
+  "local_manual_blocks": 8,
+  "local_fast_path_blocks": 1,
+  "scope": "Exact local workbook commands executed with built-in resources only. Cloud command blocks syntax-checked, not executed; independent failure guards use stubs."
+}

@@ -71,3 +71,8 @@ Official sources checked on 2026-10-26.
 
 
 [Previous lesson](./31-aws-production-design-tradeoffs.md) · [Next lesson](./33-terraform-providers-versions-and-init.md)
+
+
+## Type the commands and inspect the result
+
+The [local command workbook](../walkthroughs/09-terraform-local-commands.md) walks through a runnable isolated configuration from initialization to cleanup. The separate [AWS command workflow](../walkthroughs/10-terraform-aws-commands.md) explains owner/state/input prerequisites, protected saved plans, approval and later apply; it is not a cloud deployment authorization.

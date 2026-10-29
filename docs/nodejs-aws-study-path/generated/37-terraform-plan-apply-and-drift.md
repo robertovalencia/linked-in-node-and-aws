@@ -71,3 +71,8 @@ Official sources checked on 2026-10-26.
 
 
 [Previous lesson](./36-terraform-state-locking-and-bootstrap.md) · [Next lesson](./38-terraform-lifecycle-import-and-refactoring.md)
+
+
+## Type the commands and inspect the result
+
+The [local command workbook](../walkthroughs/09-terraform-local-commands.md) walks through a runnable isolated configuration from initialization to cleanup. The separate [AWS command workflow](../walkthroughs/10-terraform-aws-commands.md) explains owner/state/input prerequisites, protected saved plans, approval and later apply; it is not a cloud deployment authorization.

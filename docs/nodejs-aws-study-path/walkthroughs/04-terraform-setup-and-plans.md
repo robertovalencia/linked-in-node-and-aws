@@ -53,3 +53,8 @@ The critic reproduced such unsafe relationships in negative fixtures. The checke
 Raw state, saved plans, exact client CIDR, credentials and unredacted context stay in ignored owner-only storage. Git contains summaries and hashes suitable for review. A Terraform `sensitive` annotation hides selected presentation; it does not guarantee absence from state. Never paste `terraform show -json` output into a public issue.
 
 **Understanding check:** Why is a lock file publishable while state is private? Why must the operator make a new plan after state bootstrap? What could a resource-count-only reviewer miss?
+
+
+## Copyable command workbooks
+
+Follow [09 · local Terraform commands](09-terraform-local-commands.md) for the executable learning sequence, then [10 · the AWS operator command workflow](10-terraform-aws-commands.md). Every step states its directory, purpose, expected result and execution boundary.

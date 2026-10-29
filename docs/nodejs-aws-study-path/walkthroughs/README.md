@@ -14,6 +14,8 @@ This is the small-concept companion to the [84-lesson study path](../README.md).
 | [6 · Deployment, network security and recovery](06-deployment-security-and-operations.md) | What must happen before the application is really deployed? | Future owner-run work, explicitly pending |
 | [7 · How we built and reviewed the learning path](07-building-and-reviewing-the-study-path.md) | How were lessons, labs and evidence produced? | Local author/reviewer workflow |
 | [8 · GitHub publication and Study Desk setup](08-publishing-and-study-desk.md) | How do these Markdown files reach GitHub and the reader? | Local reader and Git operations; no paid AI needed |
+| [9 · Runnable Terraform commands](09-terraform-local-commands.md) | What do I type, and what should happen after each command? | Isolated local built-in-resource exercise |
+| [10 · AWS Terraform command workflow](10-terraform-aws-commands.md) | How do bootstrap, the S3 backend, plan review, apply and GitHub triggers fit together? | Owner-operated templates; actual cloud execution/approval remains separate |
 
 Each chapter ends with a small understanding check. It is fine to look up an answer. The objective is to connect a command to its purpose and evidence, rather than memorize a command sequence.
 

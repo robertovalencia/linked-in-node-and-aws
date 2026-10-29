@@ -70,3 +70,8 @@ Verify a foundation guide, a new professional guide, a walkthrough GitHub link a
 When lessons change: review source → validate links → rebuild ZIP → commit/push → import → run `--check` → inspect the reader → record evidence. If navigation code changes, restart the app. Keep infrastructure costs/deployment with the designated owner, and treat state/private plans as operational data rather than lesson attachments.
 
 **Understanding check:** Why must a new linked lab file be committed before import? Why can the ZIP work without Study Desk? Which source files may be refreshed, and which saved content must remain untouched?
+
+
+## Copyable command workbooks
+
+Follow [09 · local Terraform commands](09-terraform-local-commands.md) for the executable learning sequence, then [10 · the AWS operator command workflow](10-terraform-aws-commands.md). Every step states its directory, purpose, expected result and execution boundary.

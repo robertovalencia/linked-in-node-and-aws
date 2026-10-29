@@ -1,0 +1,304 @@
+Terraform v1.17.0
+on darwin_arm64
+
+PASS terraform version -json (exit 0)
+PASS terraform fmt -check -recursive (exit 0)
+PASS terraform init -backend=false -input=false -no-color (exit 0)
+PASS terraform validate -no-color (exit 0)
+PASS terraform plan -input=false -no-color -detailed-exitcode -out=first.tfplan (exit 2)
+PASS terraform show -json first.tfplan (exit 0)
+PASS terraform apply -input=false -no-color first.tfplan (exit 0)
+PASS terraform show -json (exit 0)
+PASS terraform plan -input=false -no-color -detailed-exitcode -out=idempotent.tfplan (exit 0)
+PASS terraform show -json idempotent.tfplan (exit 0)
+PASS terraform plan -input=false -no-color -detailed-exitcode -out=change.tfplan -var=release=v2 (exit 2)
+PASS terraform show -json change.tfplan (exit 0)
+PASS terraform apply -input=false -no-color change.tfplan (exit 0)
+PASS terraform plan -input=false -no-color -detailed-exitcode -out=replace.tfplan -var=release=v2 -var=generation=2 (exit 2)
+PASS terraform show -json replace.tfplan (exit 0)
+PASS terraform apply -input=false -no-color replace.tfplan (exit 0)
+PASS terraform show -json (exit 0)
+PASS terraform fmt -no-color (exit 0)
+PASS terraform plan -input=false -no-color -detailed-exitcode -out=moved.tfplan -var=release=v2 -var=generation=2 (exit 2)
+PASS terraform show -json moved.tfplan (exit 0)
+PASS terraform apply -input=false -no-color moved.tfplan (exit 0)
+PASS terraform show -json (exit 0)
+PASS terraform plan -input=false -no-color -detailed-exitcode -out=after-move.tfplan -var=release=v2 -var=generation=2 (exit 0)
+PASS terraform show -json after-move.tfplan (exit 0)
+PASS terraform test -no-color (exit 0)
+PASS terraform destroy -auto-approve -input=false -no-color -var=release=v2 -var=generation=2 (exit 0)
+PASS terraform state list (exit 0)
+PASS all local transitions, three configuration test runs, and empty-state cleanup
+[0m[1mInitializing the backend...[0m
+
+[0m[1mInitializing provider plugins...[0m
+- terraform.io/builtin/terraform is built in to Terraform
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+[32m[1mSuccess![0m The configuration is valid.
+[0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # terraform_data.release will be created
+  + resource "terraform_data" "release" {
+      + id               = (known after apply)
+      + input            = {
+          + name    = "marketplace-local"
+          + release = "v1"
+        }
+      + output           = (known after apply)
+      + triggers_replace = 1
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + release_summary = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: create.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "create.tfplan"
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # terraform_data.release will be created
+  + resource "terraform_data" "release" {
+      + id               = (known after apply)
+      + input            = {
+          + name    = "marketplace-local"
+          + release = "v1"
+        }
+      + output           = (known after apply)
+      + triggers_replace = 1
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + release_summary = (known after apply)
+terraform_data.release: Creating...
+terraform_data.release: Creation complete after 0s [id=60204973-3f56-1c8f-bd9a-f7814799a699]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+release_summary = {
+  "name" = "marketplace-local"
+  "release" = "v1"
+}
+{"name":"marketplace-local","release":"v1"}
+terraform_data.release
+# terraform_data.release:
+resource "terraform_data" "release" {
+    id               = "60204973-3f56-1c8f-bd9a-f7814799a699"
+    input            = {
+        name    = "marketplace-local"
+        release = "v1"
+    }
+    output           = {
+        name    = "marketplace-local"
+        release = "v1"
+    }
+    triggers_replace = 1
+}
+terraform_data.release: Refreshing state... [id=60204973-3f56-1c8f-bd9a-f7814799a699]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+terraform_data.release: Refreshing state... [id=60204973-3f56-1c8f-bd9a-f7814799a699]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # terraform_data.release will be updated in-place
+  ~ resource "terraform_data" "release" {
+        id               = "60204973-3f56-1c8f-bd9a-f7814799a699"
+      ~ input            = {
+            name    = "marketplace-local"
+          ~ release = "v1" -> "v2"
+        }
+      ~ output           = {
+          - name    = "marketplace-local"
+          - release = "v1"
+        } -> (known after apply)
+        # (1 unchanged attribute hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+Changes to Outputs:
+  ~ release_summary = {
+      - name    = "marketplace-local"
+      - release = "v1"
+    } -> (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: release-v2.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "release-v2.tfplan"
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # terraform_data.release will be updated in-place
+  ~ resource "terraform_data" "release" {
+        id               = "60204973-3f56-1c8f-bd9a-f7814799a699"
+      ~ input            = {
+            name    = "marketplace-local"
+          ~ release = "v1" -> "v2"
+        }
+      ~ output           = {
+          - name    = "marketplace-local"
+          - release = "v1"
+        } -> (known after apply)
+        # (1 unchanged attribute hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+Changes to Outputs:
+  ~ release_summary = {
+      - name    = "marketplace-local"
+      - release = "v1"
+    } -> (known after apply)
+terraform_data.release: Modifying... [id=60204973-3f56-1c8f-bd9a-f7814799a699]
+terraform_data.release: Modifications complete after 0s [id=60204973-3f56-1c8f-bd9a-f7814799a699]
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+release_summary = {
+  "name" = "marketplace-local"
+  "release" = "v2"
+}
+{"name":"marketplace-local","release":"v2"}
+# terraform_data.release:
+resource "terraform_data" "release" {
+    id               = "60204973-3f56-1c8f-bd9a-f7814799a699"
+    input            = {
+        name    = "marketplace-local"
+        release = "v2"
+    }
+    output           = {
+        name    = "marketplace-local"
+        release = "v2"
+    }
+    triggers_replace = 1
+}
+terraform_data.release: Refreshing state... [id=60204973-3f56-1c8f-bd9a-f7814799a699]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+tests/contracts.tftest.hcl... in progress
+  run "default_contract"... pass
+  run "custom_input"... pass
+  run "invalid_project"... pass
+tests/contracts.tftest.hcl... tearing down
+tests/contracts.tftest.hcl... pass
+
+Success! 3 passed, 0 failed.
+terraform_data.release: Refreshing state... [id=60204973-3f56-1c8f-bd9a-f7814799a699]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # terraform_data.release will be destroyed
+  - resource "terraform_data" "release" {
+      - id               = "60204973-3f56-1c8f-bd9a-f7814799a699" -> null
+      - input            = {
+          - name    = "marketplace-local"
+          - release = "v2"
+        } -> null
+      - output           = {
+          - name    = "marketplace-local"
+          - release = "v2"
+        } -> null
+      - triggers_replace = 1 -> null
+    }
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Changes to Outputs:
+  - release_summary = {
+      - name    = "marketplace-local"
+      - release = "v2"
+    } -> null
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: cleanup.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "cleanup.tfplan"
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # terraform_data.release will be destroyed
+  - resource "terraform_data" "release" {
+      - id               = "60204973-3f56-1c8f-bd9a-f7814799a699" -> null
+      - input            = {
+          - name    = "marketplace-local"
+          - release = "v2"
+        } -> null
+      - output           = {
+          - name    = "marketplace-local"
+          - release = "v2"
+        } -> null
+      - triggers_replace = 1 -> null
+    }
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Changes to Outputs:
+  - release_summary = {
+      - name    = "marketplace-local"
+      - release = "v2"
+    } -> null
+terraform_data.release: Destroying... [id=60204973-3f56-1c8f-bd9a-f7814799a699]
+terraform_data.release: Destruction complete after 0s
+
+Apply complete! Resources: 0 added, 0 changed, 1 destroyed.
+PASS: exact manual sequence completed, v2 retained before cleanup, final local state empty.
+
+STDERR
