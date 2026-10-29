@@ -17,6 +17,8 @@ This is the small-concept companion to the [84-lesson study path](../README.md).
 | [9 · Runnable Terraform commands](09-terraform-local-commands.md) | What do I type, and what should happen after each command? | Isolated local built-in-resource exercise |
 | [10 · AWS Terraform command workflow](10-terraform-aws-commands.md) | How do bootstrap, the S3 backend, plan review, apply and GitHub triggers fit together? | Owner-operated templates; actual cloud execution/approval remains separate |
 
+| [11 · Actual AWS execution journal](11-aws-execution-journal.md) | What actually ran, what did it prove, and what remains before application apply? | Verified bootstrap and offline review; pending application execution |
+
 Each chapter ends with a small understanding check. It is fine to look up an answer. The objective is to connect a command to its purpose and evidence, rather than memorize a command sequence.
 
 ## The sequence we actually followed
@@ -34,7 +36,9 @@ flowchart TD
     C --> J[Separate owner: costs and infrastructure planning]
     J --> K[Approved certificate request and DNS validation]
     K --> L[Reviewed bootstrap and HTTPS preview plans]
-    L --> M[Pending approval and live application verification]
+    L --> M[Approved state bootstrap applied and verified]
+    M --> N[Actual S3-backed application plan reviewed]
+    N --> O[Pending application approval, activation and verification]
 ```
 
 The migration history is recorded in [requirements](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/specs/requirements.md), [architecture](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/architecture.md), [AI development](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/ai-development.md) and [reviews](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/reviews.md). The curriculum release is reproducible from its [independent audit](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/evidence/cloud-study-release-2026-10-28/independent-audit.md). This walkthrough summarizes those artifacts; it does not claim to reconstruct every historical terminal command.
@@ -46,6 +50,8 @@ The migration history is recorded in [requirements](https://github.com/robertova
 - **Plan reviewed:** proposed resource changes were inspected. They are not applied resources.
 - **Applied:** an actual operation changed the environment and retained evidence.
 - **Operationally verified:** a named real behavior was tested in that environment.
+
+Current update, **29 October 2026**: the S3 state bootstrap has been approved, applied and verified; the actual S3-backed application plan is reviewed but remains unapplied. The [execution journal](11-aws-execution-journal.md) records the commands, evidence and human-selected 24-hour/delete-demo-data policy. The paragraph below preserves the earlier dated checkpoint.
 
 As of the recorded **28 October 2026** owner update, certificate issuance and DNS validation are verified. The five-create state bootstrap and 111-create HTTPS preview are prepared, not applied. Application HTTPS, tasks, live security/recovery and teardown gates remain pending. Consult the [dated owner report](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-https-plan-review-2026-10-28.md) and [coordination record](../deployment-coordination.json) before treating this snapshot as current account state. The deployment chat, “Create Node.js AWS LinkedIn project,” owns costs and provisioning.
 

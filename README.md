@@ -51,7 +51,7 @@ node scripts/failure-drill.mjs
 
 The [AWS visual study guide](docs/nodejs-aws-study-path/visuals/README.md) adds actual project views and official console examples with field explanations and explicit provenance, plus guidance for email/provider sign-in and the actual IAM user-permissions wizard.
 
-New to the setup process? Read [How this project was set up and verified](docs/nodejs-aws-study-path/walkthroughs/README.md). Ten small-concept chapters connect every stage—from local credentials and source review through Terraform/DNS/certificate preparation, pending deployment and GitHub/Study Desk publication—to real files and evidence.
+New to the setup process? Read [How this project was set up and verified](docs/nodejs-aws-study-path/walkthroughs/README.md). Eleven small-concept chapters connect every stage—from local credentials and source review through Terraform/DNS/certificate preparation, pending deployment and GitHub/Study Desk publication—to real files and evidence.
 
 Explore the [NodeJs/AWS study path](docs/nodejs-aws-study-path/README.md): 84 beginner-to-senior lessons covering JavaScript, TypeScript, Node.js/NestJS, PostgreSQL, Kafka, React, AWS/Terraform, testing, and AI-assisted delivery. Follow the [twelve-week roadmap and mastery gates](docs/nodejs-aws-study-path/generated/00-roadmap-and-mastery-gates.md), use the six-week or urgent interview route, or [download the complete study pack](docs/nodejs-aws-study-path/NodeJs-AWS-study-pack.zip). Lessons teach individual Node.js concepts and libraries with short explanations, exact source excerpts, fixed GitHub line links, recall questions, and practical labs. The coverage matrix maps tools and interview requirements to lessons.
 
@@ -79,3 +79,5 @@ The [full syllabus and concept checklist](docs/nodejs-aws-study-path/generated/4
 
 
 Deployment status: certificate issuance and separately approved S3 bootstrap are verified. The 29 October actual S3-backed application plan is prepared; application provisioning and activation remain pending separate approval. Consult the deployment coordination record and owner report rather than inferring live resources from these learning examples.
+
+For the real approved state bootstrap and the remaining application plan/24-hour teardown boundaries, read the [29 October AWS execution journal](docs/nodejs-aws-study-path/walkthroughs/11-aws-execution-journal.md).

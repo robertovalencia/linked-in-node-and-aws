@@ -80,3 +80,6 @@ Human exact-plan approval → immediate hash/source/provider-lock/account/absenc
 ## R10 actual S3-backed application plan — 29 October 2026
 
 Approved five-resource state bootstrap → authenticated controls/post-apply critic → empty isolated real S3 backend init with account/encryption/locking safeguards → NEW exact saved application plan (111 creates) → current official tariffs/actual-quantity ledgers → strict saved-backend/source/security checks and 54/23/11 negative controls → separate fresh-context critic → [reviewable packet](aws-s3-plan-review-2026-10-29.md). Application apply, publication/bootstrap/activation, runtime acceptance and scheduled teardown remain pending separate decisions.
+
+
+R12 execution journal → walkthrough11 → original owner execution/read-back evidence, actual local reviewer success before retention changes, independently observed old-artifact source-drift rejection, Bash syntax/pinned links/private fail-fast checks and fresh critic → [independent review](evidence/aws-execution-journal-review-2026-10-29.md). No new cloud mutation or iTerm automation.

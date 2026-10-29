@@ -60,3 +60,8 @@ The GitHub study path must include real screenshots or attributed official AWS s
 ### R12 Terraform command workbooks
 
 Provide an executable local command sequence using only the inspected built-in-resource lab, plus a separately labeled AWS operator reference. Explain command purpose, working directory, inputs, expected observations, state scope and failure handling. The local sequence must actually pass; cloud templates must be syntax-checked and independently reviewed without being executed. Existing artifact guards must stop execution before overwrites, and saved-plan apply must explain its lack of an extra prompt and require the approved hash/account. Distinguish GitHub verification from the legacy EC2 deployment and pending ECS activation. Include the workbooks in the ZIP and link them from the existing roadmap/lessons without renumbering them.
+
+
+### R12 execution-journal extension
+
+Document the real approved bootstrap and its observed controls, actual S3 backend, visible safe inspection commands, offline plan-review output and failure/retry boundaries. Distinguish historical accepted artifacts from current source drift and never bypass the review. Record the selected 24-hour/delete-demo-data/preserve-state policy and pending shutdown mechanism. Preserve all numbered lesson IDs and include the new chapter in the downloadable pack and reader index.

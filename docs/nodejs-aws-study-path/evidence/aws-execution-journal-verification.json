@@ -1,0 +1,15 @@
+{
+  "recordedDate": "2026-10-29",
+  "sourceCommit": "ad2f2167496ec44f0583097d124ff18ddd311c0d",
+  "planBinarySha256": "8cf376c7e79bd48c459c9892eecc111e02a352d8cfd10dd8723a35eaae2c9625",
+  "actualOfflineReview": "PASS before retention source edits; later independent exact-block retry correctly rejects old artifact after data.tf changed",
+  "initialRestrictedProviderStart": "FAIL; unchanged command passed with required local execution permission",
+  "cloudMutationByThisLearningReview": false,
+  "bootstrapApplyEvidence": "Published owner execution: 5 added, 0 changed, 0 destroyed; independently verified",
+  "applicationApplyPerformed": false,
+  "itermControl": "Denied by desktop tool; no automation or bypass",
+  "humanRetentionChoice": "24 hours; delete demo data at teardown and preserve Terraform state",
+  "shutdownMechanism": "Pending review; no scheduler claimed",
+  "sourceReportStatus": "S3_BACKED_HTTPS_INFRASTRUCTURE_PLAN_REVIEWED_NOT_APPROVED",
+  "currentHistoricalPlanUsability": "STOP: obtain newly reviewed retention-compatible artifact"
+}

@@ -88,3 +88,8 @@ Use the [AWS visual study guide](../visuals/README.md) to identify the console f
 ## Type the commands and inspect the result
 
 The [local command workbook](../walkthroughs/09-terraform-local-commands.md) walks through a runnable isolated configuration from initialization to cleanup. The separate [AWS command workflow](../walkthroughs/10-terraform-aws-commands.md) explains owner/state/input prerequisites, protected saved plans, approval and later apply; it is not a cloud deployment authorization.
+
+
+## Follow the actual AWS execution
+
+The [29 October execution journal](../walkthroughs/11-aws-execution-journal.md) records temporary-login renewal, effective identity, the approved five-resource state bootstrap, independent control read-back, real S3 backend setup and the passed offline application-plan review. It separates those completed actions from pending paid application apply, task activation and the agreed 24-hour demo-data removal policy.

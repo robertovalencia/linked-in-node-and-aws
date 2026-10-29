@@ -187,3 +187,12 @@ Independent critic inspected actual Terraform log/state and separately queried e
 ## Actual S3-backed plan preparation — 29 October 2026
 
 A separate fresh-context critic inspected actual saved binary/backend/source, account-scoped absence, private controls and current official tariffs. The reviewer accepts the real S3 fixture and rejects 54 unsafe variants; legacy HTTPS 23 and hostname-free 11 pass. Eight additional independent backend/parser probes reject unsafe payloads. The critic required current results ahead of historical checkpoints and readable prose/count corrections; those were repaired. [Full evidence](evidence/aws-s3-plan-2026-10-29/README.md). Preparation review is distinct from application apply/runtime approval. Biggest gap: no cloud application/recovery/rollback evidence, and the actual 24-hour teardown deadline/scheduler/retention remain unresolved.
+
+
+## R12 actual AWS execution study journal · 2026-10-29
+
+The new eleventh companion chapter records actual login renewal, effective-account verification, the human-approved five-resource bootstrap and independent read-back, actual S3 backend preparation and local saved-plan review. It links published execution evidence, shows copyable inspection commands and explicitly records that desktop iTerm control was denied; no UI automation or alternate control was attempted. Command output remained visible through the agent shell.
+
+The biggest gap found by the fresh independent critic was the distinction between the earlier successful direct offline reviewer and the current expected rejection of the original saved artifact after the deployment owner edited retention source. The journal now labels both observations, forbids forcing the historical plan through source checks, and requires a newly reviewed plan. Bash syntax, all seven pinned targets, full-overlay local links and fail-fast/private-artifact boundaries pass. [Independent review](evidence/aws-execution-journal-review-2026-10-29.md).
+
+The human selected a 24-hour demo, demo-data removal and preserved Terraform state. The shutdown mechanism and exact refreshed artifact are still unresolved; no application apply, task activation or runtime success is claimed. This learning review made no cloud mutation. The archive/import are verified independently of the deployment owner's pending operational work.

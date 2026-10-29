@@ -1,5 +1,7 @@
 # 6 · Deployment, network security and recovery
 
+**29 October update:** the S3 state bootstrap was approved, applied and independently verified. The real S3-backed application plan is prepared; application resources/activation remain pending. Read the [actual execution journal](11-aws-execution-journal.md) for commands and the new 24-hour/delete-demo-data choice. Earlier dated checkpoints below remain historical.
+
 [Previous: certificate](05-hostname-dns-and-certificate.md) · [Index](README.md) · [Next: building the study path](07-building-and-reviewing-the-study-path.md)
 
 This is the **pending deployment sequence**, explained from prepared source and the owner's dated plan. It is not a report that these steps have run. The deployment owner must review costs/permissions and obtain the required concrete-plan approvals. The [selected ECS guide](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/aws-ecs-dev.md) is the detailed operator runbook.

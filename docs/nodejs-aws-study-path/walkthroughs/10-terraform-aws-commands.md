@@ -4,7 +4,9 @@
 
 This is an **operator command reference**, not a run-every-block deployment script. The local chapter is runnable now; these AWS commands require the deployment owner's actual working directories, private inputs, state/backend and approved saved artifact. “Create Node.js AWS LinkedIn project” owns current costs, plans and cloud execution. Adding commands to study material does not authorize their execution.
 
-The recorded status on 28 October 2026 is: one certificate issued; state-bootstrap and application plans unapplied; no live HTTPS marketplace. Read the [dated plan review](https://github.com/robertovalencia/linked-in-node-and-aws/blob/01c30fc0ca3958a99f6808f2211153f2d602c7c4/docs/aws-https-plan-review-2026-10-28.md) before using a historical example. New source, inputs, state or topology need a new plan/review. The selected client range remains private.
+**29 October execution update:** the state bootstrap has now been approved/applied (5 creates, 0 updates/deletes), its controls verified, and the real S3-backed application plan reviewed. The [execution journal](11-aws-execution-journal.md) is the current step-by-step record. The bootstrap commands below remain operator references, not instructions to recreate the already-managed bucket. Application apply and shutdown mechanism remain pending.
+
+The historical recorded status on 28 October 2026 is: one certificate issued; state-bootstrap and application plans unapplied; no live HTTPS marketplace. Read the [dated plan review](https://github.com/robertovalencia/linked-in-node-and-aws/blob/01c30fc0ca3958a99f6808f2211153f2d602c7c4/docs/aws-https-plan-review-2026-10-28.md) before using a historical example. New source, inputs, state or topology need a new plan/review. The selected client range remains private.
 
 ## Step 1. Check tools and the source revision
 
@@ -40,9 +42,9 @@ The browser uses Google-backed AWS Builder ID. Browser login and a currently usa
 
 | Root in source | Purpose | State/operation boundary |
 |---|---|---|
-| `infra/bootstrap` | Protected state bucket; optional OIDC definitions | Current reviewed bucket-only plan has 5 creates and no OIDC; awaiting approval |
+| `infra/bootstrap` | Protected state bucket; optional OIDC definitions | Bucket-only plan actually applied with 5 creates and no OIDC on 29 October; preserve its existing local state |
 | `infra/aws-ecs-certificate` | Certificate request | Already applied in a preserved private local working directory; do not initialize a fresh empty copy and request a duplicate |
-| `infra/aws-ecs-dev` | Prepared ECS/RDS/network/broker resources | Final backend uses the distinct ECS key; preview used local backend and must not be applied |
+| `infra/aws-ecs-dev` | Prepared ECS/RDS/network/broker resources | Actual S3 backend now initialized at the distinct ECS key; application apply pending; old local preview must not be applied |
 | `infra/aws-dev` | Preserved legacy EC2/SSM environment | Different architecture/state key; not an ECS shortcut |
 
 The root source is not automatically the operator's initialized working copy. The deployment owner must identify the correct root, existing state and run directory. Cloud commands below deliberately require those variables instead of guessing a new state location.
@@ -79,7 +81,7 @@ The root source is not automatically the operator's initialized working copy. Th
 
 ## Step 5. Apply only the separately approved saved artifact
 
-**Paid/resource-changing operation; pending approval in the recorded status.** The owner supplies the exact approved plan path/hash and same initialized root. Set the recorded approved hash as well as the paths; the block compares it and rechecks the account before the final line. A matching hash is an integrity check, not evidence of human approval. Do not substitute a newly generated or stale plan.
+**Paid/resource-changing operator reference. The bootstrap approval/apply is now complete; application approval remains separate.** The owner supplies the exact approved plan path/hash and same initialized root. Set the recorded approved hash as well as the paths; the block compares it and rechecks the account before the final line. A matching hash is an integrity check, not evidence of human approval. Do not substitute a newly generated or stale plan.
 
 ```bash
 (

@@ -1,5 +1,7 @@
 # 4 · Terraform roots, state and plan review
 
+**29 October update:** the S3 state bootstrap was approved, applied and independently verified. The real S3-backed application plan is prepared; application resources/activation remain pending. Read the [actual execution journal](11-aws-execution-journal.md) for commands and the new 24-hour/delete-demo-data choice. Earlier dated checkpoints below remain historical.
+
 [Previous: identity and costs](03-aws-identity-and-costs.md) · [Index](README.md) · [Next: hostname and certificate](05-hostname-dns-and-certificate.md)
 
 ## 1. Start in the safe teaching directory

@@ -6,7 +6,7 @@ Start with the [roadmap](generated/00-roadmap-and-mastery-gates.md), or choose I
 
 ## Follow the complete setup and delivery process
 
-Start with [How this project was set up and verified](walkthroughs/README.md): ten short chapters explaining tools/local startup, application flow, AWS identity and cost decisions, Terraform roots/state/plans, hostname/DNS/certificate setup, future deployment/security/recovery, lesson building/review, and GitHub/Study Desk publication. Each chapter breaks the work into small concepts, links the real files, explains expected observations and common failures, and ends with a comprehension check. Historical execution, safe local reproduction and pending cloud work are explicitly separated. These supplementary chapters are included in the ZIP without changing existing numbered lesson IDs.
+Start with [How this project was set up and verified](walkthroughs/README.md): eleven short chapters explaining tools/local startup, application flow, AWS identity and cost decisions, Terraform roots/state/plans, hostname/DNS/certificate setup, future deployment/security/recovery, lesson building/review, and GitHub/Study Desk publication. Each chapter breaks the work into small concepts, links the real files, explains expected observations and common failures, and ends with a comprehension check. Historical execution, safe local reproduction and pending cloud work are explicitly separated. These supplementary chapters are included in the ZIP without changing existing numbered lesson IDs.
 
 ## Learn the AWS console visually
 
@@ -14,7 +14,7 @@ Open the [AWS screenshot study guide](visuals/README.md) for actual project/cons
 
 ## Run Terraform step by step
 
-Use [09 · the executable local Terraform workbook](walkthroughs/09-terraform-local-commands.md) to run `init`, `fmt`, `validate`, `plan`, `show`, `apply`, outputs, tests and cleanup one command at a time, with expected results. It uses only an isolated built-in resource and creates no AWS infrastructure. Then read [10 · the project AWS command workflow](walkthroughs/10-terraform-aws-commands.md) for account checks, private bootstrap/state, final S3-backed plans, exact-artifact approval/apply and GitHub verification triggers. Cloud templates are owner-operated references with prerequisites, not permission to provision. Existing numbered lesson IDs stay unchanged.
+Use [09 · the executable local Terraform workbook](walkthroughs/09-terraform-local-commands.md) to run `init`, `fmt`, `validate`, `plan`, `show`, `apply`, outputs, tests and cleanup one command at a time, with expected results. It uses only an isolated built-in resource and creates no AWS infrastructure. Then read [10 · the project AWS command workflow](walkthroughs/10-terraform-aws-commands.md) for account checks, private bootstrap/state, final S3-backed plans, exact-artifact approval/apply and GitHub verification triggers. Cloud templates are owner-operated references with prerequisites, not permission to provision. For the real login, approved bootstrap apply, S3 backend and remaining shutdown decisions, continue with [11 · the actual AWS execution journal](walkthroughs/11-aws-execution-journal.md). Existing numbered lesson IDs stay unchanged.
 
 ## Read or download
 
