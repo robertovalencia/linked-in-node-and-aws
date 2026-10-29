@@ -1,0 +1,52 @@
+{
+  "passed": 11,
+  "failed": 0,
+  "validFixtureAccepted": true,
+  "fixtureScope": "Private saved-plan fixture; rule mutations stub only terraform show, backend controls mutate actual saved bytes; never AWS",
+  "checks": [
+    {
+      "name": "public_database",
+      "status": "PASS"
+    },
+    {
+      "name": "public_broker",
+      "status": "PASS"
+    },
+    {
+      "name": "unprotected_database",
+      "status": "PASS"
+    },
+    {
+      "name": "unencrypted_database",
+      "status": "PASS"
+    },
+    {
+      "name": "inline_public_ssh",
+      "status": "PASS"
+    },
+    {
+      "name": "inline_wide_egress",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown_sg_reference_ssh",
+      "status": "PASS"
+    },
+    {
+      "name": "public_cidr_ingress",
+      "status": "PASS"
+    },
+    {
+      "name": "wide_ingress_protocol",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_non_private_plan_input",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_optimized_python_validation_bypass",
+      "status": "PASS"
+    }
+  ]
+}

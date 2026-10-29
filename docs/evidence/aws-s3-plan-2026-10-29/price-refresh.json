@@ -1,0 +1,121 @@
+{
+  "retrievedAt": "2026-10-29T17:20:43.861556+00:00",
+  "date": "2026-10-29",
+  "region": "us-east-2",
+  "profile": "marketplace-dev",
+  "pricingEndpointRegion": "us-east-1",
+  "account": "772641336063",
+  "sourceRatesPath": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-https-preparation-2026-10-28/pricing-refresh/rates-2026-10-28.json",
+  "sourceRatesSha256": "fcb2d10a4d5ffd8c72a2984ecfa0f538c6863bbbcd4f62f7363a1865a413e58a",
+  "selectedCasesPath": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/docs/evidence/ecs-preparation/staging-plan-cost-review.json",
+  "selectedCasesSha256": "e40ff2e6c090de7576445a3b3d69d08470a4f0397e974d25276254c0216213b9",
+  "usedRateKeys": [
+    "alb_hour",
+    "alb_lcu",
+    "cloudmap_lookup",
+    "cloudmap_resource",
+    "cloudwatch_alarm_standard",
+    "cloudwatch_logs_ingest",
+    "cloudwatch_logs_query",
+    "cloudwatch_logs_store",
+    "cloudwatch_metric",
+    "cross_az",
+    "ebs_gp3",
+    "ec2_host",
+    "ecr_storage",
+    "fargate_cpu",
+    "fargate_extra_disk",
+    "fargate_memory",
+    "internet_out",
+    "ipv4",
+    "kms_api",
+    "nat_gb",
+    "nat_hour",
+    "rds_backup",
+    "rds_cpu_surplus",
+    "rds_gp3_single",
+    "rds_small_single",
+    "route53_zone",
+    "s3_get",
+    "s3_put",
+    "s3_storage",
+    "secrets_api",
+    "secrets_store"
+  ],
+  "refreshedRateCount": 31,
+  "catalogCount": 28,
+  "tariffCount": 3,
+  "changedRates": [],
+  "changedUnits": [],
+  "changedTiers": [],
+  "tariffs": [
+    {
+      "name": "cloud-map",
+      "sourceURL": "https://aws.amazon.com/cloud-map/pricing/",
+      "retrievedAt": "2026-10-29T17:20:41.982034+00:00",
+      "sha256": "987cafd924fa52680fc99f567d23f23c49b3dd1605ee0b0a3b8e2356a63df8e5",
+      "lastModified": "Tue, 27 Oct 2026 00:34:48 GMT",
+      "publicationDate": null,
+      "publicationDateNote": "No tariff effective/publication timestamp displayed; retrieval date is not an effective date."
+    },
+    {
+      "name": "route53",
+      "sourceURL": "https://aws.amazon.com/route53/pricing/",
+      "retrievedAt": "2026-10-29T17:20:42.499542+00:00",
+      "sha256": "1c1ffd910a4757789f38f13f42523d828bc4065231271698a8742d7940867607",
+      "lastModified": "Tue, 27 Oct 2026 00:41:08 GMT",
+      "publicationDate": null,
+      "publicationDateNote": "No tariff effective/publication timestamp displayed; retrieval date is not an effective date."
+    },
+    {
+      "name": "elb",
+      "sourceURL": "https://aws.amazon.com/elasticloadbalancing/pricing/",
+      "retrievedAt": "2026-10-29T17:20:42.965608+00:00",
+      "sha256": "864dc6c1b73bcb00ee1305cc576d2fb7d51ff945e7f88a1a17fc700ef1dada7a",
+      "lastModified": "Tue, 27 Oct 2026 00:46:43 GMT",
+      "publicationDate": null,
+      "publicationDateNote": "No tariff effective/publication timestamp displayed; retrieval date is not an effective date."
+    },
+    {
+      "name": "acm",
+      "sourceURL": "https://aws.amazon.com/certificate-manager/pricing/",
+      "retrievedAt": "2026-10-29T17:20:43.859231+00:00",
+      "sha256": "1b3e022da1505a3be4aabded36dccab3bf3fef0503e0748fb0949b7e583ee0b6",
+      "lastModified": "Tue, 27 Oct 2026 00:30:19 GMT",
+      "publicationDate": null,
+      "publicationDateNote": "No tariff effective/publication timestamp displayed; retrieval date is not an effective date."
+    }
+  ],
+  "eligibility": "Public on-demand tariffs only; no credit, tax, free tier, promotion, private discount, account-plan or service eligibility inferred.",
+  "awsOperations": [
+    "sts:GetCallerIdentity",
+    "pricing:GetProducts"
+  ],
+  "manualTariffChecks": {
+    "checkedAt": "2026-10-29T17:22:05.392515+00:00",
+    "contentMarkers": {
+      "cloud-map.html": {
+        "$0.10": true,
+        "$1.0 per million": true
+      },
+      "route53.html": {
+        "$0.50 per hosted zone": true,
+        "not prorated": true,
+        "private hosted zones": true
+      },
+      "elb.html": {
+        "25 new connections": true,
+        "3,000 active": true,
+        "1 GB per hour": true
+      },
+      "acm.html": {
+        "Public certificate (non-exportable)": true,
+        "No cost": true
+      }
+    },
+    "result": "Official current response text supports unchanged service tariff amounts and LCU definition. Page publication/effective dates are undisplayed; no inference from HTTP Last-Modified."
+  },
+  "caseTemplateProvenance": "Historical October27 quantities reused explicitly as unmeasured cost assumptions and repriced with October29 retrieved rates. Historical cases are not current saved-plan or cloud-execution evidence.",
+  "ratesSha256": "1bc8128a8e09d52cddc68d0b1ea902d72e5d83278eef2262a61c2dd44979e83b",
+  "ledgerSha256": "5db2506627507cbfdbb2c67e7dd37f58de72843be9359a0547238a218dc1194e"
+}

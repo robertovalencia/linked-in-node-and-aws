@@ -1,0 +1,11 @@
+{
+  "scope": "Actual S3-backed plan preparation, not provisioning approval",
+  "reviewerSha256": "8e320abedb1a4fd3ef525e01b133206227b3897a0a909eccc735dd7b20ff3e86",
+  "testSha256": "865fe76e6c1f664cc497e232ae882e752ec6b8bcec308b38a48b17ebd2397f9d",
+  "validS3FixtureAccepted": true,
+  "s3NegativeControls": 54,
+  "legacyHttpsNegativeControls": 23,
+  "legacyHostnamefreeNegativeControls": 11,
+  "applicationApplyPerformed": false,
+  "privacy": "No raw state/plan/client CIDR/credentials published"
+}

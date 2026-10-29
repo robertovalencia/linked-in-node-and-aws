@@ -1,0 +1,224 @@
+{
+  "passed": 54,
+  "failed": 0,
+  "validFixtureAccepted": true,
+  "fixtureScope": "Private saved-plan fixture; rule mutations stub only terraform show, backend controls mutate actual saved bytes; never AWS",
+  "checks": [
+    {
+      "name": "public_database",
+      "status": "PASS"
+    },
+    {
+      "name": "public_broker",
+      "status": "PASS"
+    },
+    {
+      "name": "unprotected_database",
+      "status": "PASS"
+    },
+    {
+      "name": "unencrypted_database",
+      "status": "PASS"
+    },
+    {
+      "name": "inline_public_ssh",
+      "status": "PASS"
+    },
+    {
+      "name": "inline_wide_egress",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown_sg_reference_ssh",
+      "status": "PASS"
+    },
+    {
+      "name": "public_cidr_ingress",
+      "status": "PASS"
+    },
+    {
+      "name": "wide_ingress_protocol",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_http_listener",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_other_listener_port",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_other_certificate",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_weaker_tls_policy",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_other_hostname",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_default_success",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_https_wrong_owner_sg",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_db_wrong_source_sg",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_forward_wrong_target",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_listener_wrong_alb",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_rule_wrong_listener",
+      "status": "PASS"
+    },
+    {
+      "name": "approved_cidr_cannot_open_ssh",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_wrong_bucket",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_legacy_ec2_key",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_wrong_region",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_unencrypted_state",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_unlocked_state",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_missing_account_allowlist",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_wrong_account_allowlist",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_other_workspace_prefix",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_static_credentials",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_profile_override",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_endpoint_override",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_skip_account_lookup",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_alternate_locking",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_local_backend",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_other_workspace",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_unsupported_plan_producer",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_unknown_backend_value",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_trailing_backend_value",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_duplicate_backend_map_key",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_duplicate_backend_message",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_unknown_state_store",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_partial_saved_plan",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_unapplyable_saved_plan",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_errored_saved_plan",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_targeted_saved_plan",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_backend_override",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_source_tamper",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_extra_json_configuration",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_nested_module_configuration",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_unreviewed_module_manifest",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_provider_lock_tamper",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_non_private_plan_input",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_optimized_python_validation_bypass",
+      "status": "PASS"
+    }
+  ]
+}

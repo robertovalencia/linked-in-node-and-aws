@@ -1,5 +1,7 @@
 # Next AWS plan review — 28 October 2026
 
+Historical preparation checkpoint. The five-create state bootstrap was subsequently approved and applied on29 October: [actual execution evidence](evidence/aws-state-bootstrap-2026-10-29/README.md). The local-backend HTTPS preview remains unapplied; see the [new actual S3-backed plan review](aws-s3-plan-review-2026-10-29.md).
+
 The user selected one HTTPS client /32 for **plan preparation only**. The existing free hostname and issued nonexportable ACM certificate are verified again. No application infrastructure was provisioned by this work. The account is still Free/ACTIVE with $100 credits as of today's authenticated read-only check. Account/region: `772641336063` / `us-east-2`. [Evidence index](evidence/aws-https-plan-2026-10-28/README.md).
 
 ## Two concrete saved plans, two approval boundaries

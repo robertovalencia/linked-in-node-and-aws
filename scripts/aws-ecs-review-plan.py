@@ -20,11 +20,151 @@ if not __debug__:
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def review(plan_file, plan_binary, output, https_context=None, rates_file=None):
-    private_inputs = [plan_file,plan_binary] + ([https_context] if https_context is not None else [])
+# Terraform show JSON omits the saved backend. Read only the pinned internal
+# message envelope needed to bind the actual artifact, not mutable init metadata.
+# Official schema: Terraform v1.17.0 internal/plans/planproto/planfile.proto
+# Plan.version=1, terraform_version=14, backend=13; Backend type/config/workspace.
+# This intentionally fails closed on another producer/format until reviewed.
+def _protobuf_fields(data):
+    fields = []
+    offset = 0
+    def varint():
+        nonlocal offset
+        result = 0
+        for shift in range(0, 70, 7):
+            assert offset < len(data), 'Truncated saved backend protobuf'
+            byte = data[offset]
+            offset += 1
+            result |= (byte & 127) << shift
+            if byte < 128:
+                return result
+        raise AssertionError('Invalid saved backend protobuf varint')
+    while offset < len(data):
+        tag = varint()
+        number, wire = tag >> 3, tag & 7
+        assert number > 0, 'Invalid saved backend protobuf field'
+        if wire == 0:
+            value = varint()
+        else:
+            assert wire in (1, 2, 5), 'Unsupported saved backend protobuf wire'
+            length = varint() if wire == 2 else (8 if wire == 1 else 4)
+            assert length <= len(data) - offset, 'Truncated saved backend protobuf value'
+            value = data[offset:offset + length]
+            offset += length
+        fields.append((number, wire, value))
+    return fields
+
+
+def _one_field(fields, number, wire):
+    matches = [(kind, value) for key, kind, value in fields if key == number]
+    assert len(matches) == 1 and matches[0][0] == wire, 'Missing, duplicate or invalid saved backend field'
+    return matches[0][1]
+
+
+def _msgpack_value(data):
+    # S3 backend config uses only known primitive objects/arrays. Reject unknown
+    # values, extensions, binary payloads, floats, duplicate keys and trailing data.
+    offset = 0
+    def take(count):
+        nonlocal offset
+        assert count <= len(data) - offset, 'Truncated saved backend MessagePack'
+        value = data[offset:offset + count]
+        offset += count
+        return value
+    def integer(count, signed=False):
+        return int.from_bytes(take(count), 'big', signed=signed)
+    def value(depth=0):
+        assert depth < 30, 'Saved backend MessagePack nesting exceeds limit'
+        marker = integer(1)
+        if marker <= 127: return marker
+        if marker >= 224: return marker - 256
+        if marker == 192: return None
+        if marker in (194, 195): return marker == 195
+        if 160 <= marker <= 191:
+            return take(marker & 31).decode('utf-8')
+        if marker in (217, 218, 219):
+            return take(integer({217:1, 218:2, 219:4}[marker])).decode('utf-8')
+        if 144 <= marker <= 159:
+            return [value(depth + 1) for _ in range(marker & 15)]
+        if marker in (220, 221):
+            count = integer(2 if marker == 220 else 4)
+            assert count <= len(data), 'Invalid saved backend array size'
+            return [value(depth + 1) for _ in range(count)]
+        if 128 <= marker <= 143 or marker in (222, 223):
+            count = marker & 15 if marker <= 143 else integer(2 if marker == 222 else 4)
+            assert count <= len(data), 'Invalid saved backend map size'
+            result = {}
+            for _ in range(count):
+                key = value(depth + 1)
+                assert isinstance(key, str) and key not in result, 'Duplicate or invalid saved backend config key'
+                result[key] = value(depth + 1)
+            return result
+        if marker in (204, 205, 206, 207):
+            return integer({204:1, 205:2, 206:4, 207:8}[marker])
+        if marker in (208, 209, 210, 211):
+            return integer({208:1, 209:2, 210:4, 211:8}[marker], signed=True)
+        raise AssertionError('Unsupported saved backend MessagePack value')
+    result = value()
+    assert offset == len(data), 'Trailing saved backend MessagePack data'
+    return result
+
+
+def _saved_s3_backend(saved, context):
+    expected_context = {
+        'account':'772641336063', 'region':'us-east-2',
+        'bucket':'772641336063-linked-in-node-terraform-state',
+        'key':'linked-in-node/ecs-dev/terraform.tfstate',
+        'workspace':'default', 'encrypt':True, 'useLockfile':True,
+        'allowedAccountIds':['772641336063'],
+        'workspaceKeyPrefix':'linked-in-node/ecs-dev/workspaces',
+    }
+    assert json.dumps(context,sort_keys=True) == json.dumps(expected_context,sort_keys=True), 'Unreviewed S3 backend context'
+    fields = _protobuf_fields(saved.read('tfplan'))
+    assert _one_field(fields, 1, 0) == 3, 'Unsupported Terraform saved-plan format'
+    assert _one_field(fields, 14, 2) == b'1.17.0', 'Unsupported Terraform saved-backend producer; review schema before changing version'
+    assert _one_field(fields, 25, 0) == 1 and _one_field(fields, 26, 0) == 1, 'Saved S3 plan must be complete and applyable'
+    assert all(value == 0 for key, _, value in fields if key in (17,20)), 'Saved S3 plan must be normal and not errored'
+    assert not any(key in (5,16,32) for key, _, _ in fields), 'Targeted or forced saved S3 plans require separate review'
+    assert not any(key == 29 for key, _, _ in fields), 'Unreviewed Terraform state_store'
+    backend = _protobuf_fields(_one_field(fields, 13, 2))
+    assert {key for key, _, _ in backend} == {1, 2, 3}, 'Unexpected saved backend fields'
+    assert _one_field(backend, 1, 2) == b's3', 'Actual saved backend must be S3'
+    assert _one_field(backend, 3, 2) == b'default', 'Actual saved S3 workspace must be default'
+    dynamic = _protobuf_fields(_one_field(backend, 2, 2))
+    assert len(dynamic) == 1, 'Unsupported saved backend encoding'
+    config = _msgpack_value(_one_field(dynamic, 1, 2))
+    assert isinstance(config, dict), 'Saved S3 backend config must be an object'
+    required = {
+        'bucket':context['bucket'], 'key':context['key'], 'region':context['region'],
+        'encrypt':True, 'use_lockfile':True,
+        'allowed_account_ids':context['allowedAccountIds'],
+        'workspace_key_prefix':context['workspaceKeyPrefix'],
+    }
+    for key, expected in required.items():
+        assert key in config and type(config[key]) is type(expected) and config[key] == expected, 'Unreviewed saved S3 backend setting: ' + key
+    # All authentication is temporary runtime environment configuration. Do not
+    # accept cached access keys, profiles, assume-role hops, custom endpoints,
+    # skip-validation flags, alternate locking or other unreviewed nonnull options.
+    for key, setting in config.items():
+        if key not in required:
+            assert setting is None, 'Unreviewed saved S3 backend override: ' + key
+    return {
+        'type':'s3', 'bucket':context['bucket'], 'key':context['key'],
+        'region':context['region'], 'workspace':'default', 'encrypt':True,
+        'useLockfile':True, 'allowedAccountIds':context['allowedAccountIds'],
+        'workspaceKeyPrefix':context['workspaceKeyPrefix'],
+        'binding':'Decoded actual saved tfplan backend, not mutable initialization cache',
+        'producer':'Terraform1.17.0 / planformat3',
+    }
+
+
+def review(plan_file, plan_binary, output, https_context=None, rates_file=None, s3_backend_context=None):
+    private_inputs = [plan_file,plan_binary] + ([https_context] if https_context is not None else []) + ([s3_backend_context] if s3_backend_context is not None else [])
     for private_input in private_inputs:
         info = private_input.stat()
         assert info.st_uid == os.getuid() and stat.S_IMODE(info.st_mode) & 0o077 == 0, 'Plan/context inputs must be owner-only files'
+    assert s3_backend_context is None or https_context is not None, 'Final S3-backed review requires the issued-certificate HTTPS context'
+    backend_review = None
     # JSON alone cannot establish which source was actually saved by Terraform.
     with ZipFile(plan_binary) as saved:
         expected = {f'tfconfig/m-/{p.name}': p for p in (ROOT/'infra/aws-ecs-dev').glob('*.tf')}
@@ -32,12 +172,22 @@ def review(plan_file, plan_binary, output, https_context=None, rates_file=None):
             assert saved.read(name) == path.read_bytes(), f'Saved plan source differs: {path.name}'
         assert saved.read('.terraform.lock.hcl') == (ROOT/'infra/aws-ecs-dev/.terraform.lock.hcl').read_bytes(), 'Saved provider lock differs'
         saved_tf = {n for n in saved.namelist() if n.startswith('tfconfig/m-/') and n.endswith('.tf')}
-        assert saved_tf == set(expected) | {'tfconfig/m-/backend_override.tf'}, 'Unexpected saved Terraform configuration'
-        assert ''.join(saved.read('tfconfig/m-/backend_override.tf').decode().split()) == 'terraform{backend"local"{}}', 'Preview must use local backend only'
+        if s3_backend_context is None:
+            assert saved_tf == set(expected) | {'tfconfig/m-/backend_override.tf'}, 'Unexpected saved Terraform configuration'
+            assert ''.join(saved.read('tfconfig/m-/backend_override.tf').decode().split()) == 'terraform{backend"local"{}}', 'Preview must use local backend only'
+        else:
+            assert len(saved.namelist()) == len(set(saved.namelist())), 'Duplicate saved ZIP members are forbidden'
+            saved_config = {name for name in saved.namelist() if name.startswith('tfconfig/')}
+            assert saved_config == set(expected) | {'tfconfig/modules.json'}, 'Actual S3 plan must have no backend override or extra Terraform source'
+            assert json.loads(saved.read('tfconfig/modules.json')) == [{'Key':'', 'Dir':'.'}], 'Unreviewed saved Terraform modules'
+            backend_review = _saved_s3_backend(saved, json.loads(s3_backend_context.read_text()))
     template = ROOT/'infra/aws-ecs-dev/kafka-user-data.sh.tftpl'
     assert (plan_binary.parent/template.name).read_bytes() == template.read_bytes(), 'Scratch broker template differs from reviewed source'
     plan = json.loads(plan_file.read_text())
-    shown = json.loads(subprocess.check_output(['terraform','show','-json',str(plan_binary)], cwd=plan_binary.parent, text=True))
+    # Actual S3 plans are saved outside the source root to keep artifacts private;
+    # use the initialized root only for provider schemas, never as backend proof.
+    schema_directory = ROOT/'infra/aws-ecs-dev' if backend_review is not None else plan_binary.parent
+    shown = json.loads(subprocess.check_output(['terraform','show','-json',str(plan_binary)], cwd=schema_directory, text=True))
     assert plan == shown, 'Plan JSON does not match saved binary'
 
     context = json.loads(https_context.read_text()) if https_context is not None else None
@@ -255,10 +405,17 @@ def review(plan_file, plan_binary, output, https_context=None, rates_file=None):
     if context is not None:
         result['httpsReview'] = {'hostname':context['applicationHostname'], 'certificateArn':context['certificateArn'], 'certificateStatusAtPreflight':context['certificateStatus'], 'approvedClientRuleCount':len(approved), 'approvedClientPrefixLength':32, 'exactCidrLocation':'Private review context and saved plan; omitted from published receipt', 'privateContextSha256':hashlib.sha256(https_context.read_bytes()).hexdigest()}
         result['limits'][2] = 'HTTPS listener and approved CIDR proposed; zero running app tasks. ALB may return403/503 and cannot serve marketplace until separate activation.'
+    if backend_review is not None:
+        result['status'] = 'S3_BACKED_HTTPS_INFRASTRUCTURE_PLAN_REVIEWED_NOT_APPROVED'
+        result['backendReview'] = backend_review
+        result['backendReview']['privateContextSha256'] = hashlib.sha256(s3_backend_context.read_bytes()).hexdigest()
+        result['limits'][0] = 'Actual saved S3 backend bound to the isolated ECS state key; no application apply or activation'
+        result['limits'].append('Offline backend binding does not establish live bucket controls, empty state, current identity or application health; verify those separately before any approved apply')
     if rates_file is not None:
         result['ratesFileSha256'] = hashlib.sha256(rates_file.read_bytes()).hexdigest()
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(json.dumps(result,indent=2)+'\n')
+    output.chmod(0o600)
     for c in cases:
         if c['profile']=='expected': print(c['mode'], c['hours']+'h', f"${D(c['total_usd']):.2f}")
     print('Saved sanitized staging/cost review:',output)
@@ -270,6 +427,7 @@ if __name__ == '__main__':
     parser.add_argument('--plan-binary',required=True,type=Path)
     parser.add_argument('--report',required=True,type=Path)
     parser.add_argument('--https-context',type=Path,help='Private owner-approved CIDR and actual issued-certificate context; omit to retain strict hostname-free review')
+    parser.add_argument('--s3-backend-context',type=Path,help='Private exact S3 state isolation context; bind the actual saved backend instead of accepting a local preview')
     parser.add_argument('--rates-file',type=Path,help='Refreshed official rate receipt; original historical rates remain unchanged')
     args=parser.parse_args()
-    review(args.plan_json.resolve(),args.plan_binary.resolve(),args.report.resolve(),args.https_context.resolve() if args.https_context else None,args.rates_file.resolve() if args.rates_file else None)
+    review(args.plan_json.resolve(),args.plan_binary.resolve(),args.report.resolve(),args.https_context.resolve() if args.https_context else None,args.rates_file.resolve() if args.rates_file else None,args.s3_backend_context.resolve() if args.s3_backend_context else None)

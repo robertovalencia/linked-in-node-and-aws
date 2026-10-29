@@ -1,0 +1,20 @@
+{
+  "status": "ACTUAL_S3_BACKEND_INITIALIZED_APPLICATION_NOT_APPLIED",
+  "bucket": "772641336063-linked-in-node-terraform-state",
+  "key": "linked-in-node/ecs-dev/terraform.tfstate",
+  "workspace": "default",
+  "encrypt": true,
+  "useLockfile": true,
+  "allowedAccountIds": [
+    "772641336063"
+  ],
+  "workspaceKeyPrefix": "linked-in-node/ecs-dev/workspaces",
+  "beforeInitAllObjectHistoryEmpty": true,
+  "applicationStateKeyBeforePlan": "HEAD404_NO_PREVIOUS_STATE",
+  "note": "Planning uses transient S3 lock-object writes/deletes. This is not application resource provisioning. The initial state-list exit1 explicitly meant no state file, confirmed by authenticated HEAD404; no migrate/import/apply occurred.",
+  "bootstrapEvidence": "../aws-state-bootstrap-2026-10-29/README.md",
+  "sourceAndQuantitiesBoundToActualBinary": true,
+  "applicationApplyAuthorized": false,
+  "expiresAtProposal": "2026-10-30T17:30:00Z",
+  "expiryIsTimer": false
+}

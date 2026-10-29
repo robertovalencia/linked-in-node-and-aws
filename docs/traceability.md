@@ -70,3 +70,13 @@ R12 actual console learning → visual guide 04 and signed-in project captures �
 
 
 R12 Terraform commands → walkthroughs 09–10 → exact local Markdown-block execution, saved-plan/action/output/cleanup assertions, cloud-template syntax and independent stubbed failure-path checks, managed-link/archive validation → separate command critic. No cloud execution, login or GitHub dispatch is performed by this documentation change.
+
+
+## R10 approved state bootstrap —29 October 2026
+
+Human exact-plan approval → immediate hash/source/provider-lock/account/absence guards → actual Terraform 5 create/0 change/0 destroy → authenticated bucket-control read-back → separate post-apply critic → [actual evidence](evidence/aws-state-bootstrap-2026-10-29/README.md) → NEW actual S3-backed application plan → separate application approval, publication/bootstrap/activation and runtime gates. Certificate local state remains separate.
+
+
+## R10 actual S3-backed application plan — 29 October 2026
+
+Approved five-resource state bootstrap → authenticated controls/post-apply critic → empty isolated real S3 backend init with account/encryption/locking safeguards → NEW exact saved application plan (111 creates) → current official tariffs/actual-quantity ledgers → strict saved-backend/source/security checks and 54/23/11 negative controls → separate fresh-context critic → [reviewable packet](aws-s3-plan-review-2026-10-29.md). Application apply, publication/bootstrap/activation, runtime acceptance and scheduled teardown remain pending separate decisions.

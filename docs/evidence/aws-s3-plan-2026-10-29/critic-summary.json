@@ -1,0 +1,70 @@
+{
+  "checkedAt": "2026-10-29T17:26:33.304120+00:00",
+  "verdict": "PASS_FOR_PLAN_PREPARATION_ONLY",
+  "applicationApplyAuthorized": false,
+  "applicationDeployed": false,
+  "changes": {
+    "create": 111,
+    "update": 0,
+    "delete": 0
+  },
+  "appTaskDefinitions": 0,
+  "appServices": 0,
+  "effectiveAwsIdentityVerifiedAccount": "772641336063",
+  "region": "us-east-2",
+  "backend": {
+    "type": "s3",
+    "bucket": "772641336063-linked-in-node-terraform-state",
+    "key": "linked-in-node/ecs-dev/terraform.tfstate",
+    "region": "us-east-2",
+    "workspace": "default",
+    "encrypt": true,
+    "useLockfile": true,
+    "allowedAccountIds": [
+      "772641336063"
+    ],
+    "workspaceKeyPrefix": "linked-in-node/ecs-dev/workspaces",
+    "binding": "Decoded actual saved tfplan backend, not mutable initialization cache",
+    "producer": "Terraform1.17.0 / planformat3",
+    "privateContextSha256": "3b104ebfe78bf800049d42ea8918efc3d1d763d81e117d12dc2ecf7bd46f285f"
+  },
+  "counts": {
+    "strictS3NegativeControls": 54,
+    "independentExtraBackendControls": 8,
+    "catalogRateBindings": 28,
+    "freshTariffs": 3,
+    "decimalLedgers": 12
+  },
+  "expectedCostUSD": {
+    "stage24h": "6.83",
+    "stage720h": "191.22",
+    "future5Task24h": "8.32",
+    "future5Task720h": "235.68"
+  },
+  "hashes": {
+    "work/aws-s3-plan-review-2026-10-29/application.tfplan": "8cf376c7e79bd48c459c9892eecc111e02a352d8cfd10dd8723a35eaae2c9625",
+    "work/aws-s3-plan-review-2026-10-29/plan.json": "c45520a97fc93432e418571e6fed09221537d1e538c2acfdd97fce10afad20c3",
+    "work/aws-s3-plan-review-2026-10-29/pricing-refresh/rates-2026-10-29.json": "1bc8128a8e09d52cddc68d0b1ea902d72e5d83278eef2262a61c2dd44979e83b",
+    "scripts/aws-ecs-review-plan.py": "8e320abedb1a4fd3ef525e01b133206227b3897a0a909eccc735dd7b20ff3e86",
+    "scripts/aws-ecs-review-plan.test.py": "865fe76e6c1f664cc497e232ae882e752ec6b8bcec308b38a48b17ebd2397f9d"
+  },
+  "sourceFilesSha256": {
+    "infra/aws-ecs-dev/.terraform.lock.hcl": "795c03ec138135bd2913276060c796ab9b3588715e55d3f4081f65879ee67693",
+    "infra/aws-ecs-dev/compute.tf": "5c17d5bf45445cf2ba97989fc9752ccccef728535b86a885ca2b70d88294916f",
+    "infra/aws-ecs-dev/data.tf": "f975da7eb242da51fe0116313a52d11319981affdc2060ee29d43245db1ab554",
+    "infra/aws-ecs-dev/iam.tf": "31d3823907c0c627f5d6d0c4af20c2d6bb7c4a7d552ee0182c704bb47babc704",
+    "infra/aws-ecs-dev/ingress.tf": "52ad5a60b8213f09415abfbfadad83cc9a74b81df6fe8d04f1e41992cf8d3d23",
+    "infra/aws-ecs-dev/kafka-user-data.sh.tftpl": "190d64118ea6a1bb4d9077fdb4cfb3cdb8c07cdfe412d28e65774b67ec293654",
+    "infra/aws-ecs-dev/network.tf": "245073d06aac72e825494ef35a0db762e347162ea28bf3ae964528da04677873",
+    "infra/aws-ecs-dev/observability.tf": "209a8760aa5784d3fb2429cc1a82eb1ea4f4647ddf67ba6c0f3897559f7be342",
+    "infra/aws-ecs-dev/outputs.tf": "9d8811faad0ccab64a6393c51539fff0187f1e284fad3b93de5697e82659228a",
+    "infra/aws-ecs-dev/variables.tf": "1c4f5ce7552aac15a020bb8ee03949a8658a78ed9f14c8f1824cd7d3aa61a48c",
+    "infra/aws-ecs-dev/versions.tf": "7e17ae4bc5f302ec96a74c7f0427aba6e91c3299033d3789f30917a5fc61ea51"
+  },
+  "limits": [
+    "No app apply, cloud health/security/observability/recovery/rollback or marketplace runtime verified",
+    "Read-only live absence checks limited to exact project ECS/RDS/ALB/NAT in us-east-2",
+    "Expiry2026-10-30T17:30Z is proposal metadata; actual paid start/deadline/scheduler/retention require agreement and input/plan refresh if changed",
+    "Certificate state separate; preservation byte-for-byte history relies on bootstrap owner/post-apply evidence"
+  ]
+}

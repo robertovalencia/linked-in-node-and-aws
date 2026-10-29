@@ -177,3 +177,13 @@ The biggest gap was a bare shell test that did not stop subsequent commands afte
 The [independent critic](evidence/terraform-command-study-review-2026-10-28.md) selects the repaired guides. The study pack includes the actual local transcript and machine-readable verification scope. No AWS authentication, AWS provider initialization/plan/apply/destroy or GitHub workflow dispatch was run. The deploy=true workflow remains the older EC2/SSM delivery path; ECS activation, current costs and exact saved-plan approval remain owned by the deployment chat. Full publication/import integrity is checked separately at release.
 
 Publication gate: the committed guides reached GitHub and the live Study Desk API returned both revision-pinned workbook links. The importer reports zero stale files; all171 protected study files are unchanged, and145 archive members exactly match source. The transcript metadata uses its packaged filename. This verifies documentation delivery only.
+
+
+## State bootstrap post-apply critic —29 October 2026
+
+Independent critic inspected actual Terraform log/state and separately queried expected account/owner/region and all bucket controls: PASS for approved five-create bootstrap execution. [Evidence](evidence/aws-state-bootstrap-2026-10-29/critic.md). Largest remaining gap is application infrastructure/runtime deployment; protected state and retained versions still need deliberate retention/cleanup decisions.
+
+
+## Actual S3-backed plan preparation — 29 October 2026
+
+A separate fresh-context critic inspected actual saved binary/backend/source, account-scoped absence, private controls and current official tariffs. The reviewer accepts the real S3 fixture and rejects 54 unsafe variants; legacy HTTPS 23 and hostname-free 11 pass. Eight additional independent backend/parser probes reject unsafe payloads. The critic required current results ahead of historical checkpoints and readable prose/count corrections; those were repaired. [Full evidence](evidence/aws-s3-plan-2026-10-29/README.md). Preparation review is distinct from application apply/runtime approval. Biggest gap: no cloud application/recovery/rollback evidence, and the actual 24-hour teardown deadline/scheduler/retention remain unresolved.

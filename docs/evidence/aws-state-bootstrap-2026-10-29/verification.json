@@ -1,0 +1,68 @@
+{
+  "checkedAt": "2026-10-29T17:18:56.594569+00:00",
+  "bucket": "772641336063-linked-in-node-terraform-state",
+  "account": "772641336063",
+  "region": "us-east-2",
+  "operations": {
+    "get-bucket-location": {
+      "LocationConstraint": "us-east-2"
+    },
+    "get-bucket-versioning": {
+      "Status": "Enabled"
+    },
+    "get-bucket-encryption": {
+      "ServerSideEncryptionConfiguration": {
+        "Rules": [
+          {
+            "ApplyServerSideEncryptionByDefault": {
+              "SSEAlgorithm": "AES256"
+            },
+            "BucketKeyEnabled": false,
+            "BlockedEncryptionTypes": {
+              "EncryptionType": [
+                "SSE-C"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "get-public-access-block": {
+      "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": true,
+        "IgnorePublicAcls": true,
+        "BlockPublicPolicy": true,
+        "RestrictPublicBuckets": true
+      }
+    },
+    "get-bucket-policy": {
+      "Policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "DenyInsecureTransport",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:*",
+            "Resource": [
+              "arn:aws:s3:::772641336063-linked-in-node-terraform-state",
+              "arn:aws:s3:::772641336063-linked-in-node-terraform-state/*"
+            ],
+            "Condition": {
+              "Bool": {
+                "aws:SecureTransport": "false"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "terraformStateAddresses": [
+    "aws_s3_bucket.state",
+    "aws_s3_bucket_policy.state_tls",
+    "aws_s3_bucket_public_access_block.state",
+    "aws_s3_bucket_server_side_encryption_configuration.state",
+    "aws_s3_bucket_versioning.state"
+  ]
+}

@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 import subprocess
 import tempfile
+from zipfile import ZipFile
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,8 +29,11 @@ def main():
     parser.add_argument('--plan-binary', required=True, type=Path)
     parser.add_argument('--report', required=True, type=Path)
     parser.add_argument('--https-context', type=Path)
+    parser.add_argument('--s3-backend-context', type=Path)
     args = parser.parse_args()
     original = json.loads(args.plan_json.read_text())
+    def review_fixture(*pos):
+        return reviewer.review(*pos,s3_backend_context=args.s3_backend_context.resolve() if args.s3_backend_context else None)
     def resource(plan, kind):
         return next(r['change']['after'] for r in plan['resource_changes'] if r['type'] == kind)
     controls = [
@@ -61,7 +65,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix='ecs-plan-review-') as tmp:
         fixture, report = Path(tmp)/'mutated.json', Path(tmp)/'report.json'
         with contextlib.redirect_stdout(io.StringIO()):
-            reviewer.review(args.plan_json.resolve(),args.plan_binary.resolve(),report,args.https_context.resolve() if args.https_context else None)
+            review_fixture(args.plan_json.resolve(),args.plan_binary.resolve(),report,args.https_context.resolve() if args.https_context else None)
 
         for name, kind, key, bad, expected, stub in controls:
             plan = copy.deepcopy(original)
@@ -73,7 +77,7 @@ def main():
                 return real_output(command, *pos, **kw)
             try:
                 with patch.object(reviewer.subprocess, 'check_output', output), contextlib.redirect_stdout(io.StringIO()):
-                    reviewer.review(fixture, args.plan_binary.resolve(), report,args.https_context.resolve() if args.https_context else None)
+                    review_fixture(fixture, args.plan_binary.resolve(), report,args.https_context.resolve() if args.https_context else None)
             except AssertionError as error:
                 if name == 'public_database':
                     assert 'does not match saved binary' in str(error), str(error)
@@ -102,7 +106,7 @@ def main():
                 fixture.write_text(json.dumps(plan)); fixture.chmod(0o600)
                 with patch.object(reviewer.subprocess, 'check_output', output), contextlib.redirect_stdout(io.StringIO()):
                     try:
-                        reviewer.review(fixture,args.plan_binary.resolve(),report,args.https_context.resolve())
+                        review_fixture(fixture,args.plan_binary.resolve(),report,args.https_context.resolve())
                     except AssertionError as error:
                         assert expected_error in str(error),(name,str(error))
                     else:
@@ -115,15 +119,137 @@ def main():
             fixture.write_text(json.dumps(plan)); fixture.chmod(0o600)
             with patch.object(reviewer.subprocess, 'check_output', output), contextlib.redirect_stdout(io.StringIO()):
                 try:
-                    reviewer.review(fixture,args.plan_binary.resolve(),report,args.https_context.resolve())
+                    review_fixture(fixture,args.plan_binary.resolve(),report,args.https_context.resolve())
                 except AssertionError as error:
                     assert 'CIDR ingress must be HTTPS443 only' in str(error), str(error)
                 else:
                     raise AssertionError('Approved /32 permitted SSH')
             checks.append({'name':'approved_cidr_cannot_open_ssh','status':'PASS'})
+        if args.s3_backend_context:
+            # Mutate actual saved tfplan backend bytes while retaining source ZIP.
+            # This proves rejection is independent of mutable init-cache metadata
+            # and of terraform-show JSON (which never exposes the backend).
+            def varint(number):
+                result = bytearray()
+                while number >= 128:
+                    result.append((number & 127) | 128)
+                    number >>= 7
+                result.append(number)
+                return bytes(result)
+            def protobuf(fields):
+                result = bytearray()
+                for number, wire, value in fields:
+                    result.extend(varint((number << 3) | wire))
+                    if wire == 0: result.extend(varint(value))
+                    elif wire == 2: result.extend(varint(len(value))); result.extend(value)
+                    else: result.extend(value)
+                return bytes(result)
+            def msgpack(value):
+                if value is None: return b'\xc0'
+                if value is False: return b'\xc2'
+                if value is True: return b'\xc3'
+                if isinstance(value, str):
+                    text = value.encode()
+                    return (bytes([160 + len(text)]) if len(text)<32 else b'\xda'+len(text).to_bytes(2,'big'))+text
+                if isinstance(value, list):
+                    return (bytes([144+len(value)]) if len(value)<16 else b'\xdc'+len(value).to_bytes(2,'big'))+b''.join(msgpack(x) for x in value)
+                if isinstance(value, dict):
+                    return (bytes([128+len(value)]) if len(value)<16 else b'\xde'+len(value).to_bytes(2,'big'))+b''.join(msgpack(k)+msgpack(v) for k,v in value.items())
+                if isinstance(value, int) and 0<=value<128: return bytes([value])
+                raise AssertionError('Unsupported test MessagePack value')
+            with ZipFile(args.plan_binary) as saved:
+                members = {name:saved.read(name) for name in saved.namelist()}
+            original_fields = reviewer._protobuf_fields(members['tfplan'])
+            backend = reviewer._protobuf_fields(reviewer._one_field(original_fields,13,2))
+            dynamic = reviewer._protobuf_fields(reviewer._one_field(backend,2,2))
+            original_config = reviewer._msgpack_value(reviewer._one_field(dynamic,1,2))
+            backend_controls = [
+                ('reject_saved_wrong_bucket','bucket','another-state-bucket'),
+                ('reject_saved_legacy_ec2_key','key','linked-in-node/dev/terraform.tfstate'),
+                ('reject_saved_wrong_region','region','us-east-1'),
+                ('reject_saved_unencrypted_state','encrypt',False),
+                ('reject_saved_unlocked_state','use_lockfile',False),
+                ('reject_saved_missing_account_allowlist','allowed_account_ids',None),
+                ('reject_saved_wrong_account_allowlist','allowed_account_ids',['000000000000']),
+                ('reject_saved_other_workspace_prefix','workspace_key_prefix','env:'),
+                ('reject_saved_static_credentials','access_key','AKIA_FAKE_TEST_ONLY'),
+                ('reject_saved_profile_override','profile','another-account'),
+                ('reject_saved_endpoint_override','endpoint','https://example.invalid'),
+                ('reject_saved_skip_account_lookup','skip_requesting_account_id',True),
+                ('reject_saved_alternate_locking','dynamodb_table','unreviewed-lock-table'),
+            ]
+            for name,key,bad in backend_controls:
+                config = copy.deepcopy(original_config)
+                config[key] = bad
+                changed_backend = [(1,2,b's3'),(2,2,protobuf([(1,2,msgpack(config))])),(3,2,b'default')]
+                fields = [(n,w,protobuf(changed_backend) if n==13 else v) for n,w,v in original_fields]
+                altered = Path(tmp)/(name+'.tfplan')
+                with ZipFile(altered,'w') as output_zip:
+                    for member,data in members.items(): output_zip.writestr(member,protobuf(fields) if member=='tfplan' else data)
+                altered.chmod(0o600)
+                try:
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        review_fixture(args.plan_json.resolve(),altered,report,args.https_context.resolve())
+                except AssertionError as error:
+                    assert 'Unreviewed saved S3 backend' in str(error),(name,str(error))
+                else:
+                    raise AssertionError('Reviewer accepted saved backend mutation: '+name)
+                checks.append({'name':name,'status':'PASS'})
+            structural_controls = [
+                ('reject_saved_local_backend',13,protobuf([(1,2,b'local'),(2,2,protobuf([(1,2,msgpack(original_config))])),(3,2,b'default')]),'Actual saved backend must be S3'),
+                ('reject_saved_other_workspace',13,protobuf([(1,2,b's3'),(2,2,protobuf([(1,2,msgpack(original_config))])),(3,2,b'other')]),'Actual saved S3 workspace must be default'),
+                ('reject_unsupported_plan_producer',14,b'1.18.0','Unsupported Terraform saved-backend producer'),
+                ('reject_unknown_backend_value',13,protobuf([(1,2,b's3'),(2,2,protobuf([(1,2,b'\xc1')])),(3,2,b'default')]),'Unsupported saved backend MessagePack'),
+                ('reject_trailing_backend_value',13,protobuf([(1,2,b's3'),(2,2,protobuf([(1,2,msgpack(original_config)+b'\xc0')])),(3,2,b'default')]),'Trailing saved backend MessagePack'),
+                ('reject_duplicate_backend_map_key',13,protobuf([(1,2,b's3'),(2,2,protobuf([(1,2,b'\x82'+msgpack('key')+msgpack('one')+msgpack('key')+msgpack('two'))])),(3,2,b'default')]),'Duplicate or invalid saved backend config key'),
+                ('reject_duplicate_backend_message',None,None,'Missing, duplicate or invalid saved backend field'),
+                ('reject_unknown_state_store',29,b'not-reviewed','Unreviewed Terraform state_store'),
+                ('reject_partial_saved_plan',26,0,'Saved S3 plan must be complete and applyable'),
+                ('reject_unapplyable_saved_plan',25,0,'Saved S3 plan must be complete and applyable'),
+                ('reject_errored_saved_plan',20,1,'Saved S3 plan must be normal and not errored'),
+                ('reject_targeted_saved_plan',5,b'aws_instance.kafka','Targeted or forced saved S3 plans require separate review'),
+            ]
+            for name,number,bad,expected_error in structural_controls:
+                fields = [(n,w,bad if n==number else v) for n,w,v in original_fields]
+                if number is None: fields.append((13,2,reviewer._one_field(original_fields,13,2)))
+                if number in (5,20,29) and not any(n==number for n,_,_ in original_fields): fields.append((number,0 if number==20 else 2,bad))
+                altered = Path(tmp)/(name+'.tfplan')
+                with ZipFile(altered,'w') as output_zip:
+                    for member,data in members.items(): output_zip.writestr(member,protobuf(fields) if member=='tfplan' else data)
+                altered.chmod(0o600)
+                try:
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        review_fixture(args.plan_json.resolve(),altered,report,args.https_context.resolve())
+                except AssertionError as error:
+                    assert expected_error in str(error),(name,str(error))
+                else:
+                    raise AssertionError('Reviewer accepted saved backend structural mutation: '+name)
+                checks.append({'name':name,'status':'PASS'})
+            for name,member,data,expected_error in [
+                ('reject_saved_backend_override','tfconfig/m-/backend_override.tf',b'terraform { backend "local" {} }','Actual S3 plan must have no backend override'),
+                ('reject_saved_source_tamper','tfconfig/m-/versions.tf',b'terraform { backend "local" {} }','Saved plan source differs'),
+                ('reject_extra_json_configuration','tfconfig/m-/unreviewed.tf.json',b'{}','Actual S3 plan must have no backend override'),
+                ('reject_nested_module_configuration','tfconfig/m-child/main.tf',b'','Actual S3 plan must have no backend override'),
+                ('reject_unreviewed_module_manifest','tfconfig/modules.json',b'[]','Unreviewed saved Terraform modules'),
+                ('reject_saved_provider_lock_tamper','.terraform.lock.hcl',b'','Saved provider lock differs'),
+            ]:
+                altered = Path(tmp)/(name+'.tfplan')
+                with ZipFile(altered,'w') as output_zip:
+                    for original_member,original_data in members.items():
+                        if original_member!=member: output_zip.writestr(original_member,original_data)
+                    output_zip.writestr(member,data)
+                altered.chmod(0o600)
+                try:
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        review_fixture(args.plan_json.resolve(),altered,report,args.https_context.resolve())
+                except AssertionError as error:
+                    assert expected_error in str(error),(name,str(error))
+                else:
+                    raise AssertionError('Reviewer accepted source mutation: '+name)
+                checks.append({'name':name,'status':'PASS'})
         fixture.write_text(json.dumps(original)); fixture.chmod(0o644)
         try:
-            reviewer.review(fixture,args.plan_binary.resolve(),report,args.https_context.resolve() if args.https_context else None)
+            review_fixture(fixture,args.plan_binary.resolve(),report,args.https_context.resolve() if args.https_context else None)
         except AssertionError as error:
             assert 'owner-only' in str(error),str(error)
         else:
@@ -133,7 +259,8 @@ def main():
         assert result.returncode != 0 and 'refuses Python optimization' in result.stderr
         checks.append({'name':'reject_optimized_python_validation_bypass','status':'PASS'})
     args.report.parent.mkdir(parents=True,exist_ok=True)
-    args.report.write_text(json.dumps({'passed':len(checks),'failed':0,'validFixtureAccepted':True,'fixtureScope':'Private saved-plan fixture; rule mutations stub only terraform show, never AWS','checks':checks},indent=2)+'\n')
+    args.report.write_text(json.dumps({'passed':len(checks),'failed':0,'validFixtureAccepted':True,'fixtureScope':'Private saved-plan fixture; rule mutations stub only terraform show, backend controls mutate actual saved bytes; never AWS','checks':checks},indent=2)+'\n')
+    args.report.chmod(0o600)
     print(f'{len(checks)} negative controls passed')
 
 if __name__ == '__main__':

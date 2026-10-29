@@ -2,9 +2,9 @@
 
 **Selected for preparation on 27 October 2026; not provisioned.** This implements the private ECS/RDS + one NAT option from the [cost-first review](aws-cost-review-2026-10-27/README.md). The existing `infra/aws-dev` EC2/SSM root is preserved. Local Compose keeps its original ports, credentials and volumes.
 
-The first saved plan was prepared before hostname registration and therefore has **no ALB listener, no client CIDR ingress, no application task definitions/services, and no invented domain or certificate ARN**. It creates paid infrastructure if applied, but it cannot serve the marketplace. Do not apply this staging preview merely to wait for a domain. The free zone `linked-in-node-rv.dynv6.net` is registered. After explicit approval, Terraform created its one nonexportable public certificate and the actual validation CNAME was added; ACM now reports [ISSUED with DNS SUCCESS](evidence/certificate-request/issuance.json). This is the only approved AWS resource so far. A fresh S3-backed infrastructure plan/current costs and provisioning approval remain pending. No application infrastructure, domain purchase or account upgrade was performed.
+The historical hostname-free local preview has no ALB listener/client ingress/app tasks and must never be applied. The free hostname's certificate is now ISSUED. On 29 October the human approved only the exact five-create S3 state bootstrap; it was applied and independently verified. [Actual execution evidence](evidence/aws-state-bootstrap-2026-10-29/README.md). Certificate state remains separately preserved.
 
-The [28 October HTTPS/state-bootstrap review](aws-https-plan-review-2026-10-28.md) uses the issued certificate and the owner-approved client /32: five state-bootstrap creates and a separate 111-create local-backend HTTPS preview, with no running app tasks. Neither has been applied. It supersedes the hostname-free preview for the next review, while a final S3-backed plan still requires approved bootstrap.
+The [new 29 October actual S3-backed plan review](aws-s3-plan-review-2026-10-29.md) has 111 creates/0 updates/0 deletes, issued-certificate HTTPS and the approved /32, with zero app tasks. Its encrypted/locked/account-bound real S3 backend replaces scratch preview planning. Application provisioning/activation remain unapproved and unverified. No 24-hour application clock has started. [28 October historical local preview](aws-https-plan-review-2026-10-28.md).
 
 ## Architecture and cost
 
@@ -36,7 +36,7 @@ Add approximately $0.048 per extra hour for a small RDS clone plus validation ta
 
 ## Separation, credentials and network rules
 
-`infra/aws-ecs-dev` has its own `ecs-dev` resource namespace and remote state key `linked-in-node/ecs-dev/terraform.tfstate`. Do not use the baseline's `linked-in-node/dev/terraform.tfstate`. The first private saved artifact uses a scratch local backend because the remote bootstrap bucket has not been provisioned; it is a preview, never the final S3-backed apply file.
+`infra/aws-ecs-dev` has its own `ecs-dev` resource namespace and remote state key `linked-in-node/ecs-dev/terraform.tfstate`. Do not use the baseline's `linked-in-node/dev/terraform.tfstate`. Historical scratch local-backend previews remain unapplied. The state bucket now exists after its separate approved bootstrap. The new application plan uses the actual encrypted/locked/account-bound S3 backend and remains unapproved.
 
 ALB client ingress defaults empty. Supplying a hostname, issued Ohio certificate and approved /24-or-narrower client CIDRs configures only HTTPS 443. ALB SG → frontend 8180; frontend SG → four API ports; Inquiries SG → Catalog 8182; API/bootstrap SGs → RDS 5432; Inquiries/Notifications SGs → Kafka 9093. There is no internet SSH, PostgreSQL, broker or direct API listener. API hops behind the ALB use private HTTP under these SG boundaries; this is not an end-to-end TLS claim. Database and broker client paths verify TLS.
 

@@ -1,0 +1,16 @@
+aws_s3_bucket.state: Creating...
+aws_s3_bucket.state: Creation complete after 2s [id=772641336063-linked-in-node-terraform-state]
+aws_s3_bucket_public_access_block.state: Creating...
+aws_s3_bucket_server_side_encryption_configuration.state: Creating...
+aws_s3_bucket_versioning.state: Creating...
+aws_s3_bucket_policy.state_tls: Creating...
+aws_s3_bucket_policy.state_tls: Creation complete after 1s [id=772641336063-linked-in-node-terraform-state]
+aws_s3_bucket_public_access_block.state: Creation complete after 1s [id=772641336063-linked-in-node-terraform-state]
+aws_s3_bucket_server_side_encryption_configuration.state: Creation complete after 1s [id=772641336063-linked-in-node-terraform-state]
+aws_s3_bucket_versioning.state: Creation complete after 2s [id=772641336063-linked-in-node-terraform-state]
+
+Apply complete! Resources: 5 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+state_bucket = "772641336063-linked-in-node-terraform-state"
