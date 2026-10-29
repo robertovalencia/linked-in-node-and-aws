@@ -1,5 +1,7 @@
 # Operator preparation and fail-closed preflight — 29 October 2026
 
+Historical first-attempt packet. The human later explicitly approved the lookup/private /32, and a NEW saved plan was prepared successfully. See [current application-plan evidence](../aws-application-plan-2026-10-29/README.md). Statements about stopped execution/no fresh plan below describe this earlier checkpoint only.
+
 This packet records new local source/tests and actual authenticated read-only preflight, not application provisioning. The first run stopped at client-range mismatch before Terraform plan. No new saved application plan, apply, timer, DNS routing or AWS-native controller exists.
 
 - [Current status and remaining decisions](status.json)

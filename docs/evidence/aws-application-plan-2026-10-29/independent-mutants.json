@@ -1,0 +1,46 @@
+{
+  "scope": "OFFLINE_ONLY_NO_AWS_APPLY",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "embedded_source_change",
+      "status": "PASS",
+      "refusal": "Saved plan source differs: variables.tf"
+    },
+    {
+      "name": "provider_lock_change",
+      "status": "PASS",
+      "refusal": "Saved provider lock differs"
+    },
+    {
+      "name": "json_binary_mismatch",
+      "status": "PASS",
+      "refusal": "Plan JSON does not match saved binary"
+    },
+    {
+      "name": "unreviewed_app_task_service",
+      "status": "PASS",
+      "refusal": ""
+    },
+    {
+      "name": "alb_owner_graph_redirect",
+      "status": "PASS",
+      "refusal": "ALB must use its reviewed SG"
+    },
+    {
+      "name": "wide_egress_range",
+      "status": "PASS",
+      "refusal": "Unexpected egress protocol or range"
+    },
+    {
+      "name": "unmanaged_database_master_password",
+      "status": "PASS",
+      "refusal": ""
+    },
+    {
+      "name": "changed_external_scratch_template",
+      "status": "PASS",
+      "refusal": "Scratch broker template differs from reviewed source"
+    }
+  ]
+}

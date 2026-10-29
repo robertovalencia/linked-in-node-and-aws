@@ -1,6 +1,10 @@
 # Results and verification boundary
 
-## Current operator preparation — 29 October 2026
+## Current matching saved-plan preparation — 29 October 2026
+
+The human explicitly approved the IP lookup and private single-/32 preparation. Current CLI/in-app-browser routes match. Actual operator preflight, new saved-plan generation and strict local review pass: 111 creates, zero updates/deletes, zero app tasks. [Exact artifact/cost/cleanup approval package](aws-application-plan-approval-2026-10-29.md) and [actual step journal](evidence/aws-application-plan-2026-10-29/journal.md). Source Verify40949770714 passed at0a068845. Application apply, actual24-hour start/deadline, cloud runtime and teardown remain unexecuted; operator-assisted discard-demo-data/preserve-state is selected.
+
+## Historical operator first attempt — 29 October 2026
 
 The user selected 24 hours, delete demo data and preserve Terraform state. Twelve mocked cleanup plans and 28 fake-CLI operator tests pass. The actual visible preflight passed account/credits/backend/certificate/empty-state/scoped absence checks, then stopped at the approved-client mismatch before plan generation. An additional IP lookup/private record was rejected by automatic approval review and was not retried. The previous 8cf application plan correctly refuses changed source. [Current runbook](aws-operator-runbook-2026-10-29.md) and [actual evidence](evidence/aws-operator-preparation-2026-10-29/README.md). No fresh application plan, timer, paid application provisioning or unattended cleanup exists.
 

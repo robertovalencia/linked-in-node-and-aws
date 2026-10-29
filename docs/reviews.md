@@ -201,3 +201,8 @@ The human selected a 24-hour demo, demo-data removal and preserved Terraform sta
 ## Visible operator and discard-policy preparation — 29 October 2026
 
 Independent review reproduced 12 mocked Terraform tests and 28 helper failure-path tests and inspected the actual stopped preflight. Config-file/optimization environment handling was tightened; the reviewer correctly rejects optimization, and an initial hypothetical bypass concern was withdrawn after actual refusal proof. Source-safe default retention remains intact; explicit discard transitions need successful apply before destruction. Largest unresolved gap: intended client range and credible chosen shutdown mechanism, followed by a fresh plan and exact apply approval. [Evidence](evidence/aws-operator-preparation-2026-10-29/README.md).
+
+
+## Final matching application-plan preparation — 29 October 2026
+
+A new fresh-context critic independently reviewed exact 2fd776...b56 against current Terraform/provider-lock/template and real saved S3 backend, checked actual approved-client preflight/journal, re-summed all 12 ledgers and rejected 54 controls plus 8 additional mutants. Preparation PASS only. [Final critic](evidence/aws-application-plan-2026-10-29/critic.md). It required explicit historical/current wording in the runbook; those inaccuracies were repaired. Biggest remaining gap is unprovisioned runtime and unproved cloud teardown. Operator-assisted return/renewal/approval is selected; no unattended enforcement exists. Actual T0/T0+24h remain unset until provisioning; exact saved-plan apply still needs human approval.

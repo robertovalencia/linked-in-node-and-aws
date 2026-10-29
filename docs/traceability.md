@@ -88,3 +88,8 @@ R12 execution journal → walkthrough11 → original owner execution/read-back e
 ## R10 visible commands and demo-data cleanup — 29 October 2026
 
 Human request for visible iTerm commands → iTerm automation denial/no workaround → manual command helper/private transcript → 28 fake-CLI tests → actual read-only preflight stopped at client mismatch → no new plan. Human 24-hour/delete-demo-data/preserve-state choice → explicit safe-default cleanup flag → 12 mocked transition tests → [runbook and shutdown cost comparison](aws-operator-runbook-2026-10-29.md) → intended-client/shutdown decisions pending → fresh exact plan/cost/critic/apply approval. Native cleanup remains proposal-only; no timer or app resource created.
+
+
+## R10 final matching saved application plan — 29 October 2026
+
+Human explicit IP lookup/private-/32 approval → legitimate private lookup/context update → CLI/IAB match → actual preflight pass → refreshed metadata/new saved 2fd776 artifact → source/backend/security/cost review → 54 existing controls +8 independent mutants → final fresh-context critic PASS → [exact application apply package](aws-application-plan-approval-2026-10-29.md). No app apply, activation, DNS routing, actual 24h clock or teardown success yet. Retention is discard-demo-data/preserve-state; operator-assisted return and exact future cleanup/destroy approval are explicit.

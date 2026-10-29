@@ -1,0 +1,284 @@
+{
+  "status": "PREPARATION_COMPLETE_NOT_APPROVED",
+  "detail": "",
+  "recordedAt": "2026-10-29T20:39:06.002833+00:00",
+  "scope": "PREPARATION_ONLY_NOT_APPLY_APPROVAL",
+  "steps": [
+    {
+      "purpose": "1. Confirm the actual AWS account with the same environment used by Terraform.",
+      "command": [
+        "aws",
+        "sts",
+        "get-caller-identity",
+        "--query",
+        "{Account:Account}",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+      "expectedExitCodes": [
+        0
+      ],
+      "exitCode": 0,
+      "seconds": 0.985,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "2. Read current plan/credits; the result is not a spending cap or service eligibility guarantee.",
+      "command": [
+        "aws",
+        "freetier",
+        "get-account-plan-state",
+        "--region",
+        "us-east-1",
+        "--output",
+        "json"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+      "expectedExitCodes": [
+        0
+      ],
+      "exitCode": 0,
+      "seconds": 0.916,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "3. Verify the initialized default ECS workspace.",
+      "command": [
+        "terraform",
+        "workspace",
+        "show"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/infra/aws-ecs-dev",
+      "expectedExitCodes": [
+        0
+      ],
+      "exitCode": 0,
+      "seconds": 0.166,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "4. Require no existing application state before first provisioning.",
+      "command": [
+        "aws",
+        "s3api",
+        "head-object",
+        "--bucket",
+        "772641336063-linked-in-node-terraform-state",
+        "--key",
+        "linked-in-node/ecs-dev/terraform.tfstate",
+        "--expected-bucket-owner",
+        "772641336063",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+      "expectedExitCodes": [
+        0,
+        254,
+        255
+      ],
+      "exitCode": 254,
+      "seconds": 0.8,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "5. Verify the real certificate identity, issued status and nonexportable setting.",
+      "command": [
+        "aws",
+        "acm",
+        "describe-certificate",
+        "--certificate-arn",
+        "arn:aws:acm:us-east-2:772641336063:certificate/ae18667c-47ac-4fda-8039-e877bafe9705",
+        "--query",
+        "Certificate.{Status:Status,DomainName:DomainName,Export:Options.Export}",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+      "expectedExitCodes": [
+        0
+      ],
+      "exitCode": 0,
+      "seconds": 0.8,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "6. Check the exact proposed ECS cluster is absent (not a complete account inventory).",
+      "command": [
+        "aws",
+        "ecs",
+        "describe-clusters",
+        "--clusters",
+        "linked-in-node-ecs-dev",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+      "expectedExitCodes": [
+        0
+      ],
+      "exitCode": 0,
+      "seconds": 0.794,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "Check the exact proposed RDS instance is absent.",
+      "command": [
+        "aws",
+        "rds",
+        "describe-db-instances",
+        "--db-instance-identifier",
+        "linked-in-node-ecs-dev",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+      "expectedExitCodes": [
+        0,
+        254,
+        255
+      ],
+      "exitCode": 254,
+      "seconds": 0.784,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "Check the exact proposed ALB is absent.",
+      "command": [
+        "aws",
+        "elbv2",
+        "describe-load-balancers",
+        "--names",
+        "linked-in-node-ecs-dev",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+      "expectedExitCodes": [
+        0,
+        254,
+        255
+      ],
+      "exitCode": 254,
+      "seconds": 0.878,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "Check the project-tagged VPC scope is empty; the unrelated default VPC is preserved.",
+      "command": [
+        "aws",
+        "ec2",
+        "describe-vpcs",
+        "--filters",
+        "Name=tag:Project,Values=linked-in-node",
+        "Name=tag:Environment,Values=ecs-dev",
+        "--query",
+        "Vpcs[].VpcId",
+        "--region",
+        "us-east-2",
+        "--output",
+        "json"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+      "expectedExitCodes": [
+        0
+      ],
+      "exitCode": 0,
+      "seconds": 0.933,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "7. Compare current client egress to the approved /32 without displaying the address.",
+      "command": [
+        "curl",
+        "--fail",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "15",
+        "https://checkip.amazonaws.com"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+      "expectedExitCodes": [
+        0
+      ],
+      "exitCode": 0,
+      "seconds": 0.13,
+      "responseRedacted": true
+    },
+    {
+      "purpose": "8. Generate a NEW saved S3-backed plan only. S3 lock-object writes/deletes are normal.",
+      "command": [
+        "terraform",
+        "plan",
+        "-input=false",
+        "-no-color",
+        "-lock-timeout=60s",
+        "-var-file=/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-operator-preparation-2026-10-29/final-plan-run/inputs.tfvars.json",
+        "-out=/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-operator-preparation-2026-10-29/final-plan-run/application.tfplan"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/infra/aws-ecs-dev",
+      "expectedExitCodes": [
+        0
+      ],
+      "exitCode": 0,
+      "seconds": 3.047,
+      "responseRedacted": false
+    },
+    {
+      "purpose": "9. Preserve the exact private saved-plan JSON; output is suppressed.",
+      "command": [
+        "terraform",
+        "show",
+        "-json",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-operator-preparation-2026-10-29/final-plan-run/application.tfplan"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/infra/aws-ecs-dev",
+      "expectedExitCodes": [
+        0
+      ],
+      "exitCode": 0,
+      "seconds": 1.065,
+      "responseRedacted": true
+    },
+    {
+      "purpose": "Run the existing strict actual saved-backend/source/security/cost reviewer; this is not approval.",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/scripts/aws-ecs-review-plan.py",
+        "--plan-json",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-operator-preparation-2026-10-29/final-plan-run/plan.json",
+        "--plan-binary",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-operator-preparation-2026-10-29/final-plan-run/application.tfplan",
+        "--https-context",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-operator-preparation-2026-10-29/https-context.json",
+        "--s3-backend-context",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-operator-preparation-2026-10-29/s3-backend-context.json",
+        "--rates-file",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-operator-preparation-2026-10-29/rates.json",
+        "--report",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-operator-preparation-2026-10-29/final-plan-run/review.json"
+      ],
+      "workingDirectory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+      "expectedExitCodes": [
+        0
+      ],
+      "exitCode": 0,
+      "seconds": 1.421,
+      "responseRedacted": false
+    }
+  ]
+}

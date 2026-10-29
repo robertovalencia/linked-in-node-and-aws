@@ -1,0 +1,8 @@
+{
+  "checkedAt": "2026-10-29T20:36:42.455445+00:00",
+  "browser": "Codex in-app browser",
+  "destination": "https://checkip.amazonaws.com",
+  "matchesApprovedCliAddress": true,
+  "exactAddressesPublished": false,
+  "scope": "Observed IAB and CLI lookup route only; other browser/VPN routes require their own checks"
+}

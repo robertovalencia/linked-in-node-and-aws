@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-10-29T20:42:44.878727+00:00",
+  "status": "PASS_PREPARATION_ONLY_EXACT_APPLICATION_APPLY_NOT_APPROVED",
+  "account": "772641336063",
+  "region": "us-east-2",
+  "planSha256": "2fd776a529ab587759500bf71e43c5f461a528034db2942d5af2f664fe222b56",
+  "sourceCommitAtPlanning": "0a068845de05701eca83809c803db1625196235d",
+  "sourceDirtyAtPlanning": false,
+  "changes": {
+    "create": 111,
+    "update": 0,
+    "destroy": 0
+  },
+  "applicationTasks": 0,
+  "humanIngressApproval": "IP lookup and private single-/32 preparation approved; no world-open range",
+  "browserCliRouteMatches": true,
+  "shutdownMethod": "OPERATOR_ASSISTED_NO_CONTROLLER_OR_REMINDER",
+  "retention": "Discard demo data; preserve protected Terraform state and existing certificate separately",
+  "expiryTagProposal": "2026-10-30T22:00:00Z",
+  "actualStartUTC": null,
+  "actualDeadlineUTC": null,
+  "deadlineRule": "First billable application-resource start+24h; record actual times at provisioning",
+  "applyAuthorized": false,
+  "applyPerformed": false,
+  "expectedCostGrossUSD": {
+    "infrastructure24h": "6.83",
+    "infrastructure720h": "191.22",
+    "futureActivated24h": "8.32",
+    "futureActivated720h": "235.68"
+  },
+  "sourceVerifyRun": "https://github.com/robertovalencia/linked-in-node-and-aws/actions/runs/40949770714",
+  "sourceVerifyConclusion": "success",
+  "independentReview": {
+    "decision": "PASS_PREPARATION_ONLY",
+    "negativeControls": 54,
+    "additionalIndependentMutants": 8
+  }
+}

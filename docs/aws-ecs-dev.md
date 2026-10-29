@@ -1,5 +1,7 @@
 # Private ECS/RDS development environment
 
+Latest checkpoint: [new exact saved-plan approval package](aws-application-plan-approval-2026-10-29.md) and [actual visible command journal](evidence/aws-application-plan-2026-10-29/journal.md). Current client approval/preflight are resolved; application apply remains unapproved.
+
 **Selected for preparation on 27 October 2026; not provisioned.** This implements the private ECS/RDS + one NAT option from the [cost-first review](aws-cost-review-2026-10-27/README.md). The existing `infra/aws-dev` EC2/SSM root is preserved. Local Compose keeps its original ports, credentials and volumes.
 
 The historical hostname-free local preview has no ALB listener/client ingress/app tasks and must never be applied. The free hostname's certificate is now ISSUED. On 29 October the human approved only the exact five-create S3 state bootstrap; it was applied and independently verified. [Actual execution evidence](evidence/aws-state-bootstrap-2026-10-29/README.md). Certificate state remains separately preserved.

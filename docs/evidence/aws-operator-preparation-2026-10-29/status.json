@@ -26,5 +26,7 @@
     "Record actual UTC first-billable start and24h deadline; human returns early for reviewed teardown"
   ],
   "reminderCreated": false,
-  "nativeControllerRequestedOrCreated": false
+  "nativeControllerRequestedOrCreated": false,
+  "historicalCheckpoint": true,
+  "supersededBy": "../aws-application-plan-2026-10-29/README.md"
 }

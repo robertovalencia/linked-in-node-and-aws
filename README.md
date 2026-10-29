@@ -69,7 +69,7 @@ The [dependency security guide](docs/dependency-security.md) explains the body-p
 
 ## AWS development environment
 
-Current execution: [visible commands, stopped preflight and 24-hour cleanup decisions](docs/aws-operator-runbook-2026-10-29.md). The old application plan is superseded by cleanup-source changes; intended client range and a fresh reviewed plan remain pending. Operator-assisted cleanup is selected. No application provisioning has occurred.
+Current execution: the human-approved private /32 now passes CLI/browser preflight, and a [new exact application plan/cost approval package](docs/aws-application-plan-approval-2026-10-29.md) is prepared. [Visible commands and actual journal](docs/aws-operator-runbook-2026-10-29.md) distinguish the earlier refusal from the successful new plan. Operator-assisted 24-hour cleanup/discard-demo-data/preserve-state is selected; application apply remains unapproved.
 
 The selected [private ECS/RDS + one NAT environment](docs/aws-ecs-dev.md) has a [historical actual S3-backed plan and dated costs](docs/aws-s3-plan-review-2026-10-29.md): 111 creates/0 updates/0 deletes, issued-certificate HTTPS restricted to one approved /32 and zero app tasks. Only the separate certificate and five-resource state bootstrap have been approved/applied; [actual bootstrap execution](docs/evidence/aws-state-bootstrap-2026-10-29/README.md) is independently verified. Application infrastructure, image publication, activation, DNS routing and runtime recovery remain pending separate review/approval.
 
@@ -80,6 +80,6 @@ Expected gross estimates are **$6.83/24h for infrastructure probes** or **$8.32/
 The [full syllabus and concept checklist](docs/nodejs-aws-study-path/generated/44-cloud-complete-syllabus-and-mastery-map.md) expands the path to 84 lessons, with 64 cloud/Terraform lessons. Important topics are taught even when the current portfolio does not implement them: new examples are explicitly illustrative, and advanced network/Terraform labs run locally without AWS credentials. Cost comparison and deployment redesign belong to “Create Node.js AWS LinkedIn project”; its [acknowledged handoff](docs/nodejs-aws-study-path/deployment-handoff.md) and [coordination status](docs/nodejs-aws-study-path/deployment-coordination.json) do not claim an approved or provisioned architecture.
 
 
-Deployment status: certificate issuance and separately approved S3 bootstrap are verified. The 29 October application artifact is superseded by cleanup-source changes. A fresh plan is blocked on the client-range decision; provisioning and activation remain unapproved. Consult the deployment coordination record and owner report rather than inferring live resources from these learning examples.
+Deployment status: certificate issuance and separately approved S3 bootstrap are verified. The 29 October application artifact is superseded by cleanup-source changes. The matching new plan is prepared for exact approval; provisioning and activation remain unapproved. Consult the deployment coordination record and owner report rather than inferring live resources from these learning examples.
 
 For the real approved state bootstrap and the remaining application plan/24-hour teardown boundaries, read the [29 October AWS execution journal](docs/nodejs-aws-study-path/walkthroughs/11-aws-execution-journal.md).
