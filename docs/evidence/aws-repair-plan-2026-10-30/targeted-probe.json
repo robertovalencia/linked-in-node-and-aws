@@ -1,0 +1,19 @@
+{
+  "status": "PASS_INDEPENDENT_TARGETED_PROBE",
+  "binarySha256": "cd87e0ed4e5fd86fcfcbb4a0d4ffbcb443140a87fd754de7a61ff3408bddacd1",
+  "jsonSha256": "5b9aba4191c44008ecd1f8a94819e6c0ba635073bd1f87e64c033563770ce201",
+  "changes": {
+    "update": 82,
+    "create": 12,
+    "no-op": 12,
+    "delete/create": 6
+  },
+  "standaloneAndProviderMirrorGraphEdges": 35,
+  "providerMirrorMatchesStandaloneGraph": true,
+  "configuredInlineSecurityRules": false,
+  "brokerAndEbsIdentityPreserved": true,
+  "brokerEbsCanonicalDeadline": true,
+  "embeddedTerraformSourceAndProviderLockMatch": true,
+  "baselineLineageSerialMatch": true,
+  "noAwsMutationOrNewPlan": true
+}

@@ -1,0 +1,51 @@
+{
+  "startedAt": "2026-10-30T14:49:27.953997+00:00",
+  "scope": "PRIVATE_COPY_MOCK_PROVIDER_EVALUATION_ONLY_NO_AWS_CALLS_OR_REMOTE_STATE_ACCESS",
+  "directory": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-infrastructure-repair-2026-10-29/volume-expiry-mock-_loeg0w0",
+  "steps": [
+    {
+      "name": "init",
+      "exitCode": 0
+    },
+    {
+      "name": "validate",
+      "exitCode": 0
+    },
+    {
+      "name": "test",
+      "exitCode": 0
+    }
+  ],
+  "sourceHashes": {
+    ".terraform.lock.hcl": "795c03ec138135bd2913276060c796ab9b3588715e55d3f4081f65879ee67693",
+    "compute.tf": "5a3c8e35c1077e7e00753cc264874de2a42cfa6dd87bdb5bfd12ceb34ce2e8d2",
+    "data.tf": "b698d0b45ef7d213f79372497fdbf1d7121d8b58cb80b38a050abd293532f9fb",
+    "iam.tf": "31d3823907c0c627f5d6d0c4af20c2d6bb7c4a7d552ee0182c704bb47babc704",
+    "ingress.tf": "52ad5a60b8213f09415abfbfadad83cc9a74b81df6fe8d04f1e41992cf8d3d23",
+    "kafka-user-data.sh.tftpl": "190d64118ea6a1bb4d9077fdb4cfb3cdb8c07cdfe412d28e65774b67ec293654",
+    "network.tf": "245073d06aac72e825494ef35a0db762e347162ea28bf3ae964528da04677873",
+    "observability.tf": "209a8760aa5784d3fb2429cc1a82eb1ea4f4647ddf67ba6c0f3897559f7be342",
+    "outputs.tf": "317b99883d1fd0163a1952a281909b70a85bc3602074fbf54c91d44e0faac568",
+    "tests/security.tftest.hcl": "ec9ff5a8889ee81068e46cb2e021a34abf7b1e828c6cc309ff933aa5472563c2",
+    "variables.tf": "0c907987f7ad9d68e6c780afd18267a47f0851caeb30de5f88c1141a672f8bd1",
+    "versions.tf": "7e17ae4bc5f302ec96a74c7f0427aba6e91c3299033d3789f30917a5fc61ea51"
+  },
+  "summary": [
+    {
+      "@level": "info",
+      "@message": "Success! 18 passed, 0 failed.",
+      "@module": "terraform.ui",
+      "@timestamp": "2026-10-30T10:49:31.804038-04:00",
+      "test_summary": {
+        "status": "pass",
+        "passed": 18,
+        "failed": 0,
+        "errored": 0,
+        "skipped": 0
+      },
+      "type": "test_summary"
+    }
+  ],
+  "status": "PASS",
+  "endedAt": "2026-10-30T14:49:31.809607+00:00"
+}

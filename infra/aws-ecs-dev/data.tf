@@ -51,7 +51,7 @@ resource "aws_db_instance" "dev" {
   publicly_accessible             = false
   multi_az                        = false
   port                            = 5432
-  backup_retention_period         = 7
+  backup_retention_period         = var.rds_backup_retention_days
   backup_window                   = "05:00-05:30"
   maintenance_window              = "sun:06:00-sun:07:00"
   auto_minor_version_upgrade      = true
@@ -119,6 +119,6 @@ resource "aws_s3_bucket_policy" "operations" {
   bucket = aws_s3_bucket.operations.id
   policy = jsonencode({ Version = "2012-10-17", Statement = [
     { Sid = "DenyInsecureTransport", Effect = "Deny", Principal = "*", Action = "s3:*", Resource = [aws_s3_bucket.operations.arn, "${aws_s3_bucket.operations.arn}/*"], Condition = { Bool = { "aws:SecureTransport" = "false" } } },
-    { Sid = "ALBAccessLogs", Effect = "Allow", Principal = { Service = "logdelivery.elasticloadbalancing.amazonaws.com" }, Action = "s3:PutObject", Resource = "${aws_s3_bucket.operations.arn}/alb/AWSLogs/${data.aws_caller_identity.current.account_id}/*", Condition = { ArnLike = { "aws:SourceArn" = "${local.arn_prefix}:elasticloadbalancing:${var.region}:${data.aws_caller_identity.current.account_id}:loadbalancer/app/${local.name}/*" } } }
+    { Sid = "ALBAccessLogs", Effect = "Allow", Principal = { Service = "logdelivery.elasticloadbalancing.amazonaws.com" }, Action = "s3:PutObject", Resource = "${aws_s3_bucket.operations.arn}/alb/AWSLogs/${data.aws_caller_identity.current.account_id}/*", Condition = { ArnLike = { "aws:SourceArn" = "${local.arn_prefix}:elasticloadbalancing:${var.region}:${data.aws_caller_identity.current.account_id}:loadbalancer/*" } } }
   ] })
 }

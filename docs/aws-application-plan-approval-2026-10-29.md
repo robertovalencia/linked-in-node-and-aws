@@ -1,5 +1,7 @@
 # Application infrastructure approval package — 29 October 2026
 
+> Historical, consumed artifact: this exact plan was approved and executed once, then failed partially. Do not retry it. See [actual execution](evidence/aws-infrastructure-apply-2026-10-29/README.md) and [current repair review](aws-repair-review-2026-10-30.md).
+
 **A new matching S3-backed plan is prepared; no application resources have been applied.** The human explicitly approved the current-IP lookup and private single-/32 rule preparation. The real CLI and in-app browser used the same observed route. The rule remains one approved client, not Internet-wide ingress. Exact address/contexts/raw plans remain owner-only and out of Git. [Actual command journal and evidence](evidence/aws-application-plan-2026-10-29/README.md).
 
 ## Exact artifact and expected behavior

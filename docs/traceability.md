@@ -93,3 +93,8 @@ Human request for visible iTerm commands → iTerm automation denial/no workarou
 ## R10 final matching saved application plan — 29 October 2026
 
 Human explicit IP lookup/private-/32 approval → legitimate private lookup/context update → CLI/IAB match → actual preflight pass → refreshed metadata/new saved 2fd776 artifact → source/backend/security/cost review → 54 existing controls +8 independent mutants → final fresh-context critic PASS → [exact application apply package](aws-application-plan-approval-2026-10-29.md). No app apply, activation, DNS routing, actual 24h clock or teardown success yet. Retention is discard-demo-data/preserve-state; operator-assisted return and exact future cleanup/destroy approval are explicit.
+
+
+## R10 actual partial failure and repair preparation — 30 October 2026
+
+Explicit human approval of initial 2fd776 artifact → actual exit 1 and 99 completed creates/100 persisted managed instances → independent AWS/state critic FAIL → preserved errors and original T0/deadline → human-authorized repair preparation → source fixes, rejected AMI/volume-tag previews, 18 isolated Terraform mock runs → fresh exact mixed-action plan and current 31-rate/12-ledger cost packet → strict reviewer/negative controls and fresh critic → [current repair review](aws-repair-review-2026-10-30.md). Changed-plan apply, runtime controls, activation and cleanup remain separate approval/verification boundaries; no Git/Jira deployment/release success is inferred.

@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "passed": 28,
+  "failed": 0,
+  "durationSeconds": "18.342",
+  "scope": "Independent fake AWS/Terraform/curl operator failure-path tests; no AWS calls",
+  "transcriptSha256": "944d5f66a6d197bd3cb951c7d1ef13b80dcc010921e11e9b886616a1732405f6"
+}

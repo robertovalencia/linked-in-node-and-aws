@@ -206,3 +206,14 @@ Independent review reproduced 12 mocked Terraform tests and 28 helper failure-pa
 ## Final matching application-plan preparation — 29 October 2026
 
 A new fresh-context critic independently reviewed exact 2fd776...b56 against current Terraform/provider-lock/template and real saved S3 backend, checked actual approved-client preflight/journal, re-summed all 12 ledgers and rejected 54 controls plus 8 additional mutants. Preparation PASS only. [Final critic](evidence/aws-application-plan-2026-10-29/critic.md). It required explicit historical/current wording in the runbook; those inaccuracies were repaired. Biggest remaining gap is unprovisioned runtime and unproved cloud teardown. Operator-assisted return/renewal/approval is selected; no unattended enforcement exists. Actual T0/T0+24h remain unset until provisioning; exact saved-plan apply still needs human approval.
+
+
+## Actual initial apply failure and repair review — 30 October 2026
+
+The independent live critic rejected infrastructure completion: RDS retention was refused by the Free plan, direct Route53 writes were refused for a Cloud Map-owned zone, and ALB logging validation failed, leaving a tainted physical ALB. The exact approved initial artifact was consumed; paid resources and the original clock remained. [Actual failed execution and critic](evidence/aws-infrastructure-apply-2026-10-29/README.md).
+
+Builders corrected those source paths. Fresh planning then exposed unintended broker replacement through latest-AMI drift, ineffective empty custom-health blocks and stale volume expiry metadata. The first two repair previews were rejected and preserved. Current source pins the deployed AMI, explicitly sets custom-health threshold 1 for five empty definitions and sets the configured root-volume deadline tag. Eighteen isolated mocks pass. A separate critic verified broker/EBS preservation, all 35 trust paths and 372 cost item products across 12 ledgers. The computed volume tags_all mirror remains historical until actual apply/read-back; this is disclosed and narrowly bound, not claimed fixed. [Exact plan/cost packet](aws-repair-review-2026-10-30.md).
+
+Final strict mixed-action review, all 56 negative controls and eight additional critic controls pass on the exact cd87e0 artifact. The fresh critic independently reran 28 operator tests and inspected the 18 mock-run receipt. The largest remaining gap is live repair and recovery verification; no one-day account compatibility, ALB log delivery, HTTPS behavior, application activation or teardown success is inferred from source or planning. The deadline remains today at 5:51 PM EDT with operator-assisted cleanup.
+
+[Final independent repair critic](evidence/aws-repair-plan-2026-10-30/critic.md). Preparation accepted; no changed-plan apply approved or performed.

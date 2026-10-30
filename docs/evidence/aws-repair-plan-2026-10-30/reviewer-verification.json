@@ -1,0 +1,17 @@
+{
+  "recordedAt": "2026-10-30T15:00:30.491876+00:00",
+  "status": "BUILDER_REVIEW_AND_NEGATIVE_CONTROLS_PASS_NOT_APPLY_APPROVAL",
+  "actualSavedPlanSha256": "cd87e0ed4e5fd86fcfcbb4a0d4ffbcb443140a87fd754de7a61ff3408bddacd1",
+  "sourceFilesSha256": {
+    "scripts/aws-ecs-review-repair-plan.py": "a0410a885567dcda3f1fb922397075e3715c0b8313f9d4ee57dec0f20a718c50",
+    "scripts/aws-ecs-review-repair-plan.test.py": "5d92162b9b18ac0ec6bf58c41e2eeae6fcb8007ee62d7e932fcca07601182217",
+    "scripts/aws-ecs-review-plan.py": "f2e29ce7dc6e053774f758c0cb6944ac8e8129aada4fea3b2e454a8dccf92518"
+  },
+  "negativeControlsSha256": "eede1ef94801e966ab197addf04e49adbadffe525916771d3eeadf27d678d886",
+  "negativeControlsPassed": 56,
+  "validMixedActionFixtureAccepted": true,
+  "mutationScope": "JSON controls stub only local terraform show; source/backend/state mutation controls alter real saved ZIP bytes; no AWS or apply",
+  "initialReviewerChange": "CloudMap resource cost quantity only; original create-only and security gates remain unchanged",
+  "largestGap": "No repair apply authorized; Free account one-day RDS acceptance and live provider EBS tag/discovery/ALB health still require approved execution and read-back",
+  "codeStable": true
+}

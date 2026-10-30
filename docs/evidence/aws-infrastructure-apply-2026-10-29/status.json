@@ -1,0 +1,36 @@
+{
+  "status": "PARTIAL_APPLY_FAILED_REPAIR_PREPARATION_ONLY",
+  "approvedConsumedPlanSha256": "2fd776a529ab587759500bf71e43c5f461a528034db2942d5af2f664fe222b56",
+  "applyExitCode": 1,
+  "successfulCreateEvents": 99,
+  "managedStateInstances": 100,
+  "taintedResources": [
+    "aws_lb.dev"
+  ],
+  "firstPaidCreateStartUtc": "2026-10-29T21:51:25.219221Z",
+  "shutdownDeadlineUtc": "2026-10-30T21:51:25.219221Z",
+  "shutdownDeadlineNewYork": "2026-10-30 17:51:25 EDT",
+  "recommendedOperatorReturnNewYork": "2026-10-30 15:51:25 EDT",
+  "controllerCreated": false,
+  "reminderCreated": false,
+  "bootstrapCertificateStatesUnchanged": true,
+  "currentReadOnlyCheckedAt": "2026-10-30T14:40:02.879547Z",
+  "accountPlan": {
+    "accountId": "772641336063",
+    "accountPlanType": "FREE",
+    "accountPlanStatus": "ACTIVE",
+    "accountPlanRemainingCredits": {
+      "amount": 98.59,
+      "unit": "USD"
+    },
+    "accountPlanExpirationDate": "2027-04-21T17:52:26.416000+00:00"
+  },
+  "applicationActivated": false,
+  "repairApplied": false,
+  "failureAreas": [
+    "RDS seven-day backup retention rejected by Free plan; numeric maximum unspecified",
+    "Direct Route53 broker record rejected; namespace requires Cloud Map management",
+    "ALB S3 access-log validation rejected; physical ALB persisted as tainted"
+  ],
+  "runtimeVerification": "No RDS, listener or running/pending application tasks; no working application or HTTPS claimed"
+}

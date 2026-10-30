@@ -1,8 +1,8 @@
 # Visible AWS commands and 24-hour cleanup — 29 October 2026
 
-**Current result: approved-client preflight and new saved-plan preparation pass; application apply remains unapproved.** After explicit human lookup/private-/32 authorization, the current CLI and in-app-browser routes match. The new final artifact is `2fd776a529ab587759500bf71e43c5f461a528034db2942d5af2f664fe222b56`, with 111 creates/0 updates/0 deletes and zero app tasks. [Exact approval package](aws-application-plan-approval-2026-10-29.md) and [actual command journal](evidence/aws-application-plan-2026-10-29/journal.md).
+**Current result, 30 October: the approved initial plan failed partially. Paid resources remain; repair preparation is underway.** [Actual execution and independent critic](evidence/aws-infrastructure-apply-2026-10-29/README.md) · [current repair/cost/deadline review](aws-repair-review-2026-10-30.md).
 
-The earlier mismatched-client preflight and automatic-review rejection remain [historical guard evidence](evidence/aws-operator-preparation-2026-10-29/README.md). The rejected lookup was not retried until the human explicitly approved it. That input issue is resolved. The human selected 24 hours, operator-assisted teardown, delete demo data and preserve Terraform state. No controller or reminder exists. The separately applied bootstrap and certificate remain; no application resource has been provisioned.
+Deadline: **today 5:51:25 PM EDT**, operator return **3:51 PM EDT**. No automatic cleanup exists. The initial `2fd776…` artifact is consumed and must never be retried. The initial create-only helper below correctly refuses an existing application state; its commands are historical preparation examples, not repair commands. Current repair plans must bind the actual 100-instance partial state. Preserve certificate/bootstrap state. Do not reset the deadline or run an old plan.
 
 ## Viewing commands in iTerm
 
@@ -42,7 +42,7 @@ Historical first attempt (before the new explicit IP approval):
 
 Do not use `set -x`, credential-export commands, secret-value reads or database password commands in a transcript. Keep raw plans/state, TLS keys and generated payloads out of Git. The helper does not overwrite an existing run directory: use a new name for a new attempt so failures remain evidence.
 
-## Fresh plan after the pending decisions
+## Historical initial-plan commands — not valid for repair
 
 The following is a prepared command, **a replay command; the actual successful run is documented above**. For any future replay, refresh the private contexts/inputs and proposed time window first:
 
@@ -57,7 +57,7 @@ python3 scripts/aws-ecs-operator.py plan \
 
 It requires a fresh live preflight, rejects initial activation/discard flags and existing state/topology, copies private inputs, creates the S3-backed saved plan, derives its actual JSON, and runs the strict binary/source/backend/security/cost reviewer. Normal planning creates/deletes an S3 lock object. No application apply occurs. Outputs include `application.tfplan`, `plan.json`, `review.json`, `transcript.txt` and `steps.json` in the new run directory.
 
-The old `8cf376...` saved plan now refuses source binding because cleanup-source definitions changed. It is historical evidence and must never be applied. New source requires a new binary/hash/independent review and explicit human approval. The obsolete 19:00–20:00 UTC window was not used. The final plan refreshes planning expiry metadata to2026-10-30T22:00:00Z. Actual first-billable start/deadline remain unset until provisioning; the selected policy is actual T0+24h. The tag is neither a timer nor an actual start claim. Refresh/replan if reviewed timing/input/source conditions change.
+The older `8cf376...` artifact was superseded before provisioning. The subsequently approved `2fd776...` artifact was executed once and failed partially; it is consumed. Its historical inputs used an ExpiresAt tag of 22:00 UTC. The actual first paid create started at **29 October 21:51:25.219221 UTC**, fixing the shutdown deadline at **30 October 21:51:25.219221 UTC / 5:51:25 PM EDT**. The new repair input rounds the deadline tag down to 21:51:25 UTC. Tags are metadata, never timers. Use the [current exact repair review](aws-repair-review-2026-10-30.md); do not run this initial create-only workflow against existing partial state.
 
 ## Selected shutdown mechanism and cost comparison
 
@@ -70,7 +70,7 @@ Official Ohio CodeBuild Linux `general1.small` on-demand compute is $0.005/minut
 
 AWS login auto-refreshes for up to 12 hours, which cannot cover a 24-hour unattended teardown. [Official CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sign-in.html). A Codex reminder is a notification, not deletion infrastructure. Scheduler successfully invoking CodeBuild would prove dispatch only; final cleanup success requires actual absent-resource/retained-state checks. The proposed native controller needs bounded build-level retries and an explicitly approved failure destination; scheduler API retries alone do not handle a failed build. Service eligibility/IAM/SCP permissions remain unproved, and no account upgrade or restriction bypass is authorized.
 
-The human chose 24 hours from the first billable application resource. Record the exact UTC start and start+24h deadline at actual provisioning; proposed tags are planning metadata. Record operator availability before apply and reconcile the actual start/deadline in the execution journal afterward. Plan for human return around hour22 to renew login, stop writes and review cleanup, then begin destruction with time to verify completion before hour24. An ExpiresAt tag never deletes resources. Begin stopping traffic and preparing teardown ahead of the deadline; AWS deletion is asynchronous, so initiating it at hour 24 does not mean every charge/data copy disappears at that instant. Keep exact start/deadline, owner, retries and actual completion times in a private run record.
+The human chose 24 hours from the first billable application resource. Its conservative actual start and deadline are now recorded above and in the execution journal; neither a repair nor new tags reset them. Confirm operator availability for the remaining window before any further approved apply. Plan for human return around hour22 to renew login, stop writes and review cleanup, then begin destruction with time to verify completion before hour24. An ExpiresAt tag never deletes resources. Begin stopping traffic and preparing teardown ahead of the deadline; AWS deletion is asynchronous, so initiating it at hour 24 does not mean every charge/data copy disappears at that instant. Keep exact start/deadline, owner, retries and actual completion times in a private run record.
 
 ## Concrete cleanup sequence for the selected discard policy
 
@@ -144,9 +144,9 @@ printf 'STOP for independent exact-plan review and approval. Private artifacts: 
 BASH
 ```
 
-After a separately approved transition actually succeeds, verify stopped tasks and database/deletion settings before preparing a fresh saved destroy plan. Never proceed to destroy after a failed transition. Before each eventual apply, recheck the exact approved artifact hash and embedded source/provider lock, current account/backend/default workspace and owner-only artifacts. A hash or account printout alone is not a guard. The initial create-only reviewer intentionally refuses cleanup transitions; those require a distinct destructive-scope review. No meaningful current destroy artifact can be produced until application resources exist.
+After a separately approved transition actually succeeds, verify stopped tasks and database/deletion settings before preparing a fresh saved destroy plan. Never proceed to destroy after a failed transition. Before each eventual apply, recheck the exact approved artifact hash and embedded source/provider lock, current account/backend/default workspace and owner-only artifacts. A hash or account printout alone is not a guard. The initial create-only reviewer intentionally refuses cleanup transitions; those require a distinct destructive-scope review. Application resources now exist partially; cleanup artifacts must bind their actual current state.
 
-Never run `terraform destroy -auto-approve`, delete raw state, apply the bootstrap plan again or use the old EC2/SSM deployment workflow as this ECS release. A saved destroy plan must be generated from real current state, so a meaningful one cannot be prepared now while application state is absent. Source/mock tests do not establish a verified cloud teardown.
+Never run `terraform destroy -auto-approve`, delete raw state, apply the bootstrap plan again or use the old EC2/SSM deployment workflow as this ECS release. A saved destroy plan must be generated from real current partial state after any required cleanup transition has actually succeeded. Source/mock tests do not establish a verified cloud teardown.
 
 ## Costs and evidence boundary
 

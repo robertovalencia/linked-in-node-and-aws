@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "rates": 31,
+  "catalogRates": 28,
+  "tariffRates": 3,
+  "costCases": 12,
+  "quantityChangesFromRepairProposal": 0,
+  "rateUnitTierChanges": 0,
+  "allItemProductsAndTotalsRecomputedWithDecimal": true,
+  "liveIdentityEligibilityOrInventoryVerifiedByThisTask": false,
+  "awsMutationPerformed": false,
+  "deadlineUnchanged": true
+}

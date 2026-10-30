@@ -1,0 +1,102 @@
+{
+  "status": "PREPARATION_REVIEW_PASS_NOT_APPROVED_NOT_APPLIED",
+  "preparedAt": "2026-10-30T14:49:26.208377Z",
+  "planBinarySha256": "cd87e0ed4e5fd86fcfcbb4a0d4ffbcb443140a87fd754de7a61ff3408bddacd1",
+  "planJsonSha256": "5b9aba4191c44008ecd1f8a94819e6c0ba635073bd1f87e64c033563770ce201",
+  "baselineStateSha256": "5ec48dbf15cb268b42fc937dae8ffa3b537948302ac4e8ce7a6e6939da901ac5",
+  "baselineManagedInstances": 100,
+  "finalManagedInstances": 112,
+  "terraformSummary": {
+    "add": 18,
+    "change": 82,
+    "destroy": 6
+  },
+  "newResourceCreates": 12,
+  "replacements": [
+    {
+      "address": "aws_lb.dev",
+      "actions": [
+        "delete",
+        "create"
+      ],
+      "actionReason": "replace_because_tainted"
+    },
+    {
+      "address": "aws_service_discovery_service.app[\"catalog\"]",
+      "actions": [
+        "delete",
+        "create"
+      ],
+      "actionReason": "replace_because_cannot_update"
+    },
+    {
+      "address": "aws_service_discovery_service.app[\"frontend\"]",
+      "actions": [
+        "delete",
+        "create"
+      ],
+      "actionReason": "replace_because_cannot_update"
+    },
+    {
+      "address": "aws_service_discovery_service.app[\"identity\"]",
+      "actions": [
+        "delete",
+        "create"
+      ],
+      "actionReason": "replace_because_cannot_update"
+    },
+    {
+      "address": "aws_service_discovery_service.app[\"inquiries\"]",
+      "actions": [
+        "delete",
+        "create"
+      ],
+      "actionReason": "replace_because_cannot_update"
+    },
+    {
+      "address": "aws_service_discovery_service.app[\"notifications\"]",
+      "actions": [
+        "delete",
+        "create"
+      ],
+      "actionReason": "replace_because_cannot_update"
+    }
+  ],
+  "brokerIdentityAndRootVolumePreserved": true,
+  "quantities": {
+    "alb": 1,
+    "alb_public_subnet_azs": 2,
+    "broker_gp3_gib": 40,
+    "broker_instances": 1,
+    "broker_public_ipv4": 0,
+    "broker_registered_resources": 1,
+    "cloud_map_namespaces": 1,
+    "custom_host_metrics": 3,
+    "fargate_cpu_per_task": 0.25,
+    "fargate_memory_gib_per_task": 0.5,
+    "fargate_tasks": 0,
+    "interface_endpoints": 0,
+    "log_retention_days": 7,
+    "nat_elastic_ipv4": 1,
+    "private_app_azs": 1,
+    "rds_backup_days": 1,
+    "rds_instances": 1,
+    "rds_managed_master_secrets": 1,
+    "rds_multi_az": false,
+    "rds_storage_gib": 20,
+    "runtime_secret_resources": 6,
+    "s3_gateway_endpoints": 1,
+    "standard_alarms": 7,
+    "zonal_nat": 1
+  },
+  "deadlineUtc": "2026-10-30T21:51:25.219221Z",
+  "deadlineTagUtc": "2026-10-30T21:51:25Z",
+  "cloudMapRegisteredInstancesBeforeRepair": 0,
+  "sourceMockRunsPassed": 18,
+  "repairApplyPerformed": false,
+  "applicationActivationPerformed": false,
+  "negativeControlsPassed": 56,
+  "additionalIndependentControlsPassed": 8,
+  "operatorFakeCliTestsPassed": 28,
+  "independentCritic": "critic.md"
+}

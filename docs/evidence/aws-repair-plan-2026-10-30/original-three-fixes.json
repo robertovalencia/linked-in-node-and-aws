@@ -1,0 +1,115 @@
+{
+  "checkedAt": "2026-10-29T22:09:09.117429+00:00",
+  "status": "REPAIR_SOURCE_AND_MOCKS_PASS_NEW_SAVED_PLAN_AND_APPROVAL_REQUIRED",
+  "scope": "Terraform source only; no AWS calls, login, apply, import, taint or state modification",
+  "observedFailureFacts": [
+    "Preserved prior approved apply failed with explicit RDS FreeTierRestrictionError for backup retention7; that establishes rejection of7, not the maximum or approval of1.",
+    "The direct Route53 broker record was rejected because the hosted zone can only be managed through AWS Cloud Map. Parent partial inventory says that failed record is not in state.",
+    "ALB S3 access-log validation was denied. Parent partial inventory identifies the physically created ALB as tainted; source changes do not remove taint or authorize reuse."
+  ],
+  "repairs": [
+    {
+      "area": "RDS",
+      "change": "rds_backup_retention_days number/default7/nullablefalse/allowed1or7; resource and cost output bind it",
+      "defaultPreserved": true,
+      "candidate": "Explicit1day, backups still enabled and database deletion/snapshot/automated-backup protection retained",
+      "notProven": "Free-plan accepts1, instance create permissions/capacity, or live recovery behavior"
+    },
+    {
+      "area": "Private broker discovery",
+      "change": "Replace absent failed direct Route53 record with Cloud Map broker service+registered instance",
+      "service": {
+        "name": "kafka",
+        "namespace": "existing private namespace",
+        "recordType": "A",
+        "ttl": 10,
+        "routingPolicy": "MULTIVALUE",
+        "healthCheck": "none; static discovery, not readiness"
+      },
+      "instance": {
+        "instance_id": "broker",
+        "service_id": "aws_service_discovery_service.broker.id",
+        "attributes": {
+          "AWS_INSTANCE_IPV4": "aws_instance.broker.private_ip",
+          "AWS_INSTANCE_PORT": "9093"
+        }
+      },
+      "dependencies": "ECS services depend on completed Cloud Map instance registration",
+      "costOutput": "broker_registered_resources=1",
+      "notProven": "CreateService/RegisterInstance Free-account permission and successful in-VPC DNS/TLS authentication until approved execution"
+    },
+    {
+      "area": "ALB log delivery",
+      "change": "SourceArn condition uses exact account/region loadbalancer/* pattern from official AWS example",
+      "preserved": [
+        "logdelivery.elasticloadbalancing.amazonaws.com principal",
+        "only s3:PutObject",
+        "only operations-bucket alb/AWSLogs/ACCOUNT/* prefix",
+        "deny insecure transport",
+        "SSE-S3",
+        "all four public-access blocks",
+        "ALB access logging enabled",
+        "bucket policy dependency before ALB configuration"
+      ],
+      "tradeoff": "Allows account/region load balancer service delivery into this exact account prefix rather than one load-balancer name; not public write access",
+      "notProven": "Old name-level condition caused denial or corrected condition passes actual validation; require ALB access-log test object and later actual log records"
+    }
+  ],
+  "replacementBoundary": "Root must preserve partial state and review fresh plan containing explicit replacement of the tainted ALB; no untaint, targeting, manual API mutation, import or state workaround performed.",
+  "runtimeBoundary": "Kafka9093/TLS/SCRAM, approved client ingress, application zero-task stage, service-owned databases and existing synthetic-data teardown defaults are unchanged. No images, secret values or app activation introduced.",
+  "deadlineBoundary": "Existing paid-resource clock/deadline continues; this preparation does not reset or schedule teardown.",
+  "officialSources": [
+    {
+      "topic": "RDS1dayCLIdefault/generalrange; not account-specific Free-limit proof",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.BackupRetention.html"
+    },
+    {
+      "topic": "ALB service principal, account log prefix, SourceArn account/region:loadbalancer/*, SSE-S3, validation test object",
+      "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html"
+    },
+    {
+      "topic": "Private namespace DNS names are service-name.namespace-name, within VPC",
+      "url": "https://docs.aws.amazon.com/cloud-map/latest/dg/creating-namespaces.html"
+    },
+    {
+      "topic": "RegisterInstance controls private DNS; IPv4 required forA; EC2attribute reservedHTTPonly; nohealthconfigreturnsallrecords",
+      "url": "https://docs.aws.amazon.com/cloud-map/latest/api/API_RegisterInstance.html"
+    },
+    {
+      "topic": "Provider6.70 CloudMap service resource schema",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.70.0/website/docs/r/service_discovery_service.html.markdown"
+    },
+    {
+      "topic": "Provider6.70 instance schema and lifecycle",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.70.0/website/docs/r/service_discovery_instance.html.markdown"
+    },
+    {
+      "topic": "Provider6.70 RegisterInstance on create/update and DeregisterInstance ondelete; waits operation completion",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.70.0/internal/service/servicediscovery/instance.go"
+    }
+  ],
+  "mockSummary": [
+    {
+      "@level": "info",
+      "@message": "Success! 15 passed, 0 failed.",
+      "@module": "terraform.ui",
+      "@timestamp": "2026-10-29T18:07:47.137412-04:00",
+      "test_summary": {
+        "status": "pass",
+        "passed": 15,
+        "failed": 0,
+        "errored": 0,
+        "skipped": 0
+      },
+      "type": "test_summary"
+    }
+  ],
+  "mockReceipt": "repair-mock-receipt.json",
+  "changedSourceHashes": {
+    "infra/aws-ecs-dev/variables.tf": "86b4a4a2c8c9b3d964db3a7281ec0076cdc0ae37ee9a1afd1053607bc123da51",
+    "infra/aws-ecs-dev/data.tf": "b698d0b45ef7d213f79372497fdbf1d7121d8b58cb80b38a050abd293532f9fb",
+    "infra/aws-ecs-dev/compute.tf": "fc47b006ad044bca7a18b600ae6938040b17275857f76ee60f4e81a0098f5311",
+    "infra/aws-ecs-dev/outputs.tf": "317b99883d1fd0163a1952a281909b70a85bc3602074fbf54c91d44e0faac568",
+    "infra/aws-ecs-dev/tests/security.tftest.hcl": "e7b28a10224cbcd69b416e7a3e9898355b958c8cb2bd870e725be614daaba85f"
+  }
+}

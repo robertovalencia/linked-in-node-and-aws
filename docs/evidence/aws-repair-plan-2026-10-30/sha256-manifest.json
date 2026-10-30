@@ -1,0 +1,21 @@
+{
+  "README.md": "639e232a05e5ac4663582f0cfaad80f493681be26be91519193888900bdfd399",
+  "cost-recalculation.json": "c20b28f9b7279afcea861a76e8b269db971a0219c4e7fe8a8953131f394daf1b",
+  "costs.md": "4c669abc75302314c641467c9282f7bd2932bd983dd92a41c2d0f45438241436",
+  "critic-result.json": "078ca85b35bcd7a8cf34b925441b1dcf005c674c61f8a5e2d7e791fdd6951d8f",
+  "critic.md": "80b6c58b9485d05fa610a284a97d035cac1c88540fb76575bd0a9516c8725c96",
+  "drift-fixes.json": "df5d2c59f938c3895189d9bd3dc60fc2d16587cd182cf89c3eaa1f18f79a73fb",
+  "independent-controls.json": "1afbde7a2e3e4588c5b420aaeb5936fa47151c966048306223bc69f6aebdfd04",
+  "operator-fake-cli-summary.json": "b741fe0196f98ca4e8be2482d6ba011d98d123e26c252cc50a5928c888fd96b7",
+  "original-three-fixes.json": "3699a5106ed1a61f508700f5be0e61d079092fd3010f8e814dec53b2cae1ffb7",
+  "price-probe.json": "b17d7677333c281e4424bd36888be696f0580011c033fa7084a912add790dbab",
+  "rates-2026-10-30.json": "f91212ae643fa3883d961e3d0083aeab802f51af40a4e5c57d7de62a90051165",
+  "remaining-window.json": "40071ec48a3a84e0d84204bd4bbe33c01d5200a77ec98c3d5dc305e2951fd259",
+  "reviewer-negative-controls.json": "eede1ef94801e966ab197addf04e49adbadffe525916771d3eeadf27d678d886",
+  "reviewer-verification.json": "9df2d75d2e8607ecfa3aace852b23d079d3cffebfc1049d89cc91eed0d1ff0e7",
+  "strict-review-summary.json": "be08090901b4d12d3ad5469e56baff95bd7afbf5cdd74d969210d36099c4387c",
+  "summary.json": "33ccff5e16e6d2d0124baed92cfbfeaa50765a1cebc283323632dd4e11e5d953",
+  "targeted-probe.json": "6245f5acd93cfc9268dbd5a911b8a1566250625de93b5e868d58c335f4c986de",
+  "verification.json": "a5425e4f4425d0e7ff26f92177eb94217fa207215bdae989a309cf05a6e180f0",
+  "volume-expiry-tests.json": "d21fc194402f4d781169edb45bbb6d69cad94624bcb53d3da0aa6686dd9192a6"
+}

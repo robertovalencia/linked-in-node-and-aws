@@ -1,0 +1,232 @@
+{
+  "passed": 56,
+  "failed": 0,
+  "validMixedActionFixtureAccepted": true,
+  "fixtureScope": "Real saved repair fixture; JSON mutation probes stub only terraform show, source/backend bytes remain bound. Direct topology probes retain real mixed actions. No AWS/apply.",
+  "checks": [
+    {
+      "name": "reject_json_not_bound_to_actual_binary",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_wrong_output_account",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_extended_clock_input",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_zero_backup_input",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_discard_mode_input",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_application_activation",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_broker_replacement",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_unreviewed_deletion",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_create_before_delete_alb",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_untaint_shortcut",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_cloudmap_create_before_delete",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_extra_replacement_path",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_changed_cloudmap_name",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_changed_cloudmap_health_threshold",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_broker_type_update",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_changed_existing_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_changed_embedded_before_projection",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_tag_deadline_reset",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_empty_new_resource_as_noop",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_extra_resource",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_missing_final_resource",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_public_new_database",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_zero_new_database_backups",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_rds_protection_removed",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_broker_discovery_wrong_peer",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_broker_discovery_wrong_port",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_broker_discovery_other_service",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_wrong_certificate",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_broad_alb_logging_policy",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_world_https",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_db_wrong_sg",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_public_broker",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_ssh_port",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_weaker_listener_tls",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_extra_computed_sg_mirror_atom",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_configured_inline_sg_even_when_empty",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_missing_explicit_volume_expiry",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_changed_computed_volume_ownership",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_wrong_repair_account",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_wrong_consumed_approval",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_wrong_baseline_context",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_changed_context_deadline",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_changed_baseline_file",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_nonempty_discovery_replacement",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_undercosted_proposal",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_refreshed_broker_ami",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_refreshed_volume_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_refreshed_volume_encryption",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_refreshed_volume_deletion_flag",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_refreshed_broker_profile",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_source_tamper",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_extra_source",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_lock_tamper",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_saved_local_backend",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_public_repair_input",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_python_optimization",
+      "status": "PASS"
+    }
+  ]
+}

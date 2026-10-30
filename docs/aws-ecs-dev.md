@@ -1,5 +1,7 @@
 # Private ECS/RDS development environment
 
+> Current execution, 30 October: the approved initial application plan failed partially and paid allocations remain. [Actual failure evidence](evidence/aws-infrastructure-apply-2026-10-29/README.md) and [current repair/cost review](aws-repair-review-2026-10-30.md) supersede historical preparation statements below. Original shutdown deadline: today at 5:51 PM EDT; no automatic cleanup.
+
 Latest checkpoint: [new exact saved-plan approval package](aws-application-plan-approval-2026-10-29.md) and [actual visible command journal](evidence/aws-application-plan-2026-10-29/journal.md). Current client approval/preflight are resolved; application apply remains unapproved.
 
 **Selected for preparation on 27 October 2026; not provisioned.** This implements the private ECS/RDS + one NAT option from the [cost-first review](aws-cost-review-2026-10-27/README.md). The existing `infra/aws-dev` EC2/SSM root is preserved. Local Compose keeps its original ports, credentials and volumes.

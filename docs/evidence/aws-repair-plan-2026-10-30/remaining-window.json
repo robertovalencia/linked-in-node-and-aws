@@ -1,0 +1,10 @@
+{
+  "calculatedAt": "2026-10-30T15:02:23.831755Z",
+  "originalDeadlineUtc": "2026-10-30T21:51:25.219221Z",
+  "remainingHours": "6.817052073888888888888888889",
+  "repairedExpectedRecurringThroughSameDeadlineUsd": "1.800317383339503824200913242",
+  "grossBeforeCredits": true,
+  "existingOctoberZoneChargeExcludedNotChargedAgain": "0.50",
+  "additionalReplacementReserveUsd": "0.0325",
+  "excluded": "Previously incurred charges, actual usage deviation, billing increments and deletion tails; no additional 24-hour window is authorized."
+}

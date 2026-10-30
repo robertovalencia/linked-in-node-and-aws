@@ -60,12 +60,48 @@ run "infrastructure_without_unpublished_images" {
     error_message = "ALB requires two AZs; the selected lab uses exactly one zonal NAT in active AZ."
   }
   assert {
+    condition     = aws_instance.broker.root_block_device[0].tags.ExpiresAt == var.expires_at
+    error_message = "Broker root-volume expiry must explicitly match the reviewed deadline rather than preserve stale inherited metadata."
+  }
+  assert {
+    condition     = var.broker_ami_id == null && aws_instance.broker.ami == data.aws_ssm_parameter.ami.value
+    error_message = "Without an explicit AMI pin the broker must retain AL2023 SSM discovery; future image drift still needs replacement review."
+  }
+  assert {
+    condition     = length(aws_service_discovery_service.app) == 5 && alltrue([for service in aws_service_discovery_service.app : length(service.health_check_custom_config) == 1 && one(service.health_check_custom_config).failure_threshold == 1 && length(service.health_check_config) == 0])
+    error_message = "All five ECS discovery definitions must send explicit custom-health configuration; an empty block must never pass as configured health."
+  }
+  assert {
     condition     = !aws_instance.broker.associate_public_ip_address && !aws_db_instance.dev.publicly_accessible && !aws_db_instance.dev.multi_az
     error_message = "The single-AZ database and broker must remain private."
   }
   assert {
     condition     = aws_db_instance.dev.storage_encrypted && aws_db_instance.dev.manage_master_user_password && aws_db_instance.dev.deletion_protection && !aws_db_instance.dev.skip_final_snapshot && !aws_db_instance.dev.delete_automated_backups
     error_message = "RDS must manage admin credentials, encrypt storage and require explicit recovery/teardown review."
+  }
+  assert {
+    condition     = var.rds_backup_retention_days == 7 && aws_db_instance.dev.backup_retention_period == 7 && output.cost_quantities.rds_backup_days == 7
+    error_message = "Ordinary deployment must keep the seven-day recovery default; Free-plan compatibility requires an explicit reviewed override."
+  }
+  assert {
+    condition     = aws_service_discovery_service.broker.name == "kafka" && aws_service_discovery_service.broker.dns_config[0].namespace_id == aws_service_discovery_private_dns_namespace.dev.id && aws_service_discovery_service.broker.dns_config[0].routing_policy == "MULTIVALUE" && one(aws_service_discovery_service.broker.dns_config[0].dns_records).type == "A" && one(aws_service_discovery_service.broker.dns_config[0].dns_records).ttl == 10
+    error_message = "Broker DNS must be an A record registered through the existing private Cloud Map namespace, preserving kafka's name and TTL."
+  }
+  assert {
+    condition     = aws_service_discovery_instance.broker.instance_id == "broker" && aws_service_discovery_instance.broker.service_id == aws_service_discovery_service.broker.id && aws_service_discovery_instance.broker.attributes == tomap({ AWS_INSTANCE_IPV4 = aws_instance.broker.private_ip, AWS_INSTANCE_PORT = "9093" }) && output.cost_quantities.broker_registered_resources == 1
+    error_message = "Register exactly the broker's private IPv4 and TLS port using Cloud Map, and price its one registered resource."
+  }
+  assert {
+    condition     = length(aws_service_discovery_service.broker.health_check_config) == 0 && length(aws_service_discovery_service.broker.health_check_custom_config) == 0
+    error_message = "Static private discovery must not invent public/custom health-check configuration or claim a readiness controller."
+  }
+  assert {
+    condition     = one([for statement in jsondecode(aws_s3_bucket_policy.operations.policy).Statement : statement if statement.Sid == "ALBAccessLogs"]) == { Sid = "ALBAccessLogs", Effect = "Allow", Principal = { Service = "logdelivery.elasticloadbalancing.amazonaws.com" }, Action = "s3:PutObject", Resource = "${aws_s3_bucket.operations.arn}/alb/AWSLogs/123456789012/*", Condition = { ArnLike = { "aws:SourceArn" = "arn:aws:elasticloadbalancing:us-east-2:123456789012:loadbalancer/*" } } }
+    error_message = "ALB delivery must use the official account/region SourceArn scope, service principal and account-specific log prefix; never grant public writes."
+  }
+  assert {
+    condition     = length(jsondecode(aws_s3_bucket_policy.operations.policy).Statement) == 2 && one([for statement in jsondecode(aws_s3_bucket_policy.operations.policy).Statement : statement if statement.Sid == "DenyInsecureTransport"]).Condition.Bool["aws:SecureTransport"] == "false" && alltrue([aws_s3_bucket_public_access_block.operations.block_public_acls, aws_s3_bucket_public_access_block.operations.block_public_policy, aws_s3_bucket_public_access_block.operations.ignore_public_acls, aws_s3_bucket_public_access_block.operations.restrict_public_buckets]) && one(aws_s3_bucket_server_side_encryption_configuration.operations.rule).apply_server_side_encryption_by_default[0].sse_algorithm == "AES256" && aws_lb.dev.access_logs[0].enabled && aws_lb.dev.access_logs[0].bucket == aws_s3_bucket.operations.id && aws_lb.dev.access_logs[0].prefix == "alb"
+    error_message = "The log-delivery repair must retain TLS-only S3 access, all four public-access blocks, SSE-S3 and enabled ALB logs."
   }
   assert {
     condition     = !var.teardown_discard_demo_data && !aws_s3_bucket.operations.force_destroy && alltrue([for s in aws_secretsmanager_secret.runtime : s.recovery_window_in_days == 7]) && aws_db_instance.dev.final_snapshot_identifier == "${local.name}-final-${var.recovery_snapshot_suffix}"
@@ -259,4 +295,49 @@ run "reject_discard_while_application_active" {
     image_digests              = { backend = "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", frontend = "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" }
   }
   expect_failures = [var.teardown_discard_demo_data]
+}
+
+run "explicit_one_day_backup_candidate" {
+  command = plan
+  variables { rds_backup_retention_days = 1 }
+  assert {
+    condition     = aws_db_instance.dev.backup_retention_period == 1 && output.cost_quantities.rds_backup_days == 1 && aws_db_instance.dev.deletion_protection && !aws_db_instance.dev.skip_final_snapshot && !aws_db_instance.dev.delete_automated_backups
+    error_message = "The explicit one-day candidate must keep backups enabled and preserve database deletion/recovery protections. Mock success does not prove Free-plan create eligibility."
+  }
+}
+
+run "reject_disabled_database_backups" {
+  command = plan
+  variables { rds_backup_retention_days = 0 }
+  expect_failures = [var.rds_backup_retention_days]
+}
+
+run "reject_unreviewed_backup_retention" {
+  command = plan
+  variables { rds_backup_retention_days = 2 }
+  expect_failures = [var.rds_backup_retention_days]
+}
+
+run "explicit_broker_ami_pin" {
+  command = plan
+  variables { broker_ami_id = "ami-11111111111111111" }
+  assert {
+    condition     = aws_instance.broker.ami == var.broker_ami_id && aws_instance.broker.ami != data.aws_ssm_parameter.ami.value && aws_instance.broker.root_block_device[0].encrypted && aws_instance.broker.root_block_device[0].delete_on_termination
+    error_message = "An explicit reviewed pin must win over changing SSM discovery without weakening volume protection; the plan must still expose any actual AMI change."
+  }
+}
+
+run "reject_unvalidated_broker_ami" {
+  command = plan
+  variables { broker_ami_id = "ami-latest" }
+  expect_failures = [var.broker_ami_id]
+}
+
+run "root_volume_expiry_tracks_reviewed_deadline" {
+  command = plan
+  variables { expires_at = "2026-11-03T17:00:00Z" }
+  assert {
+    condition     = aws_instance.broker.root_block_device[0].tags.ExpiresAt == var.expires_at && aws_instance.broker.root_block_device[0].encrypted && aws_instance.broker.root_block_device[0].delete_on_termination
+    error_message = "A changed reviewed deadline must update the root-volume tag while retaining encrypted, delete-on-termination storage; the tag is not a teardown timer."
+  }
 }

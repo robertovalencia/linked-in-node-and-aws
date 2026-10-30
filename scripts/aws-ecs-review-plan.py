@@ -382,8 +382,10 @@ def review(plan_file, plan_binary, output, https_context=None, rates_file=None, 
                     if key == 'cloudwatch_alarm_standard': item['quantity'] = str(D(7)*h/D(730))
                     # All backend tasks, RDS primary and broker are pinned in the same AZ.
                     if key == 'cross_az': item['quantity'] = '0'
-                    if not active and key in ['fargate_cpu','fargate_memory','cloudmap_resource']:
+                    if not active and key in ['fargate_cpu','fargate_memory']:
                         item['quantity'] = '0'
+                    if key == 'cloudmap_resource':
+                        item['quantity'] = str((D(q.get('broker_registered_resources', 0)) + D(5 if active else 0))*h/D(730))
                     if not active and context is None and key in ['alb_lcu','internet_out']:
                         item['quantity'] = '0'
                     if not active and context is not None and key in ['alb_lcu','internet_out']:

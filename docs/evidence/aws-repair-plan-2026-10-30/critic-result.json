@@ -1,0 +1,10 @@
+{
+  "status": "PASS_PREPARATION_ONLY_NOT_APPROVED_NOT_APPLIED",
+  "reportSha256": "80b6c58b9485d05fa610a284a97d035cac1c88540fb76575bd0a9516c8725c96",
+  "reviewerSha256": "a0410a885567dcda3f1fb922397075e3715c0b8313f9d4ee57dec0f20a718c50",
+  "controlsSourceSha256": "5d92162b9b18ac0ec6bf58c41e2eeae6fcb8007ee62d7e932fcca07601182217",
+  "planBinarySha256": "cd87e0ed4e5fd86fcfcbb4a0d4ffbcb443140a87fd754de7a61ff3408bddacd1",
+  "negativeControls": 56,
+  "additionalIndependentControls": 8,
+  "independentOperatorFakeCliControls": 28
+}

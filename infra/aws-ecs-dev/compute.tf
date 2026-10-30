@@ -30,10 +30,12 @@ resource "aws_service_discovery_service" "app" {
       ttl  = 10
     }
   }
-  health_check_custom_config {}
+  # Provider 6.70 omits an empty block from CreateService. Explicit one sends
+  # the intended ECS-managed custom health configuration; Cloud Map is not a probe.
+  health_check_custom_config { failure_threshold = 1 }
 }
 resource "aws_instance" "broker" {
-  ami                         = data.aws_ssm_parameter.ami.value
+  ami                         = coalesce(var.broker_ami_id, data.aws_ssm_parameter.ami.value)
   instance_type               = "m7i-flex.large"
   subnet_id                   = aws_subnet.private[0].id
   associate_public_ip_address = false
@@ -49,6 +51,7 @@ resource "aws_instance" "broker" {
     volume_size           = 40
     encrypted             = true
     delete_on_termination = true
+    tags                  = { ExpiresAt = var.expires_at }
   }
   user_data = templatefile("${path.module}/kafka-user-data.sh.tftpl", {
     aws_region        = var.region
@@ -62,12 +65,26 @@ resource "aws_instance" "broker" {
   depends_on                  = [aws_route_table_association.private_active, aws_iam_role_policy.broker, aws_iam_role_policy_attachment.ssm]
   tags                        = { Name = "${local.name}-broker" }
 }
-resource "aws_route53_record" "broker" {
-  zone_id = aws_service_discovery_private_dns_namespace.dev.hosted_zone
-  name    = "kafka.${local.namespace}"
-  type    = "A"
-  ttl     = 10
-  records = [aws_instance.broker.private_ip]
+# Cloud Map owns this namespace's hosted zone. Register through its API rather
+# than attempting direct Route 53 writes; no health controller is implied.
+resource "aws_service_discovery_service" "broker" {
+  name = "kafka"
+  dns_config {
+    namespace_id   = aws_service_discovery_private_dns_namespace.dev.id
+    routing_policy = "MULTIVALUE"
+    dns_records {
+      type = "A"
+      ttl  = 10
+    }
+  }
+}
+resource "aws_service_discovery_instance" "broker" {
+  instance_id = "broker"
+  service_id  = aws_service_discovery_service.broker.id
+  attributes = {
+    AWS_INSTANCE_IPV4 = aws_instance.broker.private_ip
+    AWS_INSTANCE_PORT = "9093"
+  }
 }
 locals {
   active_services = var.image_digests == null || !local.https_configured ? {} : local.services
@@ -160,7 +177,7 @@ resource "aws_ecs_service" "app" {
       container_port   = 8180
     }
   }
-  depends_on = [aws_lb_listener.https, aws_route_table_association.private_active, aws_vpc_endpoint.s3, aws_route53_record.broker]
+  depends_on = [aws_lb_listener.https, aws_route_table_association.private_active, aws_vpc_endpoint.s3, aws_service_discovery_instance.broker]
 }
 resource "aws_ecs_task_definition" "bootstrap" {
   count                    = var.image_digests == null ? 0 : 1

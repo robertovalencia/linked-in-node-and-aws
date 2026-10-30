@@ -1,5 +1,7 @@
 # AWS dev cost model
 
+> Current execution, 30 October: the approved initial application plan failed partially and paid allocations remain. [Actual failure evidence](evidence/aws-infrastructure-apply-2026-10-29/README.md) and [current repair/cost review](aws-repair-review-2026-10-30.md) supersede historical preparation statements below. Original shutdown deadline: today at 5:51 PM EDT; no automatic cleanup.
+
 > The owner selected [private ECS/RDS + one NAT preparation](aws-ecs-dev.md) on 27 October. This page retains the earlier EC2/SSM baseline; use the new guide and current saved-plan cost ledger before any changed topology. No deployment is implied.
 
 > **Current review: 27 October 2026.** The [phased cost/design packet](aws-cost-review-2026-10-27/README.md) supersedes the currentness of this historical core estimate. It includes refreshed Free-plan/credit/resource checks, 24-hour and 30-day idle/expected/higher comparisons, itemized regional rates, proposed architecture/recovery gates and fresh baseline-only previews. Cost/topology selection is pending; no AWS apply occurred.

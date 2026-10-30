@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "positiveActualFixtureAccepted": true,
+  "passed": 8,
+  "controls": [
+    "reject_removed_explicit_volume_deadline",
+    "reject_new_stale_mirror_date",
+    "reject_exception_outside_nested_volume_mirror",
+    "reject_refreshed_root_volume_identity_drift",
+    "reject_broadened_provider_sg_mirror",
+    "reject_duplicated_provider_sg_mirror",
+    "reject_provider_sg_self_permission",
+    "reject_extra_discovery_replacement_path"
+  ],
+  "scope": "Additional targeted independent controls, no AWS or plan/apply"
+}

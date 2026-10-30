@@ -78,12 +78,31 @@ variable "image_digests" {
     error_message = "Activation requires verified sha256 image digests; tags/latest are forbidden."
   }
 }
+variable "broker_ami_id" {
+  type        = string
+  default     = null
+  description = "Optional reviewed broker AMI pin. Null follows the AL2023 SSM image parameter; pin the deployed AMI during repair to preserve the host/data volume. AMI changes still require a reviewed replacement plan."
+  validation {
+    condition     = var.broker_ami_id == null ? true : can(regex("^ami-[a-f0-9]{17}$", var.broker_ami_id))
+    error_message = "Provide a reviewed ami- followed by 17 lowercase hexadecimal digits, or null to use AL2023 SSM discovery."
+  }
+}
 variable "kafka_image" {
   type        = string
   description = "Verified immutable apache/kafka image reference (linux/amd64), apache/kafka:VERSION@sha256:DIGEST."
   validation {
     condition     = can(regex("^apache/kafka:[0-9.]+@sha256:[a-f0-9]{64}$", var.kafka_image))
     error_message = "Pin the broker version and verified SHA256 image digest."
+  }
+}
+variable "rds_backup_retention_days" {
+  type        = number
+  default     = 7
+  nullable    = false
+  description = "Seven-day ordinary recovery default. One day is an explicit Free-plan demo candidate, not proof the account permits RDS creation; disabling backups is forbidden."
+  validation {
+    condition     = contains([1, 7], var.rds_backup_retention_days)
+    error_message = "Use the reviewed seven-day default or explicit one-day demo candidate; zero/unreviewed retention is forbidden."
   }
 }
 variable "postgres_engine_version" {

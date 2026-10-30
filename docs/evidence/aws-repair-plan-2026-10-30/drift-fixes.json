@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-10-30T14:45:46.738120+00:00",
+  "status": "DRIFT_REPAIR_SOURCE_AND_MOCKS_PASS_FRESH_SAVED_PLAN_REQUIRED",
+  "scope": "Only source/mock preparation; no AWS APIs, real plan/apply, state editing or ignore_changes",
+  "broker": {
+    "observedPriorPlan": "delete/create solely because latest SSM AMI advanced from ami-0c7dc2f4e28e6e66e to ami-0350eb2d06adf7cac",
+    "repair": "broker_ami_id optional string/default null; validated ami- plus17 lowercasehex; coalesce(explicitpin,SSMvalue)",
+    "requiredRepairInput": "ami-0c7dc2f4e28e6e66e (from existing deployed broker in preserved state)",
+    "boundary": "The override makes AMI selection explicit, not ignored. Any different chosen AMI must still appear as a replacement. Confirm broker no-op in the NEW real plan before approval; mocks do not prove that result."
+  },
+  "ecsDiscovery": {
+    "observedPriorPlan": "All five existing app definitions replace because observed custom-health block is absent and empty source block never persisted.",
+    "providerSource": "6.70 service.go CreateService expands the custom-health block; expandHealthCheckCustomConfig returns nil for an empty map. Explicit failure_threshold1 provides a nonempty map. The schema marks custom-health configuration ForceNew.",
+    "repair": "Set failure_threshold=1 explicitly for the existing five app discovery definitions. Keep broker discovery without a health-check configuration.",
+    "expectedReviewScope": "Five currently empty discovery-service replacements are intentional and must be explicit in the new plan; do not suppress, ignore or conceal them. Root must independently verify no registered instances/app services before approval.",
+    "deprecation": "AWS documents FailureThreshold deprecated and always1. This value makes provider6.70 send the intended custom-health config; pin-aware review is required on provider changes.",
+    "runtimeBoundary": "Cloud Map does not itself probe health. ECS uses container-level health for ECS service discovery after application activation. No application tasks are running or activated by this source change."
+  },
+  "officialSources": [
+    {
+      "topic": "Provider6.70 custom-health schema, create expansion and empty-map behavior",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.70.0/internal/service/servicediscovery/service.go"
+    },
+    {
+      "topic": "Custom status is caller-managed, threshold always1/deprecated",
+      "url": "https://docs.aws.amazon.com/cloud-map/latest/api/API_HealthCheckCustomConfig.html"
+    },
+    {
+      "topic": "ECS container health and private DNS service discovery",
+      "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-discovery.html"
+    }
+  ],
+  "mockReceipt": "repair-drift-mock-receipt.json",
+  "mockSummary": [
+    {
+      "@level": "info",
+      "@message": "Success! 17 passed, 0 failed.",
+      "@module": "terraform.ui",
+      "@timestamp": "2026-10-30T10:44:35.104528-04:00",
+      "test_summary": {
+        "status": "pass",
+        "passed": 17,
+        "failed": 0,
+        "errored": 0,
+        "skipped": 0
+      },
+      "type": "test_summary"
+    }
+  ],
+  "changedSourceHashes": {
+    "infra/aws-ecs-dev/compute.tf": "993017380856b728acc7fad65e3fb74438e232cc7c4e1bd7e567678889bec648",
+    "infra/aws-ecs-dev/variables.tf": "0c907987f7ad9d68e6c780afd18267a47f0851caeb30de5f88c1141a672f8bd1",
+    "infra/aws-ecs-dev/tests/security.tftest.hcl": "00b7897619eecfe87b35f07466ec9a76a6de99c0e4a34f39c6d5030eaef652cf"
+  },
+  "approvalBoundary": "Root must generate and strictly review a new actual S3-backed repair plan, current costs and exact replacements; no changed-plan apply authorized by this task."
+}

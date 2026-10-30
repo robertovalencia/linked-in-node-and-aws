@@ -1,0 +1,9 @@
+{
+  "status": "PASS_INDEPENDENT_DECIMAL_RECALCULATION",
+  "rates": 31,
+  "cases": 12,
+  "itemsRecomputed": 372,
+  "replacementReserveRecomputed": true,
+  "remainingWindowUsesOriginalAnchorAndDeadline": true,
+  "runtimeBillingAndEligibilityNotInferred": true
+}

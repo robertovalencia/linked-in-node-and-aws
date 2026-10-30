@@ -65,3 +65,8 @@ Provide an executable local command sequence using only the inspected built-in-r
 ### R12 execution-journal extension
 
 Document the real approved bootstrap and its observed controls, actual S3 backend, visible safe inspection commands, offline plan-review output and failure/retry boundaries. Distinguish historical accepted artifacts from current source drift and never bypass the review. Record the selected 24-hour/delete-demo-data/preserve-state policy and pending shutdown mechanism. Preserve all numbered lesson IDs and include the new chapter in the downloadable pack and reader index.
+
+
+## R10 partial-apply repair acceptance — 30 October 2026
+
+The approved initial artifact failed; preserve its diagnostics, actual 100-instance state and original paid-resource deadline. Repair preparation must use a new real saved S3-backed plan, explicit mixed-action allowlist and fresh independent critic. Require one-day candidate RDS retention with seven-day source default and no account upgrade; Cloud Map broker registration; official ALB log-delivery scope; tainted-ALB replacement; explicit custom health for five proven-empty app definitions; pinned current broker AMI and preserved instance/EBS identities/protections. Require canonical configured volume expiry, disclosed cached provider tag mirror and actual post-apply read-back. Keep no application tasks/secret versions/public DNS changes. Preserve initial create-only gates; negative tests must reject changed broker storage/AMI, added exposure, extra replacements, source/backend/baseline mismatch and incorrect prices/quantities. Current cost and exact changed artifact need separate human approval; the original deadline is not extended.
