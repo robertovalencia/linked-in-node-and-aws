@@ -1,0 +1,14 @@
+{
+  "recordedAt": "2026-10-30T21:20:35.844341Z",
+  "source": "Direct human message in this chat",
+  "exactHumanText": "Approve the four-hour extension to 9:51 PM EDT and repair plan 754e2d2deb23",
+  "planBinarySha256": "754e2d2deb23e7ed0117ee805d48e4df34c79a93cc68c611a6cd242d58d0f907",
+  "originalStartUtc": "2026-10-29T21:51:25.219221Z",
+  "originalDeadlineUtc": "2026-10-30T21:51:25.219221Z",
+  "approvedShutdownDeadlineUtc": "2026-10-31T01:51:25.219221Z",
+  "repairApproved": true,
+  "extensionApproved": true,
+  "applicationActivationApproved": false,
+  "cleanupApproved": false,
+  "accountUpgradeApproved": false
+}

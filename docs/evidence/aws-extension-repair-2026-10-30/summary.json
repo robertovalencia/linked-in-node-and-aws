@@ -1,0 +1,37 @@
+{
+  "status": "FIXED_FOUR_HOUR_EXTENSION_AND_REPAIR_PROPOSAL_VALIDATED_NOT_APPROVED",
+  "checkedAt": "2026-10-30T20:31:16.262175+00:00",
+  "planBinarySha256": "754e2d2deb23e7ed0117ee805d48e4df34c79a93cc68c611a6cd242d58d0f907",
+  "privatePlanPath": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-repair-extension-proposal-2026-10-30-v2/repair.tfplan",
+  "originalArtifactPreserved": true,
+  "terraformConfigurationUnchanged": true,
+  "inputsOnlyFixedDeadlineChange": true,
+  "managedChangesOnlyFixedDeadlineChange": true,
+  "refreshDriftUnchangedAfterDeadlineNormalization": true,
+  "changes": {
+    "update": 82,
+    "create": 12,
+    "no-op": 12,
+    "delete/create": 6
+  },
+  "baselineSerial": 4,
+  "baselineManagedResources": 100,
+  "finalManagedResources": 112,
+  "originalStartUtc": "2026-10-29T21:51:25.219221Z",
+  "originalDeadlineUtc": "2026-10-30T21:51:25.219221Z",
+  "proposedDeadlineUtc": "2026-10-31T01:51:25.219221Z",
+  "extensionControlsPassed": [
+    "extensionHours",
+    "proposedDeadlineUtc",
+    "originalStartUtc",
+    "repairApproved",
+    "extensionApproved",
+    "applicationActivationApproved",
+    "later_plan_deadline",
+    "nonmetadata_broker_change"
+  ],
+  "reviewerSourceSha256": "a0410a885567dcda3f1fb922397075e3715c0b8313f9d4ee57dec0f20a718c50",
+  "repairApplied": false,
+  "extensionApproved": false,
+  "applicationActivated": false
+}

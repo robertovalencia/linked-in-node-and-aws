@@ -71,17 +71,29 @@ The [dependency security guide](docs/dependency-security.md) explains the body-p
 
 ## AWS development environment
 
-The approved initial infrastructure apply **failed partially**: 99 completed creates, 100 managed state instances including a tainted ALB. Paid resources remain, but no RDS, HTTPS listener or application tasks are running. [Actual execution and independent critic](docs/evidence/aws-infrastructure-apply-2026-10-29/README.md) explain the three service failures.
+**October31 current operating state:** EC2 broker and RDS are verified **stopped**, with data/storage retained. Full teardown did not execute; ALB/NAT/storage and other resources remain allocated. RDS automatically restarts after seven stopped days. [Actual stop execution](docs/aws-reversible-compute-stop-2026-10-31.md).
 
-The original operator-assisted shutdown deadline remains **30 October 2026, 5:51 PM EDT**, with operator return by **3:51 PM EDT**. There is no automatic cleanup. [Current repair/cost review](docs/aws-repair-review-2026-10-30.md) prepares a fresh plan; repair and application activation require separate exact approval. The account remains Free/ACTIVE with $98.59 reported credits at the 30 October read-only check.
+**Final destroy blocked:** automatic approval review rejected execution before process creation.112 Terraform-managed resources remain; EC2 and RDS were subsequently stopped reversibly, with no deletion. [Blocked result and reversible-stop proposal](docs/aws-destroy-execution-blocked-2026-10-30.md).
 
-The selected [private ECS/RDS + one NAT environment](docs/aws-ecs-dev.md) preserves local Compose and the Java project. Current repaired comparison estimates are **$6.84/24h** for infrastructure and **$8.32/24h** for future five-task activation, before credits, usage variation and recovery. Corresponding 720-hour comparisons are $191.32/$235.78; these do not extend the real deadline. [Cost alternatives](docs/aws-cost-review-2026-10-27/README.md), [Azure mapping](docs/azure-mapping.md), and [operator/teardown guide](docs/aws-operator-runbook-2026-10-29.md). Hosted SonarCloud remains configured/pending; isolated CI SonarQube keeps its 80% gate.
+**Current cleanup status:** the approved eight-update cleanup transition succeeded; RDS deletion protection is off and112 resources remain. [Final112-delete plan](docs/aws-final-destroy-approval-2026-10-30.md) awaits exact approval. The9:51PM EDT deadline was missed; no timer/extension exists. [Actual transition execution](docs/aws-cleanup-transition-execution-2026-10-30.md).
+
+[Automatic-shutdown readiness audit](docs/aws-automatic-shutdown-readiness-2026-10-30.md): no automatic controller exists; exact eight-update cleanup transition is prepared but unapproved. Deadline remains9:51PM EDT.
+
+[Live AWS inspection checklist](docs/aws-live-inspection-2026-10-30.md): current console links, CloudWatch findings, host inspection and private PostgreSQL connection boundaries.
+
+[Micro completion executed and verified](docs/aws-micro-completion-execution-2026-10-30.md): 112 actual resources, available private/encrypted RDS with one-day backups, seven alarms and a no-change plan. App tasks remain zero. Deadline: 9:51 PM EDT; cleanup review by 7:51 PM EDT.
+
+The earlier partial failures are repaired. The approved micro completion succeeded: 112 managed instances, no taints, available private/encrypted RDS with one-day backups and seven alarms. The ALB, HTTPS listener, access logs, broker DNS and expiry controls are verified; the fresh infrastructure plan has no changes. No application tasks are running. [Actual execution and independent critic](docs/evidence/aws-infrastructure-apply-2026-10-29/README.md) explain the three service failures.
+
+The human approved a four-hour extension: the operator-assisted shutdown deadline is **30 October 2026, 9:51 PM EDT**, with cleanup preparation by **7:51 PM EDT**. There is no automatic cleanup. [Current repair/cost review](docs/aws-repair-review-2026-10-30.md) prepares a fresh plan; repair and application activation require separate exact approval. The account remains Free/ACTIVE with $98.59 reported credits at the 30 October read-only check.
+
+The selected [private ECS/RDS + one NAT environment](docs/aws-ecs-dev.md) preserves local Compose and the Java project. Current micro comparison estimates are **$6.45/24h** for infrastructure and **$7.94/24h** for future five-task activation, before credits, usage variation and recovery. These are comparison windows and do not extend the real deadline; see the current micro cost packet for itemized figures. [Cost alternatives](docs/aws-cost-review-2026-10-27/README.md), [Azure mapping](docs/azure-mapping.md), and [operator/teardown guide](docs/aws-operator-runbook-2026-10-29.md). Hosted SonarCloud remains configured/pending; isolated CI SonarQube keeps its 80% gate.
 
 ## Complete professional AWS/Terraform study
 
 The [full syllabus and concept checklist](docs/nodejs-aws-study-path/generated/44-cloud-complete-syllabus-and-mastery-map.md) expands the path to 84 lessons, with 64 cloud/Terraform lessons. Important topics are taught even when the current portfolio does not implement them: new examples are explicitly illustrative, and advanced network/Terraform labs run locally without AWS credentials. Cost comparison and deployment redesign belong to “Create Node.js AWS LinkedIn project”; its [acknowledged handoff](docs/nodejs-aws-study-path/deployment-handoff.md) and [coordination status](docs/nodejs-aws-study-path/deployment-coordination.json) do not claim an approved or provisioned architecture.
 
 
-Deployment status: the initial approved application plan failed partially; repair preparation is pending exact review and approval. The separate certificate and protected state bootstrap remain verified. Consult the current repair report for actual resources and the unchanged shutdown deadline.
+Deployment status: approved infrastructure repair completed and verified; application activation remains pending its release/runtime gates and exact approval. Separate certificate and state bootstrap are preserved. Shutdown deadline is 9:51 PM EDT, with cleanup review by 7:51 PM EDT.
 
 For the real approved state bootstrap and the remaining application plan/24-hour teardown boundaries, read the [29 October AWS execution journal](docs/nodejs-aws-study-path/walkthroughs/11-aws-execution-journal.md).

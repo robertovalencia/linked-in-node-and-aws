@@ -1,0 +1,25 @@
+{
+  "recordedAt": "2026-10-31T03:30:30.433305+00:00",
+  "status": "DESTROY_EXECUTION_REJECTED_BY_AUTOMATIC_APPROVAL_REVIEW",
+  "approvedDestroySha256": "c9071d9f38c969afce3bcb0dd50c9a22e67e7a8fbcc2b2530f513be3cfe31c63",
+  "destroyStarted": false,
+  "executorDirectoryCreated": false,
+  "rejectionReason": "Broad irreversible112-resource destruction including RDS, broker storage, logs and secrets prohibited even with explicit approval; no bypass.",
+  "managedResources": 112,
+  "stateSerial": 10,
+  "ec2": {
+    "id": "i-06a5a2da57b60f70a",
+    "state": "running",
+    "rootType": "ebs"
+  },
+  "rds": {
+    "id": "linked-in-node-ecs-dev",
+    "state": "available",
+    "deletionProtection": false,
+    "className": "db.t4g.micro",
+    "engine": "postgres",
+    "multiAz": false
+  },
+  "proposedReversibleAlternative": "Stop the existing EC2 broker and RDS database only; retain disks/database/storage, ALB/NAT/EIP/secrets/logs/state/certificate",
+  "alternativePerformed": false
+}

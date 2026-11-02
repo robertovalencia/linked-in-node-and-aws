@@ -1,0 +1,11 @@
+{
+  "recordedAt": "2026-10-31T02:45:49.237834Z",
+  "source": "Direct human message in this chat",
+  "exactHumanText": "Approve cleanup transition af371f008c64 for demo-data discard.",
+  "planBinarySha256": "af371f008c64cb397d63a1981b2429cc496819e9506fa79c99fc0812c1fa908a",
+  "scope": "Only eight protection/discard transition updates; no resource destruction or controller installation",
+  "destroyApproved": false,
+  "deadlineUtc": "2026-10-31T01:51:25.219221Z",
+  "deadlineAlreadyPassed": true,
+  "deadlineExtended": false
+}

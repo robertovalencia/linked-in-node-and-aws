@@ -1,0 +1,8 @@
+{
+  "recordedAt": "2026-10-31T12:15:22.573629Z",
+  "source": "Direct human message in this chat",
+  "exactHumanText": "Approve reversible EC2 and RDS stop",
+  "scope": "Stop only the existing EC2 broker and RDS instance; preserve instances, disks, database, storage, state, certificate and all other resources",
+  "deletionAuthorizedByThisAlternative": false,
+  "automaticController": false
+}

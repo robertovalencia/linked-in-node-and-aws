@@ -98,3 +98,18 @@ Human explicit IP lookup/private-/32 approval → legitimate private lookup/cont
 ## R10 actual partial failure and repair preparation — 30 October 2026
 
 Explicit human approval of initial 2fd776 artifact → actual exit 1 and 99 completed creates/100 persisted managed instances → independent AWS/state critic FAIL → preserved errors and original T0/deadline → human-authorized repair preparation → source fixes, rejected AMI/volume-tag previews, 18 isolated Terraform mock runs → fresh exact mixed-action plan and current 31-rate/12-ledger cost packet → strict reviewer/negative controls and fresh critic → [current repair review](aws-repair-review-2026-10-30.md). Changed-plan apply, runtime controls, activation and cleanup remain separate approval/verification boundaries; no Git/Jira deployment/release success is inferred.
+
+
+## R10 four-hour proposal and CI repair — October 30
+
+Human handoff (one owner/no new reviewers) → unchanged original state/artifact/reviewer → fresh fixed-deadline proposal binary → every managed change and refresh drift identical after deadline normalization → existing strict source/backend/security/cost checks plus eight extension controls → [combined approval packet](aws-extension-repair-proposal-2026-10-30.md). No extension/apply approval inferred. Kafka failed-job evidence → local `generate_cluster_id` encoding guard → two deterministic regressions wired to Verify → [nine real TLS/SCRAM/ACL checks](evidence/aws-extension-repair-2026-10-30/kafka-local-regression.json). Hosted Verify not rerun; SonarCloud missing external configuration remains blocked. [Actual execution journal](aws-final-stretch-journal-2026-10-30.md).
+
+
+## R10 approved repair output and micro residual — October 30
+
+Direct human approval → strict immediate source/backend/account/cost/live-drift guards → exact saved apply exit1 → preserved104-resource serial7 state → actual RDS size rejection and verified ALB/TLS/log delivery/CloudMap/DNS/volume-expiry controls → documented Free micro candidate and Ohio orderability/price API receipts → one focused mock and eight residual negative controls → [eight-create saved-plan approval packet](aws-rds-micro-completion-2026-10-30.md). Deadline9:51PM EDT remains approved; no new extension, account upgrade, app activation or cleanup inferred. [Execution evidence](evidence/aws-approved-repair-apply-2026-10-30/status.json).
+
+
+## R10 micro completion actual execution — October 30
+
+Exact direct human approval → bound preapply guards/live drift match → eight-create apply exit0 →112 actual resources/no taints and unchanged104 identities → available private encrypted protected micro RDS/one-day backups/forceSSL plus seven approved alarms → full no-change plan → [sanitized execution evidence](evidence/aws-micro-completion-2026-10-30/status.json). No application/bootstrap/recovery/notification success is inferred. Approved deadline9:51PM EDT persists; current cleanup plans still require exact approval.

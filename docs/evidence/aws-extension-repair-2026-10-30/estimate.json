@@ -1,0 +1,54 @@
+{
+  "calculatedAt": "2026-10-30T20:33:57.386892+00:00",
+  "extensionHours": 4,
+  "extensionApproved": false,
+  "originalDeadlineUtc": "2026-10-30T21:51:25.219221Z",
+  "proposedDeadlineUtc": "2026-10-31T01:51:25.219221Z",
+  "sourceLedgerSha256": "c20b28f9b7279afcea861a76e8b269db971a0219c4e7fe8a8953131f394daf1b",
+  "ratesVerifiedAt": "2026-10-30T14:39:51.232268+00:00",
+  "scenarios": [
+    {
+      "scenario": "repaired_infrastructure",
+      "profile": "idle",
+      "additional4hGrossUSD": "0.9077179634703196347031963472"
+    },
+    {
+      "scenario": "repaired_infrastructure",
+      "profile": "expected",
+      "additional4hGrossUSD": "1.056361232876712328767123288"
+    },
+    {
+      "scenario": "repaired_infrastructure",
+      "profile": "higher",
+      "additional4hGrossUSD": "3.439784246575342465753424657"
+    },
+    {
+      "scenario": "five_task_application",
+      "profile": "idle",
+      "additional4hGrossUSD": "1.154747689497716894977168950"
+    },
+    {
+      "scenario": "five_task_application",
+      "profile": "expected",
+      "additional4hGrossUSD": "1.303390958904109589041095891"
+    },
+    {
+      "scenario": "five_task_application",
+      "profile": "higher",
+      "additional4hGrossUSD": "3.686813972602739726027397258"
+    }
+  ],
+  "partialFixedOnly4hUSD": "0.7437249315068493150684931508",
+  "separateReplacementReserveUSD": {
+    "usd": "0.0325000000",
+    "extra_alb_billed_hours": "1",
+    "extra_ipv4_address_hours": "2",
+    "bound": "Illustrative reserve only: at most one additional billed ALB hour for fragmentation and at most one hour of2address overlap. ALB replacement should delete then create; not an assertion of observed overlap. Recalculate if assumptions violated. Not included in steady-state totals or recurring-window model.",
+    "rounding": "Each ALB lifetime and NAT partial gateway-hour round up. IPv4 uses per-second billing with60second minimum. Existing NAT clock does not reset."
+  },
+  "limitations": [
+    "Gross before credits/taxes/usage variation and billing/deletion tails; estimates are not caps.",
+    "October zone fee already incurred and excluded; extension does not cross the local calendar month.",
+    "Five-task cost is comparison only; application activation is outside this approval."
+  ]
+}

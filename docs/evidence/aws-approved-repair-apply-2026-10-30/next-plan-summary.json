@@ -1,0 +1,19 @@
+{
+  "status": "EIGHT_CREATE_MICRO_RESIDUAL_PREPARED_NOT_APPROVED",
+  "planBinarySha256": "cb438bc065c4d95f32fbe69aac6d94671c03d81e5c331ed2bc81741e21d4478a",
+  "baselineStateSha256": "ae17093f3912b36a7cb35e9dba7b4193848822271aa2d5ed121d071d64939ae6",
+  "baselineSerial": 7,
+  "baselineManagedResources": 104,
+  "finalManagedResources": 112,
+  "adds": 8,
+  "updates": 0,
+  "destroys": 0,
+  "terraformSourceDelta": "Only RDS instance_class db.t4g.small to db.t4g.micro",
+  "rdsMemoryGiB": 1,
+  "rdsVcpu": 2,
+  "backupRetentionDays": 1,
+  "shutdownDeadlineUtc": "2026-10-31T01:51:25.219221Z",
+  "applicationActivated": false,
+  "applied": false,
+  "costsSha256": "dd4f63bf30f0bf71df262f8b847da933d000eaf3b0aefe2a9b8df55f03ef576e"
+}

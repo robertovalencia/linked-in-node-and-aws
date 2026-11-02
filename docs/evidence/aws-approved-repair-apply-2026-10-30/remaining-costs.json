@@ -1,0 +1,45 @@
+{
+  "calculatedAt": "2026-10-30T21:31:52.406555+00:00",
+  "remainingHours": "4.325781296111111111111111111",
+  "hypotheticalImmediateMicroInfrastructureExpectedRecurringThroughApprovedDeadlineUsd": "1.073184415040961206240487063",
+  "microDatabaseHourlyComputeUsd": "0.016",
+  "microDatabaseComputeThroughDeadlineUsd": "0.06921250073777777777777777778",
+  "extension4h": [
+    {
+      "scenario": "infrastructure",
+      "profile": "idle",
+      "grossUsd": "0.8437179634703196347031963472"
+    },
+    {
+      "scenario": "infrastructure",
+      "profile": "expected",
+      "grossUsd": "0.992361232876712328767123288"
+    },
+    {
+      "scenario": "infrastructure",
+      "profile": "higher",
+      "grossUsd": "3.375784246575342465753424657"
+    },
+    {
+      "scenario": "future_five_tasks",
+      "profile": "idle",
+      "grossUsd": "1.090747689497716894977168950"
+    },
+    {
+      "scenario": "future_five_tasks",
+      "profile": "expected",
+      "grossUsd": "1.239390958904109589041095891"
+    },
+    {
+      "scenario": "future_five_tasks",
+      "profile": "higher",
+      "grossUsd": "3.622813972602739726027397258"
+    }
+  ],
+  "limitations": [
+    "Gross before credits/taxes and usage variation, no cost cap.",
+    "No additional extension; original approved 9:51 PM EDT deadline.",
+    "Existing October private-zone fee excluded from incremental remaining amounts; prior charges and billing/deletion tails separate.",
+    "RDS one-day retention with micro class remains unproved until an approved create succeeds."
+  ]
+}

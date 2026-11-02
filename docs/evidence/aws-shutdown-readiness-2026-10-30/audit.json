@@ -1,0 +1,208 @@
+{
+  "checkedAt": "2026-10-31T01:18:59.378670+00:00",
+  "status": "AUTOMATIC_SHUTDOWN_NOT_INSTALLED_OR_APPROVED",
+  "account": "772641336063",
+  "region": "us-east-2",
+  "approvedShutdownDeadlineUtc": "2026-10-31T01:51:25.219221Z",
+  "stateSerial": 8,
+  "managedResources": 112,
+  "resourceTypes": {
+    "aws_cloudwatch_log_group": 8,
+    "aws_cloudwatch_metric_alarm": 7,
+    "aws_db_instance": 1,
+    "aws_db_parameter_group": 1,
+    "aws_db_subnet_group": 1,
+    "aws_ecr_lifecycle_policy": 2,
+    "aws_ecr_repository": 2,
+    "aws_ecs_cluster": 1,
+    "aws_eip": 1,
+    "aws_iam_instance_profile": 1,
+    "aws_iam_role": 1,
+    "aws_iam_role_policy": 1,
+    "aws_iam_role_policy_attachment": 1,
+    "aws_instance": 1,
+    "aws_internet_gateway": 1,
+    "aws_lb": 1,
+    "aws_lb_listener": 1,
+    "aws_lb_listener_rule": 1,
+    "aws_lb_target_group": 1,
+    "aws_nat_gateway": 1,
+    "aws_route_table": 3,
+    "aws_route_table_association": 4,
+    "aws_s3_bucket": 1,
+    "aws_s3_bucket_lifecycle_configuration": 1,
+    "aws_s3_bucket_policy": 1,
+    "aws_s3_bucket_public_access_block": 1,
+    "aws_s3_bucket_server_side_encryption_configuration": 1,
+    "aws_s3_bucket_versioning": 1,
+    "aws_secretsmanager_secret": 6,
+    "aws_security_group": 9,
+    "aws_service_discovery_instance": 1,
+    "aws_service_discovery_private_dns_namespace": 1,
+    "aws_service_discovery_service": 6,
+    "aws_subnet": 4,
+    "aws_vpc": 1,
+    "aws_vpc_endpoint": 1,
+    "aws_vpc_security_group_egress_rule": 21,
+    "aws_vpc_security_group_ingress_rule": 14
+  },
+  "freeAccountActive": true,
+  "runningTasks": 0,
+  "pendingTasks": 0,
+  "rdsDeletionProtection": true,
+  "rdsBackupRetentionDays": 1,
+  "operationsForceDestroy": false,
+  "runtimeSecretRecoveryDays": [
+    7
+  ],
+  "manualProjectSnapshots": 0,
+  "projectAutomatedBackups": 1,
+  "operationsObjectVersions": 2,
+  "operationsDeleteMarkers": 0,
+  "ecrImageCounts": {
+    "backend": 0,
+    "frontend": 0
+  },
+  "runtimeSecretVersionCounts": {
+    "broker": 0,
+    "catalog": 0,
+    "identity": 0,
+    "inquiries": 0,
+    "notifications": 0,
+    "shared": 0
+  },
+  "projectSchedules": [],
+  "projectEventRules": [],
+  "projectCodeBuildProjects": [],
+  "codebuildQuotas": [
+    {
+      "name": "Concurrently running builds for ARM/Small environment",
+      "value": 30.0
+    },
+    {
+      "name": "Concurrently running builds for Linux/Small environment",
+      "value": 30.0
+    }
+  ],
+  "permissionSimulation": [
+    {
+      "action": "scheduler:CreateSchedule",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "action": "codebuild:CreateProject",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "action": "codebuild:StartBuild",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "action": "iam:CreateRole",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:PutRolePolicy",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:PassRole",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "logs:CreateLogGroup",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "s3:PutObject",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "action": "sqs:CreateQueue",
+      "decision": "explicitDeny",
+      "missingContext": []
+    }
+  ],
+  "simulationLimit": "Read-only IAM simulation does not prove role trust, SCP/account-plan service acceptance or actual cleanup execution",
+  "stateBucketPreserved": "772641336063-linked-in-node-terraform-state",
+  "stateVersioning": "Enabled",
+  "stateAllPublicBlocks": true,
+  "certificateStatus": "ISSUED",
+  "certificatePreservedArn": "arn:aws:acm:us-east-2:772641336063:certificate/ae18667c-47ac-4fda-8039-e877bafe9705",
+  "transition": {
+    "status": "PREPARED_NOT_APPROVED_NOT_APPLIED",
+    "planBinarySha256": "af371f008c64cb397d63a1981b2429cc496819e9506fa79c99fc0812c1fa908a",
+    "privatePath": "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/work/aws-shutdown-readiness-2026-10-30/cleanup-transition.tfplan",
+    "updates": 8,
+    "adds": 0,
+    "destroys": 0,
+    "negativeControls": [
+      "reject_any_delete",
+      "reject_disabled_live_backups",
+      "reject_changed_expiry",
+      "reject_extra_bucket_change"
+    ]
+  },
+  "destroyPlanReady": false,
+  "destroyPlanReason": "Fresh final destroy must be generated after approved protection transition succeeds; do not approve an unknown future binary",
+  "autoControllerSourceExists": false,
+  "autoControllerRehearsed": false,
+  "resourcesDeleted": false,
+  "scopedPermissionSimulation": [
+    {
+      "name": "scheduler",
+      "action": "scheduler:CreateSchedule",
+      "decision": "allowed",
+      "organizations": {
+        "AllowedByOrganizations": true
+      },
+      "missingContext": []
+    },
+    {
+      "name": "codebuild-create",
+      "action": "codebuild:CreateProject",
+      "decision": "allowed",
+      "organizations": {
+        "AllowedByOrganizations": true
+      },
+      "missingContext": []
+    },
+    {
+      "name": "codebuild-start",
+      "action": "codebuild:StartBuild",
+      "decision": "allowed",
+      "organizations": {
+        "AllowedByOrganizations": true
+      },
+      "missingContext": []
+    },
+    {
+      "name": "queue",
+      "action": "sqs:CreateQueue",
+      "decision": "allowed",
+      "organizations": {
+        "AllowedByOrganizations": true
+      },
+      "missingContext": []
+    },
+    {
+      "name": "state-write",
+      "action": "s3:PutObject",
+      "decision": "allowed",
+      "organizations": {
+        "AllowedByOrganizations": true
+      },
+      "missingContext": []
+    }
+  ],
+  "permissionSimulationConclusion": "Exact resources plus explicit region/account context allowed all five tested actions. Initial wildcard/no-context denies retained; not treated as a confirmed service block. Actual controller creation, trust and Free-plan acceptance remain unproved.",
+  "reportRecordedAt": "2026-10-31T01:24:33.918166+00:00"
+}

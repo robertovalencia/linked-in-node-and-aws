@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-10-31T01:24:33.918166+00:00",
+  "source": "Fresh Ohio AWS Price List exact SKU9343EGWDZJRG5FR6",
+  "codebuildMinuteRateUSD": "0.0050000000",
+  "computeOnly30MinutesUSD": "0.1500000000",
+  "computeOnly60MinutesUSD": "0.3000000000",
+  "controllerTotalQuoteReady": false,
+  "unpricedFinalDesignItems": [
+    "Scheduler invocation(s), failure queue requests/storage, controller source/results S3 and CloudWatch logs",
+    "Encryption key storage/API charges if a new customer-managed key is used",
+    "Job-level monitoring/retries and eventual cleanup of controller resources"
+  ],
+  "limitations": [
+    "Compute component only, before credits/taxes; not a final controller deployment quote or cost cap",
+    "Existing demo resources continue incurring usage until actual removal",
+    "Previous $0.33 rehearsal+cleanup estimate is historical and omits unresolved final-design items"
+  ]
+}

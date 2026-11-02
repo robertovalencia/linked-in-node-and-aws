@@ -12,6 +12,15 @@ import subprocess
 import tempfile
 
 
+def generate_cluster_id() -> str:
+    # kafka-storage's argparse treats a leading hyphen as a CLI option.
+    # Cluster IDs are identifiers, not credentials; reject that encoding only.
+    while True:
+        value = base64.urlsafe_b64encode(secrets.token_bytes(16)).decode().rstrip("=")
+        if not value.startswith("-"):
+            return value
+
+
 def prepare(directory: Path, broker_dns: str) -> None:
     if not re.fullmatch(r"[a-z0-9](?:[a-z0-9.-]{0,251}[a-z0-9])?", broker_dns):
         raise ValueError("Broker DNS must be a lower-case DNS hostname")
@@ -38,7 +47,7 @@ def prepare(directory: Path, broker_dns: str) -> None:
                 "KAFKA_ADMIN_PASSWORD": secrets.token_hex(32),
                 "INQUIRIES_KAFKA_PASSWORD": secrets.token_hex(32),
                 "NOTIFICATIONS_KAFKA_PASSWORD": secrets.token_hex(32),
-                "CLUSTER_ID": base64.urlsafe_b64encode(secrets.token_bytes(16)).decode().rstrip("="),
+                "CLUSTER_ID": generate_cluster_id(),
             }
             payloads = {"broker": broker, "shared": {
                 "JWT_SECRET": secrets.token_hex(32), "INTERNAL_API_KEY": secrets.token_hex(32), "KAFKA_SSL_CA": ca,

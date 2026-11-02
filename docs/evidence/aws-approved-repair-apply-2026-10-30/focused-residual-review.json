@@ -1,0 +1,43 @@
+{
+  "status": "FOCUSED_RESIDUAL_CHECKS_PASS_NOT_APPLY_APPROVAL",
+  "exactPlanSha256": "cb438bc065c4d95f32fbe69aac6d94671c03d81e5c331ed2bc81741e21d4478a",
+  "createOnlyScopeVerified": 8,
+  "existingNoOpsVerified": 104,
+  "databaseDeltaOnlyClassVerified": true,
+  "unchangedAlarmConfigurationVerified": true,
+  "resolvedAlarmDimensionsBoundToActualResources": true,
+  "negativeControls": [
+    {
+      "name": "reject_larger_database",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_disabled_backups",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_public_database",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_broker_update",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_deadline_reset",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_application_activation",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_alarm_threshold_change",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_wrong_alarm_dimension",
+      "status": "PASS"
+    }
+  ]
+}

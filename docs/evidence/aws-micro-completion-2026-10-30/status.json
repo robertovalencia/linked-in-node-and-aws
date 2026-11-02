@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-10-30T23:34:51.103386+00:00",
+  "status": "APPROVED_INFRASTRUCTURE_REPAIR_COMPLETED",
+  "planBinarySha256": "cb438bc065c4d95f32fbe69aac6d94671c03d81e5c331ed2bc81741e21d4478a",
+  "applyExitCode": 0,
+  "successfulActions": {
+    "create": 8
+  },
+  "stateSerial": 8,
+  "managedResources": 112,
+  "taintedResources": 0,
+  "existing104IdentitiesPreserved": true,
+  "rdsClass": "db.t4g.micro",
+  "rdsStatus": "available",
+  "backupRetentionDays": 1,
+  "private": true,
+  "encrypted": true,
+  "deletionProtection": true,
+  "alarms": 7,
+  "postApplyNoChanges": true,
+  "approvedShutdownDeadlineUtc": "2026-10-31T01:51:25.219221Z",
+  "accountPlan": "FREE_ACTIVE",
+  "accountUpgradePerformed": false,
+  "applicationActivated": false,
+  "secretValuesRead": false,
+  "automaticCleanupInstalled": false,
+  "cleanupApproved": false
+}

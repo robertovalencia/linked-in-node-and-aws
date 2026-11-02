@@ -1,6 +1,7 @@
 # Visible AWS commands and 24-hour cleanup — 29 October 2026
 
-**Current result, 30 October: the approved initial plan failed partially. Paid resources remain; repair preparation is underway.** [Actual execution and independent critic](evidence/aws-infrastructure-apply-2026-10-29/README.md) · [current repair/cost/deadline review](aws-repair-review-2026-10-30.md).
+> Current checkpoint, October30: infrastructure complete,112 managed resources/serial8, approved deadline9:51PM EDT. No automatic cleanup exists. [Current readiness audit](aws-automatic-shutdown-readiness-2026-10-30.md) and [exact cleanup-transition packet](aws-cleanup-transition-review-2026-10-30.md). Original deadlines and initial plans below are historical.
+**Historical initial failure, superseded by successful micro completion.** [Actual execution and independent critic](evidence/aws-infrastructure-apply-2026-10-29/README.md) · [current repair/cost/deadline review](aws-repair-review-2026-10-30.md).
 
 Deadline: **today 5:51:25 PM EDT**, operator return **3:51 PM EDT**. No automatic cleanup exists. The initial `2fd776…` artifact is consumed and must never be retried. The initial create-only helper below correctly refuses an existing application state; its commands are historical preparation examples, not repair commands. Current repair plans must bind the actual 100-instance partial state. Preserve certificate/bootstrap state. Do not reset the deadline or run an old plan.
 

@@ -26,6 +26,7 @@ jobs:
       - run: npm ci && npm --prefix backend ci && npm --prefix frontend ci
       - run: node --test scripts/aws-deploy.test.mjs scripts/aws-release-local.test.mjs scripts/aws-ecs-publish-local.test.mjs
       - run: python3 scripts/aws-ecs-operator.test.py
+      - run: python3 scripts/aws-ecs-prepare-secrets.test.py
       - run: npm run check
       - run: npm --prefix backend run test:coverage
       - run: npm --prefix frontend run test:coverage

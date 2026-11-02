@@ -1,0 +1,49 @@
+{
+  "checkedAt": "2026-10-31T02:49:23.339751+00:00",
+  "status": "FINAL_DESTROY_PREPARED_REVIEWED_NOT_APPROVED",
+  "planBinarySha256": "c9071d9f38c969afce3bcb0dd50c9a22e67e7a8fbcc2b2530f513be3cfe31c63",
+  "planJsonSha256": "e3a52d2a5075e9ec4e5266f918d9f406504c6ea9442bf79b14a8d3a7f92ed885",
+  "postTransitionStateSha256": "1e6d37d6128164db095acf6dc18de2ab2ea83cd52aa56990db96243f8926a239",
+  "stateSerial": 10,
+  "lineage": "e92e5f80-f163-7df0-69db-022df56db002",
+  "deletes": 112,
+  "creates": 0,
+  "updates": 0,
+  "protectedStateAndCertificateExcluded": true,
+  "sourceLockBackendAndActualStateBound": true,
+  "negativeControls": [
+    {
+      "name": "reject_extra_create",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_missing_delete",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_retained_state_bucket",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_unremoved_database_protection",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_final_snapshot_surprise",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_retained_backups_surprise",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_changed_broker_identity",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_ordinary_secret_recovery",
+      "status": "PASS"
+    }
+  ],
+  "scope": "Focused original-owner check using completed source/teardown reviews; no new independent critic claimed"
+}

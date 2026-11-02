@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-10-31T12:22:06.208278+00:00",
+  "status": "APPROVED_REVERSIBLE_EC2_RDS_STOP_VERIFIED",
+  "ec2": {
+    "id": "i-06a5a2da57b60f70a",
+    "state": "stopped"
+  },
+  "rds": {
+    "id": "linked-in-node-ecs-dev",
+    "state": "stopped",
+    "automaticRestartTime": "2026-11-07T12:22:07.316000+00:00",
+    "automaticRestartAfterSevenStoppedDays": true
+  },
+  "rootVolumePreserved": true,
+  "databaseAndBackupsPreserved": true,
+  "noResourcesDeleted": true,
+  "otherResourcesUnchangedByStop": true,
+  "terraformStateNotRewritten": true,
+  "remainingCosts": [
+    "ALB",
+    "NAT gateway/EIP",
+    "EBS and RDS storage/backups",
+    "Secrets/logs/S3/discovery/state usage"
+  ],
+  "fullTeardownCompleted": false,
+  "automaticCleanupInstalled": false,
+  "verificationNote": "CLI lacks db-instance-stopped waiter; original waiter exit252 preserved, followed only by describe polling. Stop requests were not repeated."
+}

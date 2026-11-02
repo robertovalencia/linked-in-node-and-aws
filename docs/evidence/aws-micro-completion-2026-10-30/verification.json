@@ -1,0 +1,147 @@
+{
+  "checkedAt": "2026-10-30T23:34:23.948101+00:00",
+  "status": "MICRO_RDS_AND_ALARMS_VERIFIED",
+  "checks": [
+    {
+      "name": "approved_account",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "free_account_active",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "state_complete_no_taints",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "existing_104_identities_preserved",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "rds_available_micro_postgres",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "rds_private_encrypted_protected",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "rds_one_day_backups",
+      "status": "PASS",
+      "detail": "Live DescribeDBInstances confirms retention; restore exercise and observed backup recovery remain separate"
+    },
+    {
+      "name": "rds_single_az_20gib_gp3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "rds_security_groups_match_plan",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "managed_master_secret_active",
+      "status": "PASS",
+      "detail": "Only metadata read; secret value never retrieved"
+    },
+    {
+      "name": "rds_force_ssl",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "rds_parameter_group_in_sync",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "rds_deadline_tag",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "seven_alarms_present",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "alarm_matches_plan_alb_5xx",
+      "status": "PASS",
+      "detail": "All scalar settings/dimensions match exactly; only provider null absent action lists normalized to live empty arrays. Original failed comparison retained."
+    },
+    {
+      "name": "alarm_matches_plan_alb_unhealthy",
+      "status": "PASS",
+      "detail": "All scalar settings/dimensions match exactly; only provider null absent action lists normalized to live empty arrays. Original failed comparison retained."
+    },
+    {
+      "name": "alarm_matches_plan_broker_disk",
+      "status": "PASS",
+      "detail": "All scalar settings/dimensions match exactly; only provider null absent action lists normalized to live empty arrays. Original failed comparison retained."
+    },
+    {
+      "name": "alarm_matches_plan_broker_process",
+      "status": "PASS",
+      "detail": "All scalar settings/dimensions match exactly; only provider null absent action lists normalized to live empty arrays. Original failed comparison retained."
+    },
+    {
+      "name": "alarm_matches_plan_broker_status",
+      "status": "PASS",
+      "detail": "All scalar settings/dimensions match exactly; only provider null absent action lists normalized to live empty arrays. Original failed comparison retained."
+    },
+    {
+      "name": "alarm_matches_plan_database_cpu",
+      "status": "PASS",
+      "detail": "All scalar settings/dimensions match exactly; only provider null absent action lists normalized to live empty arrays. Original failed comparison retained."
+    },
+    {
+      "name": "alarm_matches_plan_database_storage",
+      "status": "PASS",
+      "detail": "All scalar settings/dimensions match exactly; only provider null absent action lists normalized to live empty arrays. Original failed comparison retained."
+    },
+    {
+      "name": "alarm_notifications_explicitly_unconfigured",
+      "status": "PASS",
+      "detail": "Alarm creation is verified; live metric/transition/delivery rehearsal remains separate"
+    },
+    {
+      "name": "live_broker_disk_deadline_preserved",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "no_application_activation",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "post_apply_no_changes",
+      "status": "PASS",
+      "detail": "Read-only full Terraform plan; saved check is not an apply artifact"
+    }
+  ],
+  "passed": 25,
+  "failed": 0,
+  "stateSerial": 8,
+  "managedResources": 112,
+  "databaseStatus": "available",
+  "backupRetentionDays": 1,
+  "alarmStates": {
+    "INSUFFICIENT_DATA": 7
+  },
+  "approvedShutdownDeadlineUtc": "2026-10-31T01:51:25.219221Z",
+  "applicationActivated": false,
+  "limits": [
+    "Database SQL/TLS client handshake, bootstrap, restore/RPO/RTO and application acceptance are not inferred.",
+    "Alarms have no notification destination and no live delivery proof.",
+    "Exact-source verification-only release CI with isolated SonarQube/acceptance, and amd64 image builds/scans/publication remain required; hosted SonarCloud configuration is separately pending."
+  ]
+}

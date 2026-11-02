@@ -1,0 +1,127 @@
+{
+  "checkedAt": "2026-10-30T21:25:04.279449+00:00",
+  "applyExitCode": 1,
+  "checks": [
+    {
+      "name": "correct_account",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "broker_instance_ami_disk_preserved",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "broker_private_imdsv2",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "live_ebs_expiry_exact",
+      "status": "PASS",
+      "detail": "Verified with DescribeVolumes, independent of cached Terraform tags_all"
+    },
+    {
+      "name": "volume_encryption_size",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "rds_created",
+      "status": "FAIL",
+      "detail": "Create rejected; live DBInstanceNotFound confirmed; no backup downgrade/account upgrade"
+    },
+    {
+      "name": "replacement_alb_active",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "alb_logging_enabled_correct_bucket",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "https_listener_certificate_tls",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "empty_targets",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "empty_definition_replaced_identity",
+      "status": "PASS",
+      "detail": "Completed delete/create receipts and new CreateDate plus live threshold=1/empty instances verified. AWS returned the same service ID; the initial ID-must-differ assumption was invalid and is preserved in summary.json."
+    },
+    {
+      "name": "empty_definition_replaced_catalog",
+      "status": "PASS",
+      "detail": "Completed delete/create receipts and new CreateDate plus live threshold=1/empty instances verified. AWS returned the same service ID; the initial ID-must-differ assumption was invalid and is preserved in summary.json."
+    },
+    {
+      "name": "empty_definition_replaced_inquiries",
+      "status": "PASS",
+      "detail": "Completed delete/create receipts and new CreateDate plus live threshold=1/empty instances verified. AWS returned the same service ID; the initial ID-must-differ assumption was invalid and is preserved in summary.json."
+    },
+    {
+      "name": "empty_definition_replaced_notifications",
+      "status": "PASS",
+      "detail": "Completed delete/create receipts and new CreateDate plus live threshold=1/empty instances verified. AWS returned the same service ID; the initial ID-must-differ assumption was invalid and is preserved in summary.json."
+    },
+    {
+      "name": "empty_definition_replaced_frontend",
+      "status": "PASS",
+      "detail": "Completed delete/create receipts and new CreateDate plus live threshold=1/empty instances verified. AWS returned the same service ID; the initial ID-must-differ assumption was invalid and is preserved in summary.json."
+    },
+    {
+      "name": "cloudmap_broker_registration",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "actual_private_dns_a_record",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "seven_alarms",
+      "status": "FAIL",
+      "detail": "Actual alarm count 0"
+    },
+    {
+      "name": "zero_application_services_and_tasks",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "tls_correct-host",
+      "status": "PASS",
+      "detail": "Expected HTTP 503 and certificate verification 0; no insecure TLS flag"
+    },
+    {
+      "name": "tls_wrong-host",
+      "status": "PASS",
+      "detail": "Expected HTTP 403 and certificate verification 0; no insecure TLS flag"
+    },
+    {
+      "name": "alb_log_delivery_test_object",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "actual_alb_access_log_object",
+      "status": "PASS",
+      "detail": "Actual gzip access-log objects observed after delivery delay"
+    }
+  ],
+  "passed": 21,
+  "failed": 2,
+  "stateSerial": 7,
+  "managedResources": 104,
+  "approvedShutdownDeadlineUtc": "2026-10-31T01:51:25.219221Z",
+  "applicationActivated": false
+}

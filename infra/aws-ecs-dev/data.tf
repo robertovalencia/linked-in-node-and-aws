@@ -36,7 +36,7 @@ resource "aws_db_instance" "dev" {
   engine                          = "postgres"
   engine_version                  = var.postgres_engine_version
   engine_lifecycle_support        = "open-source-rds-extended-support-disabled"
-  instance_class                  = "db.t4g.small"
+  instance_class                  = "db.t4g.micro"
   allocated_storage               = 20
   max_allocated_storage           = 20
   storage_type                    = "gp3"

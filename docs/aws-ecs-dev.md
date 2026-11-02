@@ -1,10 +1,10 @@
 # Private ECS/RDS development environment
 
-> Current execution, 30 October: the approved initial application plan failed partially and paid allocations remain. [Actual failure evidence](evidence/aws-infrastructure-apply-2026-10-29/README.md) and [current repair/cost review](aws-repair-review-2026-10-30.md) supersede historical preparation statements below. Original shutdown deadline: today at 5:51 PM EDT; no automatic cleanup.
+> Current status, 30 October, 7:51PM EDT: infrastructure repair is complete with112 managed resources, available private/encrypted micro RDS, one-day backups and seven alarms. The app has zero ECS tasks/services. [Live inspection checklist](aws-live-inspection-2026-10-30.md) and [verified execution](aws-micro-completion-execution-2026-10-30.md) are current. Approved shutdown deadline:9:51PM EDT; no automatic cleanup. The preparation checkpoints and cost tables below are historical.
 
-Latest checkpoint: [new exact saved-plan approval package](aws-application-plan-approval-2026-10-29.md) and [actual visible command journal](evidence/aws-application-plan-2026-10-29/journal.md). Current client approval/preflight are resolved; application apply remains unapproved.
+Historical checkpoint: [new exact saved-plan approval package](aws-application-plan-approval-2026-10-29.md) and [actual visible command journal](evidence/aws-application-plan-2026-10-29/journal.md). Current client approval/preflight are resolved; application apply remains unapproved.
 
-**Selected for preparation on 27 October 2026; not provisioned.** This implements the private ECS/RDS + one NAT option from the [cost-first review](aws-cost-review-2026-10-27/README.md). The existing `infra/aws-dev` EC2/SSM root is preserved. Local Compose keeps its original ports, credentials and volumes.
+**Historical preparation scope from27 October 2026.** Infrastructure has since been provisioned and repaired as linked above. This implements the private ECS/RDS + one NAT option from the [cost-first review](aws-cost-review-2026-10-27/README.md). The existing `infra/aws-dev` EC2/SSM root is preserved. Local Compose keeps its original ports, credentials and volumes.
 
 The historical hostname-free local preview has no ALB listener/client ingress/app tasks and must never be applied. The free hostname's certificate is now ISSUED. On 29 October the human approved only the exact five-create S3 state bootstrap; it was applied and independently verified. [Actual execution evidence](evidence/aws-state-bootstrap-2026-10-29/README.md). Certificate state remains separately preserved.
 

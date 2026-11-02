@@ -1,0 +1,11 @@
+{
+  "recordedAt": "2026-10-30T23:23:42.722853Z",
+  "source": "Direct human message in this chat",
+  "exactHumanText": "Approve the micro RDS completion plan cb438bc065c4",
+  "planBinarySha256": "cb438bc065c4d95f32fbe69aac6d94671c03d81e5c331ed2bc81741e21d4478a",
+  "approvedShutdownDeadlineUtc": "2026-10-31T01:51:25.219221Z",
+  "originalStartUtc": "2026-10-29T21:51:25.219221Z",
+  "applicationActivationApproved": false,
+  "cleanupApproved": false,
+  "accountUpgradeApproved": false
+}
