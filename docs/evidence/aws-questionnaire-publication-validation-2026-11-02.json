@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-02",
+  "status": "Prepared for user-requested Git commit/push; push success must be separately observed",
+  "base_commit": "7e778a01d6be739feafda36e17df8d42095f79f1",
+  "remote_main_read": "Actual git ls-remote origin refs/heads/main returned the same full commit after approved network access",
+  "verification_scope": "Clean source snapshot with no uncommitted deployment changes or original dated source files; only historical Git objects reused for pinned excerpt checks",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "scripts/package-node-study.py"
+      ],
+      "exit_code": 0,
+      "stdout": "Wrote NodeJs-AWS-study-pack.zip: 152 managed files, 84 lessons; no personal notes.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check-cloud-study.py",
+        "--repository",
+        "/Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/aws-questionnaire-task/publication-candidate"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"questionnaire\": {\"questions\": 30, \"incidents\": 12, \"source_excerpts\": 42, \"distinct_mapped_lessons\": 60, \"questionnaire_local_links\": 202, \"absent_feature_examples\": 4}, \"lessons\": 84, \"cloud_lessons\": 64, \"mapped_concepts\": 321, \"local_links\": 902, \"unique_pinned_source_ranges\": 279, \"exact_manifest_excerpts\": 31}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check-aws-questionnaire.test.py",
+        "--repository",
+        "/Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/aws-questionnaire-task/publication-candidate"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "..........................\n----------------------------------------------------------------------\nRan 26 tests in 1.606s\n\nOK\n"
+    }
+  ],
+  "archive": {
+    "members": 152,
+    "added_since_local_questionnaire_pack": [
+      "NodeJs-AWS/evidence/questionnaire-records/aws-micro-completion-execution-2026-10-30.md",
+      "NodeJs-AWS/evidence/questionnaire-records/aws-reversible-compute-stop-2026-10-31.md"
+    ],
+    "removed": [],
+    "all_member_bytes_match": true
+  },
+  "repair": {
+    "problem": "Five cards depended on two dated deployment reports absent from the committed source; a questionnaire-only clean checkout would fail source validation.",
+    "solution": "Preserve exact full sanitized dated reports in managed evidence, verify their inspected SHA/symbol/excerpt and any available original, retain mandatory actual source checks for current implementation, and test missing/corrupt/conflicting evidence."
+  },
+  "preserved_original_lesson_personal_files": 85,
+  "excluded": "All unrelated deployment work, cloud actions, secret reads and live Study Desk updates. No fresh npm application execution or AWS runtime verification is claimed.",
+  "failed_then_repaired": {
+    "check": "git diff --cached --check",
+    "failure": "docs/nodejs-aws-study-path/evidence/aws-terraform-project-context.md:863: new blank line at EOF.",
+    "repair": "Remove the extra blank EOF line, preserving all source excerpt text; rebuild and revalidate the managed archive. The staged whitespace check is rerun before commit."
+  }
+}

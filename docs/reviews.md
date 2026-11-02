@@ -217,3 +217,21 @@ Builders corrected those source paths. Fresh planning then exposed unintended br
 Final strict mixed-action review, all 56 negative controls and eight additional critic controls pass on the exact cd87e0 artifact. The fresh critic independently reran 28 operator tests and inspected the 18 mock-run receipt. The largest remaining gap is live repair and recovery verification; no one-day account compatibility, ALB log delivery, HTTPS behavior, application activation or teardown success is inferred from source or planning. The deadline remains today at 5:51 PM EDT with operator-assisted cleanup.
 
 [Final independent repair critic](evidence/aws-repair-plan-2026-10-30/critic.md). Preparation accepted; no changed-plan apply approved or performed.
+
+
+## R12 AWS/Terraform questionnaire · November 2, 2026
+
+Added a supplementary 30-question/12-incident companion to the existing 84-lesson path and both README navigation entries. Every stable card maps to existing lessons, priority, a literal project source setting/excerpt, an evidence scope and primary guidance. Four absent-feature examples are explicit. Dated October 30 completion/cleanup/rejected-destroy records and October 31 temporary stop/retained-resource/RDS-restart facts are reconciled without claiming present-day AWS status. Original numbered lessons, personal progress, runtime and infrastructure are unchanged.
+
+The independent critic's largest content gap was mismatched broad references: repaired Terraform/account/ARN, PostgreSQL ownership and outbox guidance, added the missing custom-NACL worked example and a beginner glossary. A real link-check failure from a copied Markdown excerpt was repaired by quoting the actual moved-block lab operation; no link check was disabled. [Independent review](evidence/aws-questionnaire-review-2026-11-02.md).
+
+Actual local verification: full study checker passes 84 lessons/64 cloud/321 concepts, 895 local links, 279 pinned source ranges and 31 historical exact excerpts; companion checks pass all42 cards, 60 mapped lessons and four absent-feature examples. All20 offline regression tests pass. The managed ZIP changes147→150 members: only its existing README changes, exactly questionnaire/map/context are added, no prior member is removed and every member matches source. All85 original lesson/personal files retain their hashes. [Executed checks and failed-then-repaired evidence](evidence/aws-questionnaire-validation-2026-11-02.json).
+
+Verification scope is documentation and study tooling: npm application check/test/build/HTTP acceptance were not rerun because application behavior did not change. Local HEAD was inspected; a remote HEAD read failed DNS and is not claimed verified. No cloud operation, secret-value read, GitHub push/PR/CI dispatch or live reader publication occurred. This addition is local-only.
+
+
+### R12 questionnaire publication preparation · November 2, 2026
+
+The user subsequently requested Git add/commit/push. The configured remote main was actually read and matched local base7e778a0. A clean source candidate is built from that base plus only learning changes; existing uncommitted deployment changes stay outside the commit. The largest publication gap was that five cards referenced two dated source reports absent from Git. Exact sanitized copies are now packaged under `evidence/questionnaire-records/`, checked by full inspected SHA-256 plus symbol/excerpt and compared with the original whenever present. Current implementation cards still require actual source. Missing/corrupt/conflicting archive controls prevent treating unavailable evidence as a pass.
+
+The clean candidate passes the full checker (84 lessons,64 cloud,321 concepts,902 local links,279 pinned ranges,31 historical excerpts) and26 offline regression tests. Its152-member ZIP includes both archived reports and matches source byte-for-byte; all original lessons/personal progress are preserved. [Executed publication-preparation evidence](evidence/aws-questionnaire-publication-validation-2026-11-02.json) and [independent publication review](evidence/aws-questionnaire-publication-review-2026-11-02.md). These checks prepare the Git publication; only an actual successful push/read-back establishes remote delivery. The earlier local-only review above remains a historical checkpoint. No AWS or live reader operation is performed.

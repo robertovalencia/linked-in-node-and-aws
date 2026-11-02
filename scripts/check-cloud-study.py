@@ -30,7 +30,7 @@ def source(commit, path):
     return cache[key]
 links = 0
 pinned = set()
-for path in [*all_lessons, pack / 'README.md', pack / 'deployment-handoff.md', *(pack / 'labs').rglob('*.md'), *(pack / 'walkthroughs').glob('*.md'), *(pack / 'visuals').glob('*.md')]:
+for path in [*all_lessons, pack / 'README.md', pack / 'deployment-handoff.md', pack / 'aws-terraform-questionnaire.md', pack / 'evidence/aws-terraform-project-context.md', *(pack / 'evidence/questionnaire-records').glob('*.md'), *(pack / 'labs').rglob('*.md'), *(pack / 'walkthroughs').glob('*.md'), *(pack / 'visuals').glob('*.md')]:
     text = path.read_text()
     for href in re.findall(r'\[[^\]]*\]\(([^)]+)\)', text):
         parsed = urlsplit(href)
@@ -55,4 +55,5 @@ manifest = json.loads((pack / 'cloud-source-excerpts.json').read_text())
 for row in manifest['excerpts']:
     actual = '\n'.join(source(manifest['source_commit'], row['path'])[row['start']-1:row['end']])
     assert actual == row['excerpt'], f"Stale source excerpt: {row['path']}"
-print(json.dumps({'lessons':count,'cloud_lessons':len(lessons),'mapped_concepts':sum(len(r['concepts']) for r in coverage['coverage']),'local_links':links,'unique_pinned_source_ranges':len(pinned),'exact_manifest_excerpts':len(manifest['excerpts'])}))
+questionnaire = json.loads(subprocess.check_output(['python3', str(root / 'scripts/check-aws-questionnaire.py'), '--repository', str(repo)], text=True))
+print(json.dumps({'questionnaire':questionnaire,'lessons':count,'cloud_lessons':len(lessons),'mapped_concepts':sum(len(r['concepts']) for r in coverage['coverage']),'local_links':links,'unique_pinned_source_ranges':len(pinned),'exact_manifest_excerpts':len(manifest['excerpts'])}))

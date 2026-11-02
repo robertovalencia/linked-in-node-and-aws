@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-02",
+  "scope": "Documentation overlay, offline local validation; no fresh AWS check or publication",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "scripts/package-node-study.py"
+      ],
+      "working_directory": "/Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/aws-questionnaire-task/overlay",
+      "exit_code": 0,
+      "stdout": "Wrote NodeJs-AWS-study-pack.zip: 150 managed files, 84 lessons; no personal notes.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check-cloud-study.py",
+        "--repository",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws"
+      ],
+      "working_directory": "/Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/aws-questionnaire-task/overlay",
+      "exit_code": 0,
+      "stdout": "{\"questionnaire\": {\"questions\": 30, \"incidents\": 12, \"source_excerpts\": 42, \"distinct_mapped_lessons\": 60, \"questionnaire_local_links\": 195, \"absent_feature_examples\": 4}, \"lessons\": 84, \"cloud_lessons\": 64, \"mapped_concepts\": 321, \"local_links\": 895, \"unique_pinned_source_ranges\": 279, \"exact_manifest_excerpts\": 31}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check-aws-questionnaire.test.py",
+        "--repository",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws"
+      ],
+      "working_directory": "/Users/robertovalencia/Documents/Codex/2026-10-21/gauntlet-loop-users-robertovalencia-codex-skills/work/linked-in-node-and-aws/work/aws-questionnaire-task/overlay",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "....................\n----------------------------------------------------------------------\nRan 20 tests in 1.033s\n\nOK\n"
+    }
+  ],
+  "archive": {
+    "previous_members": 147,
+    "members": 150,
+    "added": [
+      "NodeJs-AWS/aws-terraform-questionnaire-map.json",
+      "NodeJs-AWS/aws-terraform-questionnaire.md",
+      "NodeJs-AWS/evidence/aws-terraform-project-context.md"
+    ],
+    "removed": [],
+    "changed_existing": [
+      "NodeJs-AWS/README.md"
+    ],
+    "every_member_matches_source": true
+  },
+  "preserved_original_files": 85,
+  "remote_head_check": {
+    "command": "git ls-remote origin HEAD",
+    "exit_code": 128,
+    "error": "Could not resolve host: github.com",
+    "local_head": "7e778a01d6be739feafda36e17df8d42095f79f1"
+  },
+  "failed_then_repaired": [
+    {
+      "error": "README.md: broken local link NodeJs-AWS-study-pack.zip",
+      "repair": "Build the inspected managed archive before running the existing checker against the isolated overlay."
+    },
+    {
+      "error": "aws-terraform-project-context.md: broken local link ./main.tf",
+      "repair": "Q27 now quotes the actual advanced-lab run.py moved-block operation instead of a README excerpt containing context-dependent relative links; checks were preserved."
+    },
+    {
+      "error": "Q01: rendered source link missing",
+      "repair": "Repair the authoring replacement to operate within each stable card, preserving every card-specific source mapping. All42 mappings and exact source targets now pass."
+    },
+    {
+      "error": "test_broken_existing_file_fragment expected Broken local anchor but stricter validation raised source context anchor missing",
+      "repair": "Update the expected diagnostic for the same rejected corrupt input; add card-specific symbol and duplicate-excerpt corruption checks. All20 tests pass."
+    }
+  ],
+  "not_run": {
+    "npm_check_test_build_acceptance": "Only Markdown, metadata, Python study validation and managed archive change. No application/API/infrastructure behavior changed; no application process or acceptance fixture is needed for these checks. Existing application evidence is not relabeled as new.",
+    "cloud_and_external_delivery": "No AWS CLI/Terraform infrastructure operation, secret access, GitHub write/CI dispatch or live Study Desk update."
+  }
+}

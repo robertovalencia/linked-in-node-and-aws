@@ -49,6 +49,8 @@ node scripts/failure-drill.mjs
 
 ## Learn and rehearse
 
+Practice with the [AWS/Terraform questionnaire and developer troubleshooting companion](docs/nodejs-aws-study-path/aws-terraform-questionnaire.md): 30 concise answers and 12 diagnostic scenarios, each mapped to existing lessons, priority and dated project evidence.
+
 The [AWS visual study guide](docs/nodejs-aws-study-path/visuals/README.md) adds actual project views and official console examples with field explanations and explicit provenance, plus guidance for email/provider sign-in and the actual IAM user-permissions wizard.
 
 New to the setup process? Read [How this project was set up and verified](docs/nodejs-aws-study-path/walkthroughs/README.md). Eleven small-concept chapters connect every stage—from local credentials and source review through Terraform/DNS/certificate preparation, pending deployment and GitHub/Study Desk publication—to real files and evidence.

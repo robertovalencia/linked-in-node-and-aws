@@ -1,0 +1,881 @@
+{
+  "schema_version": 1,
+  "inspected_on": "2026-11-02",
+  "source_head": "7e778a01d6be739feafda36e17df8d42095f79f1",
+  "items": [
+    {
+      "id": "Q01",
+      "kind": "question",
+      "title": "What do AWS, Terraform and Docker each do?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/20-cloud-roadmap-and-lab.md",
+        "generated/53-ecs-fargate-tasks-and-services.md",
+        "generated/80-staged-modernization-and-traceability.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/network.tf",
+        "symbol": "capabilities     =",
+        "excerpt": "  azs              = slice(sort(data.aws_availability_zones.available.names), 0, 2)\n  capabilities     = { identity = 8181, catalog = 8182, inquiries = 8183, notifications = 8184 }\n  services         = merge(local.capabilities, { frontend = 8180 })\n  brokers_clients  = toset([\"inquiries\", \"notifications\"])\n  secret_names     = toset(concat(keys(local.capabilities), [\"shared\", \"broker\"]))\n  arn_prefix       = \"arn:${data.aws_partition.current.partition}\"\n}\nresource \"aws_vpc\" \"dev\" {\n  cidr_block           = \"10.85.0.0/16\"\n  enable_dns_hostnames = true",
+        "sha256_at_inspection": "245073d06aac72e825494ef35a0db762e347162ea28bf3ae964528da04677873",
+        "href": "evidence/aws-terraform-project-context.md#source-q01"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/intro"
+    },
+    {
+      "id": "Q02",
+      "kind": "question",
+      "title": "What is an account, Region, Availability Zone and ARN?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/21-aws-accounts-regions-and-cli.md",
+        "generated/45-aws-account-governance-and-landing-zones.md",
+        "generated/47-vpc-cidr-ipv6-and-subnet-design.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/versions.tf",
+        "symbol": "region = var.region",
+        "excerpt": "provider \"aws\" {\n  region = var.region\n  default_tags {\n    tags = { Project = var.project, Environment = \"ecs-dev\", ManagedBy = \"Terraform\", Owner = var.owner, ExpiresAt = var.expires_at }\n  }\n}",
+        "sha256_at_inspection": "7e17ae4bc5f302ec96a74c7f0427aba6e91c3299033d3789f30917a5fc61ea51",
+        "href": "evidence/aws-terraform-project-context.md#source-q02"
+      },
+      "official_reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html"
+    },
+    {
+      "id": "Q03",
+      "kind": "question",
+      "title": "How do IAM trust and permissions differ?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/22-aws-iam-roles-and-policies.md",
+        "generated/46-iam-policy-evaluation-and-federation.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/iam.tf",
+        "symbol": "ecs_trust       =",
+        "excerpt": "  execution_names = var.image_digests == null ? toset([]) : toset(concat(keys(local.services), [\"bootstrap\"]))\n  ecs_trust       = jsonencode({ Version = \"2012-10-17\", Statement = [{ Effect = \"Allow\", Principal = { Service = \"ecs-tasks.amazonaws.com\" }, Action = \"sts:AssumeRole\", Condition = { StringEquals = { \"aws:SourceAccount\" = data.aws_caller_identity.current.account_id }, ArnLike = { \"aws:SourceArn\" = \"${local.arn_prefix}:ecs:${var.region}:${data.aws_caller_identity.current.account_id}:*\" } } }] })\n  execution_secrets = {\n    frontend      = []\n    identity      = [aws_secretsmanager_secret.runtime[\"identity\"].arn, aws_secretsmanager_secret.runtime[\"shared\"].arn]\n    catalog       = [aws_secretsmanager_secret.runtime[\"catalog\"].arn, aws_secretsmanager_secret.runtime[\"shared\"].arn]\n    inquiries     = [aws_secretsmanager_secret.runtime[\"inquiries\"].arn, aws_secretsmanager_secret.runtime[\"shared\"].arn]\n    notifications = [aws_secretsmanager_secret.runtime[\"notifications\"].arn, aws_secretsmanager_secret.runtime[\"shared\"].arn]\n    bootstrap     = concat([for k in keys(local.capabilities) : aws_secretsmanager_secret.runtime[k].arn], [aws_db_instance.dev.master_user_secret[0].secret_arn])\n  }",
+        "sha256_at_inspection": "31d3823907c0c627f5d6d0c4af20c2d6bb7c4a7d552ee0182c704bb47babc704",
+        "href": "evidence/aws-terraform-project-context.md#source-q03"
+      },
+      "official_reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"
+    },
+    {
+      "id": "Q04",
+      "kind": "question",
+      "title": "What is the task execution role versus task role?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/22-aws-iam-roles-and-policies.md",
+        "generated/54-ecs-networking-identity-and-secrets.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/iam.tf",
+        "symbol": "execution_secrets =",
+        "excerpt": "  ecs_trust       = jsonencode({ Version = \"2012-10-17\", Statement = [{ Effect = \"Allow\", Principal = { Service = \"ecs-tasks.amazonaws.com\" }, Action = \"sts:AssumeRole\", Condition = { StringEquals = { \"aws:SourceAccount\" = data.aws_caller_identity.current.account_id }, ArnLike = { \"aws:SourceArn\" = \"${local.arn_prefix}:ecs:${var.region}:${data.aws_caller_identity.current.account_id}:*\" } } }] })\n  execution_secrets = {\n    frontend      = []\n    identity      = [aws_secretsmanager_secret.runtime[\"identity\"].arn, aws_secretsmanager_secret.runtime[\"shared\"].arn]\n    catalog       = [aws_secretsmanager_secret.runtime[\"catalog\"].arn, aws_secretsmanager_secret.runtime[\"shared\"].arn]\n    inquiries     = [aws_secretsmanager_secret.runtime[\"inquiries\"].arn, aws_secretsmanager_secret.runtime[\"shared\"].arn]\n    notifications = [aws_secretsmanager_secret.runtime[\"notifications\"].arn, aws_secretsmanager_secret.runtime[\"shared\"].arn]\n    bootstrap     = concat([for k in keys(local.capabilities) : aws_secretsmanager_secret.runtime[k].arn], [aws_db_instance.dev.master_user_secret[0].secret_arn])\n  }\n}",
+        "sha256_at_inspection": "31d3823907c0c627f5d6d0c4af20c2d6bb7c4a7d552ee0182c704bb47babc704",
+        "href": "evidence/aws-terraform-project-context.md#source-q04"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html"
+    },
+    {
+      "id": "Q05",
+      "kind": "question",
+      "title": "Is GitHub OIDC the same as marketplace login?",
+      "priority": "next",
+      "scope": "Current source",
+      "lessons": [
+        "generated/08-identity-jwt-and-security.md",
+        "generated/40-aws-release-pipeline-and-oidc.md",
+        "generated/46-iam-policy-evaluation-and-federation.md",
+        "generated/77-terraform-team-ci-and-approval-workflows.md"
+      ],
+      "source": {
+        "path": ".github/workflows/deploy-dev.yml",
+        "symbol": "role-to-assume:",
+        "excerpt": "        with:\n          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}\n          aws-region: ${{ vars.AWS_REGION }}\n      - uses: aws-actions/amazon-ecr-login@v2\n      - uses: docker/setup-buildx-action@v3\n      - name: Build and publish immutable source images\n        run: |\n          test -n \"$BACKEND_REPOSITORY\" && test -n \"$FRONTEND_REPOSITORY\"\n          for app in backend frontend; do\n            repo_var=\"${app^^}_REPOSITORY\"",
+        "sha256_at_inspection": "022a3fde2671ef6c53af6417754eabd544c3acb07e99bd2aca01ae6580f1ebc1",
+        "href": "evidence/aws-terraform-project-context.md#source-q05"
+      },
+      "official_reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html"
+    },
+    {
+      "id": "Q06",
+      "kind": "question",
+      "title": "What makes a subnet private, and why use NAT?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/23-aws-vpc-subnets-and-routing.md",
+        "generated/47-vpc-cidr-ipv6-and-subnet-design.md",
+        "generated/49-private-connectivity-nat-and-endpoints.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/network.tf",
+        "symbol": "resource \"aws_route_table\" \"private_active\"",
+        "excerpt": "}\nresource \"aws_route_table\" \"private_active\" {\n  vpc_id = aws_vpc.dev.id\n  route {\n    cidr_block     = \"0.0.0.0/0\"\n    nat_gateway_id = aws_nat_gateway.dev.id\n  }\n}\nresource \"aws_route_table_association\" \"private_active\" {\n  subnet_id      = aws_subnet.private[0].id",
+        "sha256_at_inspection": "245073d06aac72e825494ef35a0db762e347162ea28bf3ae964528da04677873",
+        "href": "evidence/aws-terraform-project-context.md#source-q06"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html"
+    },
+    {
+      "id": "Q07",
+      "kind": "question",
+      "title": "How do security groups differ from network ACLs?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/24-aws-security-groups-and-ssm.md",
+        "generated/48-ingress-egress-security-groups-and-nacls.md",
+        "generated/81-network-security-local-lab.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/network.tf",
+        "symbol": "resource \"aws_vpc_security_group_ingress_rule\" \"catalog_lookup\"",
+        "excerpt": "}\nresource \"aws_vpc_security_group_ingress_rule\" \"catalog_lookup\" {\n  security_group_id            = aws_security_group.service[\"catalog\"].id\n  referenced_security_group_id = aws_security_group.service[\"inquiries\"].id\n  ip_protocol                  = \"tcp\"\n  from_port                    = 8182\n  to_port                      = 8182\n}\nresource \"aws_vpc_security_group_egress_rule\" \"catalog_lookup\" {\n  security_group_id            = aws_security_group.service[\"inquiries\"].id",
+        "sha256_at_inspection": "245073d06aac72e825494ef35a0db762e347162ea28bf3ae964528da04677873",
+        "href": "evidence/aws-terraform-project-context.md#source-q07"
+      },
+      "official_reference": "https://docs.aws.amazon.com/vpc/latest/userguide/custom-network-acl.html",
+      "absent_feature_example": {
+        "explanation": "Custom NACL resources are absent. Read AWS’s worked inbound/outbound rule tables and explain the response-port rules; this is an external example, not this project’s deployed policy.",
+        "url": "https://docs.aws.amazon.com/vpc/latest/userguide/custom-network-acl.html"
+      }
+    },
+    {
+      "id": "Q08",
+      "kind": "question",
+      "title": "Does having NAT bypass an S3 endpoint denial?",
+      "priority": "next",
+      "scope": "Current source",
+      "lessons": [
+        "generated/27-aws-s3-artifacts-and-secrets.md",
+        "generated/49-private-connectivity-nat-and-endpoints.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/network.tf",
+        "symbol": "resource \"aws_vpc_endpoint\" \"s3\"",
+        "excerpt": "}\nresource \"aws_vpc_endpoint\" \"s3\" {\n  vpc_id            = aws_vpc.dev.id\n  service_name      = \"com.amazonaws.${var.region}.s3\"\n  vpc_endpoint_type = \"Gateway\"\n  route_table_ids   = [aws_route_table.private_active.id, aws_route_table.private_standby.id]\n  # ECR layers and AL2023 package repositories use regional AWS-owned S3 buckets.\n  # The gateway route also intercepts package downloads, so NAT cannot repair a denied endpoint policy.\n  policy = jsonencode({ Version = \"2012-10-17\", Statement = [{ Effect = \"Allow\", Principal = \"*\", Action = [\"s3:GetObject\"], Resource = [\"${local.arn_prefix}:s3:::prod-${var.region}-starport-layer-bucket/*\", \"${local.arn_prefix}:s3:::al2023-repos-${var.region}-de612dc2/*\"] }] })\n}",
+        "sha256_at_inspection": "245073d06aac72e825494ef35a0db762e347162ea28bf3ae964528da04677873",
+        "href": "evidence/aws-terraform-project-context.md#source-q08"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonECR/latest/userguide/vpc-endpoints.html"
+    },
+    {
+      "id": "Q09",
+      "kind": "question",
+      "title": "How do DNS, a certificate and ALB routing fit together?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/50-dns-route53-acm-and-tls.md",
+        "generated/51-alb-target-groups-and-health-checks.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/ingress.tf",
+        "symbol": "resource \"aws_lb_listener\" \"https\"",
+        "excerpt": "}\nresource \"aws_lb_listener\" \"https\" {\n  count             = local.https_configured ? 1 : 0\n  load_balancer_arn = aws_lb.dev.arn\n  port              = 443\n  protocol          = \"HTTPS\"\n  ssl_policy        = \"ELBSecurityPolicy-TLS13-1-2-2021-06\"\n  certificate_arn   = var.certificate_arn\n  lifecycle {\n    precondition {",
+        "sha256_at_inspection": "52ad5a60b8213f09415abfbfadad83cc9a74b81df6fe8d04f1e41992cf8d3d23",
+        "href": "evidence/aws-terraform-project-context.md#source-q09"
+      },
+      "official_reference": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html"
+    },
+    {
+      "id": "Q10",
+      "kind": "question",
+      "title": "What do EC2, ECS and Fargate manage?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/25-aws-ec2-ebs-and-bootstrap.md",
+        "generated/53-ecs-fargate-tasks-and-services.md",
+        "generated/56-ec2-autoscaling-and-eks-comparison.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/compute.tf",
+        "symbol": "requires_compatibilities = [\"FARGATE\"]",
+        "excerpt": "  network_mode             = \"awsvpc\"\n  requires_compatibilities = [\"FARGATE\"]\n  cpu                      = \"256\"\n  memory                   = \"512\"\n  execution_role_arn       = aws_iam_role.execution[each.key].arn\n  task_role_arn            = aws_iam_role.task[each.key].arn\n  runtime_platform {\n    cpu_architecture        = \"X86_64\"\n    operating_system_family = \"LINUX\"\n  }",
+        "sha256_at_inspection": "5a3c8e35c1077e7e00753cc264874de2a42cfa6dd87bdb5bfd12ceb34ce2e8d2",
+        "href": "evidence/aws-terraform-project-context.md#source-q10"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html"
+    },
+    {
+      "id": "Q11",
+      "kind": "question",
+      "title": "Why deploy an image digest and check its architecture?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/26-aws-docker-and-ecr.md",
+        "generated/53-ecs-fargate-tasks-and-services.md",
+        "generated/40-aws-release-pipeline-and-oidc.md"
+      ],
+      "source": {
+        "path": "scripts/aws-ecs-publish-local.mjs",
+        "symbol": "'--platform', 'linux/amd64'",
+        "excerpt": "      cleanSource(sha);\n      execute('docker', ['buildx', 'build', '--platform', 'linux/amd64', '--label', `org.opencontainers.image.revision=${sha}`, '--push', '--tag', `${repo}:${sha}`, '--metadata-file', join(evidence, `${app}-build.json`), join(source, app)]);\n      digest = getDigest();\n    }\n    requireThat(/^sha256:[a-f0-9]{64}$/.test(digest || ''), 'ECR did not return a valid immutable image digest');\n    const image = `${repo}@${digest}`;\n    execute('docker', ['pull', '--platform', 'linux/amd64', image]);\n    const inspection = json('docker', ['image', 'inspect', image]);\n    await saved(`${app}-image.json`, inspection);\n    requireThat(inspection.length === 1 && inspection[0].Architecture === 'amd64' && inspection[0].Os === 'linux' && inspection[0].Config?.Labels?.['org.opencontainers.image.revision'] === sha, 'Published image architecture/source label does not match the verified source');",
+        "sha256_at_inspection": "93323c162fd871b1e030d19a476eee663964b5ab32ccd47d0723d420991441f1",
+        "href": "evidence/aws-terraform-project-context.md#source-q11"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_cannot_pull_image.html"
+    },
+    {
+      "id": "Q12",
+      "kind": "question",
+      "title": "Can four services use one RDS server without sharing their data?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/07-postgresql-and-transactions.md",
+        "generated/28-aws-data-and-messaging-decisions.md",
+        "generated/57-rds-postgresql-backups-and-failover.md"
+      ],
+      "source": {
+        "path": "backend/src/operations/database-bootstrap.ts",
+        "symbol": "export async function bootstrapDatabases",
+        "excerpt": "const literal = (value: string) => `'${value.replaceAll(\"'\", \"''\")}'`;\nexport async function bootstrapDatabases(client?: Client): Promise<void> {\n  // Standalone one-shot task only. Normal capabilities never receive administrator credentials.\n  const options = databaseOptions();\n  if (!options.ssl) throw new Error('Database bootstrap requires verified TLS');\n  const passwords = Object.fromEntries(\n    SERVICES.map((service) => [service, required(`${service.toUpperCase()}_DB_PASSWORD`)]),\n  );\n  for (const password of Object.values(passwords)) {\n    if (password.length < 32 || password.includes('\\0'))",
+        "sha256_at_inspection": "044d5978d1e9fc6e6553e5971f9c509d6a94c1ff6bf57f1ffbbe87e293cb7fe2",
+        "href": "evidence/aws-terraform-project-context.md#source-q12"
+      },
+      "official_reference": "https://www.postgresql.org/docs/17/manage-ag-createdb.html"
+    },
+    {
+      "id": "Q13",
+      "kind": "question",
+      "title": "Does encrypted storage mean connections and passwords are safe?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/27-aws-s3-artifacts-and-secrets.md",
+        "generated/57-rds-postgresql-backups-and-failover.md",
+        "generated/63-kms-secrets-and-rotation.md",
+        "generated/74-terraform-sensitive-and-ephemeral-values.md"
+      ],
+      "source": {
+        "path": "backend/src/common/connections.ts",
+        "symbol": "export function databaseOptions",
+        "excerpt": "}\nexport function databaseOptions(): PoolConfig {\n  const sslEnabled = enabled('DB_SSL');\n  let connection: PoolConfig;\n  if (process.env.DB_URL) {\n    const url = new URL(process.env.DB_URL);\n    if (!['postgres:', 'postgresql:'].includes(url.protocol))\n      throw new Error('DB_URL must be PostgreSQL');\n    // pg connection-string ssl parameters override the explicit TLS object.\n    if ([...url.searchParams.keys()].some((key) => key.toLowerCase().startsWith('ssl')))",
+        "sha256_at_inspection": "00d0ac41cb814d758ca49ed9d0ca67df6c1caf84bab90ddd02eae1274d0ec4cf",
+        "href": "evidence/aws-terraform-project-context.md#source-q13"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL.Concepts.General.SSL.html"
+    },
+    {
+      "id": "Q14",
+      "kind": "question",
+      "title": "Is this managed Kafka, and can events arrive twice?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/09-inquiries-idempotency-and-outbox.md",
+        "generated/10-kafka-inbox-and-notifications.md",
+        "generated/28-aws-data-and-messaging-decisions.md",
+        "generated/59-msk-kafka-security-and-operations.md"
+      ],
+      "source": {
+        "path": "backend/src/common/messaging.ts",
+        "symbol": "export class OutboxPublisher",
+        "excerpt": "@Injectable()\nexport class OutboxPublisher implements OnApplicationBootstrap, OnModuleDestroy {\n  private readonly logger = new Logger('OutboxPublisher');\n  private producer?: Producer;\n  private stopping = false;\n  constructor(\n    private readonly db: Database,\n    private readonly health: WorkerHealth,\n  ) {}\n  onApplicationBootstrap(): void {",
+        "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237",
+        "href": "evidence/aws-terraform-project-context.md#source-q14"
+      },
+      "official_reference": "https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html",
+      "absent_feature_example": {
+        "explanation": "MSK is absent. Read the official create/produce/consume/monitor/cleanup tutorial as an external example; do not run its paid steps for this questionnaire.",
+        "url": "https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html"
+      }
+    },
+    {
+      "id": "Q15",
+      "kind": "question",
+      "title": "When do I choose S3 versus EBS?",
+      "priority": "next",
+      "scope": "Current source",
+      "lessons": [
+        "generated/25-aws-ec2-ebs-and-bootstrap.md",
+        "generated/27-aws-s3-artifacts-and-secrets.md",
+        "generated/62-s3-ebs-efs-storage-and-recovery.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/compute.tf",
+        "symbol": "delete_on_termination = true",
+        "excerpt": "    encrypted             = true\n    delete_on_termination = true\n    tags                  = { ExpiresAt = var.expires_at }\n  }\n  user_data = templatefile(\"${path.module}/kafka-user-data.sh.tftpl\", {\n    aws_region        = var.region\n    broker_secret_arn = aws_secretsmanager_secret.runtime[\"broker\"].arn\n    broker_dns        = \"kafka.${local.namespace}\"\n    kafka_image       = var.kafka_image\n    log_group         = aws_cloudwatch_log_group.broker.name",
+        "sha256_at_inspection": "5a3c8e35c1077e7e00753cc264874de2a42cfa6dd87bdb5bfd12ceb34ce2e8d2",
+        "href": "evidence/aws-terraform-project-context.md#source-q15"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+    },
+    {
+      "id": "Q16",
+      "kind": "question",
+      "title": "What do live, serve and ready health checks prove?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/29-aws-observability-and-incidents.md",
+        "generated/51-alb-target-groups-and-health-checks.md",
+        "generated/53-ecs-fargate-tasks-and-services.md",
+        "generated/65-cloudwatch-agent-logs-metrics-and-alarms.md"
+      ],
+      "source": {
+        "path": "backend/src/common/health.ts",
+        "symbol": "@Get('health/serve')",
+        "excerpt": "  // Routing readiness preserves durable inquiry writes while Kafka retries asynchronously.\n  @Get('health/serve') async serving() {\n    try {\n      await this.db.query('SELECT 1');\n    } catch {\n      throw new ServiceUnavailableException('Database dependency unavailable');\n    }\n    return { status: 'UP', service: serviceName(), database: 'UP' };\n  }\n  @Get(['health/ready', 'health', 'actuator/health', 'actuator/health/readiness']) async ready() {",
+        "sha256_at_inspection": "2941f0c699974fd0f6e27c82200cd617693eae335afdd4710066eb3fadf4c5b8",
+        "href": "evidence/aws-terraform-project-context.md#source-q16"
+      },
+      "official_reference": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-troubleshooting.html"
+    },
+    {
+      "id": "Q17",
+      "kind": "question",
+      "title": "Do logs, alarms and backups prove recoverability?",
+      "priority": "next",
+      "scope": "Dated execution: 2026-10-30",
+      "lessons": [
+        "generated/29-aws-observability-and-incidents.md",
+        "generated/65-cloudwatch-agent-logs-metrics-and-alarms.md",
+        "generated/66-cloudtrail-config-and-audit-evidence.md",
+        "generated/67-otel-tracing-slos-and-incidents.md",
+        "generated/68-disaster-recovery-and-resilience-testing.md"
+      ],
+      "source": {
+        "path": "docs/aws-micro-completion-execution-2026-10-30.md",
+        "symbol": "The marketplace application is not activated",
+        "excerpt": "\n**The marketplace application is not activated:** no ECS services or running/pending tasks. Database SQL/TLS client testing, schema bootstrap, recovery/restore and marketplace acceptance are separate runtime gates. The alarms have no notification destination or delivery proof; current alarm states are {'INSUFFICIENT_DATA': 7}. Alarm existence alone is not a health/notification success claim. Exact-source hosted release verification and successful amd64 image builds/scans/publication are still required. The earlier Docker Hub metadata stall and missing hosted SonarCloud configuration remain accurately recorded; no gates were waived.\n\nThe shutdown deadline remains **today, October 30, 2026, 9:51:25 PM EDT** (`2026-10-31T01:51:25.219221Z`). Original start is unchanged. **Begin operator-assisted cleanup review by 7:51 PM EDT.** There is no automatic cleanup or reminder. Real current protection-transition and destroy artifacts need their own approval; state and the existing certificate must be preserved. This apply did not authorize or perform cleanup.\n\n## Commands and actual outcomes\n\nWorking directory: `/Users/robertovalencia/Documents/Business/linked-in-node-and-aws/infra/aws-ecs-dev`. Profile `marketplace-dev`, Ohio `us-east-2`; conflicting credential and Terraform overrides cleared. All raw state, plan/API receipts and diagnostics remain owner-only under ignored `work/`.\n\n| Command | Purpose | Actual exit |",
+        "sha256_at_inspection": "25153505affa28065857062fcc7c40359bc9d7700e50ad05543a6b69c5c7a6df",
+        "href": "evidence/aws-terraform-project-context.md#source-q17",
+        "archived_file": "evidence/questionnaire-records/aws-micro-completion-execution-2026-10-30.md"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html"
+    },
+    {
+      "id": "Q18",
+      "kind": "question",
+      "title": "Does stopping compute finish teardown and stop every charge?",
+      "priority": "start now",
+      "scope": "Dated execution: 2026-10-31",
+      "lessons": [
+        "generated/30-aws-costs-and-cleanup.md",
+        "generated/62-s3-ebs-efs-storage-and-recovery.md",
+        "generated/69-cloud-cost-allocation-and-optimization.md"
+      ],
+      "source": {
+        "path": "docs/aws-reversible-compute-stop-2026-10-31.md",
+        "symbol": "This is not full teardown",
+        "excerpt": "\n**This is not full teardown or zero ongoing cost.** ALB, NAT gateway/EIP, EBS and RDS storage/backups, secrets, logs/S3/discovery and retained state remain allocated and may incur charges. Only the two compute operating states changed. Historical AWS billing/metric data may lag.\n\nAWS automatically restarts RDS after seven consecutive stopped days. AWS currently reports an automatic restart at **November 07, 2026, 07:22 AM EST**; UTC value: `2026-11-07T12:22:07.316000+00:00`. [AWS documents the retained storage charges and restart behavior](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html). No new scheduler, reminder or cleanup controller was created.\n\nThe previously approved cleanup-transition settings remain in place: RDS deletion protection is off, future snapshot/backup discard flags are set, operations force_destroy is enabled and six runtime-secret recovery windows are0. This reversible stop does not execute any of those deletion settings. The earlier broad destroy remains blocked by automatic approval review; it was not retried or split into delete batches, and no alternate execution route was used.\n\n## Actual commands\n\nWorking directory: `/Users/robertovalencia/Documents/Business/linked-in-node-and-aws`. Runtime profile marketplace-dev, Ohio/us-east-2; conflicting credential/Terraform overrides cleared by the established helper. Raw API responses/approval/steps remain owner-only under ignored `work/aws-reversible-compute-stop-2026-10-31/`.",
+        "sha256_at_inspection": "ac37677f9448b1d5737b19d8a88c41e041aa1d799405d1ca8b879fb48ab07625",
+        "href": "evidence/aws-terraform-project-context.md#source-q18",
+        "archived_file": "evidence/questionnaire-records/aws-reversible-compute-stop-2026-10-31.md"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html"
+    },
+    {
+      "id": "Q19",
+      "kind": "question",
+      "title": "What are HCL blocks and Terraform dependencies?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/32-terraform-hcl-and-first-local-lab.md",
+        "generated/35-terraform-graph-loops-and-modules.md",
+        "generated/70-terraform-expressions-and-type-system.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/network.tf",
+        "symbol": "depends_on        = [aws_internet_gateway.dev]",
+        "excerpt": "  subnet_id         = aws_subnet.public[0].id\n  depends_on        = [aws_internet_gateway.dev]\n  tags              = { Name = \"${local.name}-zonal-nat\" }\n}\nresource \"aws_route_table\" \"private_active\" {\n  vpc_id = aws_vpc.dev.id\n  route {\n    cidr_block     = \"0.0.0.0/0\"\n    nat_gateway_id = aws_nat_gateway.dev.id\n  }",
+        "sha256_at_inspection": "245073d06aac72e825494ef35a0db762e347162ea28bf3ae964528da04677873",
+        "href": "evidence/aws-terraform-project-context.md#source-q19"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/language/syntax/configuration"
+    },
+    {
+      "id": "Q20",
+      "kind": "question",
+      "title": "What do init, provider constraints and the lockfile do?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/33-terraform-providers-versions-and-init.md",
+        "generated/72-terraform-provider-aliases-and-environments.md",
+        "generated/75-terraform-import-moves-and-provider-upgrades.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/versions.tf",
+        "symbol": "required_providers",
+        "excerpt": "  required_version = \">= 1.10, < 2.0\"\n  required_providers {\n    aws = { source = \"hashicorp/aws\", version = \"~> 6.0\" }\n  }\n  backend \"s3\" {}\n}\nprovider \"aws\" {\n  region = var.region\n  default_tags {\n    tags = { Project = var.project, Environment = \"ecs-dev\", ManagedBy = \"Terraform\", Owner = var.owner, ExpiresAt = var.expires_at }",
+        "sha256_at_inspection": "7e17ae4bc5f302ec96a74c7f0427aba6e91c3299033d3789f30917a5fc61ea51",
+        "href": "evidence/aws-terraform-project-context.md#source-q20"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/tutorials/configuration-language/configure-providers",
+      "absent_feature_example": {
+        "explanation": "Multi-region provider aliases are absent in this application root. Use the official provider-configuration tutorial for the multiple-provider example before designing another environment.",
+        "url": "https://developer.hashicorp.com/terraform/tutorials/configuration-language/configure-providers"
+      }
+    },
+    {
+      "id": "Q21",
+      "kind": "question",
+      "title": "How do variables, locals, outputs and null differ?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/34-terraform-inputs-locals-and-outputs.md",
+        "generated/70-terraform-expressions-and-type-system.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/compute.tf",
+        "symbol": "active_services =",
+        "excerpt": "locals {\n  active_services = var.image_digests == null || !local.https_configured ? {} : local.services\n  app_containers = { for service, port in local.active_services : service => {\n    name                   = service\n    image                  = \"${aws_ecr_repository.app[service == \"frontend\" ? \"frontend\" : \"backend\"].repository_url}@${service == \"frontend\" ? var.image_digests.frontend : var.image_digests.backend}\"\n    essential              = true\n    readonlyRootFilesystem = service != \"frontend\"\n    user                   = service == \"frontend\" ? \"101\" : \"1000\"\n    stopTimeout            = 60\n    linuxParameters        = { initProcessEnabled = true, capabilities = { drop = [\"ALL\"] } }",
+        "sha256_at_inspection": "5a3c8e35c1077e7e00753cc264874de2a42cfa6dd87bdb5bfd12ceb34ce2e8d2",
+        "href": "evidence/aws-terraform-project-context.md#source-q21"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/language/values/variables"
+    },
+    {
+      "id": "Q22",
+      "kind": "question",
+      "title": "Why use separate roots and stable for_each keys?",
+      "priority": "next",
+      "scope": "Current source",
+      "lessons": [
+        "generated/35-terraform-graph-loops-and-modules.md",
+        "generated/71-terraform-modules-and-contracts.md",
+        "generated/72-terraform-provider-aliases-and-environments.md",
+        "generated/73-terraform-remote-state-and-access-control.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/network.tf",
+        "symbol": "services         =",
+        "excerpt": "  capabilities     = { identity = 8181, catalog = 8182, inquiries = 8183, notifications = 8184 }\n  services         = merge(local.capabilities, { frontend = 8180 })\n  brokers_clients  = toset([\"inquiries\", \"notifications\"])\n  secret_names     = toset(concat(keys(local.capabilities), [\"shared\", \"broker\"]))\n  arn_prefix       = \"arn:${data.aws_partition.current.partition}\"\n}\nresource \"aws_vpc\" \"dev\" {\n  cidr_block           = \"10.85.0.0/16\"\n  enable_dns_hostnames = true\n  enable_dns_support   = true",
+        "sha256_at_inspection": "245073d06aac72e825494ef35a0db762e347162ea28bf3ae964528da04677873",
+        "href": "evidence/aws-terraform-project-context.md#source-q22"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/tutorials/modules/module-use"
+    },
+    {
+      "id": "Q23",
+      "kind": "question",
+      "title": "What is state, and why separate the backend from the provider?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/36-terraform-state-locking-and-bootstrap.md",
+        "generated/73-terraform-remote-state-and-access-control.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/backend.hcl.example",
+        "symbol": "key =",
+        "excerpt": "bucket = \"REPLACE_WITH_APPROVED_PRIVATE_STATE_BUCKET\"\nkey = \"linked-in-node/ecs-dev/terraform.tfstate\"\nregion = \"us-east-2\"\nencrypt = true\nuse_lockfile = true",
+        "sha256_at_inspection": "3fa72f7b81bf2e7deb3710625587c5f978f2c7cc5e5f122dd97a77ae95917a7c",
+        "href": "evidence/aws-terraform-project-context.md#source-q23"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/language/backend/s3"
+    },
+    {
+      "id": "Q24",
+      "kind": "question",
+      "title": "Why is a state lock useful?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/36-terraform-state-locking-and-bootstrap.md",
+        "generated/73-terraform-remote-state-and-access-control.md",
+        "generated/78-terraform-drift-recovery-and-state-surgery.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/backend.hcl.example",
+        "symbol": "use_lockfile = true",
+        "excerpt": "encrypt = true\nuse_lockfile = true",
+        "sha256_at_inspection": "3fa72f7b81bf2e7deb3710625587c5f978f2c7cc5e5f122dd97a77ae95917a7c",
+        "href": "evidence/aws-terraform-project-context.md#source-q24"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/language/state/locking"
+    },
+    {
+      "id": "Q25",
+      "kind": "question",
+      "title": "What exactly does saved-plan approval approve?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/37-terraform-plan-apply-and-drift.md",
+        "generated/40-aws-release-pipeline-and-oidc.md",
+        "generated/77-terraform-team-ci-and-approval-workflows.md"
+      ],
+      "source": {
+        "path": "scripts/aws-ecs-review-plan.py",
+        "symbol": "Saved plan source differs:",
+        "excerpt": "        for name, path in expected.items():\n            assert saved.read(name) == path.read_bytes(), f'Saved plan source differs: {path.name}'\n        assert saved.read('.terraform.lock.hcl') == (ROOT/'infra/aws-ecs-dev/.terraform.lock.hcl').read_bytes(), 'Saved provider lock differs'\n        saved_tf = {n for n in saved.namelist() if n.startswith('tfconfig/m-/') and n.endswith('.tf')}\n        if s3_backend_context is None:\n            assert saved_tf == set(expected) | {'tfconfig/m-/backend_override.tf'}, 'Unexpected saved Terraform configuration'\n            assert ''.join(saved.read('tfconfig/m-/backend_override.tf').decode().split()) == 'terraform{backend\"local\"{}}', 'Preview must use local backend only'\n        else:\n            assert len(saved.namelist()) == len(set(saved.namelist())), 'Duplicate saved ZIP members are forbidden'\n            saved_config = {name for name in saved.namelist() if name.startswith('tfconfig/')}",
+        "sha256_at_inspection": "f2e29ce7dc6e053774f758c0cb6944ac8e8129aada4fea3b2e454a8dccf92518",
+        "href": "evidence/aws-terraform-project-context.md#source-q25"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/cli/commands/plan"
+    },
+    {
+      "id": "Q26",
+      "kind": "question",
+      "title": "What should I do after drift or a partially failed apply?",
+      "priority": "next",
+      "scope": "Dated execution: 2026-10-30",
+      "lessons": [
+        "generated/37-terraform-plan-apply-and-drift.md",
+        "generated/78-terraform-drift-recovery-and-state-surgery.md",
+        "generated/80-staged-modernization-and-traceability.md"
+      ],
+      "source": {
+        "path": "docs/aws-micro-completion-execution-2026-10-30.md",
+        "symbol": "All 104 existing resource identities are preserved",
+        "excerpt": "\nThe human-approved plan `cb438bc065c4` **completed successfully**, Terraform exit **0**, with **8 creates**. All 104 existing resource identities are preserved. Actual protected application state now contains **112 managed resources, serial 8, no taints**. A fresh full Terraform plan reports **no changes**.\n\nLive read-back verifies an **available `db.t4g.micro` PostgreSQL instance**, private access, encrypted storage, **one-day automated backup retention**, deletion protection, active RDS-managed master-secret metadata and `rds.force_ssl=1`. No secret values were retrieved. All **seven alarms** match their approved thresholds, dimensions and evaluation settings. The broker disk's actual expiry tag still matches the approved deadline. The account remains **Free/ACTIVE**.\n\nThe prior approved repair's ALB, certificate verification, correct-host empty-target503/wrong-host403, logging test and actual access-log delivery, broker registration/private DNS and explicit custom-health controls remain preserved. They were verified in the preceding execution; the current full no-change plan and 104 identity checks detect unintended changes.\n\n**The marketplace application is not activated:** no ECS services or running/pending tasks. Database SQL/TLS client testing, schema bootstrap, recovery/restore and marketplace acceptance are separate runtime gates. The alarms have no notification destination or delivery proof; current alarm states are {'INSUFFICIENT_DATA': 7}. Alarm existence alone is not a health/notification success claim. Exact-source hosted release verification and successful amd64 image builds/scans/publication are still required. The earlier Docker Hub metadata stall and missing hosted SonarCloud configuration remain accurately recorded; no gates were waived.\n\nThe shutdown deadline remains **today, October 30, 2026, 9:51:25 PM EDT** (`2026-10-31T01:51:25.219221Z`). Original start is unchanged. **Begin operator-assisted cleanup review by 7:51 PM EDT.** There is no automatic cleanup or reminder. Real current protection-transition and destroy artifacts need their own approval; state and the existing certificate must be preserved. This apply did not authorize or perform cleanup.",
+        "sha256_at_inspection": "25153505affa28065857062fcc7c40359bc9d7700e50ad05543a6b69c5c7a6df",
+        "href": "evidence/aws-terraform-project-context.md#source-q26",
+        "archived_file": "evidence/questionnaire-records/aws-micro-completion-execution-2026-10-30.md"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/cli/commands/apply"
+    },
+    {
+      "id": "Q27",
+      "kind": "question",
+      "title": "How do replacement, import and moved addresses differ?",
+      "priority": "next",
+      "scope": "Local/mock check definition; not a new execution",
+      "lessons": [
+        "generated/38-terraform-lifecycle-import-and-refactoring.md",
+        "generated/75-terraform-import-moves-and-provider-upgrades.md",
+        "generated/82-terraform-advanced-local-lab.md"
+      ],
+      "source": {
+        "path": "docs/nodejs-aws-study-path/labs/terraform-advanced/run.py",
+        "symbol": "child.write_text(",
+        "excerpt": "        child = root / 'modules' / 'service' / 'main.tf'\n        child.write_text(child.read_text().replace('\"terraform_data\" \"record\"', '\"terraform_data\" \"entry\"').replace('terraform_data.record.', 'terraform_data.entry.') + '\\nmoved {\\n  from = terraform_data.record\\n  to   = terraform_data.entry\\n}\\n')\n        tf('fmt', '-recursive')\n        tf('validate', '-no-color')\n        tf('plan', '-input=false', '-no-color', '-detailed-exitcode', '-out=move.tfplan', expected=2)\n        moved = tf('show', '-json', 'move.tfplan', capture_json=True)\n        require(len(moved['resource_changes']) == 3 and all(c['change']['actions'] == ['no-op'] and c.get('previous_address', '').endswith('.terraform_data.record') for c in moved['resource_changes']), 'child moved block maps all three instances without replacement')\n        tf('apply', '-input=false', '-no-color', 'move.tfplan')\n        moved_outputs = tf('output', '-json', capture_json=True)\n        require(moved_outputs['identities']['value'] == after['identities']['value'], 'every ID survives the child-module address migration')",
+        "sha256_at_inspection": "31f448c8cf7c0ec389f9b17ec38b3b37532c412022d41b2e4c9dbb2c10bc71a7",
+        "href": "evidence/aws-terraform-project-context.md#source-q27"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/tutorials/state/state-import"
+    },
+    {
+      "id": "Q28",
+      "kind": "question",
+      "title": "Does sensitive=true keep a secret out of state?",
+      "priority": "start now",
+      "scope": "Current source",
+      "lessons": [
+        "generated/27-aws-s3-artifacts-and-secrets.md",
+        "generated/63-kms-secrets-and-rotation.md",
+        "generated/74-terraform-sensitive-and-ephemeral-values.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/data.tf",
+        "symbol": "manage_master_user_password     = true",
+        "excerpt": "  username                        = \"marketplace_admin\"\n  manage_master_user_password     = true\n  db_name                         = \"postgres\"\n  db_subnet_group_name            = aws_db_subnet_group.dev.name\n  parameter_group_name            = aws_db_parameter_group.dev.name\n  vpc_security_group_ids          = [aws_security_group.database.id]\n  availability_zone               = local.azs[0]\n  publicly_accessible             = false\n  multi_az                        = false\n  port                            = 5432",
+        "sha256_at_inspection": "283d1868e232dfb676e5264b1707b1f70a1b33f48c2ea054a1be88156a8b9e7f",
+        "href": "evidence/aws-terraform-project-context.md#source-q28"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/language/manage-sensitive-data"
+    },
+    {
+      "id": "Q29",
+      "kind": "question",
+      "title": "What do formatting, validation, mocks and runtime tests each establish?",
+      "priority": "start now",
+      "scope": "Local/mock check definition; not a new execution",
+      "lessons": [
+        "generated/39-terraform-validation-and-mocked-tests.md",
+        "generated/76-terraform-testing-and-policy-as-code.md",
+        "generated/77-terraform-team-ci-and-approval-workflows.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/tests/security.tftest.hcl",
+        "symbol": "run \"infrastructure_without_unpublished_images\"",
+        "excerpt": "}\nrun \"infrastructure_without_unpublished_images\" {\n  command = apply\n  assert {\n    condition     = length(aws_ecs_service.app) == 0 && length(aws_ecs_task_definition.app) == 0 && length(aws_ecs_task_definition.bootstrap) == 0\n    error_message = \"An infrastructure-only plan must not invent images or start application tasks.\"\n  }\n  assert {\n    condition     = length(aws_subnet.public) == 2 && length(aws_subnet.private) == 2 && aws_subnet.public[0].availability_zone != aws_subnet.public[1].availability_zone && aws_nat_gateway.dev.subnet_id == aws_subnet.public[0].id && aws_nat_gateway.dev.availability_mode == \"zonal\"\n    error_message = \"ALB requires two AZs; the selected lab uses exactly one zonal NAT in active AZ.\"",
+        "sha256_at_inspection": "ec9ff5a8889ee81068e46cb2e021a34abf7b1e828c6cc309ff933aa5472563c2",
+        "href": "evidence/aws-terraform-project-context.md#source-q29"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/language/tests/mocking"
+    },
+    {
+      "id": "Q30",
+      "kind": "question",
+      "title": "When would Lambda/API Gateway be an alternative?",
+      "priority": "extension",
+      "scope": "Current source",
+      "lessons": [
+        "generated/58-data-caching-and-dynamodb-design.md",
+        "generated/61-lambda-apigateway-and-serverless-design.md",
+        "generated/80-staged-modernization-and-traceability.md",
+        "generated/83-professional-cloud-capstone-and-question-bank.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/compute.tf",
+        "symbol": "resource \"aws_ecs_service\" \"app\"",
+        "excerpt": "}\nresource \"aws_ecs_service\" \"app\" {\n  for_each                           = local.active_services\n  name                               = each.key\n  cluster                            = aws_ecs_cluster.dev.id\n  task_definition                    = aws_ecs_task_definition.app[each.key].arn\n  desired_count                      = var.deploy_application ? 1 : 0\n  launch_type                        = \"FARGATE\"\n  platform_version                   = \"1.4.0\"\n  enable_execute_command             = false",
+        "sha256_at_inspection": "5a3c8e35c1077e7e00753cc264874de2a42cfa6dd87bdb5bfd12ceb34ce2e8d2",
+        "href": "evidence/aws-terraform-project-context.md#source-q30"
+      },
+      "official_reference": "https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway-tutorial.html",
+      "absent_feature_example": {
+        "explanation": "Lambda, API Gateway and DynamoDB are absent application features. Read the official worked tutorial and identify its resource/cleanup steps; cloud execution needs separate authorization.",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway-tutorial.html"
+      }
+    },
+    {
+      "id": "I01",
+      "kind": "incident",
+      "title": "ECS cannot pull an image or exits before starting",
+      "priority": "next",
+      "scope": "Current source; rehearsal scenario",
+      "lessons": [
+        "generated/26-aws-docker-and-ecr.md",
+        "generated/49-private-connectivity-nat-and-endpoints.md",
+        "generated/53-ecs-fargate-tasks-and-services.md",
+        "generated/54-ecs-networking-identity-and-secrets.md"
+      ],
+      "source": {
+        "path": "scripts/aws-ecs-publish-local.mjs",
+        "symbol": "'--platform', 'linux/amd64'",
+        "excerpt": "      cleanSource(sha);\n      execute('docker', ['buildx', 'build', '--platform', 'linux/amd64', '--label', `org.opencontainers.image.revision=${sha}`, '--push', '--tag', `${repo}:${sha}`, '--metadata-file', join(evidence, `${app}-build.json`), join(source, app)]);\n      digest = getDigest();\n    }\n    requireThat(/^sha256:[a-f0-9]{64}$/.test(digest || ''), 'ECR did not return a valid immutable image digest');\n    const image = `${repo}@${digest}`;\n    execute('docker', ['pull', '--platform', 'linux/amd64', image]);\n    const inspection = json('docker', ['image', 'inspect', image]);\n    await saved(`${app}-image.json`, inspection);\n    requireThat(inspection.length === 1 && inspection[0].Architecture === 'amd64' && inspection[0].Os === 'linux' && inspection[0].Config?.Labels?.['org.opencontainers.image.revision'] === sha, 'Published image architecture/source label does not match the verified source');",
+        "sha256_at_inspection": "93323c162fd871b1e030d19a476eee663964b5ab32ccd47d0723d420991441f1",
+        "href": "evidence/aws-terraform-project-context.md#source-i01"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_cannot_pull_image.html"
+    },
+    {
+      "id": "I02",
+      "kind": "incident",
+      "title": "Secret injection or an AWS action returns AccessDenied",
+      "priority": "next",
+      "scope": "Current source; rehearsal scenario",
+      "lessons": [
+        "generated/22-aws-iam-roles-and-policies.md",
+        "generated/46-iam-policy-evaluation-and-federation.md",
+        "generated/54-ecs-networking-identity-and-secrets.md",
+        "generated/63-kms-secrets-and-rotation.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/iam.tf",
+        "symbol": "resource \"aws_iam_role_policy\" \"execution\"",
+        "excerpt": "}\nresource \"aws_iam_role_policy\" \"execution\" {\n  for_each = local.execution_names\n  role     = aws_iam_role.execution[each.key].id\n  policy = jsonencode({ Version = \"2012-10-17\", Statement = concat([\n    { Sid = \"RegistryAuthentication\", Effect = \"Allow\", Action = [\"ecr:GetAuthorizationToken\"], Resource = \"*\" },\n    { Sid = \"ReadOwnedImage\", Effect = \"Allow\", Action = [\"ecr:BatchGetImage\", \"ecr:GetDownloadUrlForLayer\", \"ecr:BatchCheckLayerAvailability\"], Resource = aws_ecr_repository.app[each.key == \"frontend\" ? \"frontend\" : \"backend\"].arn },\n    { Sid = \"WriteOwnedLogs\", Effect = \"Allow\", Action = [\"logs:CreateLogStream\", \"logs:PutLogEvents\"], Resource = \"${aws_cloudwatch_log_group.task[each.key].arn}:*\" }\n  ], length(local.execution_secrets[each.key]) == 0 ? [] : [{ Sid = \"ReadOwnedConfiguration\", Effect = \"Allow\", Action = [\"secretsmanager:GetSecretValue\"], Resource = local.execution_secrets[each.key] }]) })\n}",
+        "sha256_at_inspection": "31d3823907c0c627f5d6d0c4af20c2d6bb7c4a7d552ee0182c704bb47babc704",
+        "href": "evidence/aws-terraform-project-context.md#source-i02"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html"
+    },
+    {
+      "id": "I03",
+      "kind": "incident",
+      "title": "ALB returns 503 or a backend appears unhealthy",
+      "priority": "next",
+      "scope": "Current source; rehearsal scenario",
+      "lessons": [
+        "generated/29-aws-observability-and-incidents.md",
+        "generated/51-alb-target-groups-and-health-checks.md",
+        "generated/53-ecs-fargate-tasks-and-services.md",
+        "generated/65-cloudwatch-agent-logs-metrics-and-alarms.md"
+      ],
+      "source": {
+        "path": "backend/src/common/health.ts",
+        "symbol": "@Get('health/serve')",
+        "excerpt": "  // Routing readiness preserves durable inquiry writes while Kafka retries asynchronously.\n  @Get('health/serve') async serving() {\n    try {\n      await this.db.query('SELECT 1');\n    } catch {\n      throw new ServiceUnavailableException('Database dependency unavailable');\n    }\n    return { status: 'UP', service: serviceName(), database: 'UP' };\n  }\n  @Get(['health/ready', 'health', 'actuator/health', 'actuator/health/readiness']) async ready() {",
+        "sha256_at_inspection": "2941f0c699974fd0f6e27c82200cd617693eae335afdd4710066eb3fadf4c5b8",
+        "href": "evidence/aws-terraform-project-context.md#source-i03"
+      },
+      "official_reference": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-troubleshooting.html"
+    },
+    {
+      "id": "I04",
+      "kind": "incident",
+      "title": "Private tasks or broker packages time out despite NAT",
+      "priority": "next",
+      "scope": "Current source; rehearsal scenario",
+      "lessons": [
+        "generated/23-aws-vpc-subnets-and-routing.md",
+        "generated/48-ingress-egress-security-groups-and-nacls.md",
+        "generated/49-private-connectivity-nat-and-endpoints.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/network.tf",
+        "symbol": "resource \"aws_vpc_endpoint\" \"s3\"",
+        "excerpt": "}\nresource \"aws_vpc_endpoint\" \"s3\" {\n  vpc_id            = aws_vpc.dev.id\n  service_name      = \"com.amazonaws.${var.region}.s3\"\n  vpc_endpoint_type = \"Gateway\"\n  route_table_ids   = [aws_route_table.private_active.id, aws_route_table.private_standby.id]\n  # ECR layers and AL2023 package repositories use regional AWS-owned S3 buckets.\n  # The gateway route also intercepts package downloads, so NAT cannot repair a denied endpoint policy.\n  policy = jsonencode({ Version = \"2012-10-17\", Statement = [{ Effect = \"Allow\", Principal = \"*\", Action = [\"s3:GetObject\"], Resource = [\"${local.arn_prefix}:s3:::prod-${var.region}-starport-layer-bucket/*\", \"${local.arn_prefix}:s3:::al2023-repos-${var.region}-de612dc2/*\"] }] })\n}",
+        "sha256_at_inspection": "245073d06aac72e825494ef35a0db762e347162ea28bf3ae964528da04677873",
+        "href": "evidence/aws-terraform-project-context.md#source-i04"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonECR/latest/userguide/vpc-endpoints.html"
+    },
+    {
+      "id": "I05",
+      "kind": "incident",
+      "title": "RDS connection fails with TLS, password or ownership errors",
+      "priority": "next",
+      "scope": "Current source; rehearsal scenario",
+      "lessons": [
+        "generated/07-postgresql-and-transactions.md",
+        "generated/54-ecs-networking-identity-and-secrets.md",
+        "generated/57-rds-postgresql-backups-and-failover.md",
+        "generated/63-kms-secrets-and-rotation.md"
+      ],
+      "source": {
+        "path": "backend/src/common/connections.ts",
+        "symbol": "export function databaseOptions",
+        "excerpt": "}\nexport function databaseOptions(): PoolConfig {\n  const sslEnabled = enabled('DB_SSL');\n  let connection: PoolConfig;\n  if (process.env.DB_URL) {\n    const url = new URL(process.env.DB_URL);\n    if (!['postgres:', 'postgresql:'].includes(url.protocol))\n      throw new Error('DB_URL must be PostgreSQL');\n    // pg connection-string ssl parameters override the explicit TLS object.\n    if ([...url.searchParams.keys()].some((key) => key.toLowerCase().startsWith('ssl')))",
+        "sha256_at_inspection": "00d0ac41cb814d758ca49ed9d0ca67df6c1caf84bab90ddd02eae1274d0ec4cf",
+        "href": "evidence/aws-terraform-project-context.md#source-i05"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL.Concepts.General.SSL.html"
+    },
+    {
+      "id": "I06",
+      "kind": "incident",
+      "title": "Kafka fails TLS, SCRAM authentication or topic authorization",
+      "priority": "next",
+      "scope": "Current source; rehearsal scenario",
+      "lessons": [
+        "generated/10-kafka-inbox-and-notifications.md",
+        "generated/28-aws-data-and-messaging-decisions.md",
+        "generated/59-msk-kafka-security-and-operations.md",
+        "generated/63-kms-secrets-and-rotation.md"
+      ],
+      "source": {
+        "path": "backend/src/common/connections.ts",
+        "symbol": "export function kafkaOptions",
+        "excerpt": "}\nexport function kafkaOptions(): KafkaConfig {\n  const sslEnabled = enabled('KAFKA_SSL');\n  const ca = process.env.KAFKA_SSL_CA;\n  const mechanism = process.env.KAFKA_SASL_MECHANISM;\n  if (ca && !sslEnabled) throw new Error('KAFKA_SSL_CA requires KAFKA_SSL=true');\n  if (mechanism && mechanism !== 'scram-sha-512')\n    throw new Error('KAFKA_SASL_MECHANISM must be scram-sha-512');\n  if ((mechanism || process.env.KAFKA_USERNAME || process.env.KAFKA_PASSWORD) && !sslEnabled)\n    throw new Error('Kafka credentials require verified TLS');",
+        "sha256_at_inspection": "00d0ac41cb814d758ca49ed9d0ca67df6c1caf84bab90ddd02eae1274d0ec4cf",
+        "href": "evidence/aws-terraform-project-context.md#source-i06"
+      },
+      "official_reference": "https://kafka.apache.org/40/security/authentication-using-sasl/"
+    },
+    {
+      "id": "I07",
+      "kind": "incident",
+      "title": "Certificate is pending or the application hostname fails",
+      "priority": "next",
+      "scope": "Current source; rehearsal scenario",
+      "lessons": [
+        "generated/50-dns-route53-acm-and-tls.md",
+        "generated/51-alb-target-groups-and-health-checks.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-certificate/main.tf",
+        "symbol": "resource \"aws_acm_certificate\" \"application\"",
+        "excerpt": "}\nresource \"aws_acm_certificate\" \"application\" {\n  domain_name       = var.application_hostname\n  validation_method = \"DNS\"\n  key_algorithm     = \"RSA_2048\"\n  options {\n    certificate_transparency_logging_preference = \"ENABLED\"\n    export                                      = \"DISABLED\"\n  }\n  lifecycle { create_before_destroy = true }",
+        "sha256_at_inspection": "26bebdbcb98c3c211c257fb8d5188a2413c5a209382db0ab0502ba50121a251c",
+        "href": "evidence/aws-terraform-project-context.md#source-i07"
+      },
+      "official_reference": "https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html"
+    },
+    {
+      "id": "I08",
+      "kind": "incident",
+      "title": "Inquiry saved, but notification is missing or replayed",
+      "priority": "start now",
+      "scope": "Current source; rehearsal scenario",
+      "lessons": [
+        "generated/09-inquiries-idempotency-and-outbox.md",
+        "generated/10-kafka-inbox-and-notifications.md",
+        "generated/29-aws-observability-and-incidents.md"
+      ],
+      "source": {
+        "path": "backend/src/common/messaging.ts",
+        "symbol": "export class OutboxPublisher",
+        "excerpt": "@Injectable()\nexport class OutboxPublisher implements OnApplicationBootstrap, OnModuleDestroy {\n  private readonly logger = new Logger('OutboxPublisher');\n  private producer?: Producer;\n  private stopping = false;\n  constructor(\n    private readonly db: Database,\n    private readonly health: WorkerHealth,\n  ) {}\n  onApplicationBootstrap(): void {",
+        "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237",
+        "href": "evidence/aws-terraform-project-context.md#source-i08"
+      },
+      "official_reference": "https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html"
+    },
+    {
+      "id": "I09",
+      "kind": "incident",
+      "title": "Terraform init cannot access the backend or acquire a lock",
+      "priority": "next",
+      "scope": "Current source; rehearsal scenario",
+      "lessons": [
+        "generated/33-terraform-providers-versions-and-init.md",
+        "generated/36-terraform-state-locking-and-bootstrap.md",
+        "generated/73-terraform-remote-state-and-access-control.md",
+        "generated/78-terraform-drift-recovery-and-state-surgery.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/backend.hcl.example",
+        "symbol": "use_lockfile = true",
+        "excerpt": "encrypt = true\nuse_lockfile = true",
+        "sha256_at_inspection": "3fa72f7b81bf2e7deb3710625587c5f978f2c7cc5e5f122dd97a77ae95917a7c",
+        "href": "evidence/aws-terraform-project-context.md#source-i09"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/language/backend/s3"
+    },
+    {
+      "id": "I10",
+      "kind": "incident",
+      "title": "Saved plan is stale, source changed, or apply partially failed",
+      "priority": "next",
+      "scope": "Dated execution: 2026-10-30; recovery rehearsal based on recorded partial failures",
+      "lessons": [
+        "generated/37-terraform-plan-apply-and-drift.md",
+        "generated/38-terraform-lifecycle-import-and-refactoring.md",
+        "generated/77-terraform-team-ci-and-approval-workflows.md",
+        "generated/78-terraform-drift-recovery-and-state-surgery.md"
+      ],
+      "source": {
+        "path": "docs/aws-micro-completion-execution-2026-10-30.md",
+        "symbol": "fresh full Terraform plan reports",
+        "excerpt": "\nThe human-approved plan `cb438bc065c4` **completed successfully**, Terraform exit **0**, with **8 creates**. All 104 existing resource identities are preserved. Actual protected application state now contains **112 managed resources, serial 8, no taints**. A fresh full Terraform plan reports **no changes**.\n\nLive read-back verifies an **available `db.t4g.micro` PostgreSQL instance**, private access, encrypted storage, **one-day automated backup retention**, deletion protection, active RDS-managed master-secret metadata and `rds.force_ssl=1`. No secret values were retrieved. All **seven alarms** match their approved thresholds, dimensions and evaluation settings. The broker disk's actual expiry tag still matches the approved deadline. The account remains **Free/ACTIVE**.\n\nThe prior approved repair's ALB, certificate verification, correct-host empty-target503/wrong-host403, logging test and actual access-log delivery, broker registration/private DNS and explicit custom-health controls remain preserved. They were verified in the preceding execution; the current full no-change plan and 104 identity checks detect unintended changes.\n\n**The marketplace application is not activated:** no ECS services or running/pending tasks. Database SQL/TLS client testing, schema bootstrap, recovery/restore and marketplace acceptance are separate runtime gates. The alarms have no notification destination or delivery proof; current alarm states are {'INSUFFICIENT_DATA': 7}. Alarm existence alone is not a health/notification success claim. Exact-source hosted release verification and successful amd64 image builds/scans/publication are still required. The earlier Docker Hub metadata stall and missing hosted SonarCloud configuration remain accurately recorded; no gates were waived.\n\nThe shutdown deadline remains **today, October 30, 2026, 9:51:25 PM EDT** (`2026-10-31T01:51:25.219221Z`). Original start is unchanged. **Begin operator-assisted cleanup review by 7:51 PM EDT.** There is no automatic cleanup or reminder. Real current protection-transition and destroy artifacts need their own approval; state and the existing certificate must be preserved. This apply did not authorize or perform cleanup.",
+        "sha256_at_inspection": "25153505affa28065857062fcc7c40359bc9d7700e50ad05543a6b69c5c7a6df",
+        "href": "evidence/aws-terraform-project-context.md#source-i10",
+        "archived_file": "evidence/questionnaire-records/aws-micro-completion-execution-2026-10-30.md"
+      },
+      "official_reference": "https://developer.hashicorp.com/terraform/tutorials/state/resource-drift"
+    },
+    {
+      "id": "I11",
+      "kind": "incident",
+      "title": "Rollout fails, or the old image cannot use the new schema",
+      "priority": "next",
+      "scope": "Current source; rehearsal scenario",
+      "lessons": [
+        "generated/40-aws-release-pipeline-and-oidc.md",
+        "generated/41-aws-ssm-deployment-and-rollback.md",
+        "generated/55-ecs-scaling-and-deployment-strategies.md",
+        "generated/57-rds-postgresql-backups-and-failover.md",
+        "generated/68-disaster-recovery-and-resilience-testing.md",
+        "generated/80-staged-modernization-and-traceability.md"
+      ],
+      "source": {
+        "path": "infra/aws-ecs-dev/compute.tf",
+        "symbol": "deployment_circuit_breaker",
+        "excerpt": "  health_check_grace_period_seconds  = each.key == \"frontend\" ? 60 : null\n  deployment_circuit_breaker {\n    enable   = true\n    rollback = true\n  }\n  network_configuration {\n    subnets          = [aws_subnet.private[0].id]\n    security_groups  = [aws_security_group.service[each.key].id]\n    assign_public_ip = false\n  }",
+        "sha256_at_inspection": "5a3c8e35c1077e7e00753cc264874de2a42cfa6dd87bdb5bfd12ceb34ce2e8d2",
+        "href": "evidence/aws-terraform-project-context.md#source-i11"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-circuit-breaker.html"
+    },
+    {
+      "id": "I12",
+      "kind": "incident",
+      "title": "Charges continue after EC2 and RDS were stopped",
+      "priority": "start now",
+      "scope": "Dated execution: 2026-10-31; retained-cost diagnosis rehearsal",
+      "lessons": [
+        "generated/30-aws-costs-and-cleanup.md",
+        "generated/62-s3-ebs-efs-storage-and-recovery.md",
+        "generated/69-cloud-cost-allocation-and-optimization.md",
+        "generated/78-terraform-drift-recovery-and-state-surgery.md",
+        "generated/80-staged-modernization-and-traceability.md"
+      ],
+      "source": {
+        "path": "docs/aws-reversible-compute-stop-2026-10-31.md",
+        "symbol": "previously approved cleanup-transition settings remain",
+        "excerpt": "\nThe previously approved cleanup-transition settings remain in place: RDS deletion protection is off, future snapshot/backup discard flags are set, operations force_destroy is enabled and six runtime-secret recovery windows are0. This reversible stop does not execute any of those deletion settings. The earlier broad destroy remains blocked by automatic approval review; it was not retried or split into delete batches, and no alternate execution route was used.\n\n## Actual commands\n\nWorking directory: `/Users/robertovalencia/Documents/Business/linked-in-node-and-aws`. Runtime profile marketplace-dev, Ohio/us-east-2; conflicting credential/Terraform overrides cleared by the established helper. Raw API responses/approval/steps remain owner-only under ignored `work/aws-reversible-compute-stop-2026-10-31/`.\n\n| Command | Actual exit |\n|---|---:|\n| `aws sts get-caller-identity --region us-east-2 --output json` | 0 |",
+        "sha256_at_inspection": "ac37677f9448b1d5737b19d8a88c41e041aa1d799405d1ca8b879fb48ab07625",
+        "href": "evidence/aws-terraform-project-context.md#source-i12",
+        "archived_file": "evidence/questionnaire-records/aws-reversible-compute-stop-2026-10-31.md"
+      },
+      "official_reference": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html"
+    }
+  ]
+}
