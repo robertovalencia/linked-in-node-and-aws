@@ -9,7 +9,7 @@ React/TypeScript, four NestJS services, PostgreSQL and Kafka run locally. Terraf
 Install Node.js 22+ and Docker Desktop/Compose v2, then:
 
 ```bash
-cd /Users/robertovalencia/Documents/Business/linked-in-node-and-aws
+cd /../Documents/Business/linked-in-node-and-aws
 npm run setup
 npm run up
 ```
