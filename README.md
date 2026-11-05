@@ -4,6 +4,8 @@ A [private GitHub interview portfolio](https://github.com/robertovalencia/linked
 
 React/TypeScript, four NestJS services, PostgreSQL and Kafka run locally. Terraform and GitHub Actions prepare an isolated AWS dev environment. The original project and credentials are preserved. This application is not affiliated with LinkedIn.
 
+**Interview preparation:** [Node.js/backend interview questionnaire and troubleshooting guide](docs/nodejs-aws-study-path/node-backend-questionnaire.md) — 137 questions and 24 incidents covering service setup, practical explanations and recovery checks.
+
 ## Run locally
 
 Install Node.js 22+ and Docker Desktop/Compose v2, then:
