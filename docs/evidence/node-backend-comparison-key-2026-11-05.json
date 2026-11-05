@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-05",
+  "revealed_after_blind_choices_were_recorded": true,
+  "reference": {
+    "url": "https://raw.githubusercontent.com/Devinterview-io/node-interview-questions/main/README.md",
+    "bytes": 34846,
+    "sha256": "82824158085cf0494915317043b1fc9423aa64a3affb2fdbca462554fbe9ea19",
+    "scope": "Public README fetched before drafting;15 expanded answers and advertised larger bank. No entire external article republished."
+  },
+  "key": [
+    {
+      "pair": 1,
+      "ours": "A",
+      "topic": "Event-driven listener execution"
+    },
+    {
+      "pair": 2,
+      "ours": "B",
+      "topic": "Non-blocking concurrency"
+    },
+    {
+      "pair": 3,
+      "ours": "A",
+      "topic": "Package manifest and reproducible installation"
+    },
+    {
+      "pair": 4,
+      "ours": "B",
+      "topic": "Buffer byte storage"
+    },
+    {
+      "pair": 5,
+      "ours": "A",
+      "topic": "Streams and data flow"
+    }
+  ],
+  "observed_blind_choices": [
+    "A",
+    "B",
+    "A",
+    "B",
+    "A"
+  ],
+  "ours_selected": 5,
+  "pairs": 5,
+  "limit": "Five condensed equivalent-topic comparisons,not a quantitative claim over every advertised question."
+}

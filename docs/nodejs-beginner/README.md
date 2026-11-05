@@ -32,3 +32,5 @@ Source excerpts are fragments, not standalone programs. Practice extensions are 
 - [Vocabulary glossary](05-glossary.md)
 
 The practical walkthroughs complement the technical notes. Learner labs remain instructions until you run and record them yourself.
+
+For interview rehearsal, use the [Node.js/backend questionnaire and troubleshooting guide](../nodejs-aws-study-path/node-backend-questionnaire.md), with source-linked answers and explicit recovery checks.

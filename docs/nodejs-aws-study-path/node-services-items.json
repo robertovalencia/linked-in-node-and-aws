@@ -1,0 +1,1606 @@
+[
+  {
+    "id": "NS01",
+    "kind": "question",
+    "title": "What do Nest decorators and modules do?",
+    "priority": "start now",
+    "answer": "Decorators attach information to classes and methods; Nest reads it to find routes and providers. The module registers which objects belong in this application. Here SERVICE selects one capability before Nest starts. Importing a class alone does not register it, and @Injectable does not itself open a database connection.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md"
+    ],
+    "source": {
+      "path": "backend/src/main.ts",
+      "symbol": "@Module({",
+      "excerpt": "  };\n  @Module({\n    controllers: [HealthController, controllers[service]],\n    providers: [Database, AuthGuard, WorkerHealth, ...providers[service]],\n  })\n",
+      "sha256_at_inspection": "b7ec3c2e7aa877c7e48f7a74e3350d373044ae6834760996db7d3b34b38bc988"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/fundamentals/custom-providers",
+      "https://docs.nestjs.com/providers"
+    ],
+    "concepts": [
+      "Decorators attach metadata",
+      "The dependency-injection container"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS02",
+    "kind": "question",
+    "title": "How does dependency injection supply a service?",
+    "priority": "start now",
+    "answer": "Dependency injection means Nest supplies required objects through a constructor. Database is registered as a provider, so CatalogService receives it. The default instance is shared inside one application context; another process has another instance. Interfaces disappear after compilation, so an interface needs a runtime injection token. private readonly stores the argument and prevents rebinding; the referenced pool remains mutable.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md"
+    ],
+    "source": {
+      "path": "backend/src/catalog/catalog.service.ts",
+      "symbol": "constructor(private readonly db: Database)",
+      "excerpt": "export class CatalogService implements OnApplicationBootstrap {\n  constructor(private readonly db: Database) {}\n  async onApplicationBootstrap(): Promise<void> {\n    if (process.env.SEED_DEMO !== 'true') return;\n    const providers: (Provider & { ownerEmail: string })[] = JSON.parse(\n",
+      "sha256_at_inspection": "f993491d6ec844e830c04a34822e6c70b625966b32ae9fda873679cbfb7cd531"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/providers",
+      "https://docs.nestjs.com/fundamentals/custom-providers"
+    ],
+    "concepts": [
+      "The dependency-injection container",
+      "Constructor parameter properties"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS03",
+    "kind": "question",
+    "title": "What belongs in a controller versus a service?",
+    "priority": "start now",
+    "answer": "A controller translates a Hypertext Transfer Protocol (HTTP) request into a service call: it reads route parameters, headers and input. A service performs the business decision and database work. Catalog declares /me before /:id so the named route is not swallowed by a dynamic identifier. Keep ownership checks in the execution path even if the page already hides a button.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md",
+      "generated/06-http-contracts-and-validation.md"
+    ],
+    "source": {
+      "path": "backend/src/catalog/catalog.controller.ts",
+      "symbol": "@Get('api/providers/me')",
+      "excerpt": "  }\n  @Get('api/providers/me') @UseGuards(AuthGuard) mine(@Req() request: AuthRequest) {\n    requireRole(request.actor, 'PROVIDER');\n    return this.catalog.mine(request.actor.email);\n  }\n",
+      "sha256_at_inspection": "8b36a72ed7b2b6cfe7484e8bcebe73582108f154f40cefe5e99d1dec9312e84c"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/controllers"
+    ],
+    "concepts": [
+      "controllers",
+      "route precedence",
+      "service separation"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS04",
+    "kind": "question",
+    "title": "When is asynchronous startup finished?",
+    "priority": "start now",
+    "answer": "Nest can await a Promise returned from an initialization hook. Database migrations complete in onModuleInit; Identity awaits a dummy password hash in onApplicationBootstrap. A detached background loop such as void this.run() does not delay startup until Kafka connects. Do not assume unrelated providers initialize in their array order; express required dependencies explicitly.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md",
+      "generated/10-kafka-inbox-and-notifications.md"
+    ],
+    "source": {
+      "path": "backend/src/identity/identity.service.ts",
+      "symbol": "async onApplicationBootstrap()",
+      "excerpt": "  constructor(private readonly db: Database) {}\n  async onApplicationBootstrap(): Promise<void> {\n    this.dummyHash = await hashPassword('dummy-password-never-used');\n    if (process.env.SEED_DEMO !== 'true') return;\n    const providers: { ownerEmail: string; name: string }[] = JSON.parse(\n",
+      "sha256_at_inspection": "523e20fee146d919f357a86e0dacb858f1e077249662225affcbb28a86846756"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/fundamentals/lifecycle-events"
+    ],
+    "concepts": [
+      "Lifecycle hooks and awaited setup",
+      "Timers, unref and detached promises"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS05",
+    "kind": "question",
+    "title": "Are Helmet, body parsing and validation interchangeable?",
+    "priority": "start now",
+    "answer": "No. Helmet adds security response headers. The JSON parser turns request bytes into a JavaScript value and rejects bodies beyond 128kb. Zod checks the resulting fields. JavaScript Object Notation (JSON) that parses successfully can still contain an invalid budget or unexpected fields. Here parsing is configured explicitly with Nest bodyParser disabled to avoid competing parser limits.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md",
+      "generated/06-http-contracts-and-validation.md"
+    ],
+    "source": {
+      "path": "backend/src/main.ts",
+      "symbol": "app.use(json({ limit: '128kb' }));",
+      "excerpt": "  app.use(helmet());\n  app.use(json({ limit: '128kb' }));\n  app.useGlobalFilters(new ErrorFilter());\n  app.enableShutdownHooks();\n  const port = Number(process.env.PORT ?? 8181 + SERVICES.indexOf(service));\n",
+      "sha256_at_inspection": "b7ec3c2e7aa877c7e48f7a74e3350d373044ae6834760996db7d3b34b38bc988"
+    },
+    "official_references": [
+      "https://helmet.js.org/",
+      "https://expressjs.com/en/api/"
+    ],
+    "concepts": [
+      "Middleware: Helmet and the JSON parser"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS06",
+    "kind": "question",
+    "title": "How do guards and exception filters differ?",
+    "priority": "start now",
+    "answer": "A guard allows or rejects entry to a route; AuthGuard verifies a token and attaches the actor. A filter turns thrown failures into HTTP responses. ErrorFilter maps schema failures to 400, preserves known HTTP statuses and hides unexpected 500 details. Passing a guard establishes an identity; the service must still check ownership of the requested row.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md",
+      "generated/08-identity-jwt-and-security.md"
+    ],
+    "source": {
+      "path": "backend/src/common/errors.ts",
+      "symbol": "error instanceof ZodError",
+      "excerpt": "    const status =\n      error instanceof ZodError\n        ? 400\n        : error instanceof HttpException\n          ? error.getStatus()\n",
+      "sha256_at_inspection": "2cfbad026cdde095f570ea7a2518f268a485e6e73a732a4bcf956d5f2bc99adb"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/guards",
+      "https://docs.nestjs.com/exception-filters"
+    ],
+    "concepts": [
+      "Guards and exception filters"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS07",
+    "kind": "question",
+    "title": "Does installing RxJS make these services reactive?",
+    "priority": "next",
+    "answer": "RxJS, Reactive Extensions for JavaScript, offers Observables: subscriptions can receive multiple values and can be cancelled. This backend installs RxJS for Nest but its application services use Promises and KafkaJS callbacks. It has no custom Observable pipeline. Describe the mechanism actually present before proposing reactive operators.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md"
+    ],
+    "source": {
+      "path": "backend/package.json",
+      "symbol": "\"rxjs\"",
+      "excerpt": "    \"reflect-metadata\": \"^0.2.2\",\n    \"rxjs\": \"^7.8.2\",\n    \"zod\": \"^4.1.0\"\n  },\n  \"devDependencies\": {\n",
+      "sha256_at_inspection": "b22b09f975bd55e53ffb60eca9ff9b031d310426e8a20dd072b7b298e55559da"
+    },
+    "official_references": [
+      "https://github.com/ReactiveX/rxjs/blob/master/apps/rxjs.dev/content/guide/observable.md"
+    ],
+    "concepts": [
+      "RxJS: installed versus used"
+    ],
+    "scope": "Absent implementation",
+    "worked_example_url": "https://github.com/ReactiveX/rxjs/blob/master/apps/rxjs.dev/content/guide/observable.md",
+    "worked_example": "In an isolated RxJS example, subscribe to the documented Observable that emits 1, 2 and 3 synchronously, then 4 after a delay and completes. Record the values in order and unsubscribe from a continuing source to stop future emissions. This is an extension, not a marketplace pipeline.",
+    "lesson_relation": "Lesson05 teaches that RxJS is installed without custom application Observable pipelines. The external subscription example is a worked extension, not an implemented marketplace feature."
+  },
+  {
+    "id": "NS08",
+    "kind": "question",
+    "title": "Why validate input when TypeScript already has types?",
+    "priority": "start now",
+    "answer": "TypeScript checks code before it runs; incoming requests have no trustworthy TypeScript type. Zod parse validates an unknown value at runtime, returns the accepted value or throws. Here an invalid inquiry budget becomes 400 before persistence. A type assertion such as body as CreateInquiry only tells the compiler to trust you; it does not inspect the request.",
+    "lessons": [
+      "generated/06-http-contracts-and-validation.md",
+      "generated/08-identity-jwt-and-security.md",
+      "generated/09-inquiries-idempotency-and-outbox.md"
+    ],
+    "source": {
+      "path": "backend/src/inquiries/inquiries.service.ts",
+      "symbol": "const input = inquirySchema.parse(body);",
+      "excerpt": "      );\n    const input = inquirySchema.parse(body);\n    const hash = fingerprint(input);\n    return this.db.transaction(async (client) => {\n      // The transaction-scoped lock serializes the same client/key across every replica.\n",
+      "sha256_at_inspection": "4e1752037f93eac22b8f2017299f218afd6b04f32cda4a002a45c2655ffe3c85"
+    },
+    "official_references": [
+      "https://zod.dev/basics"
+    ],
+    "concepts": [
+      "Zod parse: a runtime boundary",
+      "Zod validates before service use"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS09",
+    "kind": "question",
+    "title": "How do coercion, transforms and defaults affect query parameters?",
+    "priority": "start now",
+    "answer": "Query parameters arrive as text. Catalog converts maxRate to a bounded integer, transforms only the strings true and false into booleans, and defaults a missing sort to recommended. Boolean(\"false\") is true because nonempty text is truthy, so arbitrary Boolean coercion would be wrong. Check undefined explicitly so a supplied zero or false is not discarded.",
+    "lessons": [
+      "generated/06-http-contracts-and-validation.md"
+    ],
+    "source": {
+      "path": "backend/src/catalog/provider.schema.ts",
+      "symbol": ".enum(['true', 'false'])",
+      "excerpt": "    available: z\n      .enum(['true', 'false'])\n      .transform((v) => v === 'true')\n      .optional(),\n    sort: z.enum(['recommended', 'rate-asc', 'rating']).default('recommended'),\n",
+      "sha256_at_inspection": "c3cead76e4b957e722c8e9245bf4d0dd1c822990ed731dc82baf46060c222cdf"
+    },
+    "official_references": [
+      "https://zod.dev/api"
+    ],
+    "concepts": [
+      "Coercion, transforms and defaults"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS10",
+    "kind": "question",
+    "title": "What do strict schemas and inferred types guarantee?",
+    "priority": "start now",
+    "answer": "A strict object schema rejects unknown keys; each field separately decides whether it is required, optional or defaulted. Nested objects need their own strictness. z.infer derives a compile-time type from the schema but does not run validation. A valid Provider object still needs an ownership check before an update.",
+    "lessons": [
+      "generated/06-http-contracts-and-validation.md"
+    ],
+    "source": {
+      "path": "backend/src/catalog/provider.schema.ts",
+      "symbol": "export type Provider = z.infer<typeof providerSchema>;",
+      "excerpt": "  .strict();\nexport type Provider = z.infer<typeof providerSchema>;\nexport const searchSchema = z\n  .object({\n    q: z.string().max(200).optional(),\n",
+      "sha256_at_inspection": "c3cead76e4b957e722c8e9245bf4d0dd1c822990ed731dc82baf46060c222cdf"
+    },
+    "official_references": [
+      "https://zod.dev/api"
+    ],
+    "concepts": [
+      "Strict objects and inferred types"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS11",
+    "kind": "question",
+    "title": "How are SQL injection and wildcard surprises prevented?",
+    "priority": "start now",
+    "answer": "Structured Query Language (SQL) values travel separately from query text as $1, $2 and later parameters. Catalog’s add closure captures the values array and supplies the next position. Parameters cannot stand for column names or sort expressions; use fixed allowlisted branches. Escape percent and underscore separately when search should treat them literally: parameters alone do not remove LIKE wildcard meaning.",
+    "lessons": [
+      "generated/06-http-contracts-and-validation.md",
+      "generated/07-postgresql-and-transactions.md"
+    ],
+    "source": {
+      "path": "backend/src/catalog/catalog.service.ts",
+      "symbol": "const add = (value: unknown) => {",
+      "excerpt": "    const where: string[] = [];\n    const add = (value: unknown) => {\n      values.push(value);\n      return `$${values.length}`;\n    };\n",
+      "sha256_at_inspection": "f993491d6ec844e830c04a34822e6c70b625966b32ae9fda873679cbfb7cd531"
+    },
+    "official_references": [
+      "https://node-postgres.com/features/queries",
+      "https://www.postgresql.org/docs/current/functions-matching.html"
+    ],
+    "concepts": [
+      "Closures build positional SQL parameters",
+      "Escaping LIKE patterns versus SQL parameters"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS12",
+    "kind": "question",
+    "title": "How does PostgreSQL JSONB differ from a JavaScript object?",
+    "priority": "start now",
+    "answer": "JSONB is PostgreSQL’s binary JSON storage, queried inside the database. The -> operator returns JSON and ->> extracts text. Catalog casts hourlyRate text to numeric before comparison and sorting; text ordering would put 100 before 20. An array predicate uses jsonb_array_elements_text for skills. Validate stored documents and consider measured indexes when the dataset grows.",
+    "lessons": [
+      "generated/06-http-contracts-and-validation.md"
+    ],
+    "source": {
+      "path": "backend/src/catalog/catalog.service.ts",
+      "symbol": "(document->>'hourlyRate')::numeric",
+      "excerpt": "    if (query.maxRate !== undefined)\n      where.push(`(document->>'hourlyRate')::numeric<=${add(query.maxRate)}`);\n    if (query.available !== undefined)\n      where.push(`(document->>'available')::boolean=${add(query.available)}`);\n    const condition = where.length ? `WHERE ${where.join(' AND ')}` : '';\n",
+      "sha256_at_inspection": "f993491d6ec844e830c04a34822e6c70b625966b32ae9fda873679cbfb7cd531"
+    },
+    "official_references": [
+      "https://www.postgresql.org/docs/current/functions-json.html"
+    ],
+    "concepts": [
+      "JSONB operators and explicit casts"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS13",
+    "kind": "question",
+    "title": "How does this catalog paginate consistently?",
+    "priority": "next",
+    "answer": "The schema bounds page and size; SQL applies LIMIT and OFFSET after a deterministic sort with id as a tie breaker. A common table expression filters once for both total and page items. It can return an empty items array and a nonzero total for an out-of-range page. Large offsets still scan work; cursor pagination is a design extension, not implemented here.",
+    "lessons": [
+      "generated/06-http-contracts-and-validation.md"
+    ],
+    "source": {
+      "path": "backend/src/catalog/catalog.service.ts",
+      "symbol": "WITH filtered AS",
+      "excerpt": "    const result = await this.db.query(\n      `WITH filtered AS (SELECT id,document FROM providers ${condition}) SELECT (SELECT count(*)::int FROM filtered) AS total, COALESCE((SELECT jsonb_agg(page.document ORDER BY page.ordinal) FROM (SELECT document,row_number() OVER (ORDER BY ${order}) ordinal FROM filtered ORDER BY ${order} LIMIT ${add(query.size)} OFFSET ${add(query.page * query.size)}) page),'[]'::jsonb) AS items`,\n      values,\n    );\n    return result.rows[0];\n",
+      "sha256_at_inspection": "f993491d6ec844e830c04a34822e6c70b625966b32ae9fda873679cbfb7cd531"
+    },
+    "official_references": [
+      "https://www.postgresql.org/docs/18/sql-select.html"
+    ],
+    "concepts": [
+      "pagination",
+      "sort allowlist",
+      "common table expression"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS14",
+    "kind": "question",
+    "title": "Why preserve server-owned fields during a profile update?",
+    "priority": "start now",
+    "answer": "A client must not award itself a rating. Catalog locks the owner’s row, checks that the submitted profile ID matches, then puts stored rating, reviewCount and completedProjects after the submitted fields. Later object properties override earlier ones. This preserves protected values while accepting validated edits; neither schema validity nor a lock alone supplies that business policy.",
+    "lessons": [
+      "generated/06-http-contracts-and-validation.md"
+    ],
+    "source": {
+      "path": "backend/src/catalog/catalog.service.ts",
+      "symbol": "rating: row.document.rating,",
+      "excerpt": "        ...updated,\n        rating: row.document.rating,\n        reviewCount: row.document.reviewCount,\n        completedProjects: row.document.completedProjects,\n      };\n",
+      "sha256_at_inspection": "f993491d6ec844e830c04a34822e6c70b625966b32ae9fda873679cbfb7cd531"
+    },
+    "official_references": [
+      "https://www.postgresql.org/docs/current/explicit-locking.html"
+    ],
+    "concepts": [
+      "Row locks and server-owned fields"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS15",
+    "kind": "question",
+    "title": "What is a connection pool, and how big is this one?",
+    "priority": "start now",
+    "answer": "A pool reuses database sessions rather than establishing one for every query. This pool allows ten connections per process and waits up to five seconds for connection acquisition. Four service processes can use forty, before extra replicas or operations. Raising max can move overload into PostgreSQL; first measure active, idle and waiting work and shorten slow transactions.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md"
+    ],
+    "source": {
+      "path": "backend/src/common/connections.ts",
+      "symbol": "max: 10,",
+      "excerpt": "    ...connection,\n    max: 10,\n    connectionTimeoutMillis: 5000,\n    ssl: sslEnabled ? { rejectUnauthorized: true, ...(ca ? { ca } : {}) } : undefined,\n  };\n",
+      "sha256_at_inspection": "00d0ac41cb814d758ca49ed9d0ca67df6c1caf84bab90ddd02eae1274d0ec4cf"
+    },
+    "official_references": [
+      "https://node-postgres.com/features/pooling",
+      "https://node-postgres.com/apis/pool"
+    ],
+    "concepts": [
+      "Pool versus connection"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS16",
+    "kind": "question",
+    "title": "Why must a transaction keep the same database client?",
+    "priority": "start now",
+    "answer": "BEGIN, statements and COMMIT must run on one checked-out client because a transaction belongs to that database session. Separate pool.query calls can use different sessions. The wrapper rolls back on failure and releases the client in finally on every path. Releasing without rollback can leave a bad transaction for the next borrower; forgetting release can exhaust the pool.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md"
+    ],
+    "source": {
+      "path": "backend/src/common/database.ts",
+      "symbol": "const client = await this.pool.connect();",
+      "excerpt": "  async transaction<T>(operation: (client: PoolClient) => Promise<T>): Promise<T> {\n    const client = await this.pool.connect();\n    try {\n      await client.query('BEGIN');\n      const result = await operation(client);\n",
+      "sha256_at_inspection": "f24201468bda45ef27d5b7e6362bf5acf0f4ef67797067b92444b2410d134f3a"
+    },
+    "official_references": [
+      "https://node-postgres.com/features/transactions"
+    ],
+    "concepts": [
+      "pool.query versus checked-out client",
+      "try, catch and finally protect resources"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS17",
+    "kind": "question",
+    "title": "Are database row types automatically the API types?",
+    "priority": "start now",
+    "answer": "No. A database numeric value may arrive as text, and timestamps may arrive as Date objects. inquiryView deliberately converts budget with Number and createdAt to an International Organization for Standardization (ISO) timestamp string. For larger financial precision, use an exact decimal or minor-unit contract rather than assuming every SQL number fits a JavaScript Number. A generic row annotation alone validates nothing.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md",
+      "generated/09-inquiries-idempotency-and-outbox.md"
+    ],
+    "source": {
+      "path": "backend/src/inquiries/inquiries.service.ts",
+      "symbol": "budget: Number(row.budget),",
+      "excerpt": "    message: row.message,\n    budget: Number(row.budget),\n    clientType: row.client_type,\n    status: row.status,\n    createdAt: new Date(row.created_at).toISOString(),\n",
+      "sha256_at_inspection": "4e1752037f93eac22b8f2017299f218afd6b04f32cda4a002a45c2655ffe3c85"
+    },
+    "official_references": [
+      "https://node-postgres.com/features/types"
+    ],
+    "concepts": [
+      "Parameters and result conversion"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS18",
+    "kind": "question",
+    "title": "When should a row lock or an advisory lock be used?",
+    "priority": "start now",
+    "answer": "A row lock protects an existing row during a transaction; Catalog uses FOR UPDATE while editing an owned profile. An advisory lock protects an application-defined decision, even before the inquiry row exists. Inquiries hashes the client/key pair into a transaction-scoped lock shared across replicas. Keep database unique constraints too; they enforce the invariant even if another write path omits the lock.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md",
+      "generated/09-inquiries-idempotency-and-outbox.md"
+    ],
+    "source": {
+      "path": "backend/src/inquiries/inquiries.service.ts",
+      "symbol": "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",
+      "excerpt": "      // The transaction-scoped lock serializes the same client/key across every replica.\n      await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))', [\n        JSON.stringify([actor.email, key]),\n      ]);\n      const previous = await client.query(\n",
+      "sha256_at_inspection": "4e1752037f93eac22b8f2017299f218afd6b04f32cda4a002a45c2655ffe3c85"
+    },
+    "official_references": [
+      "https://www.postgresql.org/docs/current/explicit-locking.html"
+    ],
+    "concepts": [
+      "Row locks versus advisory locks",
+      "Advisory locking across async handlers"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS19",
+    "kind": "question",
+    "title": "Does a transaction imply serializable isolation?",
+    "priority": "next",
+    "answer": "No. PostgreSQL normally uses Read Committed unless configured otherwise; this wrapper issues BEGIN without selecting a stronger level. Each statement can see a newer committed snapshot. Explicit locks and constraints protect specific decisions here. Serializable transactions can reject conflicting work and require retrying the entire transaction; they are not a free switch that removes every application policy.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md",
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/common/database.ts",
+      "symbol": "await client.query('BEGIN');",
+      "excerpt": "    try {\n      await client.query('BEGIN');\n      const result = await operation(client);\n      await client.query('COMMIT');\n      return result;\n",
+      "sha256_at_inspection": "f24201468bda45ef27d5b7e6362bf5acf0f4ef67797067b92444b2410d134f3a"
+    },
+    "official_references": [
+      "https://www.postgresql.org/docs/current/transaction-iso.html"
+    ],
+    "concepts": [
+      "transaction isolation"
+    ],
+    "scope": "Current source",
+    "lesson_relation": "Lessons07/16 provide transaction and concurrency prerequisites. The explicit isolation-level comparison is a researched extension supported by PostgreSQL documentation."
+  },
+  {
+    "id": "NS20",
+    "kind": "question",
+    "title": "Why are migrations versioned, hashed and locked?",
+    "priority": "start now",
+    "answer": "A migration changes a database schema in a repeatable sequence. Startup reads only this service’s numbered SQL files, sorts them and records a Secure Hash Algorithm 256-bit (SHA-256) checksum. An advisory lock prevents two replicas applying the same sequence together. A changed applied file is rejected: add a new migration. Backups and compatible rollout still matter; a checksum cannot recover lost data.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md"
+    ],
+    "source": {
+      "path": "backend/src/common/database.ts",
+      "symbol": "Migration ${version} changed after application",
+      "excerpt": "            throw new Error(\n              `Migration ${version} changed after application; create a new migration`,\n            );\n        } else {\n          await client.query(sql);\n",
+      "sha256_at_inspection": "f24201468bda45ef27d5b7e6362bf5acf0f4ef67797067b92444b2410d134f3a"
+    },
+    "official_references": [
+      "https://www.postgresql.org/docs/current/explicit-locking.html",
+      "https://node-postgres.com/features/transactions"
+    ],
+    "concepts": [
+      "Migration checksums: filesystem plus crypto"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS21",
+    "kind": "question",
+    "title": "What do pool error events and verified TLS protect?",
+    "priority": "start now",
+    "answer": "Idle database clients can fail outside an awaited query, so the pool also has an error listener. Transport Layer Security (TLS) encrypts the connection and verifies its peer. This configuration retains rejectUnauthorized: true and accepts a certificate authority (CA) chain. Do not repair a certificate error by disabling verification. Connection-string ssl settings can replace explicit pg settings; the project rejects that mixture.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md"
+    ],
+    "source": {
+      "path": "backend/src/common/connections.ts",
+      "symbol": "rejectUnauthorized: true",
+      "excerpt": "    connectionTimeoutMillis: 5000,\n    ssl: sslEnabled ? { rejectUnauthorized: true, ...(ca ? { ca } : {}) } : undefined,\n  };\n}\nexport function kafkaOptions(): KafkaConfig {\n",
+      "sha256_at_inspection": "00d0ac41cb814d758ca49ed9d0ca67df6c1caf84bab90ddd02eae1274d0ec4cf"
+    },
+    "official_references": [
+      "https://node-postgres.com/features/ssl",
+      "https://node-postgres.com/apis/pool"
+    ],
+    "concepts": [
+      "Pool events and TLS settings"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS22",
+    "kind": "question",
+    "title": "How does promisify connect callbacks to async/await?",
+    "priority": "start now",
+    "answer": "Node’s scrypt callback follows the error-first convention: an error argument precedes the result. util.promisify wraps that convention in a Promise-returning function, so await can receive the derived bytes and a rejection can be caught. It does not move arbitrary JavaScript work to another thread. Methods that rely on this may also need binding before conversion.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md"
+    ],
+    "source": {
+      "path": "backend/src/identity/password.ts",
+      "symbol": "const scrypt = promisify(scryptCallback);",
+      "excerpt": "import { promisify } from 'node:util';\nconst scrypt = promisify(scryptCallback);\nexport async function hashPassword(password: string): Promise<string> {\n  const salt = randomBytes(16).toString('hex');\n  const hash = (await scrypt(password, salt, 64)) as Buffer;\n",
+      "sha256_at_inspection": "bb95c10f417f7ce36c3ca256fcfa5eec1cac26d20ce22ef055cf23279acc53ca"
+    },
+    "official_references": [
+      "https://nodejs.org/api/util.html"
+    ],
+    "concepts": [
+      "Error-first callbacks become promises"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS23",
+    "kind": "question",
+    "title": "Why use a salt and scrypt for passwords?",
+    "priority": "start now",
+    "answer": "scrypt deliberately costs memory and computation; a fast general hash is unsuitable for passwords. A random salt prevents equal passwords from sharing an encoded result and is stored beside the hash. Here 16 random bytes become 32 hexadecimal characters. Async hashing still consumes finite worker capacity, so limit login load and review work factors against current security guidance rather than calling library defaults production hardening.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md"
+    ],
+    "source": {
+      "path": "backend/src/identity/password.ts",
+      "symbol": "const salt = randomBytes(16).toString('hex');",
+      "excerpt": "export async function hashPassword(password: string): Promise<string> {\n  const salt = randomBytes(16).toString('hex');\n  const hash = (await scrypt(password, salt, 64)) as Buffer;\n  return `scrypt:${salt}:${hash.toString('hex')}`;\n}\n",
+      "sha256_at_inspection": "bb95c10f417f7ce36c3ca256fcfa5eec1cac26d20ce22ef055cf23279acc53ca"
+    },
+    "official_references": [
+      "https://nodejs.org/api/crypto.html",
+      "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
+    ],
+    "concepts": [
+      "scrypt: cost and asynchronous work",
+      "randomBytes, salt and hex encoding"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS24",
+    "kind": "question",
+    "title": "Does timingSafeEqual make the whole login constant-time?",
+    "priority": "start now",
+    "answer": "No. It avoids content-dependent early exit in that equal-length byte comparison. This verifier checks the stored encoding and derives a candidate Buffer first; the rest of login has other timing behavior. A dummy derivation also runs for a missing account to reduce obvious differences, followed by an explicit account-exists check. It cannot authenticate a missing user and does not prove complete timing resistance.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md"
+    ],
+    "source": {
+      "path": "backend/src/identity/password.ts",
+      "symbol": "return timingSafeEqual(candidate, Buffer.from(hash, 'hex'));",
+      "excerpt": "  const candidate = (await scrypt(password, salt, 64)) as Buffer;\n  return timingSafeEqual(candidate, Buffer.from(hash, 'hex'));\n}\n",
+      "sha256_at_inspection": "bb95c10f417f7ce36c3ca256fcfa5eec1cac26d20ce22ef055cf23279acc53ca"
+    },
+    "official_references": [
+      "https://nodejs.org/api/crypto.html"
+    ],
+    "concepts": [
+      "Buffer and timingSafeEqual",
+      "Optional chaining and a dummy derivation"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS25",
+    "kind": "question",
+    "title": "What does this JWT prove, and what stays readable?",
+    "priority": "start now",
+    "answer": "A JSON Web Token (JWT) carries readable encoded claims and a signature, not encrypted private data. This token expires in one hour. HS256 means Hash-based Message Authentication Code with SHA-256: signers and verifiers share a secret. Any verifier possessing it can also mint tokens, so separate asymmetric identity issuance is a production extension. Never put secrets in its payload.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md"
+    ],
+    "source": {
+      "path": "backend/src/common/auth.ts",
+      "symbol": "algorithm: 'HS256'",
+      "excerpt": "  return jwt.sign(actor, required('JWT_SECRET'), {\n    algorithm: 'HS256',\n    issuer: 'marketplace',\n    audience: 'marketplace',\n    subject: actor.email,\n",
+      "sha256_at_inspection": "88f5ed7fab96d3c14878b048c4042a8222e825997ab451ddd8965b258d715d71"
+    },
+    "official_references": [
+      "https://github.com/auth0/node-jsonwebtoken",
+      "https://www.rfc-editor.org/rfc/rfc7519.html"
+    ],
+    "concepts": [
+      "JWT signing: claims, encoding and HMAC"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS26",
+    "kind": "question",
+    "title": "Why verify JWT claims as well as its signature?",
+    "priority": "start now",
+    "answer": "A valid signature alone does not mean the token was intended for this API. verifyActor allowlists HS256 and checks issuer, audience, expiry and the expected principal fields; its subject must equal email. Decoding alone is not verification. Invalid or expired credentials produce 401. A verified actor can still receive 403 when its role or ownership does not allow the requested action.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md"
+    ],
+    "source": {
+      "path": "backend/src/common/auth.ts",
+      "symbol": "algorithms: ['HS256']",
+      "excerpt": "    const value = jwt.verify(token, required('JWT_SECRET'), {\n      algorithms: ['HS256'],\n      issuer: 'marketplace',\n      audience: 'marketplace',\n    });\n",
+      "sha256_at_inspection": "88f5ed7fab96d3c14878b048c4042a8222e825997ab451ddd8965b258d715d71"
+    },
+    "official_references": [
+      "https://github.com/auth0/node-jsonwebtoken",
+      "https://docs.nestjs.com/guards"
+    ],
+    "concepts": [
+      "jsonwebtoken: signature versus claims"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS27",
+    "kind": "question",
+    "title": "How do authentication, roles and ownership differ?",
+    "priority": "start now",
+    "answer": "Authentication establishes who called; a role narrows which class of action they may attempt. Ownership decides whether they may act on this particular record. Here only the target provider may resolve an inquiry and only the notification recipient may mark it read. Read queries also filter by the actor. A browser-supplied email or a hidden button is not an authorization control.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md",
+      "generated/09-inquiries-idempotency-and-outbox.md",
+      "generated/10-kafka-inbox-and-notifications.md"
+    ],
+    "source": {
+      "path": "backend/src/notifications/notifications.service.ts",
+      "symbol": "if (row.recipient_email !== actor.email)",
+      "excerpt": "      if (!row) throw new NotFoundException('Notification not found');\n      if (row.recipient_email !== actor.email)\n        throw new ForbiddenException('Notification belongs to another account');\n      const updated = await client.query(\n        'UPDATE notifications SET read=true WHERE id=$1 RETURNING *',\n",
+      "sha256_at_inspection": "d4eabfe0f00dc4f96da55b4864c937c6b630f332b1eb928725b4888236a07eae"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/security/authorization"
+    ],
+    "concepts": [
+      "authentication",
+      "authorization",
+      "ownership",
+      "data privacy"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS28",
+    "kind": "question",
+    "title": "What does the in-memory login throttle actually limit?",
+    "priority": "next",
+    "answer": "A Map stores counts and expiry per request IP address, with a limit of thirty attempts per minute in each process. Mutating a retrieved object changes that stored object; expired entries are removed on later requests. Another replica has another Map, and restart clears it. This is not a shared distributed limit. Proxy trust and a bounded shared store need deliberate design before public exposure.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md"
+    ],
+    "source": {
+      "path": "backend/src/identity/identity.controller.ts",
+      "symbol": "private readonly attempts = new Map",
+      "excerpt": "  // Per-process throttle protects password hashing; the private AWS dev environment has no additional ingress rate rule.\n  private readonly attempts = new Map<string, { count: number; until: number }>();\n  constructor(private readonly identity: IdentityService) {}\n  @Post('login') @HttpCode(200) async login(@Body() body: unknown, @Req() request: Request) {\n    const now = Date.now();\n",
+      "sha256_at_inspection": "0f2520bb6f64bd56e107efadfeda0bcd44182f5d695e53b9a3ce93fad0514ce2"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/security/rate-limiting",
+      "https://expressjs.com/en/guide/behind-proxies.html"
+    ],
+    "concepts": [
+      "Map-based throttling and mutable objects"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS29",
+    "kind": "question",
+    "title": "Why handle fetch rejection and response status separately?",
+    "priority": "start now",
+    "answer": "fetch rejects for network or abort failures, but an HTTP 404 is normally a resolved Response. The provider lookup therefore catches transport errors, handles 404, checks response.ok, then parses JSON and validates its shape. A successful status with malformed data is still a failed dependency contract. The caller receives a controlled error, not a partly trusted owner record.",
+    "lessons": [
+      "generated/09-inquiries-idempotency-and-outbox.md"
+    ],
+    "source": {
+      "path": "backend/src/inquiries/inquiries.service.ts",
+      "symbol": "if (!response.ok)",
+      "excerpt": "    if (response.status === 404) throw new NotFoundException('Provider not found');\n    if (!response.ok) throw new ServiceUnavailableException('Catalog lookup failed');\n    try {\n      return z\n        .object({ id: z.string(), ownerEmail: z.email(), name: z.string() })\n",
+      "sha256_at_inspection": "4e1752037f93eac22b8f2017299f218afd6b04f32cda4a002a45c2655ffe3c85"
+    },
+    "official_references": [
+      "https://nodejs.org/api/globals.html",
+      "https://fetch.spec.whatwg.org/"
+    ],
+    "concepts": [
+      "Native fetch and two failure channels"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS30",
+    "kind": "question",
+    "title": "What do a fetch timeout and URL encoding guarantee?",
+    "priority": "start now",
+    "answer": "AbortSignal.timeout bounds this lookup to five seconds; encodeURIComponent keeps the provider ID inside one path component. Neither supplies an end-to-end request deadline or authorization. The lookup uses a distinct internal service key, not a browser JWT. Its database transaction and advisory lock remain occupied during the lookup, so slow dependencies can consume pool capacity.",
+    "lessons": [
+      "generated/09-inquiries-idempotency-and-outbox.md",
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/inquiries/inquiries.service.ts",
+      "symbol": "signal: AbortSignal.timeout(5000),",
+      "excerpt": "          headers: { 'X-Internal-Key': required('INTERNAL_API_KEY') },\n          signal: AbortSignal.timeout(5000),\n        },\n      );\n    } catch {\n",
+      "sha256_at_inspection": "4e1752037f93eac22b8f2017299f218afd6b04f32cda4a002a45c2655ffe3c85"
+    },
+    "official_references": [
+      "https://nodejs.org/api/globals.html"
+    ],
+    "concepts": [
+      "AbortSignal.timeout and URL encoding",
+      "A timeout is one bounded wait"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS31",
+    "kind": "question",
+    "title": "How does an idempotency key differ from a payload fingerprint?",
+    "priority": "start now",
+    "answer": "The key names one logical submission and is scoped to the authenticated client. The fingerprint hashes a fixed-order array of validated fields to detect changed content. Reusing the same key and content returns the original inquiry; changed content yields 409. Generate and preserve the key before sending. A timeout is uncertain outcome, so retry the original key and payload rather than creating a second submission.",
+    "lessons": [
+      "generated/09-inquiries-idempotency-and-outbox.md"
+    ],
+    "source": {
+      "path": "backend/src/inquiries/inquiries.service.ts",
+      "symbol": "export function fingerprint(input: CreateInquiry): string {",
+      "excerpt": "import { inquirySchema, statusSchema, CreateInquiry } from './inquiry.schema.js';\nexport function fingerprint(input: CreateInquiry): string {\n  return createHash('sha256')\n    .update(\n      JSON.stringify([\n",
+      "sha256_at_inspection": "4e1752037f93eac22b8f2017299f218afd6b04f32cda4a002a45c2655ffe3c85"
+    },
+    "official_references": [
+      "https://nodejs.org/api/crypto.html",
+      "https://www.postgresql.org/docs/current/ddl-constraints.html"
+    ],
+    "concepts": [
+      "SHA-256 fingerprint versus retry key"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS32",
+    "kind": "question",
+    "title": "Why generate separate inquiry and event UUIDs?",
+    "priority": "start now",
+    "answer": "A Universally Unique Identifier (UUID) labels one record; randomUUID generates one without a central counter. The inquiry ID identifies the business request, while the event ID identifies the notification-producing occurrence. Neither replaces the client’s retry key. Keeping these identities separate lets a durable event replay retain its identity and allows future events about the same inquiry.",
+    "lessons": [
+      "generated/09-inquiries-idempotency-and-outbox.md"
+    ],
+    "source": {
+      "path": "backend/src/inquiries/inquiries.service.ts",
+      "symbol": "const eventId = randomUUID();",
+      "excerpt": "      const id = randomUUID();\n      const eventId = randomUUID();\n      const createdAt = new Date().toISOString();\n      const inserted = await client.query(\n        'INSERT INTO inquiries(id,provider_id,provider_email,provider_name,client_email,client_name,subject,message,budget,client_type,created_at,idempotency_key,request_hash) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *',\n",
+      "sha256_at_inspection": "4e1752037f93eac22b8f2017299f218afd6b04f32cda4a002a45c2655ffe3c85"
+    },
+    "official_references": [
+      "https://nodejs.org/api/crypto.html"
+    ],
+    "concepts": [
+      "randomUUID: record identity is separate"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS33",
+    "kind": "question",
+    "title": "How does an outbox avoid losing an event intent?",
+    "priority": "start now",
+    "answer": "The inquiry row and outbox row commit in one PostgreSQL transaction. Either both exist or neither does. A later publisher sends the persisted event, waits for Kafka acknowledgment and marks it published. An HTTP success proves a durable inquiry and event intent; it does not prove inbox delivery. No transaction here atomically covers both Kafka and PostgreSQL, so consumer deduplication is required.",
+    "lessons": [
+      "generated/09-inquiries-idempotency-and-outbox.md",
+      "generated/10-kafka-inbox-and-notifications.md",
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/inquiries/inquiries.service.ts",
+      "symbol": "INSERT INTO outbox(event_id,inquiry_id,payload)",
+      "excerpt": "      };\n      await client.query('INSERT INTO outbox(event_id,inquiry_id,payload) VALUES($1,$2,$3)', [\n        eventId,\n        id,\n        event,\n",
+      "sha256_at_inspection": "4e1752037f93eac22b8f2017299f218afd6b04f32cda4a002a45c2655ffe3c85"
+    },
+    "official_references": [
+      "https://node-postgres.com/features/transactions",
+      "https://docs.nestjs.com/reliability/outbox"
+    ],
+    "concepts": [
+      "Outbox: one database transaction, two records",
+      "At-least-once delivery and idempotent effect"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS34",
+    "kind": "question",
+    "title": "What makes inquiry status transitions safe?",
+    "priority": "start now",
+    "answer": "The inquiry row is locked while the service checks ownership and current status. PENDING may become ACCEPTED or DECLINED. Repeating the same final decision returns that state; trying the other decision after resolution yields 409. Database checks restrict stored status values, and the unique client/key constraint protects submission identity. A valid enum alone cannot enforce ownership or transition order.",
+    "lessons": [
+      "generated/09-inquiries-idempotency-and-outbox.md"
+    ],
+    "source": {
+      "path": "backend/src/inquiries/inquiries.service.ts",
+      "symbol": "if (row.status !== 'PENDING' && row.status !== input.status)",
+      "excerpt": "        throw new ForbiddenException('Inquiry belongs to another provider');\n      if (row.status !== 'PENDING' && row.status !== input.status)\n        throw new ConflictException('Inquiry already resolved');\n      const updated = await client.query('UPDATE inquiries SET status=$1 WHERE id=$2 RETURNING *', [\n        input.status,\n",
+      "sha256_at_inspection": "4e1752037f93eac22b8f2017299f218afd6b04f32cda4a002a45c2655ffe3c85"
+    },
+    "official_references": [
+      "https://www.postgresql.org/docs/current/ddl-constraints.html"
+    ],
+    "concepts": [
+      "Constraints and state transitions"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS35",
+    "kind": "question",
+    "title": "What are Kafka’s client, producer, consumer and group?",
+    "priority": "start now",
+    "answer": "KafkaJS connects Node to a broker. A producer sends topic records; a consumer reads assigned partitions. clientId labels an application for diagnostics, whereas groupId identifies consumers sharing partition work and resume positions. Notifications uses one stable group. Starting another group reads independently and can reproduce effects unless the destination still deduplicates event identities.",
+    "lessons": [
+      "generated/10-kafka-inbox-and-notifications.md"
+    ],
+    "source": {
+      "path": "backend/src/common/messaging.ts",
+      "symbol": "groupId: 'marketplace-notifications-v1'",
+      "excerpt": "        this.consumer = kafka().consumer({\n          groupId: 'marketplace-notifications-v1',\n          allowAutoTopicCreation: process.env.DEPLOYMENT_MODE !== 'aws-ecs',\n          retry: { retries: 5 },\n        });\n",
+      "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237"
+    },
+    "official_references": [
+      "https://kafka.js.org/docs/configuration",
+      "https://kafka.js.org/docs/consuming"
+    ],
+    "concepts": [
+      "KafkaJS client, producer and consumer"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS36",
+    "kind": "question",
+    "title": "Do keys and acks=-1 guarantee exactly-once processing?",
+    "priority": "start now",
+    "answer": "No. The inquiry ID key helps route related records to a partition, where offsets give order. acks=-1 waits for the in-sync replicas required by the broker configuration; a one-broker setup still has one copy. A publisher can crash after acknowledgment but before marking the outbox row. Its retry may resend the same event. There is no global order across partitions.",
+    "lessons": [
+      "generated/10-kafka-inbox-and-notifications.md"
+    ],
+    "source": {
+      "path": "backend/src/common/messaging.ts",
+      "symbol": "acks: -1,",
+      "excerpt": "          topic: process.env.KAFKA_TOPIC ?? INQUIRY_TOPIC,\n          acks: -1,\n          messages: [{ key: event.inquiry_id, value: JSON.stringify(event.payload) }],\n        });\n        await client.query('UPDATE outbox SET published_at=now() WHERE event_id=$1', [\n",
+      "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237"
+    },
+    "official_references": [
+      "https://kafka.js.org/docs/producing"
+    ],
+    "concepts": [
+      "Message keys and acknowledgments"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS37",
+    "kind": "question",
+    "title": "Why publish a bounded SKIP LOCKED batch?",
+    "priority": "start now",
+    "answer": "FOR UPDATE SKIP LOCKED lets competing publishers take unlocked outbox rows without waiting on each other. LIMIT 25 bounds each transaction’s batch; it does not bound the entire backlog. Publishing happens while row locks and the database client are held, so broker delays lengthen transactions. Multiple publishers may deliver batches out of creation order; strict ordering would need an additional design.",
+    "lessons": [
+      "generated/10-kafka-inbox-and-notifications.md"
+    ],
+    "source": {
+      "path": "backend/src/common/messaging.ts",
+      "symbol": "LIMIT 25 FOR UPDATE SKIP LOCKED",
+      "excerpt": "      const pending = await client.query(\n        'SELECT event_id,inquiry_id,payload FROM outbox WHERE published_at IS NULL ORDER BY created_at LIMIT 25 FOR UPDATE SKIP LOCKED',\n      );\n      for (const event of pending.rows) {\n        await this.producer!.send({\n",
+      "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237"
+    },
+    "official_references": [
+      "https://www.postgresql.org/docs/18/sql-select.html"
+    ],
+    "concepts": [
+      "SKIP LOCKED and bounded batches"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS38",
+    "kind": "question",
+    "title": "Does fromBeginning replay every record on every restart?",
+    "priority": "start now",
+    "answer": "No. A consumer group normally resumes at its committed offset, which is its saved position per partition. fromBeginning: true chooses the earliest available position only when no valid committed position exists. Retention may already have removed older records. Rebalancing redistributes partitions as members join or fail; it can cause replay around unfinished work.",
+    "lessons": [
+      "generated/10-kafka-inbox-and-notifications.md"
+    ],
+    "source": {
+      "path": "backend/src/common/messaging.ts",
+      "symbol": "fromBeginning: true,",
+      "excerpt": "          topic: process.env.KAFKA_TOPIC ?? INQUIRY_TOPIC,\n          fromBeginning: true,\n        });\n        await this.consumer.run({\n          eachMessage: async ({ message }) => {\n",
+      "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237"
+    },
+    "official_references": [
+      "https://kafka.js.org/docs/consuming"
+    ],
+    "concepts": [
+      "Consumer groups and starting offsets"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS39",
+    "kind": "question",
+    "title": "Why decode, parse and validate an event separately?",
+    "priority": "start now",
+    "answer": "Kafka transports bytes. Buffer.toString decodes UTF-8, an encoding of text into bytes; JSON.parse then creates a JavaScript value. Zod finally checks its required fields and types. Valid JSON can still be an invalid event. The consumer awaits durable notification insertion before its handler succeeds; failures must not be treated as successfully processed records.",
+    "lessons": [
+      "generated/10-kafka-inbox-and-notifications.md"
+    ],
+    "source": {
+      "path": "backend/src/common/messaging.ts",
+      "symbol": "await this.notifications.consume(JSON.parse(message.value.toString('utf8')));",
+      "excerpt": "            // Await durable insert before KafkaJS acknowledges the offset. Replays are deduplicated in SQL.\n            await this.notifications.consume(JSON.parse(message.value.toString('utf8')));\n          },\n        });\n        // KafkaJS runs processing in the background; retain the connection until shutdown.\n",
+      "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237"
+    },
+    "official_references": [
+      "https://nodejs.org/api/buffer.html",
+      "https://kafka.js.org/docs/consuming"
+    ],
+    "concepts": [
+      "Buffer → UTF-8 → JSON → Zod"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS40",
+    "kind": "question",
+    "title": "How can repeated event delivery produce one inbox row?",
+    "priority": "start now",
+    "answer": "Notifications stores a unique event_id and uses INSERT ... ON CONFLICT DO NOTHING. The receipt identity and inbox effect are the same database write. A crash after insertion but before offset commit may replay the event; that insertion becomes a no-op. This is an idempotent effect with at-least-once transport, not proof that the event was transported exactly once.",
+    "lessons": [
+      "generated/10-kafka-inbox-and-notifications.md",
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/notifications/notifications.service.ts",
+      "symbol": "ON CONFLICT(event_id) DO NOTHING",
+      "excerpt": "    await this.db.query(\n      'INSERT INTO notifications(id,event_id,inquiry_id,recipient_email,message,created_at) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(event_id) DO NOTHING',\n      [\n        randomUUID(),\n        event.eventId,\n",
+      "sha256_at_inspection": "d4eabfe0f00dc4f96da55b4864c937c6b630f332b1eb928725b4888236a07eae"
+    },
+    "official_references": [
+      "https://www.postgresql.org/docs/current/sql-insert.html"
+    ],
+    "concepts": [
+      "Unique event IDs make duplicate effects harmless",
+      "At-least-once delivery and idempotent effect"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS41",
+    "kind": "question",
+    "title": "Why can HTTP start while the messaging worker reconnects?",
+    "priority": "start now",
+    "answer": "The bootstrap hook starts a background Promise without awaiting the whole loop. Startup connection failures are caught and retried; consumer failures after run starts follow KafkaJS’s separate crash/restart policy and can leave a stopped worker. The pause uses an unreferenced timer, which alone will not keep Node alive. void does not catch rejections. Graceful completion and shutdown races still need tests.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md",
+      "generated/10-kafka-inbox-and-notifications.md"
+    ],
+    "source": {
+      "path": "backend/src/common/messaging.ts",
+      "symbol": "void this.run();",
+      "excerpt": "  onApplicationBootstrap(): void {\n    void this.run();\n  }\n  async publishBatch(): Promise<void> {\n    await this.db.transaction(async (client) => {\n",
+      "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237"
+    },
+    "official_references": [
+      "https://nodejs.org/api/timers.html",
+      "https://docs.nestjs.com/fundamentals/lifecycle-events"
+    ],
+    "concepts": [
+      "Timers, unref and detached promises"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS42",
+    "kind": "question",
+    "title": "What do KafkaJS instrumentation events say about health?",
+    "priority": "start now",
+    "answer": "The consumer updates a local flag on group join, crash and disconnect. KafkaJS instrumentation listeners run asynchronously, which differs from ordinary synchronous Node EventEmitter listeners. A group join proves membership at that point, not a caught-up inbox or successful business processing. Observe lag and processing errors too; a flag may lag a failure or remain true while a poison record blocks progress. Inspect the CRASH restart flag and actual offset/insert progress: a stopped consumer can leave this application’s outer loop sleeping.",
+    "lessons": [
+      "generated/10-kafka-inbox-and-notifications.md"
+    ],
+    "source": {
+      "path": "backend/src/common/messaging.ts",
+      "symbol": "this.consumer.events.GROUP_JOIN",
+      "excerpt": "        });\n        this.consumer.on(this.consumer.events.GROUP_JOIN, () => {\n          this.health.ready = true;\n        });\n        this.consumer.on(this.consumer.events.DISCONNECT, () => {\n",
+      "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237"
+    },
+    "official_references": [
+      "https://kafka.js.org/docs/instrumentation-events"
+    ],
+    "concepts": [
+      "Instrumentation events update readiness"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS43",
+    "kind": "question",
+    "title": "Why expose three different health checks?",
+    "priority": "start now",
+    "answer": "Liveness reports a responding process. Serving health queries the database and permits durable inquiry writes while messaging retries. Readiness also checks the messaging worker flag where applicable. Neither a green probe nor nginx’s static /health proves a login-to-inquiry-to-notification journey. Restarting a live process for every dependency failure can turn one outage into a restart storm.",
+    "lessons": [
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/common/health.ts",
+      "symbol": "@Get('health/serve')",
+      "excerpt": "  // Routing readiness preserves durable inquiry writes while Kafka retries asynchronously.\n  @Get('health/serve') async serving() {\n    try {\n      await this.db.query('SELECT 1');\n    } catch {\n",
+      "sha256_at_inspection": "2941f0c699974fd0f6e27c82200cd617693eae335afdd4710066eb3fadf4c5b8"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/recipes/terminus"
+    ],
+    "concepts": [
+      "Liveness versus readiness"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS44",
+    "kind": "question",
+    "title": "Does a shared backend image mean one service or one failure domain?",
+    "priority": "start now",
+    "answer": "One build contains the code, but SERVICE selects one controller, provider set and service-owned database per process. There are four capability boundaries. Their shared PostgreSQL host can still fail all four locally; an image or shared library defect can affect them together. Independent processes enable separate scaling but do not automatically create high availability or independent data ownership.",
+    "lessons": [
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/main.ts",
+      "symbol": "const providers: Record<string, Type[]> = {",
+      "excerpt": "  };\n  const providers: Record<string, Type[]> = {\n    identity: [IdentityService],\n    catalog: [CatalogService],\n    inquiries: [InquiriesService, OutboxPublisher],\n",
+      "sha256_at_inspection": "b7ec3c2e7aa877c7e48f7a74e3350d373044ae6834760996db7d3b34b38bc988"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/fundamentals/custom-providers"
+    ],
+    "concepts": [
+      "Shared build versus independent failure domains"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS45",
+    "kind": "question",
+    "title": "Does FOR UPDATE prevent a stale profile overwrite?",
+    "priority": "next",
+    "answer": "It serializes database writers while the transaction runs. It does not know that a user opened an older profile in a second tab. Catalog has no profile version or entity tag comparison, so two accepted full updates can overwrite editable fields. Optimistic concurrency would compare a version and reject a stale update so the user can reload and merge.",
+    "lessons": [
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/catalog/catalog.service.ts",
+      "symbol": "WHERE owner_email=$1 FOR UPDATE",
+      "excerpt": "      const result = await client.query(\n        'SELECT id,document FROM providers WHERE owner_email=$1 FOR UPDATE',\n        [email],\n      );\n      const row = result.rows[0];\n",
+      "sha256_at_inspection": "f993491d6ec844e830c04a34822e6c70b625966b32ae9fda873679cbfb7cd531"
+    },
+    "official_references": [
+      "https://www.rfc-editor.org/rfc/rfc9110.html#name-if-match"
+    ],
+    "concepts": [
+      "Concurrency protection versus stale-user conflict"
+    ],
+    "scope": "Absent implementation",
+    "worked_example_url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-if-match",
+    "worked_example": "Practice with a separate conditional-update server: GET version 7 with its entity tag, send an update with If-Match for version 7 and advance to 8; repeat the old condition and expect 412 Precondition Failed. Persist and compare the version atomically. The marketplace does not currently expose this contract.",
+    "lesson_relation": "Lesson16 teaches the row-lock versus stale-user conflict distinction and labels optimistic version checking absent. The If-Match worked example is an external extension."
+  },
+  {
+    "id": "NS46",
+    "kind": "question",
+    "title": "How do CORS and CSRF differ from login protection?",
+    "priority": "extension",
+    "answer": "Cross-origin resource sharing (CORS) controls browser access across origins; it is not an authorization boundary for arbitrary clients. Cross-site request forgery (CSRF) abuses credentials a browser attaches automatically, especially cookies. This app uses same-origin proxies and explicit bearer headers; it does not implement a cookie-session CSRF flow. If that design changes, add explicit origin and CSRF controls rather than treating Helmet as a substitute.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md",
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/main.ts",
+      "symbol": "app.use(helmet());",
+      "excerpt": "  });\n  app.use(helmet());\n  app.use(json({ limit: '128kb' }));\n  app.useGlobalFilters(new ErrorFilter());\n  app.enableShutdownHooks();\n",
+      "sha256_at_inspection": "b7ec3c2e7aa877c7e48f7a74e3350d373044ae6834760996db7d3b34b38bc988"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/security/cors",
+      "https://docs.nestjs.com/security/csrf"
+    ],
+    "concepts": [
+      "CORS",
+      "CSRF"
+    ],
+    "scope": "Absent implementation",
+    "worked_example_url": "https://docs.nestjs.com/security/cors",
+    "worked_example": "In a separate Nest app, enable CORS for one explicit test origin and PUT, with Authorization allowed. Send an OPTIONS preflight from that origin and inspect the allowed-origin/method headers; repeat from another origin and verify no readable cross-origin response. Then test server authorization directly because CORS does not stop non-browser callers.",
+    "lesson_relation": "Lessons08/16 are security and reliability prerequisites; they do not teach CORS or CSRF. This is a researched extension taught by the linked official documentation and external worked example."
+  },
+  {
+    "id": "NS47",
+    "kind": "question",
+    "title": "How do sessions, OAuth and OpenID Connect differ from this JWT login?",
+    "priority": "extension",
+    "answer": "A server session normally stores login state server-side and sends a session identifier cookie. OAuth 2.0 delegates access; OpenID Connect adds an identity layer. This project implements neither federation nor refresh/session revocation: it issues its own one-hour bearer token. A logged-out browser can discard it, but an already copied valid token stays usable until expiry unless server-side revocation is added.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md"
+    ],
+    "source": {
+      "path": "backend/src/common/auth.ts",
+      "symbol": "expiresIn: '1h'",
+      "excerpt": "    subject: actor.email,\n    expiresIn: '1h',\n  });\n}\nexport function verifyActor(token: string): Actor {\n",
+      "sha256_at_inspection": "88f5ed7fab96d3c14878b048c4042a8222e825997ab451ddd8965b258d715d71"
+    },
+    "official_references": [
+      "https://expressjs.com/en/resources/middleware/session/",
+      "https://openid.net/specs/openid-connect-core-1_0.html",
+      "https://datatracker.ietf.org/doc/html/rfc9700"
+    ],
+    "concepts": [
+      "sessions",
+      "OAuth",
+      "OpenID Connect",
+      "revocation"
+    ],
+    "scope": "Absent implementation",
+    "worked_example_url": "https://www.rfc-editor.org/rfc/rfc7636.html#appendix-B",
+    "worked_example": "Use Appendix B’s Proof Key for Code Exchange (PKCE) test vector in a separate local script: SHA-256 hash the published verifier, then base64url encode the bytes. Expect challenge E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM. In an authorization-code flow, bind that challenge at authorization and require the original verifier at code exchange. This demonstrates code binding, not a deployed identity provider.",
+    "lesson_relation": "Lesson08 provides JWT authentication prerequisites; it does not teach sessions, OAuth, OpenID Connect or PKCE. These are researched extensions taught by the linked official specifications and external worked example."
+  },
+  {
+    "id": "NS48",
+    "kind": "question",
+    "title": "What does graceful shutdown promise here?",
+    "priority": "next",
+    "answer": "Nest shutdown hooks are enabled, database destruction ends its pool, and messaging destruction sets stopping and disconnects the client. A shutdown signal is not a guarantee that every in-flight request or detached loop drained before termination. The process needs time to finish; a forced kill skips hooks. Test shutdown under active work and verify durable retries instead of assuming every hook establishes lossless delivery.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md",
+      "generated/10-kafka-inbox-and-notifications.md",
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/main.ts",
+      "symbol": "app.enableShutdownHooks();",
+      "excerpt": "  app.useGlobalFilters(new ErrorFilter());\n  app.enableShutdownHooks();\n  const port = Number(process.env.PORT ?? 8181 + SERVICES.indexOf(service));\n  if (!Number.isInteger(port) || port < 1 || port > 65535)\n    throw new Error('PORT must be a valid TCP port');\n",
+      "sha256_at_inspection": "b7ec3c2e7aa877c7e48f7a74e3350d373044ae6834760996db7d3b34b38bc988"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/fundamentals/lifecycle-events"
+    ],
+    "concepts": [
+      "graceful shutdown"
+    ],
+    "scope": "Current source"
+  },
+  {
+    "id": "NS49",
+    "kind": "question",
+    "title": "What should application logs prove without leaking secrets?",
+    "priority": "next",
+    "answer": "Logs should identify the failing operation and enough safe context to connect it with a request or event. ErrorFilter hides unexpected server details from clients while logging the error internally; worker logs name retry failures. Do not log bearer tokens, passwords or connection strings. Structured correlation across requests and events is an extension; the existing logger alone is not a distributed trace.",
+    "lessons": [
+      "generated/16-reliability-and-senior-design.md",
+      "generated/17-ai-assisted-engineering-and-toolchain.md"
+    ],
+    "source": {
+      "path": "backend/src/common/errors.ts",
+      "symbol": "this.logger.error(error instanceof Error ? error.stack : String(error))",
+      "excerpt": "          : (error as Error).message;\n    if (status === 500) this.logger.error(error instanceof Error ? error.stack : String(error));\n    if (detail.length > 1500) detail = detail.slice(0, 1500);\n    response.status(status).json({ status, detail });\n  }\n",
+      "sha256_at_inspection": "2cfbad026cdde095f570ea7a2518f268a485e6e73a732a4bcf956d5f2bc99adb"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/techniques/logger"
+    ],
+    "concepts": [
+      "observability",
+      "safe errors"
+    ],
+    "scope": "Current source",
+    "lesson_relation": "Lessons16/17 provide reliability and delivery prerequisites. Safe correlation-log design is a researched extension; current ErrorFilter output is the project example."
+  },
+  {
+    "id": "NS50",
+    "kind": "question",
+    "title": "In which order do middleware, guards, pipes and interceptors run?",
+    "priority": "extension",
+    "answer": "On the usual successful path, middleware runs first, then guards, interceptor entry, pipes and the controller/service; interceptor response handling unwinds in reverse order. Filters handle uncaught failures rather than a mandatory success stage. Middleware handles requests broadly, a guard decides access, a pipe validates/transforms arguments and an interceptor wraps execution. This project uses middleware, AuthGuard and ErrorFilter; it calls Zod directly and has no custom application pipe/interceptor.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md",
+      "generated/19-source-and-requirement-coverage.md"
+    ],
+    "source": {
+      "path": "backend/src/main.ts",
+      "symbol": "app.useGlobalFilters(new ErrorFilter());",
+      "excerpt": "  app.use(json({ limit: '128kb' }));\n  app.useGlobalFilters(new ErrorFilter());\n  app.enableShutdownHooks();\n  const port = Number(process.env.PORT ?? 8181 + SERVICES.indexOf(service));\n  if (!Number.isInteger(port) || port < 1 || port > 65535)\n",
+      "sha256_at_inspection": "b7ec3c2e7aa877c7e48f7a74e3350d373044ae6834760996db7d3b34b38bc988"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/faq/request-lifecycle",
+      "https://docs.nestjs.com/pipes",
+      "https://docs.nestjs.com/interceptors"
+    ],
+    "concepts": [
+      "request lifecycle",
+      "middleware guards pipes interceptors"
+    ],
+    "scope": "Absent implementation",
+    "worked_example_url": "https://docs.nestjs.com/pipes",
+    "worked_example": "In the official ParseIntPipe route example, bind ParseIntPipe to an id parameter. Request /cats/42 and inspect a number passed to the handler; request /cats/nope and expect 400 before the handler. Add a logging interceptor in an isolated app to observe its before/after execution around that handler. These are practice additions, not current marketplace registrations.",
+    "lesson_relation": "Lessons05/19 provide Nest wiring and source-inventory prerequisites. Full middleware/guard/pipe/interceptor ordering is a researched extension; custom application pipes and interceptors are absent."
+  },
+  {
+    "id": "NS51",
+    "kind": "question",
+    "title": "Does this project use ConfigModule?",
+    "priority": "extension",
+    "answer": "No. validateConfig and required read process.env directly and fail startup for missing or invalid settings. Nest ConfigModule is an optional configuration package, not automatically installed by using Nest. Both approaches still need runtime checks, separate environment values and secret handling. Never print a whole environment object while troubleshooting.",
+    "lessons": [
+      "generated/05-nestjs-service-wiring.md",
+      "generated/19-source-and-requirement-coverage.md"
+    ],
+    "source": {
+      "path": "backend/src/common/config.ts",
+      "symbol": "export function validateConfig(): void {",
+      "excerpt": "}\nexport function validateConfig(): void {\n  const service = serviceName();\n  const secret = required('JWT_SECRET');\n  if (Buffer.byteLength(secret) < 32) throw new Error('JWT_SECRET requires at least 32 bytes');\n",
+      "sha256_at_inspection": "c7b2d09a4fa511e0a218023b52e8790a77b290344ae1591ee58b73583bc9c590"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/techniques/configuration"
+    ],
+    "concepts": [
+      "ConfigModule absent",
+      "configuration validation"
+    ],
+    "scope": "Absent implementation",
+    "worked_example_url": "https://docs.nestjs.com/techniques/configuration",
+    "worked_example": "In a separate Nest example, register ConfigModule.forRoot with a validation function that rejects a nonnumeric PORT. Start with PORT=abc and expect startup rejection; use a valid port and read the validated value through ConfigService. Do not assume this marketplace has ConfigService injection or automatic .env loading.",
+    "lesson_relation": "Lessons05/19 provide Nest wiring and source-inventory prerequisites. ConfigModule usage is a researched extension and is absent from this project."
+  },
+  {
+    "id": "NS52",
+    "kind": "question",
+    "title": "Is pg an object-relational mapper?",
+    "priority": "extension",
+    "answer": "No. pg sends SQL and returns rows; this project explicitly writes queries, transactions and migrations. An object-relational mapper (ORM) maps entities to database operations; TypeORM and Prisma are absent. An ORM can reduce mapping code but does not remove query planning, ownership checks or transaction boundaries. Do not invent repositories or entity decorators when explaining this source.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md",
+      "generated/19-source-and-requirement-coverage.md"
+    ],
+    "source": {
+      "path": "backend/package.json",
+      "symbol": "\"pg\"",
+      "excerpt": "    \"kafkajs\": \"^2.2.4\",\n    \"pg\": \"^8.16.0\",\n    \"reflect-metadata\": \"^0.2.2\",\n    \"rxjs\": \"^7.8.2\",\n    \"zod\": \"^4.1.0\"\n",
+      "sha256_at_inspection": "b22b09f975bd55e53ffb60eca9ff9b031d310426e8a20dd072b7b298e55559da"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/techniques/database",
+      "https://docs.nestjs.com/techniques/sql",
+      "https://docs.nestjs.com/data/typeorm"
+    ],
+    "concepts": [
+      "ORM absent",
+      "raw SQL"
+    ],
+    "scope": "Absent implementation",
+    "worked_example_url": "https://docs.nestjs.com/data/typeorm#repository-pattern",
+    "worked_example": "In the separate official TypeORM example, define a User entity, register TypeOrmModule.forFeature([User]) and inject its Repository into UsersService. Insert a synthetic user, find it, restart and read it again from the configured database. Examine generated SQL and ensure the database is isolated; none of these entity/repository registrations exists here.",
+    "lesson_relation": "Lessons07/19 teach the actual pg/SQL approach and source inventory. The TypeORM repository example is a researched external extension; an ORM is absent here."
+  },
+  {
+    "id": "NS53",
+    "kind": "question",
+    "title": "Does AuthGuard here use Passport strategies?",
+    "priority": "extension",
+    "answer": "No. It is the project’s own Nest guard calling jsonwebtoken directly. Passport is an authentication integration with strategies such as local credentials or bearer-token validation; its Nest module is absent. Switching adapters would still require verified claims and resource ownership checks, and would not create external identity federation by itself.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md",
+      "generated/19-source-and-requirement-coverage.md"
+    ],
+    "source": {
+      "path": "backend/src/common/auth.ts",
+      "symbol": "export class AuthGuard implements CanActivate {",
+      "excerpt": "@Injectable()\nexport class AuthGuard implements CanActivate {\n  canActivate(context: ExecutionContext): boolean {\n    const request = context.switchToHttp().getRequest<AuthRequest>();\n    const authorization = request.headers.authorization;\n",
+      "sha256_at_inspection": "88f5ed7fab96d3c14878b048c4042a8222e825997ab451ddd8965b258d715d71"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/recipes/passport"
+    ],
+    "concepts": [
+      "Passport absent"
+    ],
+    "scope": "Absent implementation",
+    "worked_example_url": "https://docs.nestjs.com/recipes/passport",
+    "worked_example": "Follow the external local-strategy example in an isolated Nest app: implement validate(username,password), register the strategy and use AuthGuard(\"local\") on a test login route. A valid synthetic user reaches the handler as request.user; a wrong password yields 401. Keep marketplace JWT and ownership behavior intact if evaluating a migration.",
+    "lesson_relation": "Lessons08/19 provide actual JWT-guard and source-inventory prerequisites. Passport strategies are a researched external extension and are absent here."
+  },
+  {
+    "id": "NS54",
+    "kind": "question",
+    "title": "Are these API schemas generated by Swagger?",
+    "priority": "extension",
+    "answer": "No. CONTRACT.md documents the interface and Zod enforces input; there is no Swagger/OpenAPI module or generated specification in this app. OpenAPI is a machine-readable API description and Swagger tooling can render it. Documentation generation and runtime validation are separate; a page of schemas does not prove actual route behavior matches.",
+    "lessons": [
+      "generated/06-http-contracts-and-validation.md",
+      "generated/19-source-and-requirement-coverage.md"
+    ],
+    "source": {
+      "path": "backend/package.json",
+      "symbol": "\"zod\"",
+      "excerpt": "    \"rxjs\": \"^7.8.2\",\n    \"zod\": \"^4.1.0\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"^10.0.1\",\n",
+      "sha256_at_inspection": "b22b09f975bd55e53ffb60eca9ff9b031d310426e8a20dd072b7b298e55559da"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/openapi/introduction"
+    ],
+    "concepts": [
+      "Swagger absent",
+      "OpenAPI absent"
+    ],
+    "scope": "Absent implementation",
+    "worked_example_url": "https://docs.nestjs.com/openapi/introduction",
+    "worked_example": "In the external Nest Swagger bootstrap example, build a document using DocumentBuilder and SwaggerModule.createDocument, then mount it with SwaggerModule.setup. Inspect the resulting paths and try a synthetic endpoint. Verify 400/401/error responses separately against real requests; this marketplace does not expose that generated document.",
+    "lesson_relation": "Lessons06/19 provide runtime-schema and source-inventory prerequisites. Generated Swagger/OpenAPI documentation is a researched external extension and is absent here."
+  },
+  {
+    "id": "NSI01",
+    "kind": "incident",
+    "title": "Login returns 401 even with a token: where do you look?",
+    "priority": "start now",
+    "answer": "Separate a missing or invalid credential from a permission failure. Use a synthetic test account, never print its bearer token in evidence.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md"
+    ],
+    "source": {
+      "path": "backend/src/common/auth.ts",
+      "symbol": "throw new UnauthorizedException('Invalid or expired bearer token');",
+      "excerpt": "  } catch {\n    throw new UnauthorizedException('Invalid or expired bearer token');\n  }\n}\n@Injectable()\n",
+      "sha256_at_inspection": "88f5ed7fab96d3c14878b048c4042a8222e825997ab451ddd8965b258d715d71"
+    },
+    "official_references": [
+      "https://github.com/auth0/node-jsonwebtoken"
+    ],
+    "concepts": [
+      "JWT incident"
+    ],
+    "scope": "Current source",
+    "symptom": "Authenticated requests return 401 after login or between services.",
+    "checks": "Check the Authorization Bearer header, expiry, clock, issuer/audience, allowlisted algorithm and that service secret configuration belongs to the same environment; inspect names/presence without exposing values.",
+    "repair": "Restore the intended environment configuration or log in again for an expired token. Keep verification and claim checks enabled.",
+    "recovery": "A fresh valid token returns /api/auth/me; an expired or tampered token remains 401, and another owner still cannot edit protected data."
+  },
+  {
+    "id": "NSI02",
+    "kind": "incident",
+    "title": "Catalog returns 400 or an unexpected search page: how do you diagnose it?",
+    "priority": "start now",
+    "answer": "Distinguish schema rejection from query behavior; changing validation just to make a request pass can break the API contract.",
+    "lessons": [
+      "generated/06-http-contracts-and-validation.md"
+    ],
+    "source": {
+      "path": "backend/src/catalog/provider.schema.ts",
+      "symbol": ".enum(['true', 'false'])",
+      "excerpt": "    available: z\n      .enum(['true', 'false'])\n      .transform((v) => v === 'true')\n      .optional(),\n    sort: z.enum(['recommended', 'rate-asc', 'rating']).default('recommended'),\n",
+      "sha256_at_inspection": "c3cead76e4b957e722c8e9245bf4d0dd1c822990ed731dc82baf46060c222cdf"
+    },
+    "official_references": [
+      "https://zod.dev/api"
+    ],
+    "concepts": [
+      "validation incident"
+    ],
+    "scope": "Current source",
+    "symptom": "A search returns 400, false behaves like true, or rate sorting looks wrong.",
+    "checks": "Compare query strings with searchSchema: available accepts only true/false, page is zero-based and size is 1–50. Inspect numeric casts and deterministic id sorting in CatalogService.",
+    "repair": "Correct the caller’s query and use the explicit boolean transform and numeric SQL cast. Keep bounds and unknown-key rejection.",
+    "recovery": "available=false&size=2 returns 200 with at most two matching items; available=yes stays 400. Rates sort numerically and equal rates have stable id ordering."
+  },
+  {
+    "id": "NSI03",
+    "kind": "incident",
+    "title": "All database-backed requests slow down: what do you measure first?",
+    "priority": "start now",
+    "answer": "Pool exhaustion can be a symptom of long work, leaked clients or locks. More connections are not an automatic repair.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md",
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/common/database.ts",
+      "symbol": "client.release();",
+      "excerpt": "    } finally {\n      client.release();\n    }\n  }\n  async onModuleDestroy(): Promise<void> {\n",
+      "sha256_at_inspection": "f24201468bda45ef27d5b7e6362bf5acf0f4ef67797067b92444b2410d134f3a"
+    },
+    "official_references": [
+      "https://node-postgres.com/features/pooling",
+      "https://www.postgresql.org/docs/current/monitoring-stats.html"
+    ],
+    "concepts": [
+      "pool incident"
+    ],
+    "scope": "Current source",
+    "symptom": "Requests queue or fail near the five-second connection-acquisition limit.",
+    "checks": "Inspect pool totalCount, idleCount and waitingCount in an isolated diagnostic; inspect pg_stat_activity and pg_locks for long transactions and blocked queries. Check finally release paths and the catalog lookup held inside inquiry transactions.",
+    "repair": "Fix leaked-client paths or slow/blocking work, bound dependency waits and tune capacity to database limits. Do not terminate sessions or increase max blindly.",
+    "recovery": "Under the same bounded test load, waitingCount returns to zero after completion, transaction age falls, and repeated successful and failed requests do not steadily consume connections."
+  },
+  {
+    "id": "NSI04",
+    "kind": "incident",
+    "title": "Startup reports a changed migration checksum: what is safe?",
+    "priority": "start now",
+    "answer": "The refusal protects reproducibility; deleting the recorded checksum hides drift rather than repairing it.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md"
+    ],
+    "source": {
+      "path": "backend/src/common/database.ts",
+      "symbol": "changed after application; create a new migration",
+      "excerpt": "            throw new Error(\n              `Migration ${version} changed after application; create a new migration`,\n            );\n        } else {\n          await client.query(sql);\n",
+      "sha256_at_inspection": "f24201468bda45ef27d5b7e6362bf5acf0f4ef67797067b92444b2410d134f3a"
+    },
+    "official_references": [
+      "https://node-postgres.com/features/transactions"
+    ],
+    "concepts": [
+      "migration incident"
+    ],
+    "scope": "Current source",
+    "symptom": "A service fails startup because an already applied migration changed.",
+    "checks": "Compare the deployed migration version/checksum with the intended source and review the edited SQL. Verify which service-owned database and environment are selected.",
+    "repair": "Restore the original applied file and express the change in a new numbered migration. Rehearse against an isolated database and retain a backup/recovery path.",
+    "recovery": "Old checksums still match, the new migration appears once, a second startup applies nothing, and service acceptance confirms compatible reads/writes."
+  },
+  {
+    "id": "NSI05",
+    "kind": "incident",
+    "title": "An inquiry response timed out: should you submit again?",
+    "priority": "start now",
+    "answer": "A lost response does not reveal whether the write committed. Preserve its original identity while investigating.",
+    "lessons": [
+      "generated/09-inquiries-idempotency-and-outbox.md"
+    ],
+    "source": {
+      "path": "backend/src/inquiries/inquiries.service.ts",
+      "symbol": "Idempotency key already used for a different inquiry",
+      "excerpt": "        if (previous.rows[0].request_hash !== hash)\n          throw new ConflictException('Idempotency key already used for a different inquiry');\n        return inquiryView(previous.rows[0]);\n      }\n      const target = await this.provider(input.providerId);\n",
+      "sha256_at_inspection": "4e1752037f93eac22b8f2017299f218afd6b04f32cda4a002a45c2655ffe3c85"
+    },
+    "official_references": [
+      "https://www.postgresql.org/docs/current/ddl-constraints.html",
+      "https://node-postgres.com/features/transactions"
+    ],
+    "concepts": [
+      "uncertain write incident"
+    ],
+    "scope": "Current source",
+    "symptom": "The browser times out after submitting an inquiry and the user is unsure whether it exists.",
+    "checks": "Recover the original client-scoped key and exact validated payload; check the participant inquiry list and the service’s idempotency path. Identify whether failure happened at catalog lookup, SQL commit or response transport.",
+    "repair": "Retry with the same key and payload. If content must change, first reconcile the original result; do not rotate the key automatically after timeout.",
+    "recovery": "Sequential and concurrent identical retries return one inquiry ID and one outbox event; changed content with the original key returns 409; no unrelated actor can retrieve it."
+  },
+  {
+    "id": "NSI06",
+    "kind": "incident",
+    "title": "Inquiry exists but the inbox is empty: how do you isolate the stage?",
+    "priority": "start now",
+    "answer": "Follow the durable record through publication and consumption instead of treating an empty inbox as proof the inquiry vanished.",
+    "lessons": [
+      "generated/09-inquiries-idempotency-and-outbox.md",
+      "generated/10-kafka-inbox-and-notifications.md",
+      "generated/16-reliability-and-senior-design.md"
+    ],
+    "source": {
+      "path": "backend/src/common/messaging.ts",
+      "symbol": "UPDATE outbox SET published_at=now()",
+      "excerpt": "        });\n        await client.query('UPDATE outbox SET published_at=now() WHERE event_id=$1', [\n          event.event_id,\n        ]);\n      }\n",
+      "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237"
+    },
+    "official_references": [
+      "https://kafka.js.org/docs/producing",
+      "https://kafka.js.org/docs/consuming"
+    ],
+    "concepts": [
+      "outbox incident"
+    ],
+    "scope": "Current source",
+    "symptom": "The client sees a committed inquiry while its provider sees no notification.",
+    "checks": "In local service-owned databases, inspect the inquiry’s outbox published_at and event identity, publisher retry logs, broker/topic availability and recipient filter. Inspect consumer CRASH error classification and its restart flag, group membership, committed offsets and actual offset/insert progress. A background consumer may have stopped while the outer loop still sleeps; a green serving probe or stale worker flag is insufficient.",
+    "repair": "Repair the failing local broker/configuration or database dependency. Publisher retries can resume its durable outbox work. For a stopped non-restarting consumer, perform a controlled LOCAL notifications-process restart after the cause is fixed, retaining its group ID, committed offsets and event IDs. Do not insert a replacement inquiry, rotate the group or mark an unsent row published.",
+    "recovery": "During a local rehearsal, verify the original outbox row becomes published, consumer offsets and durable inserts advance, the expected recipient receives one inbox row, replay still leaves one row and an unrelated actor sees none. Explicitly record whether restart was manual; these criteria do not prove automatic recovery."
+  },
+  {
+    "id": "NSI07",
+    "kind": "incident",
+    "title": "A consumer repeatedly fails on one record: what happens next?",
+    "priority": "start now",
+    "answer": "Malformed JSON or a schema failure prevents the handler from completing. KafkaJS may stop on a non-retriable processing error while this application’s outer loop keeps sleeping; automatic reconnect is not guaranteed. A quarantine/dead-letter workflow is absent. Skipping needs an explicit policy and durable evidence.",
+    "lessons": [
+      "generated/10-kafka-inbox-and-notifications.md"
+    ],
+    "source": {
+      "path": "backend/src/common/messaging.ts",
+      "symbol": "throw new Error('Event payload missing; offset is not acknowledged');",
+      "excerpt": "            if (!message.value)\n              throw new Error('Event payload missing; offset is not acknowledged');\n            // Await durable insert before KafkaJS acknowledges the offset. Replays are deduplicated in SQL.\n            await this.notifications.consume(JSON.parse(message.value.toString('utf8')));\n          },\n",
+      "sha256_at_inspection": "ad4c562971987d7ec8dfb8d733074cbd95eedce362cff87b4abe32c6350d7237"
+    },
+    "official_references": [
+      "https://kafka.js.org/docs/consuming"
+    ],
+    "concepts": [
+      "poison record incident"
+    ],
+    "scope": "Absent implementation",
+    "symptom": "The consumer logs the same parse/validation error and its partition makes no useful progress.",
+    "checks": "Identify topic, partition, offset and safe event identity; inspect the failure category without publishing private payloads. Read the CRASH restart flag and check actual processing progress and group membership. Distinguish transient database failures from deterministic malformed JSON or schema incompatibility; readiness alone cannot prove progress.",
+    "repair": "Repair transient dependencies or producer/schema compatibility. If the consumer stopped without restart, perform a controlled LOCAL process restart with the same group and offsets only after fixing the cause. The same poison record will fail again unless corrected or handled through a designed durable quarantine/replay policy; do not delete offsets merely to make readiness green.",
+    "recovery": "A local rehearsal must show the original failing record is successfully processed after compatible repair, or durably retained/quarantined by a separately implemented policy; later valid records advance and replay produces no duplicate inbox effect. Record the manual restart. Existing source does not establish quarantine or automatic recovery.",
+    "worked_example_url": "https://docs.nestjs.com/reliability/outbox#retries-and-the-dead-letter-queue",
+    "worked_example": "The current Nest outbox tutorial provides a separate order service with persistent dead-letter records and administrative requeue. In that example, force a handler to fail through its retry limit, inspect the recorded reason, repair the handler and requeue the same message. Verify one resulting business effect. Its package/version and storage setup are an external design example; this marketplace has no such quarantine flow.",
+    "lesson_relation": "Lesson10 teaches decoding, validation and offset failure boundaries. Crash/restart classification and the external durable quarantine policy are researched extensions; quarantine is absent from current implementation."
+  },
+  {
+    "id": "NSI08",
+    "kind": "incident",
+    "title": "Local TLS connection fails after certificate changes: what stays enabled?",
+    "priority": "start now",
+    "answer": "Keep peer verification while checking certificate trust, hostname, expiry and configuration; an encrypted connection to an unverified peer is insufficient.",
+    "lessons": [
+      "generated/07-postgresql-and-transactions.md"
+    ],
+    "source": {
+      "path": "backend/src/common/connections.ts",
+      "symbol": "DB_URL ssl parameters",
+      "excerpt": "    if ([...url.searchParams.keys()].some((key) => key.toLowerCase().startsWith('ssl')))\n      throw new Error('Use DB_SSL and its CA settings instead of DB_URL ssl parameters');\n    connection = { connectionString: process.env.DB_URL };\n  } else {\n    const port = Number(process.env.DB_PORT ?? '5432');\n",
+      "sha256_at_inspection": "00d0ac41cb814d758ca49ed9d0ca67df6c1caf84bab90ddd02eae1274d0ec4cf"
+    },
+    "official_references": [
+      "https://node-postgres.com/features/ssl",
+      "https://kafka.js.org/docs/configuration"
+    ],
+    "concepts": [
+      "TLS incident"
+    ],
+    "scope": "Current source",
+    "symptom": "A database or Kafka client fails with certificate, hostname or authentication errors.",
+    "checks": "Inspect the configured host, certificate authority chain and expiry, clock, TLS flag and environment scope. For pg, check that URL ssl parameters do not replace the explicit CA object. For Kafka, distinguish broker reachability from SCRAM credentials.",
+    "repair": "Restore the correct CA/hostname/credential configuration for the selected environment. Retain rejectUnauthorized true and fix the trust chain instead of disabling checks.",
+    "recovery": "The intended peer connects with verification enabled; a wrong CA or hostname still fails. Re-run a real local query or message round trip, not only a TCP connection probe."
+  },
+  {
+    "id": "NSI09",
+    "kind": "incident",
+    "title": "Login rate limiting changes behind a proxy or replica: why?",
+    "priority": "start now",
+    "answer": "Process-local state and proxy address interpretation affect the observed rate limit. A public fix needs tests for both abuse resistance and legitimate users.",
+    "lessons": [
+      "generated/08-identity-jwt-and-security.md"
+    ],
+    "source": {
+      "path": "backend/src/identity/identity.controller.ts",
+      "symbol": "const key = request.ip ?? 'unknown';",
+      "excerpt": "    for (const [key, value] of this.attempts) if (value.until <= now) this.attempts.delete(key);\n    const key = request.ip ?? 'unknown';\n    const attempts = this.attempts.get(key) ?? { count: 0, until: now + 60_000 };\n    if (++attempts.count > 30)\n      throw new HttpException('Too many login attempts; retry in one minute', 429);\n",
+      "sha256_at_inspection": "0f2520bb6f64bd56e107efadfeda0bcd44182f5d695e53b9a3ce93fad0514ce2"
+    },
+    "official_references": [
+      "https://docs.nestjs.com/security/rate-limiting",
+      "https://expressjs.com/en/guide/behind-proxies.html"
+    ],
+    "concepts": [
+      "throttle incident"
+    ],
+    "scope": "Current source",
+    "symptom": "Many users share a 429 limit, or adding replicas allows more attempts than expected.",
+    "checks": "Inspect request.ip and trusted proxy configuration using synthetic traffic; compare counts per process and the one-minute expiry. Check whether load balancing distributes attempts across independent Maps.",
+    "repair": "Configure only the actual trusted proxy hops and adopt a bounded shared counter if a global limit is required. Do not trust arbitrary forwarded headers or remove throttling.",
+    "recovery": "Synthetic users receive the intended independent limits; spoofed forwarding headers cannot bypass them; repeated attempts across replicas follow the documented policy and expire as expected."
+  }
+]

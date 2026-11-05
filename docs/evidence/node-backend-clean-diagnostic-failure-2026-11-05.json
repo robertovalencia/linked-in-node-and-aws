@@ -1,0 +1,113 @@
+{
+  "date": "2026-11-05",
+  "scope": "Clean local Git candidate with only intended study deltas; no network, cloud or publication.",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--quiet",
+        "--shared",
+        "--no-checkout",
+        "--local",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+        "/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-0wgfgbd3/candidate"
+      ],
+      "cwd_scope": "clean candidate",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "checkout",
+        "--quiet",
+        "HEAD"
+      ],
+      "cwd_scope": "clean candidate",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/package-node-study.py"
+      ],
+      "cwd_scope": "clean candidate",
+      "exit_code": 0,
+      "stdout": "Wrote NodeJs-AWS-study-pack.zip: 167 managed files, 84 lessons; no personal notes.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check-cloud-study.py",
+        "--repository",
+        "/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-0wgfgbd3/candidate"
+      ],
+      "cwd_scope": "clean candidate",
+      "exit_code": 0,
+      "stdout": "{\"questionnaire\": {\"questions\": 30, \"incidents\": 12, \"source_excerpts\": 42, \"distinct_mapped_lessons\": 60, \"questionnaire_local_links\": 202, \"absent_feature_examples\": 4}, \"node_questionnaire\": {\"questions\": 137, \"incidents\": 24, \"source_files\": 37, \"absent_examples\": 28, \"concept_rows\": 290, \"local_links\": 1479, \"archive_members\": null}, \"lessons\": 84, \"cloud_lessons\": 64, \"mapped_concepts\": 321, \"local_links\": 910, \"unique_pinned_source_ranges\": 279, \"exact_manifest_excerpts\": 31}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check-node-questionnaire.py",
+        "--archive"
+      ],
+      "cwd_scope": "clean candidate",
+      "exit_code": 0,
+      "stdout": "{\"questions\": 137, \"incidents\": 24, \"source_files\": 37, \"absent_examples\": 28, \"concept_rows\": 290, \"local_links\": 1479, \"archive_members\": 167}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check-node-questionnaire.test.py"
+      ],
+      "cwd_scope": "clean candidate",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ".........F.............\n======================================================================\nFAIL: test_missing_card (__main__.CompanionContract)\n----------------------------------------------------------------------\nValueError: Wrong rendered question/incident counts\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-0wgfgbd3/candidate/scripts/check-node-questionnaire.test.py\", line 48, in test_missing_card\n    self.data['items'].pop();self.save();self.bad('IDs')\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-0wgfgbd3/candidate/scripts/check-node-questionnaire.test.py\", line 37, in bad\n    with self.assertRaisesRegex(ValueError,pattern):checker.validate(self.pack,self.repo)\nAssertionError: \"IDs\" does not match \"Wrong rendered question/incident counts\"\n\n----------------------------------------------------------------------\nRan 23 tests in 4.773s\n\nFAILED (failures=1)\n"
+    }
+  ],
+  "intended_files_copied": [
+    "README.md",
+    "docs/nodejs-beginner/README.md",
+    "docs/progress.html",
+    "docs/nodejs-aws-study-path/README.md",
+    "docs/specs/requirements.md",
+    "docs/traceability.md",
+    "docs/reviews.md",
+    "scripts/check-cloud-study.py",
+    "scripts/package-node-study.py",
+    "scripts/render-node-questionnaire.py",
+    "scripts/check-node-questionnaire.py",
+    "scripts/check-node-questionnaire.test.py",
+    "scripts/check-node-study-links.py",
+    "scripts/check-node-study-clean-checkout.py",
+    "docs/nodejs-aws-study-path/node-backend-progress.md",
+    "docs/nodejs-aws-study-path/node-backend-services.md",
+    "docs/nodejs-aws-study-path/node-backend-questionnaire.md",
+    "docs/nodejs-aws-study-path/node-backend-operations.md",
+    "docs/nodejs-aws-study-path/node-backend-runtime.md",
+    "docs/nodejs-aws-study-path/node-backend-coverage.md",
+    "docs/nodejs-aws-study-path/node-backend-questionnaire-map.json",
+    "docs/nodejs-aws-study-path/node-backend-coverage.json",
+    "docs/nodejs-aws-study-path/node-backend-lesson-inventory.json",
+    "docs/nodejs-aws-study-path/node-runtime-items.json",
+    "docs/nodejs-aws-study-path/node-operations-items.json",
+    "docs/nodejs-aws-study-path/node-services-items.json",
+    "docs/nodejs-aws-study-path/evidence/node-backend-source-context.md",
+    "docs/nodejs-aws-study-path/labs/node-runtime/run.mjs",
+    "docs/nodejs-aws-study-path/labs/node-runtime/README.md"
+  ],
+  "external_profile_access_required": false,
+  "checker_reads_external_profile": false,
+  "external_profile_explanation": "Checker reads only the retained inventory and candidate source; no external-profile filesystem access is needed.",
+  "status": "FAIL",
+  "error": "['python3', 'scripts/check-node-questionnaire.test.py']: .........F.............\n======================================================================\nFAIL: test_missing_card (__main__.CompanionContract)\n----------------------------------------------------------------------\nValueError: Wrong rendered question/incident counts\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-0wgfgbd3/candidate/scripts/check-node-questionnaire.test.py\", line 48, in test_missing_card\n    self.data['items'].pop();self.save();self.bad('IDs')\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-0wgfgbd3/candidate/scripts/check-node-questionnaire.test.py\", line 37, in bad\n    with self.assertRaisesRegex(ValueError,pattern):checker.validate(self.pack,self.repo)\nAssertionError: \"IDs\" does not match \"Wrong rendered question/incident counts\"\n\n----------------------------------------------------------------------\nRan 23 tests in 4.773s\n\nFAILED (failures=1)\n"
+}

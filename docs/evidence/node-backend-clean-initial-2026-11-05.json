@@ -1,0 +1,90 @@
+{
+  "date": "2026-11-05",
+  "scope": "Clean local Git candidate with only intended study deltas; no network, cloud or publication.",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--quiet",
+        "--shared",
+        "--no-checkout",
+        "--local",
+        "/Users/robertovalencia/Documents/Business/linked-in-node-and-aws",
+        "/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate"
+      ],
+      "cwd_scope": "clean candidate",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "checkout",
+        "--quiet",
+        "HEAD"
+      ],
+      "cwd_scope": "clean candidate",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/package-node-study.py"
+      ],
+      "cwd_scope": "clean candidate",
+      "exit_code": 0,
+      "stdout": "Wrote NodeJs-AWS-study-pack.zip: 167 managed files, 84 lessons; no personal notes.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check-cloud-study.py",
+        "--repository",
+        "/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate"
+      ],
+      "cwd_scope": "clean candidate",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/scripts/check-node-questionnaire.py\", line 137, in <module>\n    print(json.dumps(validate(PACK,args.repository,args.archive)))\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/scripts/check-node-questionnaire.py\", line 112, in validate\n    require('node-backend-questionnaire.md' in nav.read_text(),f'Missing navigation {nav}')\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/scripts/check-node-questionnaire.py\", line 29, in require\n    raise ValueError(message)\nValueError: Missing navigation /private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/docs/nodejs-aws-study-path/README.md\nTraceback (most recent call last):\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/scripts/check-cloud-study.py\", line 59, in <module>\n    node_questionnaire = json.loads(subprocess.check_output(['python3', str(root / 'scripts/check-node-questionnaire.py'), '--repository', str(repo)], text=True))\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 424, in check_output\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['python3', '/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/scripts/check-node-questionnaire.py', '--repository', '/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate']' returned non-zero exit status 1.\n"
+    }
+  ],
+  "intended_files_copied": [
+    "README.md",
+    "docs/nodejs-beginner/README.md",
+    "docs/progress.html",
+    "docs/specs/requirements.md",
+    "docs/traceability.md",
+    "docs/reviews.md",
+    "scripts/check-cloud-study.py",
+    "scripts/package-node-study.py",
+    "scripts/render-node-questionnaire.py",
+    "scripts/check-node-questionnaire.py",
+    "scripts/check-node-questionnaire.test.py",
+    "scripts/check-node-study-links.py",
+    "scripts/check-node-study-clean-checkout.py",
+    "docs/nodejs-aws-study-path/node-backend-progress.md",
+    "docs/nodejs-aws-study-path/node-backend-services.md",
+    "docs/nodejs-aws-study-path/node-backend-questionnaire.md",
+    "docs/nodejs-aws-study-path/node-backend-operations.md",
+    "docs/nodejs-aws-study-path/node-backend-runtime.md",
+    "docs/nodejs-aws-study-path/node-backend-coverage.md",
+    "docs/nodejs-aws-study-path/node-backend-questionnaire-map.json",
+    "docs/nodejs-aws-study-path/node-backend-coverage.json",
+    "docs/nodejs-aws-study-path/node-backend-lesson-inventory.json",
+    "docs/nodejs-aws-study-path/node-runtime-items.json",
+    "docs/nodejs-aws-study-path/node-operations-items.json",
+    "docs/nodejs-aws-study-path/node-services-items.json",
+    "docs/nodejs-aws-study-path/evidence/node-backend-source-context.md",
+    "docs/nodejs-aws-study-path/labs/node-runtime/run.mjs",
+    "docs/nodejs-aws-study-path/labs/node-runtime/README.md"
+  ],
+  "external_profile_available_to_checker": false,
+  "external_profile_explanation": "Checker reads only the retained inventory and candidate source; no external-profile filesystem access is needed.",
+  "status": "FAIL",
+  "error": "['python3', 'scripts/check-cloud-study.py', '--repository', '/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate']: Traceback (most recent call last):\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/scripts/check-node-questionnaire.py\", line 137, in <module>\n    print(json.dumps(validate(PACK,args.repository,args.archive)))\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/scripts/check-node-questionnaire.py\", line 112, in validate\n    require('node-backend-questionnaire.md' in nav.read_text(),f'Missing navigation {nav}')\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/scripts/check-node-questionnaire.py\", line 29, in require\n    raise ValueError(message)\nValueError: Missing navigation /private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/docs/nodejs-aws-study-path/README.md\nTraceback (most recent call last):\n  File \"/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/scripts/check-cloud-study.py\", line 59, in <module>\n    node_questionnaire = json.loads(subprocess.check_output(['python3', str(root / 'scripts/check-node-questionnaire.py'), '--repository', str(repo)], text=True))\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 424, in check_output\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['python3', '/private/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate/scripts/check-node-questionnaire.py', '--repository', '/var/folders/x0/q4p8zyvj7t56zkb1wwlcj_5w0000gn/T/node-study-clean-q1c42d7j/candidate']' returned non-zero exit status 1.\n"
+}

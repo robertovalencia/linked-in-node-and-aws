@@ -1,0 +1,3322 @@
+{
+  "schema_version": 1,
+  "reviewed_item_ids": [
+    "NR01",
+    "NR02",
+    "NR03",
+    "NR04",
+    "NR05",
+    "NR06",
+    "NR07",
+    "NR08",
+    "NR09",
+    "NR10",
+    "NR11",
+    "NR12",
+    "NR13",
+    "NR14",
+    "NR15",
+    "NR16",
+    "NR17",
+    "NR18",
+    "NR19",
+    "NR20",
+    "NR21",
+    "NR22",
+    "NR23",
+    "NR24",
+    "NR25",
+    "NR26",
+    "NR27",
+    "NR28",
+    "NR29",
+    "NR30",
+    "NR31",
+    "NR32",
+    "NR33",
+    "NR34",
+    "NR35",
+    "NR36",
+    "NR37",
+    "NR38",
+    "NR39",
+    "NR40",
+    "NR41",
+    "NR42",
+    "NR43",
+    "NRI01",
+    "NRI02",
+    "NRI03",
+    "NRI04",
+    "NRI05",
+    "NRI06",
+    "NS01",
+    "NS02",
+    "NS03",
+    "NS04",
+    "NS05",
+    "NS06",
+    "NS07",
+    "NS08",
+    "NS09",
+    "NS10",
+    "NS11",
+    "NS12",
+    "NS13",
+    "NS14",
+    "NS15",
+    "NS16",
+    "NS17",
+    "NS18",
+    "NS19",
+    "NS20",
+    "NS21",
+    "NS22",
+    "NS23",
+    "NS24",
+    "NS25",
+    "NS26",
+    "NS27",
+    "NS28",
+    "NS29",
+    "NS30",
+    "NS31",
+    "NS32",
+    "NS33",
+    "NS34",
+    "NS35",
+    "NS36",
+    "NS37",
+    "NS38",
+    "NS39",
+    "NS40",
+    "NS41",
+    "NS42",
+    "NS43",
+    "NS44",
+    "NS45",
+    "NS46",
+    "NS47",
+    "NS48",
+    "NS49",
+    "NS50",
+    "NS51",
+    "NS52",
+    "NS53",
+    "NS54",
+    "NSI01",
+    "NSI02",
+    "NSI03",
+    "NSI04",
+    "NSI05",
+    "NSI06",
+    "NSI07",
+    "NSI08",
+    "NSI09",
+    "NO01",
+    "NO02",
+    "NO03",
+    "NO04",
+    "NO05",
+    "NO06",
+    "NO07",
+    "NO08",
+    "NO09",
+    "NO10",
+    "NO11",
+    "NO12",
+    "NO13",
+    "NO14",
+    "NO15",
+    "NO16",
+    "NO17",
+    "NO18",
+    "NO19",
+    "NO20",
+    "NO21",
+    "NO22",
+    "NO23",
+    "NO24",
+    "NO25",
+    "NO26",
+    "NO27",
+    "NO28",
+    "NO29",
+    "NO30",
+    "NO31",
+    "NO32",
+    "NO33",
+    "NO34",
+    "NO35",
+    "NO36",
+    "NO37",
+    "NO38",
+    "NO39",
+    "NO40",
+    "NOI01",
+    "NOI02",
+    "NOI03",
+    "NOI04",
+    "NOI05",
+    "NOI06",
+    "NOI07",
+    "NOI08",
+    "NOI09"
+  ],
+  "lessons": [
+    {
+      "lesson_id": "00",
+      "lesson": "generated/00-roadmap-and-mastery-gates.md",
+      "disposition": "index/roadmap routes to its direct teaching lessons",
+      "aws_cards": [],
+      "reason": "Roadmap or coverage index; extract its backend rows and use direct teaching lessons for explanations."
+    },
+    {
+      "lesson_id": "01",
+      "lesson": "generated/01-javascript-language-foundations.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "02",
+      "lesson": "generated/02-typescript-and-modules.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "03",
+      "lesson": "generated/03-node-runtime-and-async.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "04",
+      "lesson": "generated/04-node-http-processes-and-streams.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "05",
+      "lesson": "generated/05-nestjs-service-wiring.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "06",
+      "lesson": "generated/06-http-contracts-and-validation.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "07",
+      "lesson": "generated/07-postgresql-and-transactions.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q12",
+        "I05"
+      ],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "08",
+      "lesson": "generated/08-identity-jwt-and-security.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q05"
+      ],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "09",
+      "lesson": "generated/09-inquiries-idempotency-and-outbox.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q14",
+        "I08"
+      ],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "10",
+      "lesson": "generated/10-kafka-inbox-and-notifications.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q14",
+        "I06",
+        "I08"
+      ],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "11",
+      "lesson": "generated/11-react-foundations-and-state.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "React rendering/state/accessibility concepts are frontend; backend relevance is API-owned persistence and UI checks never replacing server validation."
+    },
+    {
+      "lesson_id": "12",
+      "lesson": "generated/12-react-effects-http-and-accessibility.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "UI effects/accessibility are frontend; HTTP errors, abort and uncertain writes are directly relevant to API callers."
+    },
+    {
+      "lesson_id": "13",
+      "lesson": "generated/13-testing-and-debugging.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "14",
+      "lesson": "generated/14-local-runtime-and-containers.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "15",
+      "lesson": "generated/15-aws-terraform-and-delivery.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node deployment and configuration boundaries plus separate AWS/Terraform concepts."
+    },
+    {
+      "lesson_id": "16",
+      "lesson": "generated/16-reliability-and-senior-design.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "17",
+      "lesson": "generated/17-ai-assisted-engineering-and-toolchain.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "18",
+      "lesson": "generated/18-interview-drills-and-capstone.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Node.js language/runtime, service implementation, validation or backend operations taught directly."
+    },
+    {
+      "lesson_id": "19",
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "disposition": "index/roadmap routes to its direct teaching lessons",
+      "aws_cards": [],
+      "reason": "Roadmap or coverage index; extract its backend rows and use direct teaching lessons for explanations."
+    },
+    {
+      "lesson_id": "20",
+      "lesson": "generated/20-cloud-roadmap-and-lab.md",
+      "disposition": "index/roadmap routes to its direct teaching lessons",
+      "aws_cards": [
+        "Q01"
+      ],
+      "reason": "Roadmap or coverage index; extract its backend rows and use direct teaching lessons for explanations."
+    },
+    {
+      "lesson_id": "21",
+      "lesson": "generated/21-aws-accounts-regions-and-cli.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q02"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "22",
+      "lesson": "generated/22-aws-iam-roles-and-policies.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q03",
+        "Q04",
+        "I02"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "23",
+      "lesson": "generated/23-aws-vpc-subnets-and-routing.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q06",
+        "I04"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "24",
+      "lesson": "generated/24-aws-security-groups-and-ssm.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q07"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "25",
+      "lesson": "generated/25-aws-ec2-ebs-and-bootstrap.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q10",
+        "Q15"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "26",
+      "lesson": "generated/26-aws-docker-and-ecr.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q11",
+        "I01"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "27",
+      "lesson": "generated/27-aws-s3-artifacts-and-secrets.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q08",
+        "Q13",
+        "Q15",
+        "Q28"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "28",
+      "lesson": "generated/28-aws-data-and-messaging-decisions.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q12",
+        "Q14",
+        "I06"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "29",
+      "lesson": "generated/29-aws-observability-and-incidents.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q16",
+        "Q17",
+        "I03",
+        "I08"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "30",
+      "lesson": "generated/30-aws-costs-and-cleanup.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q18",
+        "I12"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "31",
+      "lesson": "generated/31-aws-production-design-tradeoffs.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "32",
+      "lesson": "generated/32-terraform-hcl-and-first-local-lab.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q19"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "33",
+      "lesson": "generated/33-terraform-providers-versions-and-init.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q20",
+        "I09"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "34",
+      "lesson": "generated/34-terraform-inputs-locals-and-outputs.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q21"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "35",
+      "lesson": "generated/35-terraform-graph-loops-and-modules.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q19",
+        "Q22"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "36",
+      "lesson": "generated/36-terraform-state-locking-and-bootstrap.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q23",
+        "Q24",
+        "I09"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "37",
+      "lesson": "generated/37-terraform-plan-apply-and-drift.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q25",
+        "Q26",
+        "I10"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "38",
+      "lesson": "generated/38-terraform-lifecycle-import-and-refactoring.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q27",
+        "I10"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "39",
+      "lesson": "generated/39-terraform-validation-and-mocked-tests.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q29"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "40",
+      "lesson": "generated/40-aws-release-pipeline-and-oidc.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q05",
+        "Q11",
+        "Q25",
+        "I11"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "41",
+      "lesson": "generated/41-aws-ssm-deployment-and-rollback.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "I11"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "42",
+      "lesson": "generated/42-aws-terraform-troubleshooting-workbook.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "43",
+      "lesson": "generated/43-aws-terraform-capstone-and-interview.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "44",
+      "lesson": "generated/44-cloud-complete-syllabus-and-mastery-map.md",
+      "disposition": "index/roadmap routes to its direct teaching lessons",
+      "aws_cards": [],
+      "reason": "Roadmap or coverage index; extract its backend rows and use direct teaching lessons for explanations."
+    },
+    {
+      "lesson_id": "45",
+      "lesson": "generated/45-aws-account-governance-and-landing-zones.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q02"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "46",
+      "lesson": "generated/46-iam-policy-evaluation-and-federation.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q03",
+        "Q05",
+        "I02"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "47",
+      "lesson": "generated/47-vpc-cidr-ipv6-and-subnet-design.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q02",
+        "Q06"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "48",
+      "lesson": "generated/48-ingress-egress-security-groups-and-nacls.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q07",
+        "I04"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "49",
+      "lesson": "generated/49-private-connectivity-nat-and-endpoints.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q06",
+        "Q08",
+        "I01",
+        "I04"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "50",
+      "lesson": "generated/50-dns-route53-acm-and-tls.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q09",
+        "I07"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "51",
+      "lesson": "generated/51-alb-target-groups-and-health-checks.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q09",
+        "Q16",
+        "I03",
+        "I07"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "52",
+      "lesson": "generated/52-cloudfront-s3-origins-and-caching.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "53",
+      "lesson": "generated/53-ecs-fargate-tasks-and-services.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q01",
+        "Q10",
+        "Q11",
+        "Q16",
+        "I01",
+        "I03"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "54",
+      "lesson": "generated/54-ecs-networking-identity-and-secrets.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q04",
+        "I01",
+        "I02",
+        "I05"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "55",
+      "lesson": "generated/55-ecs-scaling-and-deployment-strategies.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "I11"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "56",
+      "lesson": "generated/56-ec2-autoscaling-and-eks-comparison.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q10"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "57",
+      "lesson": "generated/57-rds-postgresql-backups-and-failover.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q12",
+        "Q13",
+        "I05",
+        "I11"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "58",
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q30"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "59",
+      "lesson": "generated/59-msk-kafka-security-and-operations.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q14",
+        "I06"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "60",
+      "lesson": "generated/60-sqs-sns-eventbridge-and-workflows.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "61",
+      "lesson": "generated/61-lambda-apigateway-and-serverless-design.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q30"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "62",
+      "lesson": "generated/62-s3-ebs-efs-storage-and-recovery.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q15",
+        "Q18",
+        "I12"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "63",
+      "lesson": "generated/63-kms-secrets-and-rotation.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q13",
+        "Q28",
+        "I02",
+        "I05",
+        "I06"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "64",
+      "lesson": "generated/64-waf-shield-and-security-detection.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "65",
+      "lesson": "generated/65-cloudwatch-agent-logs-metrics-and-alarms.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q16",
+        "Q17",
+        "I03"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "66",
+      "lesson": "generated/66-cloudtrail-config-and-audit-evidence.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q17"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "67",
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q17"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "68",
+      "lesson": "generated/68-disaster-recovery-and-resilience-testing.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q17",
+        "I11"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "69",
+      "lesson": "generated/69-cloud-cost-allocation-and-optimization.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q18",
+        "I12"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "70",
+      "lesson": "generated/70-terraform-expressions-and-type-system.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q19",
+        "Q21"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "71",
+      "lesson": "generated/71-terraform-modules-and-contracts.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q22"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "72",
+      "lesson": "generated/72-terraform-provider-aliases-and-environments.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q20",
+        "Q22"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "73",
+      "lesson": "generated/73-terraform-remote-state-and-access-control.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q22",
+        "Q23",
+        "Q24",
+        "I09"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "74",
+      "lesson": "generated/74-terraform-sensitive-and-ephemeral-values.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q13",
+        "Q28"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "75",
+      "lesson": "generated/75-terraform-import-moves-and-provider-upgrades.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q20",
+        "Q27"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "76",
+      "lesson": "generated/76-terraform-testing-and-policy-as-code.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q29"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "77",
+      "lesson": "generated/77-terraform-team-ci-and-approval-workflows.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q05",
+        "Q25",
+        "Q29",
+        "I10"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "78",
+      "lesson": "generated/78-terraform-drift-recovery-and-state-surgery.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q24",
+        "Q26",
+        "I09",
+        "I10",
+        "I12"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "79",
+      "lesson": "generated/79-cloud-threat-model-and-security-review.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "80",
+      "lesson": "generated/80-staged-modernization-and-traceability.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q01",
+        "Q26",
+        "Q30",
+        "I11",
+        "I12"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    },
+    {
+      "lesson_id": "81",
+      "lesson": "generated/81-network-security-local-lab.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q07"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "82",
+      "lesson": "generated/82-terraform-advanced-local-lab.md",
+      "disposition": "infrastructure-only; preserve exact lesson and AWS companion mapping",
+      "aws_cards": [
+        "Q27"
+      ],
+      "reason": "Infrastructure/governance/network/IaC-specific material; preserve exact lesson and route to the existing AWS/Terraform companion rather than invent Node implementation."
+    },
+    {
+      "lesson_id": "83",
+      "lesson": "generated/83-professional-cloud-capstone-and-question-bank.md",
+      "disposition": "direct/mixed backend mechanisms mapped below",
+      "aws_cards": [
+        "Q30"
+      ],
+      "reason": "Cloud-specific service setup belongs to the AWS companion; listed backend semantics must also be covered by the Node/backend questionnaire."
+    }
+  ],
+  "concepts": [
+    {
+      "lesson": "generated/01-javascript-language-foundations.md",
+      "concept": "Bindings, values and mutation",
+      "item_ids": [
+        "NR02"
+      ]
+    },
+    {
+      "lesson": "generated/01-javascript-language-foundations.md",
+      "concept": "Lexical scope and closures",
+      "item_ids": [
+        "NR03"
+      ]
+    },
+    {
+      "lesson": "generated/01-javascript-language-foundations.md",
+      "concept": "Destructuring and object spread",
+      "item_ids": [
+        "NR04"
+      ]
+    },
+    {
+      "lesson": "generated/01-javascript-language-foundations.md",
+      "concept": "Truthiness, optional chaining and nullish defaults",
+      "item_ids": [
+        "NR05"
+      ]
+    },
+    {
+      "lesson": "generated/01-javascript-language-foundations.md",
+      "concept": "Arrays, callbacks, Set and Map",
+      "item_ids": [
+        "NR06"
+      ]
+    },
+    {
+      "lesson": "generated/01-javascript-language-foundations.md",
+      "concept": "Errors and runtime narrowing",
+      "item_ids": [
+        "NR07"
+      ]
+    },
+    {
+      "lesson": "generated/02-typescript-and-modules.md",
+      "concept": "unknown versus any",
+      "item_ids": [
+        "NR08"
+      ]
+    },
+    {
+      "lesson": "generated/02-typescript-and-modules.md",
+      "concept": "Literal unions and as const",
+      "item_ids": [
+        "NR09"
+      ]
+    },
+    {
+      "lesson": "generated/02-typescript-and-modules.md",
+      "concept": "Generic functions describe relationships",
+      "item_ids": [
+        "NR10"
+      ]
+    },
+    {
+      "lesson": "generated/02-typescript-and-modules.md",
+      "concept": "Types, interfaces and runtime tokens",
+      "item_ids": [
+        "NR11"
+      ]
+    },
+    {
+      "lesson": "generated/02-typescript-and-modules.md",
+      "concept": "ES modules and emitted file paths",
+      "item_ids": [
+        "NR12"
+      ]
+    },
+    {
+      "lesson": "generated/02-typescript-and-modules.md",
+      "concept": "Decorator metadata is a compiler/runtime agreement",
+      "item_ids": [
+        "NR13"
+      ]
+    },
+    {
+      "lesson": "generated/03-node-runtime-and-async.md",
+      "concept": "await suspends one continuation",
+      "item_ids": [
+        "NR14"
+      ]
+    },
+    {
+      "lesson": "generated/03-node-runtime-and-async.md",
+      "concept": "Worker pool versus JavaScript CPU work",
+      "item_ids": [
+        "NR16"
+      ]
+    },
+    {
+      "lesson": "generated/03-node-runtime-and-async.md",
+      "concept": "Promise aggregation is not a concurrency limiter",
+      "item_ids": [
+        "NR17"
+      ]
+    },
+    {
+      "lesson": "generated/03-node-runtime-and-async.md",
+      "concept": "Timers, delays and unref",
+      "item_ids": [
+        "NR18"
+      ]
+    },
+    {
+      "lesson": "generated/03-node-runtime-and-async.md",
+      "concept": "Detached promises need their own error policy",
+      "item_ids": [
+        "NR20"
+      ]
+    },
+    {
+      "lesson": "generated/03-node-runtime-and-async.md",
+      "concept": "Connection budgets create backpressure",
+      "item_ids": [
+        "NR21"
+      ]
+    },
+    {
+      "lesson": "generated/04-node-http-processes-and-streams.md",
+      "concept": "HTTP parsing versus application validation",
+      "item_ids": [
+        "NR23"
+      ]
+    },
+    {
+      "lesson": "generated/04-node-http-processes-and-streams.md",
+      "concept": "Buffer measures bytes",
+      "item_ids": [
+        "NR24"
+      ]
+    },
+    {
+      "lesson": "generated/04-node-http-processes-and-streams.md",
+      "concept": "fs/promises and bounded file reads",
+      "item_ids": [
+        "NR25"
+      ]
+    },
+    {
+      "lesson": "generated/04-node-http-processes-and-streams.md",
+      "concept": "cwd versus module location",
+      "item_ids": [
+        "NR26"
+      ]
+    },
+    {
+      "lesson": "generated/04-node-http-processes-and-streams.md",
+      "concept": "Child processes and watch mode",
+      "item_ids": [
+        "NR29"
+      ]
+    },
+    {
+      "lesson": "generated/04-node-http-processes-and-streams.md",
+      "concept": "Signals and graceful resource cleanup",
+      "item_ids": [
+        "NR31"
+      ]
+    },
+    {
+      "lesson": "generated/05-nestjs-service-wiring.md",
+      "concept": "Decorators attach metadata",
+      "item_ids": [
+        "NS01"
+      ]
+    },
+    {
+      "lesson": "generated/05-nestjs-service-wiring.md",
+      "concept": "The dependency-injection container",
+      "item_ids": [
+        "NS02"
+      ]
+    },
+    {
+      "lesson": "generated/05-nestjs-service-wiring.md",
+      "concept": "Constructor parameter properties",
+      "item_ids": [
+        "NS02"
+      ]
+    },
+    {
+      "lesson": "generated/05-nestjs-service-wiring.md",
+      "concept": "Lifecycle hooks and awaited setup",
+      "item_ids": [
+        "NS04"
+      ]
+    },
+    {
+      "lesson": "generated/05-nestjs-service-wiring.md",
+      "concept": "Middleware: Helmet and the JSON parser",
+      "item_ids": [
+        "NS05"
+      ]
+    },
+    {
+      "lesson": "generated/05-nestjs-service-wiring.md",
+      "concept": "Guards and exception filters",
+      "item_ids": [
+        "NS06"
+      ]
+    },
+    {
+      "lesson": "generated/05-nestjs-service-wiring.md",
+      "concept": "RxJS: installed versus used",
+      "item_ids": [
+        "NS07"
+      ]
+    },
+    {
+      "lesson": "generated/06-http-contracts-and-validation.md",
+      "concept": "Zod parse: a runtime boundary",
+      "item_ids": [
+        "NS08"
+      ]
+    },
+    {
+      "lesson": "generated/06-http-contracts-and-validation.md",
+      "concept": "Coercion, transforms and defaults",
+      "item_ids": [
+        "NS09"
+      ]
+    },
+    {
+      "lesson": "generated/06-http-contracts-and-validation.md",
+      "concept": "Strict objects and inferred types",
+      "item_ids": [
+        "NS10"
+      ]
+    },
+    {
+      "lesson": "generated/06-http-contracts-and-validation.md",
+      "concept": "Closures build positional SQL parameters",
+      "item_ids": [
+        "NS11"
+      ]
+    },
+    {
+      "lesson": "generated/06-http-contracts-and-validation.md",
+      "concept": "JSONB operators and explicit casts",
+      "item_ids": [
+        "NS12"
+      ]
+    },
+    {
+      "lesson": "generated/06-http-contracts-and-validation.md",
+      "concept": "Escaping LIKE patterns versus SQL parameters",
+      "item_ids": [
+        "NS11"
+      ]
+    },
+    {
+      "lesson": "generated/06-http-contracts-and-validation.md",
+      "concept": "Row locks and server-owned fields",
+      "item_ids": [
+        "NS14"
+      ]
+    },
+    {
+      "lesson": "generated/07-postgresql-and-transactions.md",
+      "concept": "Pool versus connection",
+      "item_ids": [
+        "NS15"
+      ]
+    },
+    {
+      "lesson": "generated/07-postgresql-and-transactions.md",
+      "concept": "pool.query versus checked-out client",
+      "item_ids": [
+        "NS16"
+      ]
+    },
+    {
+      "lesson": "generated/07-postgresql-and-transactions.md",
+      "concept": "try, catch and finally protect resources",
+      "item_ids": [
+        "NS16"
+      ]
+    },
+    {
+      "lesson": "generated/07-postgresql-and-transactions.md",
+      "concept": "Parameters and result conversion",
+      "item_ids": [
+        "NS17"
+      ]
+    },
+    {
+      "lesson": "generated/07-postgresql-and-transactions.md",
+      "concept": "Row locks versus advisory locks",
+      "item_ids": [
+        "NS18"
+      ]
+    },
+    {
+      "lesson": "generated/07-postgresql-and-transactions.md",
+      "concept": "Migration checksums: filesystem plus crypto",
+      "item_ids": [
+        "NS20"
+      ]
+    },
+    {
+      "lesson": "generated/07-postgresql-and-transactions.md",
+      "concept": "Pool events and TLS settings",
+      "item_ids": [
+        "NS21"
+      ]
+    },
+    {
+      "lesson": "generated/08-identity-jwt-and-security.md",
+      "concept": "Error-first callbacks become promises",
+      "item_ids": [
+        "NS22"
+      ]
+    },
+    {
+      "lesson": "generated/08-identity-jwt-and-security.md",
+      "concept": "scrypt: cost and asynchronous work",
+      "item_ids": [
+        "NS23"
+      ]
+    },
+    {
+      "lesson": "generated/08-identity-jwt-and-security.md",
+      "concept": "randomBytes, salt and hex encoding",
+      "item_ids": [
+        "NS23"
+      ]
+    },
+    {
+      "lesson": "generated/08-identity-jwt-and-security.md",
+      "concept": "Buffer and timingSafeEqual",
+      "item_ids": [
+        "NS24"
+      ]
+    },
+    {
+      "lesson": "generated/08-identity-jwt-and-security.md",
+      "concept": "Optional chaining and a dummy derivation",
+      "item_ids": [
+        "NS24"
+      ]
+    },
+    {
+      "lesson": "generated/08-identity-jwt-and-security.md",
+      "concept": "JWT signing: claims, encoding and HMAC",
+      "item_ids": [
+        "NS25"
+      ]
+    },
+    {
+      "lesson": "generated/08-identity-jwt-and-security.md",
+      "concept": "jsonwebtoken: signature versus claims",
+      "item_ids": [
+        "NS26"
+      ]
+    },
+    {
+      "lesson": "generated/08-identity-jwt-and-security.md",
+      "concept": "Map-based throttling and mutable objects",
+      "item_ids": [
+        "NS28"
+      ]
+    },
+    {
+      "lesson": "generated/08-identity-jwt-and-security.md",
+      "concept": "Zod validates before service use",
+      "item_ids": [
+        "NS08"
+      ]
+    },
+    {
+      "lesson": "generated/09-inquiries-idempotency-and-outbox.md",
+      "concept": "Native fetch and two failure channels",
+      "item_ids": [
+        "NS29"
+      ]
+    },
+    {
+      "lesson": "generated/09-inquiries-idempotency-and-outbox.md",
+      "concept": "AbortSignal.timeout and URL encoding",
+      "item_ids": [
+        "NS30"
+      ]
+    },
+    {
+      "lesson": "generated/09-inquiries-idempotency-and-outbox.md",
+      "concept": "SHA-256 fingerprint versus retry key",
+      "item_ids": [
+        "NS31"
+      ]
+    },
+    {
+      "lesson": "generated/09-inquiries-idempotency-and-outbox.md",
+      "concept": "randomUUID: record identity is separate",
+      "item_ids": [
+        "NS32"
+      ]
+    },
+    {
+      "lesson": "generated/09-inquiries-idempotency-and-outbox.md",
+      "concept": "Advisory locking across async handlers",
+      "item_ids": [
+        "NS18"
+      ]
+    },
+    {
+      "lesson": "generated/09-inquiries-idempotency-and-outbox.md",
+      "concept": "Outbox: one database transaction, two records",
+      "item_ids": [
+        "NS33"
+      ]
+    },
+    {
+      "lesson": "generated/09-inquiries-idempotency-and-outbox.md",
+      "concept": "Constraints and state transitions",
+      "item_ids": [
+        "NS34"
+      ]
+    },
+    {
+      "lesson": "generated/10-kafka-inbox-and-notifications.md",
+      "concept": "KafkaJS client, producer and consumer",
+      "item_ids": [
+        "NS35"
+      ]
+    },
+    {
+      "lesson": "generated/10-kafka-inbox-and-notifications.md",
+      "concept": "Message keys and acknowledgments",
+      "item_ids": [
+        "NS36"
+      ]
+    },
+    {
+      "lesson": "generated/10-kafka-inbox-and-notifications.md",
+      "concept": "SKIP LOCKED and bounded batches",
+      "item_ids": [
+        "NS37"
+      ]
+    },
+    {
+      "lesson": "generated/10-kafka-inbox-and-notifications.md",
+      "concept": "Consumer groups and starting offsets",
+      "item_ids": [
+        "NS38"
+      ]
+    },
+    {
+      "lesson": "generated/10-kafka-inbox-and-notifications.md",
+      "concept": "Buffer \u2192 UTF-8 \u2192 JSON \u2192 Zod",
+      "item_ids": [
+        "NS39"
+      ]
+    },
+    {
+      "lesson": "generated/10-kafka-inbox-and-notifications.md",
+      "concept": "Unique event IDs make duplicate effects harmless",
+      "item_ids": [
+        "NS40"
+      ]
+    },
+    {
+      "lesson": "generated/10-kafka-inbox-and-notifications.md",
+      "concept": "Timers, unref and detached promises",
+      "item_ids": [
+        "NS37"
+      ]
+    },
+    {
+      "lesson": "generated/10-kafka-inbox-and-notifications.md",
+      "concept": "Instrumentation events update readiness",
+      "item_ids": [
+        "NS42"
+      ]
+    },
+    {
+      "lesson": "generated/11-react-foundations-and-state.md",
+      "concept": "server authoritative data",
+      "item_ids": [
+        "NO15"
+      ]
+    },
+    {
+      "lesson": "generated/11-react-foundations-and-state.md",
+      "concept": "client validation versus server validation",
+      "item_ids": [
+        "NS08"
+      ]
+    },
+    {
+      "lesson": "generated/11-react-foundations-and-state.md",
+      "concept": "auth state versus verified principal",
+      "item_ids": [
+        "NS27"
+      ]
+    },
+    {
+      "lesson": "generated/12-react-effects-http-and-accessibility.md",
+      "concept": "fetch HTTP error versus network rejection",
+      "item_ids": [
+        "NO13"
+      ]
+    },
+    {
+      "lesson": "generated/12-react-effects-http-and-accessibility.md",
+      "concept": "abort versus server commit",
+      "item_ids": [
+        "NO14"
+      ]
+    },
+    {
+      "lesson": "generated/12-react-effects-http-and-accessibility.md",
+      "concept": "stale read response",
+      "item_ids": [
+        "NO14"
+      ]
+    },
+    {
+      "lesson": "generated/12-react-effects-http-and-accessibility.md",
+      "concept": "stable retry key and payload",
+      "item_ids": [
+        "NO16"
+      ]
+    },
+    {
+      "lesson": "generated/12-react-effects-http-and-accessibility.md",
+      "concept": "browser storage is not domain persistence",
+      "item_ids": [
+        "NO15"
+      ]
+    },
+    {
+      "lesson": "generated/13-testing-and-debugging.md",
+      "concept": "Jest spies isolate a service rule",
+      "item_ids": [
+        "NO09"
+      ]
+    },
+    {
+      "lesson": "generated/13-testing-and-debugging.md",
+      "concept": "Vitest and controllable promises",
+      "item_ids": [
+        "NO10"
+      ]
+    },
+    {
+      "lesson": "generated/13-testing-and-debugging.md",
+      "concept": "TypeScript transformation and ESM",
+      "item_ids": [
+        "NO39"
+      ]
+    },
+    {
+      "lesson": "generated/13-testing-and-debugging.md",
+      "concept": "Lint, format, typecheck and behavior",
+      "item_ids": [
+        "NO11"
+      ]
+    },
+    {
+      "lesson": "generated/13-testing-and-debugging.md",
+      "concept": "Playwright exercises a real browser",
+      "item_ids": [
+        "NO12"
+      ]
+    },
+    {
+      "lesson": "generated/14-local-runtime-and-containers.md",
+      "concept": "npm scripts and separate package scopes",
+      "item_ids": [
+        "NO02"
+      ]
+    },
+    {
+      "lesson": "generated/14-local-runtime-and-containers.md",
+      "concept": "tsc emits; node executes",
+      "item_ids": [
+        "NO07"
+      ]
+    },
+    {
+      "lesson": "generated/14-local-runtime-and-containers.md",
+      "concept": "Docker image versus container",
+      "item_ids": [
+        "NO08"
+      ]
+    },
+    {
+      "lesson": "generated/14-local-runtime-and-containers.md",
+      "concept": "Container DNS and published ports",
+      "item_ids": [
+        "NO05"
+      ]
+    },
+    {
+      "lesson": "generated/14-local-runtime-and-containers.md",
+      "concept": "Child-process supervision and inspectors",
+      "item_ids": [
+        "NO04"
+      ]
+    },
+    {
+      "lesson": "generated/15-aws-terraform-and-delivery.md",
+      "concept": "runtime versus image versus provisioning",
+      "item_ids": [
+        "NO07"
+      ]
+    },
+    {
+      "lesson": "generated/15-aws-terraform-and-delivery.md",
+      "concept": "local/cloud separation",
+      "item_ids": [
+        "NO05"
+      ]
+    },
+    {
+      "lesson": "generated/15-aws-terraform-and-delivery.md",
+      "concept": "release and runtime evidence",
+      "item_ids": [
+        "NO17"
+      ]
+    },
+    {
+      "lesson": "generated/16-reliability-and-senior-design.md",
+      "concept": "A timeout is one bounded wait",
+      "item_ids": [
+        "NS30"
+      ]
+    },
+    {
+      "lesson": "generated/16-reliability-and-senior-design.md",
+      "concept": "Liveness versus readiness",
+      "item_ids": [
+        "NS43"
+      ]
+    },
+    {
+      "lesson": "generated/16-reliability-and-senior-design.md",
+      "concept": "At-least-once delivery and idempotent effect",
+      "item_ids": [
+        "NS40"
+      ]
+    },
+    {
+      "lesson": "generated/16-reliability-and-senior-design.md",
+      "concept": "Shared build versus independent failure domains",
+      "item_ids": [
+        "NS44"
+      ]
+    },
+    {
+      "lesson": "generated/16-reliability-and-senior-design.md",
+      "concept": "Concurrency protection versus stale-user conflict",
+      "item_ids": [
+        "NS45"
+      ]
+    },
+    {
+      "lesson": "generated/17-ai-assisted-engineering-and-toolchain.md",
+      "concept": "A specification is an executable-review target",
+      "item_ids": [
+        "NO22"
+      ]
+    },
+    {
+      "lesson": "generated/17-ai-assisted-engineering-and-toolchain.md",
+      "concept": "GitHub Actions jobs and dependency order",
+      "item_ids": [
+        "NO17"
+      ]
+    },
+    {
+      "lesson": "generated/17-ai-assisted-engineering-and-toolchain.md",
+      "concept": "SonarLint versus a server quality gate",
+      "item_ids": [
+        "NO18"
+      ]
+    },
+    {
+      "lesson": "generated/17-ai-assisted-engineering-and-toolchain.md",
+      "concept": "Dependabot and dependency-change review",
+      "item_ids": [
+        "NO19"
+      ]
+    },
+    {
+      "lesson": "generated/17-ai-assisted-engineering-and-toolchain.md",
+      "concept": "OIDC, release manifests and serialization",
+      "item_ids": [
+        "NO20"
+      ]
+    },
+    {
+      "lesson": "generated/17-ai-assisted-engineering-and-toolchain.md",
+      "concept": "Jira, VS Code and architect collaboration",
+      "item_ids": [
+        "NO22"
+      ]
+    },
+    {
+      "lesson": "generated/18-interview-drills-and-capstone.md",
+      "concept": "Explain a callback-to-promise adapter",
+      "item_ids": [
+        "NS22"
+      ]
+    },
+    {
+      "lesson": "generated/18-interview-drills-and-capstone.md",
+      "concept": "Explain a validated runtime boundary",
+      "item_ids": [
+        "NS08"
+      ]
+    },
+    {
+      "lesson": "generated/18-interview-drills-and-capstone.md",
+      "concept": "Explain a transaction without hand-waving",
+      "item_ids": [
+        "NS16"
+      ]
+    },
+    {
+      "lesson": "generated/18-interview-drills-and-capstone.md",
+      "concept": "Explain a duplicate message",
+      "item_ids": [
+        "NS40"
+      ]
+    },
+    {
+      "lesson": "generated/18-interview-drills-and-capstone.md",
+      "concept": "Explain a stale React response",
+      "item_ids": [
+        "NO10"
+      ]
+    },
+    {
+      "lesson": "generated/26-aws-docker-and-ecr.md",
+      "concept": "multi-stage images",
+      "item_ids": [
+        "NO07"
+      ]
+    },
+    {
+      "lesson": "generated/26-aws-docker-and-ecr.md",
+      "concept": "immutable digest versus tag",
+      "item_ids": [
+        "NO20"
+      ]
+    },
+    {
+      "lesson": "generated/26-aws-docker-and-ecr.md",
+      "concept": "image scanning",
+      "item_ids": [
+        "NO19"
+      ]
+    },
+    {
+      "lesson": "generated/26-aws-docker-and-ecr.md",
+      "concept": "runtime dependencies",
+      "item_ids": [
+        "NO07"
+      ]
+    },
+    {
+      "lesson": "generated/27-aws-s3-artifacts-and-secrets.md",
+      "concept": "artifact versus runtime secret",
+      "item_ids": [
+        "NO36"
+      ]
+    },
+    {
+      "lesson": "generated/27-aws-s3-artifacts-and-secrets.md",
+      "concept": "secret rotation",
+      "item_ids": [
+        "NO36"
+      ]
+    },
+    {
+      "lesson": "generated/27-aws-s3-artifacts-and-secrets.md",
+      "concept": "application data versus infrastructure state",
+      "item_ids": [
+        "NO35"
+      ]
+    },
+    {
+      "lesson": "generated/28-aws-data-and-messaging-decisions.md",
+      "concept": "access patterns and invariants",
+      "item_ids": [
+        "NS31"
+      ]
+    },
+    {
+      "lesson": "generated/28-aws-data-and-messaging-decisions.md",
+      "concept": "shared failure domains",
+      "item_ids": [
+        "NO08"
+      ]
+    },
+    {
+      "lesson": "generated/28-aws-data-and-messaging-decisions.md",
+      "concept": "relational versus key-value",
+      "item_ids": [
+        "NO24"
+      ]
+    },
+    {
+      "lesson": "generated/28-aws-data-and-messaging-decisions.md",
+      "concept": "queue versus stream",
+      "item_ids": [
+        "NO26"
+      ]
+    },
+    {
+      "lesson": "generated/29-aws-observability-and-incidents.md",
+      "concept": "logs metrics traces audit",
+      "item_ids": [
+        "NO37"
+      ]
+    },
+    {
+      "lesson": "generated/29-aws-observability-and-incidents.md",
+      "concept": "user symptom and failing layer",
+      "item_ids": [
+        "NSI06"
+      ]
+    },
+    {
+      "lesson": "generated/29-aws-observability-and-incidents.md",
+      "concept": "inquiry correlation",
+      "item_ids": [
+        "NSI06"
+      ]
+    },
+    {
+      "lesson": "generated/29-aws-observability-and-incidents.md",
+      "concept": "latency errors saturation",
+      "item_ids": [
+        "NSI03"
+      ]
+    },
+    {
+      "lesson": "generated/31-aws-production-design-tradeoffs.md",
+      "concept": "functional and nonfunctional requirements",
+      "item_ids": [
+        "NO22"
+      ]
+    },
+    {
+      "lesson": "generated/31-aws-production-design-tradeoffs.md",
+      "concept": "compute versus state scaling",
+      "item_ids": [
+        "NO34"
+      ]
+    },
+    {
+      "lesson": "generated/31-aws-production-design-tradeoffs.md",
+      "concept": "trust boundaries",
+      "item_ids": [
+        "NS27"
+      ]
+    },
+    {
+      "lesson": "generated/31-aws-production-design-tradeoffs.md",
+      "concept": "recovery objectives",
+      "item_ids": [
+        "NO33"
+      ]
+    },
+    {
+      "lesson": "generated/40-aws-release-pipeline-and-oidc.md",
+      "concept": "verification before release",
+      "item_ids": [
+        "NO17"
+      ]
+    },
+    {
+      "lesson": "generated/40-aws-release-pipeline-and-oidc.md",
+      "concept": "OIDC temporary identity",
+      "item_ids": [
+        "NO20"
+      ]
+    },
+    {
+      "lesson": "generated/40-aws-release-pipeline-and-oidc.md",
+      "concept": "exact source commit and image digest",
+      "item_ids": [
+        "NO20"
+      ]
+    },
+    {
+      "lesson": "generated/40-aws-release-pipeline-and-oidc.md",
+      "concept": "serialized deployment",
+      "item_ids": [
+        "NO21"
+      ]
+    },
+    {
+      "lesson": "generated/41-aws-ssm-deployment-and-rollback.md",
+      "concept": "startup versus business acceptance",
+      "item_ids": [
+        "NO11"
+      ]
+    },
+    {
+      "lesson": "generated/41-aws-ssm-deployment-and-rollback.md",
+      "concept": "release commit point",
+      "item_ids": [
+        "NO21"
+      ]
+    },
+    {
+      "lesson": "generated/41-aws-ssm-deployment-and-rollback.md",
+      "concept": "application rollback versus schema/data restore",
+      "item_ids": [
+        "NO21"
+      ]
+    },
+    {
+      "lesson": "generated/50-dns-route53-acm-and-tls.md",
+      "concept": "DNS resolution and caching",
+      "item_ids": [
+        "NO05"
+      ]
+    },
+    {
+      "lesson": "generated/50-dns-route53-acm-and-tls.md",
+      "concept": "TLS certificate trust hostname expiry",
+      "item_ids": [
+        "NSI08"
+      ]
+    },
+    {
+      "lesson": "generated/50-dns-route53-acm-and-tls.md",
+      "concept": "application versus transport authentication",
+      "item_ids": [
+        "NS27"
+      ]
+    },
+    {
+      "lesson": "generated/51-alb-target-groups-and-health-checks.md",
+      "concept": "HTTP listeners and target health",
+      "item_ids": [
+        "NOI06"
+      ]
+    },
+    {
+      "lesson": "generated/51-alb-target-groups-and-health-checks.md",
+      "concept": "liveness readiness serving health",
+      "item_ids": [
+        "NS43"
+      ]
+    },
+    {
+      "lesson": "generated/51-alb-target-groups-and-health-checks.md",
+      "concept": "proxy boundaries",
+      "item_ids": [
+        "NOI06"
+      ]
+    },
+    {
+      "lesson": "generated/51-alb-target-groups-and-health-checks.md",
+      "concept": "load balancing versus end-to-end correctness",
+      "item_ids": [
+        "NO11"
+      ]
+    },
+    {
+      "lesson": "generated/52-cloudfront-s3-origins-and-caching.md",
+      "concept": "cache keys and invalidation",
+      "item_ids": [
+        "NO23"
+      ]
+    },
+    {
+      "lesson": "generated/52-cloudfront-s3-origins-and-caching.md",
+      "concept": "private origin and authenticated content",
+      "item_ids": [
+        "NO23"
+      ]
+    },
+    {
+      "lesson": "generated/52-cloudfront-s3-origins-and-caching.md",
+      "concept": "TTL versus freshness",
+      "item_ids": [
+        "NO23"
+      ]
+    },
+    {
+      "lesson": "generated/52-cloudfront-s3-origins-and-caching.md",
+      "concept": "cache hit versus application correctness",
+      "item_ids": [
+        "NO23"
+      ]
+    },
+    {
+      "lesson": "generated/53-ecs-fargate-tasks-and-services.md",
+      "concept": "task process lifecycle",
+      "item_ids": [
+        "NR31"
+      ]
+    },
+    {
+      "lesson": "generated/53-ecs-fargate-tasks-and-services.md",
+      "concept": "one-off job versus long-running service",
+      "item_ids": [
+        "NO40"
+      ]
+    },
+    {
+      "lesson": "generated/53-ecs-fargate-tasks-and-services.md",
+      "concept": "immutable runtime configuration",
+      "item_ids": [
+        "NO06"
+      ]
+    },
+    {
+      "lesson": "generated/53-ecs-fargate-tasks-and-services.md",
+      "concept": "database and broker dependencies",
+      "item_ids": [
+        "NS41"
+      ]
+    },
+    {
+      "lesson": "generated/54-ecs-networking-identity-and-secrets.md",
+      "concept": "startup dependency chain",
+      "item_ids": [
+        "NS04"
+      ]
+    },
+    {
+      "lesson": "generated/54-ecs-networking-identity-and-secrets.md",
+      "concept": "workload versus image-pull identity",
+      "item_ids": [
+        "NO20"
+      ]
+    },
+    {
+      "lesson": "generated/54-ecs-networking-identity-and-secrets.md",
+      "concept": "secret retrieval and rotation",
+      "item_ids": [
+        "NO36"
+      ]
+    },
+    {
+      "lesson": "generated/54-ecs-networking-identity-and-secrets.md",
+      "concept": "network path versus authorization",
+      "item_ids": [
+        "NSI08"
+      ]
+    },
+    {
+      "lesson": "generated/55-ecs-scaling-and-deployment-strategies.md",
+      "concept": "bottleneck signals and scaling limits",
+      "item_ids": [
+        "NOI09"
+      ]
+    },
+    {
+      "lesson": "generated/55-ecs-scaling-and-deployment-strategies.md",
+      "concept": "startup delay",
+      "item_ids": [
+        "NO34"
+      ]
+    },
+    {
+      "lesson": "generated/55-ecs-scaling-and-deployment-strategies.md",
+      "concept": "rolling versus blue-green deployment",
+      "item_ids": [
+        "NO34"
+      ]
+    },
+    {
+      "lesson": "generated/55-ecs-scaling-and-deployment-strategies.md",
+      "concept": "schema-compatible rollback",
+      "item_ids": [
+        "NO21"
+      ]
+    },
+    {
+      "lesson": "generated/56-ec2-autoscaling-and-eks-comparison.md",
+      "concept": "process replicas versus shared state",
+      "item_ids": [
+        "NO34"
+      ]
+    },
+    {
+      "lesson": "generated/56-ec2-autoscaling-and-eks-comparison.md",
+      "concept": "autoscaling limits",
+      "item_ids": [
+        "NOI09"
+      ]
+    },
+    {
+      "lesson": "generated/56-ec2-autoscaling-and-eks-comparison.md",
+      "concept": "container orchestration tradeoffs",
+      "item_ids": [
+        "NO08"
+      ]
+    },
+    {
+      "lesson": "generated/57-rds-postgresql-backups-and-failover.md",
+      "concept": "database ownership",
+      "item_ids": [
+        "NS44"
+      ]
+    },
+    {
+      "lesson": "generated/57-rds-postgresql-backups-and-failover.md",
+      "concept": "private TLS connections and credentials",
+      "item_ids": [
+        "NS21"
+      ]
+    },
+    {
+      "lesson": "generated/57-rds-postgresql-backups-and-failover.md",
+      "concept": "availability versus read scaling",
+      "item_ids": [
+        "NO33"
+      ]
+    },
+    {
+      "lesson": "generated/57-rds-postgresql-backups-and-failover.md",
+      "concept": "RPO and RTO",
+      "item_ids": [
+        "NO33"
+      ]
+    },
+    {
+      "lesson": "generated/57-rds-postgresql-backups-and-failover.md",
+      "concept": "restore verification",
+      "item_ids": [
+        "NO33"
+      ]
+    },
+    {
+      "lesson": "generated/57-rds-postgresql-backups-and-failover.md",
+      "concept": "pool reconnection and retry",
+      "item_ids": [
+        "NO33"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "authoritative versus derived data",
+      "item_ids": [
+        "NO23"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "cache-aside",
+      "item_ids": [
+        "NO23"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "tenant cache keys",
+      "item_ids": [
+        "NO23"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "TTL and invalidation",
+      "item_ids": [
+        "NO23"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "negative caching",
+      "item_ids": [
+        "NO23"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "stampede coordination and jitter",
+      "item_ids": [
+        "NO23"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "DynamoDB partition and sort key",
+      "item_ids": [
+        "NO24"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "Query versus Scan",
+      "item_ids": [
+        "NO24"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "secondary index consistency",
+      "item_ids": [
+        "NO24"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "hot keys",
+      "item_ids": [
+        "NO25"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "conditional writes and transactions",
+      "item_ids": [
+        "NO25"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "asynchronous TTL deletion",
+      "item_ids": [
+        "NO25"
+      ]
+    },
+    {
+      "lesson": "generated/58-data-caching-and-dynamodb-design.md",
+      "concept": "denormalization and backfill",
+      "item_ids": [
+        "NO24"
+      ]
+    },
+    {
+      "lesson": "generated/59-msk-kafka-security-and-operations.md",
+      "concept": "producer and consumer contracts",
+      "item_ids": [
+        "NS39"
+      ]
+    },
+    {
+      "lesson": "generated/59-msk-kafka-security-and-operations.md",
+      "concept": "TLS and SCRAM authentication",
+      "item_ids": [
+        "NSI08"
+      ]
+    },
+    {
+      "lesson": "generated/59-msk-kafka-security-and-operations.md",
+      "concept": "partitions and replicas",
+      "item_ids": [
+        "NS36"
+      ]
+    },
+    {
+      "lesson": "generated/59-msk-kafka-security-and-operations.md",
+      "concept": "acks and durability",
+      "item_ids": [
+        "NS36"
+      ]
+    },
+    {
+      "lesson": "generated/59-msk-kafka-security-and-operations.md",
+      "concept": "consumer lag and progress",
+      "item_ids": [
+        "NS42"
+      ]
+    },
+    {
+      "lesson": "generated/59-msk-kafka-security-and-operations.md",
+      "concept": "replay and idempotency",
+      "item_ids": [
+        "NS40"
+      ]
+    },
+    {
+      "lesson": "generated/60-sqs-sns-eventbridge-and-workflows.md",
+      "concept": "work queue versus pub-sub versus bus versus workflow",
+      "item_ids": [
+        "NO26"
+      ]
+    },
+    {
+      "lesson": "generated/60-sqs-sns-eventbridge-and-workflows.md",
+      "concept": "visibility timeout and delete crash window",
+      "item_ids": [
+        "NO26"
+      ]
+    },
+    {
+      "lesson": "generated/60-sqs-sns-eventbridge-and-workflows.md",
+      "concept": "durable idempotency",
+      "item_ids": [
+        "NS40"
+      ]
+    },
+    {
+      "lesson": "generated/60-sqs-sns-eventbridge-and-workflows.md",
+      "concept": "DLQ investigation and safe redrive",
+      "item_ids": [
+        "NOI07"
+      ]
+    },
+    {
+      "lesson": "generated/60-sqs-sns-eventbridge-and-workflows.md",
+      "concept": "FIFO message-group ordering and finite deduplication",
+      "item_ids": [
+        "NO27"
+      ]
+    },
+    {
+      "lesson": "generated/60-sqs-sns-eventbridge-and-workflows.md",
+      "concept": "fanout independent progress",
+      "item_ids": [
+        "NO26"
+      ]
+    },
+    {
+      "lesson": "generated/60-sqs-sns-eventbridge-and-workflows.md",
+      "concept": "routing filters",
+      "item_ids": [
+        "NO26"
+      ]
+    },
+    {
+      "lesson": "generated/60-sqs-sns-eventbridge-and-workflows.md",
+      "concept": "workflow retries compensation",
+      "item_ids": [
+        "NO32"
+      ]
+    },
+    {
+      "lesson": "generated/60-sqs-sns-eventbridge-and-workflows.md",
+      "concept": "partial batch failures",
+      "item_ids": [
+        "NO27"
+      ]
+    },
+    {
+      "lesson": "generated/61-lambda-apigateway-and-serverless-design.md",
+      "concept": "handler invocation contract",
+      "item_ids": [
+        "NO28"
+      ]
+    },
+    {
+      "lesson": "generated/61-lambda-apigateway-and-serverless-design.md",
+      "concept": "HTTP API versus REST API",
+      "item_ids": [
+        "NO28"
+      ]
+    },
+    {
+      "lesson": "generated/61-lambda-apigateway-and-serverless-design.md",
+      "concept": "authentication versus integration permission versus authorization",
+      "item_ids": [
+        "NO28"
+      ]
+    },
+    {
+      "lesson": "generated/61-lambda-apigateway-and-serverless-design.md",
+      "concept": "concurrency and downstream protection",
+      "item_ids": [
+        "NO29"
+      ]
+    },
+    {
+      "lesson": "generated/61-lambda-apigateway-and-serverless-design.md",
+      "concept": "retry behavior by trigger",
+      "item_ids": [
+        "NO29"
+      ]
+    },
+    {
+      "lesson": "generated/62-s3-ebs-efs-storage-and-recovery.md",
+      "concept": "object file block semantics",
+      "item_ids": [
+        "NO35"
+      ]
+    },
+    {
+      "lesson": "generated/62-s3-ebs-efs-storage-and-recovery.md",
+      "concept": "persistent volumes versus backups",
+      "item_ids": [
+        "NO35"
+      ]
+    },
+    {
+      "lesson": "generated/62-s3-ebs-efs-storage-and-recovery.md",
+      "concept": "consistent backups and retention",
+      "item_ids": [
+        "NO35"
+      ]
+    },
+    {
+      "lesson": "generated/62-s3-ebs-efs-storage-and-recovery.md",
+      "concept": "business-level restore verification",
+      "item_ids": [
+        "NO33"
+      ]
+    },
+    {
+      "lesson": "generated/63-kms-secrets-and-rotation.md",
+      "concept": "key versus secret",
+      "item_ids": [
+        "NO36"
+      ]
+    },
+    {
+      "lesson": "generated/63-kms-secrets-and-rotation.md",
+      "concept": "secret exposure in source logs state",
+      "item_ids": [
+        "NO36"
+      ]
+    },
+    {
+      "lesson": "generated/63-kms-secrets-and-rotation.md",
+      "concept": "rotation state transition",
+      "item_ids": [
+        "NO36"
+      ]
+    },
+    {
+      "lesson": "generated/63-kms-secrets-and-rotation.md",
+      "concept": "old/new credential overlap",
+      "item_ids": [
+        "NO36"
+      ]
+    },
+    {
+      "lesson": "generated/63-kms-secrets-and-rotation.md",
+      "concept": "recovery dependencies",
+      "item_ids": [
+        "NO36"
+      ]
+    },
+    {
+      "lesson": "generated/65-cloudwatch-agent-logs-metrics-and-alarms.md",
+      "concept": "log metric trace separation",
+      "item_ids": [
+        "NO37"
+      ]
+    },
+    {
+      "lesson": "generated/65-cloudwatch-agent-logs-metrics-and-alarms.md",
+      "concept": "delivery versus collection",
+      "item_ids": [
+        "NO37"
+      ]
+    },
+    {
+      "lesson": "generated/65-cloudwatch-agent-logs-metrics-and-alarms.md",
+      "concept": "bounded metric labels",
+      "item_ids": [
+        "NO37"
+      ]
+    },
+    {
+      "lesson": "generated/65-cloudwatch-agent-logs-metrics-and-alarms.md",
+      "concept": "alarm evaluation windows",
+      "item_ids": [
+        "NO38"
+      ]
+    },
+    {
+      "lesson": "generated/65-cloudwatch-agent-logs-metrics-and-alarms.md",
+      "concept": "log retention and actionable query",
+      "item_ids": [
+        "NO38"
+      ]
+    },
+    {
+      "lesson": "generated/66-cloudtrail-config-and-audit-evidence.md",
+      "concept": "administrative audit versus application event",
+      "item_ids": [
+        "NO37"
+      ]
+    },
+    {
+      "lesson": "generated/66-cloudtrail-config-and-audit-evidence.md",
+      "concept": "management versus data events",
+      "item_ids": [
+        "NO37"
+      ]
+    },
+    {
+      "lesson": "generated/66-cloudtrail-config-and-audit-evidence.md",
+      "concept": "identity and outcome",
+      "item_ids": [
+        "NO37"
+      ]
+    },
+    {
+      "lesson": "generated/66-cloudtrail-config-and-audit-evidence.md",
+      "concept": "audit retention and protection",
+      "item_ids": [
+        "NO37"
+      ]
+    },
+    {
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "concept": "SLI SLO SLA",
+      "item_ids": [
+        "NO31"
+      ]
+    },
+    {
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "concept": "inquiry success versus notification delay",
+      "item_ids": [
+        "NO31"
+      ]
+    },
+    {
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "concept": "trace span and propagation",
+      "item_ids": [
+        "NO30"
+      ]
+    },
+    {
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "concept": "asynchronous messaging links",
+      "item_ids": [
+        "NO30"
+      ]
+    },
+    {
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "concept": "trace ID versus event ID",
+      "item_ids": [
+        "NO30"
+      ]
+    },
+    {
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "concept": "collector pipeline and export loss",
+      "item_ids": [
+        "NO30"
+      ]
+    },
+    {
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "concept": "bounded cardinality and privacy",
+      "item_ids": [
+        "NO30"
+      ]
+    },
+    {
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "concept": "sampling",
+      "item_ids": [
+        "NO30"
+      ]
+    },
+    {
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "concept": "error budgets and burn rate",
+      "item_ids": [
+        "NO31"
+      ]
+    },
+    {
+      "lesson": "generated/67-otel-tracing-slos-and-incidents.md",
+      "concept": "hypothesis-based incident response",
+      "item_ids": [
+        "NO31"
+      ]
+    },
+    {
+      "lesson": "generated/68-disaster-recovery-and-resilience-testing.md",
+      "concept": "failure-specific recovery objectives",
+      "item_ids": [
+        "NO33"
+      ]
+    },
+    {
+      "lesson": "generated/68-disaster-recovery-and-resilience-testing.md",
+      "concept": "backup existence versus recoverability",
+      "item_ids": [
+        "NO33"
+      ]
+    },
+    {
+      "lesson": "generated/68-disaster-recovery-and-resilience-testing.md",
+      "concept": "cold warm hot recovery tradeoffs",
+      "item_ids": [
+        "NO33"
+      ]
+    },
+    {
+      "lesson": "generated/68-disaster-recovery-and-resilience-testing.md",
+      "concept": "complete restore exercise",
+      "item_ids": [
+        "NO33"
+      ]
+    },
+    {
+      "lesson": "generated/68-disaster-recovery-and-resilience-testing.md",
+      "concept": "controlled resilience drills",
+      "item_ids": [
+        "NSI06"
+      ]
+    },
+    {
+      "lesson": "generated/68-disaster-recovery-and-resilience-testing.md",
+      "concept": "release rollback versus data recovery",
+      "item_ids": [
+        "NO21"
+      ]
+    },
+    {
+      "lesson": "generated/79-cloud-threat-model-and-security-review.md",
+      "concept": "assets and trust boundaries",
+      "item_ids": [
+        "NS27"
+      ]
+    },
+    {
+      "lesson": "generated/79-cloud-threat-model-and-security-review.md",
+      "concept": "threat modeling",
+      "item_ids": [
+        "NO22"
+      ]
+    },
+    {
+      "lesson": "generated/79-cloud-threat-model-and-security-review.md",
+      "concept": "defense in depth",
+      "item_ids": [
+        "NS05"
+      ]
+    },
+    {
+      "lesson": "generated/79-cloud-threat-model-and-security-review.md",
+      "concept": "authorization negative cases",
+      "item_ids": [
+        "NSI01"
+      ]
+    },
+    {
+      "lesson": "generated/79-cloud-threat-model-and-security-review.md",
+      "concept": "residual risk",
+      "item_ids": [
+        "NO22"
+      ]
+    },
+    {
+      "lesson": "generated/80-staged-modernization-and-traceability.md",
+      "concept": "baseline before modernization",
+      "item_ids": [
+        "NO22"
+      ]
+    },
+    {
+      "lesson": "generated/80-staged-modernization-and-traceability.md",
+      "concept": "phased changes",
+      "item_ids": [
+        "NO22"
+      ]
+    },
+    {
+      "lesson": "generated/80-staged-modernization-and-traceability.md",
+      "concept": "learning versus deployment scope",
+      "item_ids": [
+        "NO17"
+      ]
+    },
+    {
+      "lesson": "generated/80-staged-modernization-and-traceability.md",
+      "concept": "requirements-source-test-release traceability",
+      "item_ids": [
+        "NO22"
+      ]
+    },
+    {
+      "lesson": "generated/83-professional-cloud-capstone-and-question-bank.md",
+      "concept": "architecture and tradeoff defense",
+      "item_ids": [
+        "NO22"
+      ]
+    },
+    {
+      "lesson": "generated/83-professional-cloud-capstone-and-question-bank.md",
+      "concept": "failure timeline",
+      "item_ids": [
+        "NSI06"
+      ]
+    },
+    {
+      "lesson": "generated/83-professional-cloud-capstone-and-question-bank.md",
+      "concept": "measured evidence versus proposed capability",
+      "item_ids": [
+        "NO17"
+      ]
+    },
+    {
+      "lesson": "generated/83-professional-cloud-capstone-and-question-bank.md",
+      "concept": "incident recovery proof",
+      "item_ids": [
+        "NOI08"
+      ]
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "@nestjs/common, @nestjs/core, reflect-metadata",
+      "item_ids": [
+        "NS01",
+        "NS02",
+        "NR13"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "@nestjs/platform-express, Helmet, body cap",
+      "item_ids": [
+        "NS05",
+        "NR23"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "jsonwebtoken / scrypt / crypto / salts",
+      "item_ids": [
+        "NS23",
+        "NS24",
+        "NS25",
+        "NS26"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "kafkajs",
+      "item_ids": [
+        "NS35",
+        "NS36",
+        "NS38",
+        "NS39",
+        "NS42"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "pg",
+      "item_ids": [
+        "NS15",
+        "NS16",
+        "NS17",
+        "NS18",
+        "NS20",
+        "NS21"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "rxjs installed versus used",
+      "item_ids": [
+        "NS07"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "zod",
+      "item_ids": [
+        "NS08",
+        "NS09",
+        "NS10"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "typescript and @types declarations",
+      "item_ids": [
+        "NR08",
+        "NR40",
+        "NR41"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "eslint / globals / formatting / types",
+      "item_ids": [
+        "NO11"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "jest / ts-jest / ESM transform",
+      "item_ids": [
+        "NO09",
+        "NO39"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "vitest / coverage-v8 / mocks / jsdom",
+      "item_ids": [
+        "NO10",
+        "NO18"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "Testing Library / user behavior / real browser",
+      "item_ids": [
+        "NO10",
+        "NO12"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "Vite / same-origin nginx / API services",
+      "item_ids": [
+        "NO04",
+        "NOI06",
+        "NO13"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "Playwright",
+      "item_ids": [
+        "NO12"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "dependency override policy / js-yaml",
+      "item_ids": [
+        "NO19"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "const/let, coercion, equality, object identity",
+      "item_ids": [
+        "NR02",
+        "NR05",
+        "NR06",
+        "NR37"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "closures / arrows / this / classes",
+      "item_ids": [
+        "NR03",
+        "NR43",
+        "NS02"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "array map/filter / spread/rest/destructure / Map/Set",
+      "item_ids": [
+        "NR04",
+        "NR06"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "optional chaining / nullish fallback / regex / JSON",
+      "item_ids": [
+        "NR05",
+        "NR36",
+        "NR37"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "Date / URL / URLSearchParams",
+      "item_ids": [
+        "NR38",
+        "NR39"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "unknown/narrowing / literal unions / generics",
+      "item_ids": [
+        "NR08",
+        "NR09",
+        "NR10"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "Record / ReturnType / Omit / type imports",
+      "item_ids": [
+        "NR40",
+        "NR41"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "ESM / .js suffix / metadata",
+      "item_ids": [
+        "NR12",
+        "NR13"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "async/await / promises / catch/finally / concurrency",
+      "item_ids": [
+        "NR14",
+        "NR15",
+        "NR17",
+        "NR20",
+        "NS16"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "env / cwd / exitCode / signals",
+      "item_ids": [
+        "NO06",
+        "NR26",
+        "NR31"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "readFile / readdir / path join",
+      "item_ids": [
+        "NR25",
+        "NR26"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "createHash / randomUUID / randomBytes",
+      "item_ids": [
+        "NS23",
+        "NS31",
+        "NS32"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "scrypt / timingSafeEqual / util.promisify",
+      "item_ids": [
+        "NS22",
+        "NS23",
+        "NS24"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "Buffer UTF-8 / hex / byteLength",
+      "item_ids": [
+        "NR24",
+        "NS39"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "fetch / AbortSignal.timeout / AbortController",
+      "item_ids": [
+        "NS29",
+        "NS30",
+        "NO14"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "timers / unref / cancellation",
+      "item_ids": [
+        "NR18",
+        "NR19",
+        "NR34"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "spawn / readFileSync / fileURLToPath / process groups",
+      "item_ids": [
+        "NR29",
+        "NR30",
+        "NR42"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "HTTP / streams / backpressure / worker threads",
+      "item_ids": [
+        "NR23",
+        "NR27",
+        "NR28",
+        "NR32"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "seed-only demo accounts and provider profiles",
+      "item_ids": [
+        "NO40"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "public provider search/detail; private owner lookup",
+      "item_ids": [
+        "NS03",
+        "NS13",
+        "NS27",
+        "NS30"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "participants-only inquiries / recipient-only notifications",
+      "item_ids": [
+        "NS27",
+        "NS34",
+        "NS40"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "current source versus historical deployment baseline",
+      "item_ids": [
+        "NO17",
+        "NO21"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "health serving versus worker-ready",
+      "item_ids": [
+        "NS41",
+        "NS42",
+        "NS43"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "token restore / abort / identity confirmation",
+      "item_ids": [
+        "NS26",
+        "NO14",
+        "NO15"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "pending key and payload / frozen uncertainty",
+      "item_ids": [
+        "NO16",
+        "NSI05"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "UI validation versus server authority",
+      "item_ids": [
+        "NS08",
+        "NO15"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "strict TypeScript API return type is no decoder",
+      "item_ids": [
+        "NR10",
+        "NO13"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "shared image versus independent process and DB",
+      "item_ids": [
+        "NO08",
+        "NS44"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "non-root multi-stage image / runtime assets",
+      "item_ids": [
+        "NO07",
+        "NO08",
+        "NOI04"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "RPO/RTO / restore rather than image rollback",
+      "item_ids": [
+        "NO21",
+        "NO33"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    },
+    {
+      "lesson": "generated/19-source-and-requirement-coverage.md",
+      "concept": "CI / Sonar / Jira / ADR / evidence",
+      "item_ids": [
+        "NO17",
+        "NO18",
+        "NO22"
+      ],
+      "basis": "grouped source/API family from lesson19 tables"
+    }
+  ],
+  "supplementary_guides": [
+    {
+      "path": "docs/nodejs-beginner/01-runtime-and-wiring.md",
+      "scope": "backend mechanisms, same concepts as numbered lessons; older deployment statements remain historical",
+      "item_ids": [
+        "NO03",
+        "NO04",
+        "NO05",
+        "NS01",
+        "NS02"
+      ]
+    },
+    {
+      "path": "docs/nodejs-beginner/02-four-services.md",
+      "scope": "backend mechanisms, same concepts as numbered lessons; older deployment statements remain historical",
+      "item_ids": [
+        "NS27",
+        "NS33",
+        "NS40",
+        "NS44"
+      ]
+    },
+    {
+      "path": "docs/nodejs-beginner/03-browser-events-and-aws.md",
+      "scope": "backend mechanisms, same concepts as numbered lessons; older deployment statements remain historical",
+      "item_ids": [
+        "NO13",
+        "NO14",
+        "NO16",
+        "NO17",
+        "NO21"
+      ]
+    },
+    {
+      "path": "docs/nodejs-beginner/04-debugging-and-practice.md",
+      "scope": "backend mechanisms, same concepts as numbered lessons; older deployment statements remain historical",
+      "item_ids": [
+        "NSI01",
+        "NSI03",
+        "NSI05",
+        "NSI06",
+        "NSI07",
+        "NOI02",
+        "NOI03"
+      ]
+    },
+    {
+      "path": "docs/nodejs-beginner/05-glossary.md",
+      "scope": "backend mechanisms, same concepts as numbered lessons; older deployment statements remain historical",
+      "item_ids": [
+        "NR01",
+        "NS02",
+        "NS15",
+        "NS25",
+        "NS35"
+      ]
+    },
+    {
+      "path": "docs/nodejs-beginner/06-identity-tools.md",
+      "scope": "backend mechanisms, same concepts as numbered lessons; older deployment statements remain historical",
+      "item_ids": [
+        "NS22",
+        "NS23",
+        "NS24",
+        "NS25",
+        "NS26",
+        "NS28"
+      ]
+    },
+    {
+      "path": "docs/nodejs-beginner/07-catalog-tools.md",
+      "scope": "backend mechanisms, same concepts as numbered lessons; older deployment statements remain historical",
+      "item_ids": [
+        "NS08",
+        "NS09",
+        "NS11",
+        "NS12",
+        "NS13",
+        "NS14"
+      ]
+    },
+    {
+      "path": "docs/nodejs-beginner/08-inquiries-tools.md",
+      "scope": "backend mechanisms, same concepts as numbered lessons; older deployment statements remain historical",
+      "item_ids": [
+        "NS29",
+        "NS30",
+        "NS31",
+        "NS32",
+        "NS33",
+        "NS34"
+      ]
+    },
+    {
+      "path": "docs/nodejs-beginner/09-notifications-tools.md",
+      "scope": "backend mechanisms, same concepts as numbered lessons; older deployment statements remain historical",
+      "item_ids": [
+        "NS35",
+        "NS36",
+        "NS37",
+        "NS38",
+        "NS39",
+        "NS40",
+        "NS42"
+      ]
+    },
+    {
+      "path": "docs/nodejs-beginner/README.md",
+      "scope": "backend mechanisms, same concepts as numbered lessons; older deployment statements remain historical",
+      "item_ids": [
+        "NO03",
+        "NS01",
+        "NS27",
+        "NS33",
+        "NS40"
+      ]
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/01-local-setup.md",
+      "scope": "service setup",
+      "item_ids": [
+        "NO01",
+        "NO02",
+        "NO03",
+        "NO04",
+        "NO05",
+        "NO06",
+        "NOI01",
+        "NOI02",
+        "NOI03"
+      ]
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/02-project-and-application-flow.md",
+      "scope": "request/event flow",
+      "item_ids": [
+        "NS01",
+        "NS27",
+        "NS31",
+        "NS33",
+        "NS40",
+        "NO11"
+      ]
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/03-aws-identity-and-costs.md",
+      "scope": "cloud/process walkthrough; preserved in AWS companion",
+      "item_ids": []
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/04-terraform-setup-and-plans.md",
+      "scope": "cloud/process walkthrough; preserved in AWS companion",
+      "item_ids": []
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/05-hostname-dns-and-certificate.md",
+      "scope": "cloud/process walkthrough; preserved in AWS companion",
+      "item_ids": []
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/06-deployment-security-and-operations.md",
+      "scope": "delivery/study process; exact cloud operations remain in AWS companion",
+      "item_ids": [
+        "NO17",
+        "NO20",
+        "NO21",
+        "NO22"
+      ]
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/07-building-and-reviewing-the-study-path.md",
+      "scope": "delivery/study process; exact cloud operations remain in AWS companion",
+      "item_ids": [
+        "NO17",
+        "NO20",
+        "NO21",
+        "NO22"
+      ]
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/08-publishing-and-study-desk.md",
+      "scope": "delivery/study process; exact cloud operations remain in AWS companion",
+      "item_ids": [
+        "NO17",
+        "NO20",
+        "NO21",
+        "NO22"
+      ]
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/09-terraform-local-commands.md",
+      "scope": "cloud/process walkthrough; preserved in AWS companion",
+      "item_ids": []
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/10-terraform-aws-commands.md",
+      "scope": "cloud/process walkthrough; preserved in AWS companion",
+      "item_ids": []
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/11-aws-execution-journal.md",
+      "scope": "cloud/process walkthrough; preserved in AWS companion",
+      "item_ids": []
+    },
+    {
+      "path": "docs/nodejs-aws-study-path/walkthroughs/README.md",
+      "scope": "cloud/process walkthrough; preserved in AWS companion",
+      "item_ids": []
+    }
+  ],
+  "frontend_only": "Rendering snapshots, JSX, icon rendering, focus traps, portals and DOM ownership remain in lessons11\u201312; Node/backend consequences (validation, API data authority, cancellation, retry) are mapped above.",
+  "selection": "Counts follow mechanism coverage, not interview-frequency measurement. Concept rows are review assignments; automated checks establish existence and exact mapping, not semantic completeness. Independent critic must judge explanations."
+}

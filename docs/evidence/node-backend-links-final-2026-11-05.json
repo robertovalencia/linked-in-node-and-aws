@@ -1,0 +1,1123 @@
+{
+  "date": "2026-11-05",
+  "scope": "Public documentation GET reachability, separate from technical claim review or execution of external examples.",
+  "urls": 157,
+  "http_200": 157,
+  "non_200": 0,
+  "unobserved_fragments": 0,
+  "results": [
+    {
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+      "status": 200,
+      "effective_url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+      "bytes_read": 96018,
+      "sha256": "35d96a3012bcf1398cd49ca401bd229b322d704eb5c1e3d016fb8e24ca543d35"
+    },
+    {
+      "url": "https://datatracker.ietf.org/doc/html/rfc9700",
+      "status": 200,
+      "effective_url": "https://datatracker.ietf.org/doc/html/rfc9700",
+      "bytes_read": 318989,
+      "sha256": "b7ff28fc160c2badf260741ab42ec862f84e7135509a8991e63614b0e300680f"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html",
+      "bytes_read": 26875,
+      "sha256": "006af0a321da7cfe46b6cc6128f53a303219ebd124d9b7aa306cc2064d3dfbc9"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagegroupid-property.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagegroupid-property.html",
+      "bytes_read": 14513,
+      "sha256": "d018b9971fb676984d331de89f37fc1bfa8065a585ea34d142860bb3f636b02f"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Alarms.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Alarms.html",
+      "bytes_read": 23360,
+      "sha256": "079f536b276657c5487f5eb06a5ec3107e4f5236d3400f94b6808ae8f5a428f7"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Strategies.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Strategies.html",
+      "bytes_read": 25303,
+      "sha256": "ad0bcaacb2d438aa952bfbb6f28282936d4d0510180763fe74aee30a4f8fa8e9"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html",
+      "bytes_read": 31758,
+      "sha256": "2b7b5088e08f082b2425554b826f2a0f400d2a3ca7c03642f69119989e8782f4"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html",
+      "bytes_read": 16573,
+      "sha256": "1b1a0b19abc1b364a9d0f792e2ba370f0f49f4c48edfdb3fff739c2ce95d4891"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html",
+      "bytes_read": 12919,
+      "sha256": "b149fe8c3050869b8cf69dc099960dc8cebca4624c081694daafc57e984f4958"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html",
+      "bytes_read": 14860,
+      "sha256": "ceb75c0ed43dacb7cffd02ff27137eca11df713bffc03820473334ff80ea9c87"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-modeling-nosql.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-modeling-nosql.html",
+      "bytes_read": 18377,
+      "sha256": "e27938fe2d3069483aba1155daf8151d86461c261af7d681ed964352258be625"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html",
+      "bytes_read": 14788,
+      "sha256": "befd3044f1ef8f464a1ed7a6e143f7462bf7b37f2ad3812ffa4bae8fa727cc00"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html",
+      "bytes_read": 36445,
+      "sha256": "2cb3952cb65dee9bea314e32b1cad01ba290bbd9fe9c4c583be1212e097f5679"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-data-events-with-cloudtrail.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-data-events-with-cloudtrail.html",
+      "bytes_read": 224904,
+      "sha256": "04512982369f566e0cd532c2a245e4bffda5f1c3ba5b9d203561bed2b3fa603b"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns.html",
+      "bytes_read": 17272,
+      "sha256": "ea40708366557cfb4ca42843d68d972c6f2cd9dea4af4497920b6b2da2778fd3"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html",
+      "bytes_read": 27554,
+      "sha256": "c2591e8df1d1b6bb7e655937114052a59fee2f55f79906c35c31d2cf4d295ff3"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html",
+      "bytes_read": 41816,
+      "sha256": "5ed19ed8ce94bde6b80d622e6939eab92846a922f7e2a0bdd08244be8c915e59"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html",
+      "bytes_read": 22219,
+      "sha256": "d84e6f97e3abade929c8bb1b44696b3ad989478bfa563951c13af43ed7632e72"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-retries.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-retries.html",
+      "bytes_read": 15663,
+      "sha256": "9c6a1c8a6dfb150f9db6b17b5824af8ad3780b33ff678022e3c5d078efc8c883"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html",
+      "bytes_read": 45187,
+      "sha256": "7afd2758044789a971fc77b602fc142182275b2ccbcbb8a56dee157b1fe696f1"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html",
+      "bytes_read": 46949,
+      "sha256": "d6a7f314fb729b3584d37739fbcfaf60bd0f0c278acccd01ab354d0c051e0cac"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html",
+      "bytes_read": 12644,
+      "sha256": "720a786b168a473b0a09937b4e585dd9900c8b7d7c3fb2af6ff77138b852ac5e"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html",
+      "bytes_read": 13942,
+      "sha256": "64b1d48715557df052b4f8f73c5969405119b45450835bc5f400123a5a8e73f1"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html",
+      "status": 200,
+      "effective_url": "https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html",
+      "bytes_read": 54422,
+      "sha256": "cedebe3bbcef764ce4c8eca10ba8f22d5880ab7366145a56fc85a3d2d2ad7758"
+    },
+    {
+      "url": "https://docs.docker.com/build/building/multi-stage/",
+      "status": 200,
+      "effective_url": "https://docs.docker.com/build/building/multi-stage/",
+      "bytes_read": 566805,
+      "sha256": "e48baeaef029721bce464b7c3aa36c0574d29ca374f8b00f38a5ba15bd1004e5"
+    },
+    {
+      "url": "https://docs.docker.com/compose/how-tos/networking/",
+      "status": 200,
+      "effective_url": "https://docs.docker.com/compose/how-tos/networking/",
+      "bytes_read": 618680,
+      "sha256": "59a5f9806ef8496a9818e618adc4e0e971c65d0ed390bc4c2102b37058a2a80b"
+    },
+    {
+      "url": "https://docs.docker.com/compose/how-tos/startup-order/",
+      "status": 200,
+      "effective_url": "https://docs.docker.com/compose/how-tos/startup-order/",
+      "bytes_read": 537295,
+      "sha256": "9893832d1cb999fe4a05a6a14717be52d9756457f3f39fff833a460453917f9d"
+    },
+    {
+      "url": "https://docs.docker.com/engine/storage/volumes/",
+      "status": 200,
+      "effective_url": "https://docs.docker.com/engine/storage/volumes/",
+      "bytes_read": 685363,
+      "sha256": "d1c2f98fbd566e916361d94d8313aa3f2f33c3c40fbf885046ac09f1a9624ee0"
+    },
+    {
+      "url": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/",
+      "status": 200,
+      "effective_url": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/",
+      "bytes_read": 219420,
+      "sha256": "5f25f12fff9e877a948dcd9b3904ca1ee792a232d462bbe7882fe0ec795a795b"
+    },
+    {
+      "url": "https://docs.docker.com/reference/cli/docker/compose/logs/",
+      "status": 200,
+      "effective_url": "https://docs.docker.com/reference/cli/docker/compose/logs/",
+      "bytes_read": 434955,
+      "sha256": "c869440d8397419c2c9bf750743376baef1993ea100e6cfef568b0d77f7137e0"
+    },
+    {
+      "url": "https://docs.docker.com/reference/cli/docker/compose/ps/",
+      "status": 200,
+      "effective_url": "https://docs.docker.com/reference/cli/docker/compose/ps/",
+      "bytes_read": 458896,
+      "sha256": "d15325aa26d9d6acd1dbd5ad084d189685d94210f8a185b46af06fe548da36a9"
+    },
+    {
+      "url": "https://docs.github.com/en/actions/concepts/security/openid-connect",
+      "status": 200,
+      "effective_url": "https://docs.github.com/en/actions/concepts/security/openid-connect",
+      "bytes_read": 357310,
+      "sha256": "252b07a5de33ba7c02676a71302d4f1c5dc8233d1590eb2cb7833bc6ebe22540"
+    },
+    {
+      "url": "https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows",
+      "status": 200,
+      "effective_url": "https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows",
+      "bytes_read": 287681,
+      "sha256": "97f78bd2f69592e9689ad9cade8c3d1820b29e151e304291c77d9864fe928558"
+    },
+    {
+      "url": "https://docs.nestjs.com/controllers",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/controllers",
+      "bytes_read": 306623,
+      "sha256": "8c48e33ce23f0acce277d671f66853ec57ea91826cfc78f0f4f0afcddbbee03c"
+    },
+    {
+      "url": "https://docs.nestjs.com/data/typeorm",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/data/typeorm",
+      "bytes_read": 286991,
+      "sha256": "5f7f31608aacafb962ad7cdbf3623845ddcce0817ee8b1e32eabd5699318f50c"
+    },
+    {
+      "url": "https://docs.nestjs.com/data/typeorm#repository-pattern",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/data/typeorm#repository-pattern",
+      "bytes_read": 286991,
+      "sha256": "5f7f31608aacafb962ad7cdbf3623845ddcce0817ee8b1e32eabd5699318f50c",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://docs.nestjs.com/exception-filters",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/exception-filters",
+      "bytes_read": 248483,
+      "sha256": "2146cdc8218466e43f391831d3f11d57d8e8425e3f49d98fcce34882ad44476e"
+    },
+    {
+      "url": "https://docs.nestjs.com/faq/request-lifecycle",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/faq/request-lifecycle",
+      "bytes_read": 184687,
+      "sha256": "ff9a95dd4f303da22dc9d7b43647d643b82c8dcafae125aa0d096bf289f0f88e"
+    },
+    {
+      "url": "https://docs.nestjs.com/fundamentals/custom-providers",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/fundamentals/custom-providers",
+      "bytes_read": 248562,
+      "sha256": "2471a1ebe6b19d952e836591d6dd13e8f1e1707cff005ad57e3a3c0d841cd360"
+    },
+    {
+      "url": "https://docs.nestjs.com/fundamentals/lifecycle-events",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/fundamentals/lifecycle-events",
+      "bytes_read": 197354,
+      "sha256": "2a97d5b2905d984a163748aef589d93ddb349050126ac75fabaf05f3dc71319f"
+    },
+    {
+      "url": "https://docs.nestjs.com/guards",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/guards",
+      "bytes_read": 221848,
+      "sha256": "c781ba69318cd7fbd36d22d1f659d1375fe59e9d0fcce83bb4985350dbb125d6"
+    },
+    {
+      "url": "https://docs.nestjs.com/interceptors",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/interceptors",
+      "bytes_read": 240473,
+      "sha256": "32ef736e44a6d56f32600a005b89e2a0b676bf46ddccdb2a959f580861e561a6"
+    },
+    {
+      "url": "https://docs.nestjs.com/openapi/introduction",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/openapi/introduction",
+      "bytes_read": 234377,
+      "sha256": "34b7eba804c6b5c6b64f99fdd396fbdad62fc0e05aba1d0fb4f7188c0bf7fe34"
+    },
+    {
+      "url": "https://docs.nestjs.com/pipes",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/pipes",
+      "bytes_read": 265208,
+      "sha256": "68749ecfb4a24a0680e3f5004baf78cd1ffdf3de2090ee472c9c31e5f4559ae3"
+    },
+    {
+      "url": "https://docs.nestjs.com/providers",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/providers",
+      "bytes_read": 211492,
+      "sha256": "a986d25a73ae7b7e55165f6968e5dcc0c57a19a8cb535e4d2ade663bd974d9f5"
+    },
+    {
+      "url": "https://docs.nestjs.com/recipes/passport",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/recipes/passport",
+      "bytes_read": 348228,
+      "sha256": "3106927dd666c73804785ce6af2c58be1d71c9baf576a83d7f7295603a806043"
+    },
+    {
+      "url": "https://docs.nestjs.com/recipes/terminus",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/recipes/terminus",
+      "bytes_read": 20156,
+      "sha256": "2d1f3e0824ce103f8c89824660f53e2dba80031c04ac4580bfcd352fb578d086"
+    },
+    {
+      "url": "https://docs.nestjs.com/reliability/outbox",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/reliability/outbox",
+      "bytes_read": 453424,
+      "sha256": "e11463226519780019e324af6df4d9b9aaf8843dae9591bb0e31e7f88181ebb7"
+    },
+    {
+      "url": "https://docs.nestjs.com/reliability/outbox#retries-and-the-dead-letter-queue",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/reliability/outbox#retries-and-the-dead-letter-queue",
+      "bytes_read": 453424,
+      "sha256": "e11463226519780019e324af6df4d9b9aaf8843dae9591bb0e31e7f88181ebb7",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://docs.nestjs.com/security/authorization",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/security/authorization",
+      "bytes_read": 466256,
+      "sha256": "d1c2440d13c217eb016a4e2d00fdbf550d8e9ccb172373c4ee5045b04cb426dd"
+    },
+    {
+      "url": "https://docs.nestjs.com/security/cors",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/security/cors",
+      "bytes_read": 179321,
+      "sha256": "0c4b88c30bbce3aedb9174bddc1ad4060bfa9b4c8f1986f685cf914ac00294ed"
+    },
+    {
+      "url": "https://docs.nestjs.com/security/csrf",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/security/csrf",
+      "bytes_read": 201915,
+      "sha256": "054b002d1891604f6c1865f2805beb293991c280c88a3aaee15a1b2197b2144a"
+    },
+    {
+      "url": "https://docs.nestjs.com/security/rate-limiting",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/security/rate-limiting",
+      "bytes_read": 229463,
+      "sha256": "ff5ced2f0e9a1f674deac6d3d6c9f295620a9d22236957306e05fdb1e782aef3"
+    },
+    {
+      "url": "https://docs.nestjs.com/techniques/configuration",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/techniques/configuration",
+      "bytes_read": 20156,
+      "sha256": "2d1f3e0824ce103f8c89824660f53e2dba80031c04ac4580bfcd352fb578d086"
+    },
+    {
+      "url": "https://docs.nestjs.com/techniques/database",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/techniques/database",
+      "bytes_read": 20156,
+      "sha256": "2d1f3e0824ce103f8c89824660f53e2dba80031c04ac4580bfcd352fb578d086"
+    },
+    {
+      "url": "https://docs.nestjs.com/techniques/logger",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/techniques/logger",
+      "bytes_read": 20156,
+      "sha256": "2d1f3e0824ce103f8c89824660f53e2dba80031c04ac4580bfcd352fb578d086"
+    },
+    {
+      "url": "https://docs.nestjs.com/techniques/sql",
+      "status": 200,
+      "effective_url": "https://docs.nestjs.com/techniques/sql",
+      "bytes_read": 20156,
+      "sha256": "2d1f3e0824ce103f8c89824660f53e2dba80031c04ac4580bfcd352fb578d086"
+    },
+    {
+      "url": "https://docs.npmjs.com/cli/v11/commands/npm-audit",
+      "status": 200,
+      "effective_url": "https://docs.npmjs.com/cli/v11/commands/npm-audit/",
+      "bytes_read": 622226,
+      "sha256": "7917395efc8597cdc2bd9095b29e12d9bcb9e06e6ad02215ca5605450fb2456f"
+    },
+    {
+      "url": "https://docs.npmjs.com/cli/v11/commands/npm-ci",
+      "status": 200,
+      "effective_url": "https://docs.npmjs.com/cli/v11/commands/npm-ci/",
+      "bytes_read": 595865,
+      "sha256": "ff6ae01f59a086481ce562d7f2c87f165a4dc715105020ee2b1afe7961442b2f"
+    },
+    {
+      "url": "https://docs.npmjs.com/cli/v11/configuring-npm/package-json",
+      "status": 200,
+      "effective_url": "https://docs.npmjs.com/cli/v11/configuring-npm/package-json/",
+      "bytes_read": 906996,
+      "sha256": "b75d771414fba75324d322aaaa24c35ce34c571b45f1ad61b387dd061172e9f2"
+    },
+    {
+      "url": "https://docs.npmjs.com/cli/v11/configuring-npm/package-lock-json",
+      "status": 200,
+      "effective_url": "https://docs.npmjs.com/cli/v11/configuring-npm/package-lock-json/",
+      "bytes_read": 537925,
+      "sha256": "3618689d58f5b673e4ce3a6b4cab258cc3ae1e682f8e895329f4224e83ec80dd"
+    },
+    {
+      "url": "https://docs.sonarsource.com/sonarqube-server/quality-standards-administration/managing-quality-gates/introduction-to-quality-gates",
+      "status": 200,
+      "effective_url": "https://docs.sonarsource.com/sonarqube-server/quality-standards-administration/managing-quality-gates/introduction-to-quality-gates",
+      "bytes_read": 932479,
+      "sha256": "badf85705f76ef43152207e256d864055158cf3681c56eb9f268a2413c2dbe12"
+    },
+    {
+      "url": "https://expressjs.com/en/api/",
+      "status": 200,
+      "effective_url": "https://expressjs.com/en/api/",
+      "bytes_read": 87794,
+      "sha256": "cb8c647f1a6e7537a29cc2f339e277f7e0866d2972c43b0f310c6b75c03212ab"
+    },
+    {
+      "url": "https://expressjs.com/en/guide/behind-proxies.html",
+      "status": 200,
+      "effective_url": "https://expressjs.com/en/guide/behind-proxies/",
+      "bytes_read": 92245,
+      "sha256": "82e83c0682368ad0fbb0a31bf62471794d975e64b9fe557c8defd027f009e823"
+    },
+    {
+      "url": "https://expressjs.com/en/resources/middleware/session/",
+      "status": 200,
+      "effective_url": "https://expressjs.com/en/resources/middleware/session/",
+      "bytes_read": 183196,
+      "sha256": "701990867b00927b99c22dec99c5e3f14a81560dd99129297e70b8d69314b4f2"
+    },
+    {
+      "url": "https://fetch.spec.whatwg.org/",
+      "status": 200,
+      "effective_url": "https://fetch.spec.whatwg.org/",
+      "bytes_read": 1854393,
+      "sha256": "63b0a018753c330adf1e40417524eb70ea02d4d3e123bcb39b6770f23bad911b"
+    },
+    {
+      "url": "https://fetch.spec.whatwg.org/#concept-network-error",
+      "status": 200,
+      "effective_url": "https://fetch.spec.whatwg.org/#concept-network-error",
+      "bytes_read": 1854393,
+      "sha256": "63b0a018753c330adf1e40417524eb70ea02d4d3e123bcb39b6770f23bad911b",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://fetch.spec.whatwg.org/#dom-response-ok",
+      "status": 200,
+      "effective_url": "https://fetch.spec.whatwg.org/#dom-response-ok",
+      "bytes_read": 1854393,
+      "sha256": "63b0a018753c330adf1e40417524eb70ea02d4d3e123bcb39b6770f23bad911b",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://github.com/ReactiveX/rxjs/blob/master/apps/rxjs.dev/content/guide/observable.md",
+      "status": 200,
+      "effective_url": "https://github.com/ReactiveX/rxjs/blob/master/apps/rxjs.dev/content/guide/observable.md",
+      "bytes_read": 376073,
+      "sha256": "b86d33a65322795ebfedf4a249a9c407f98debb71d8ecc9c12e3d65be45b88b8"
+    },
+    {
+      "url": "https://github.com/auth0/node-jsonwebtoken",
+      "status": 200,
+      "effective_url": "https://github.com/auth0/node-jsonwebtoken",
+      "bytes_read": 412490,
+      "sha256": "39e5451761e0192ae899cedf1202b9e3bdc02935963776bb147bf41f14482cc1"
+    },
+    {
+      "url": "https://helmet.js.org/",
+      "status": 200,
+      "effective_url": "https://helmet.js.org/",
+      "bytes_read": 59867,
+      "sha256": "4172b8bb5af3b6c015f677b860b82e673681badbbb91849c694876693ef57bcf"
+    },
+    {
+      "url": "https://jestjs.io/docs/asynchronous",
+      "status": 200,
+      "effective_url": "https://jestjs.io/docs/asynchronous",
+      "bytes_read": 71788,
+      "sha256": "2cbaae2e236abfb4d6e9023dda34815ba9a839c6474057e4eaa0b649ea23d82b"
+    },
+    {
+      "url": "https://jestjs.io/docs/ecmascript-modules",
+      "status": 200,
+      "effective_url": "https://jestjs.io/docs/ecmascript-modules",
+      "bytes_read": 89853,
+      "sha256": "d2d89f526dbdd71497d13d817cfc29730ea6322d9f4299770e4feaef136a4110"
+    },
+    {
+      "url": "https://jestjs.io/docs/mock-functions",
+      "status": 200,
+      "effective_url": "https://jestjs.io/docs/mock-functions",
+      "bytes_read": 150310,
+      "sha256": "8ffe90418b2e9f7d1aa34d0156daaa8a2a9e73d1b5a6237d4979b8cf6acec8ec"
+    },
+    {
+      "url": "https://kafka.js.org/docs/configuration",
+      "status": 200,
+      "effective_url": "https://kafka.js.org/docs/configuration",
+      "bytes_read": 51697,
+      "sha256": "35817191e9b1b848ac75b7c8c387f46546225e8a809399c35ccc2b06158cffad"
+    },
+    {
+      "url": "https://kafka.js.org/docs/consuming",
+      "status": 200,
+      "effective_url": "https://kafka.js.org/docs/consuming",
+      "bytes_read": 57001,
+      "sha256": "1e98f29b9d1068e6b7a83235aee3969491a63c5dcca3357d4214db6ae1989fe0"
+    },
+    {
+      "url": "https://kafka.js.org/docs/instrumentation-events",
+      "status": 200,
+      "effective_url": "https://kafka.js.org/docs/instrumentation-events",
+      "bytes_read": 20360,
+      "sha256": "6c9a7add49faf10a0288eb2f42d99c0fdd04d91cf9a2225c25de8f7c469c4877"
+    },
+    {
+      "url": "https://kafka.js.org/docs/producing",
+      "status": 200,
+      "effective_url": "https://kafka.js.org/docs/producing",
+      "bytes_read": 41368,
+      "sha256": "87ea9d43d7f26b7f26a159d08d081c0166e08d6aa9feceed4c46dc7151133543"
+    },
+    {
+      "url": "https://node-postgres.com/apis/pool",
+      "status": 200,
+      "effective_url": "https://node-postgres.com/apis/pool",
+      "bytes_read": 88639,
+      "sha256": "2c140826562a3d1225429d9682e4329976cdb3ed01f6b63a35d67579d78f1e05"
+    },
+    {
+      "url": "https://node-postgres.com/features/pooling",
+      "status": 200,
+      "effective_url": "https://node-postgres.com/features/pooling",
+      "bytes_read": 60114,
+      "sha256": "27942c1db1b153fc72bed949578f50206e2e34eaa9a96089ee865fbbf29339b2"
+    },
+    {
+      "url": "https://node-postgres.com/features/queries",
+      "status": 200,
+      "effective_url": "https://node-postgres.com/features/queries",
+      "bytes_read": 63893,
+      "sha256": "65ec04721de5197bba4b5eeac340024a88f85087690b153eac99fe7eed5f393d"
+    },
+    {
+      "url": "https://node-postgres.com/features/ssl",
+      "status": 200,
+      "effective_url": "https://node-postgres.com/features/ssl",
+      "bytes_read": 57369,
+      "sha256": "5c77abf765e9661bdd8a43846ebc047bf84345a603c16d29737f91c12e1c288f"
+    },
+    {
+      "url": "https://node-postgres.com/features/transactions",
+      "status": 200,
+      "effective_url": "https://node-postgres.com/features/transactions",
+      "bytes_read": 43361,
+      "sha256": "bb04d733f989fb4b99cb66c2baaee9d826a08f3d8288bfda957761fdfbeb2e0a"
+    },
+    {
+      "url": "https://node-postgres.com/features/types",
+      "status": 200,
+      "effective_url": "https://node-postgres.com/features/types",
+      "bytes_read": 55662,
+      "sha256": "db73e1839e852df735735bfcf2cca640687417ee04a5b6ed50ce7bef978ae696"
+    },
+    {
+      "url": "https://node-postgres.com/guides/pool-sizing",
+      "status": 200,
+      "effective_url": "https://node-postgres.com/guides/pool-sizing",
+      "bytes_read": 47564,
+      "sha256": "fe7bb345ef91aa5c8a9e4cfa2bb5175bd60df12a8b67126eb80d646276110133"
+    },
+    {
+      "url": "https://nodejs.org/api/async_context.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/async_context.html",
+      "bytes_read": 243463,
+      "sha256": "270bc1e0fc09add67e5f501ccf9a77a6194ec57d40619544903e23268d7fdd76"
+    },
+    {
+      "url": "https://nodejs.org/api/async_context.html#class-asynclocalstorage",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/async_context.html#class-asynclocalstorage",
+      "bytes_read": 243463,
+      "sha256": "270bc1e0fc09add67e5f501ccf9a77a6194ec57d40619544903e23268d7fdd76",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://nodejs.org/api/buffer.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/buffer.html",
+      "bytes_read": 1172779,
+      "sha256": "edf2f3d00460f85328c3d3eebc5bfef589cc39f2ee97ef8821292d59cb7abb7e"
+    },
+    {
+      "url": "https://nodejs.org/api/child_process.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/child_process.html",
+      "bytes_read": 456029,
+      "sha256": "80a081605c85180049222d44644e8a3aa0463ad6801d783e2324ed79745a5c8c"
+    },
+    {
+      "url": "https://nodejs.org/api/cluster.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/cluster.html",
+      "bytes_read": 204946,
+      "sha256": "24eba1c0686aeae84becd2671c1b4f0f0cf36469807ce5d626764d3ed1666ee5"
+    },
+    {
+      "url": "https://nodejs.org/api/crypto.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/crypto.html",
+      "bytes_read": 1190370,
+      "sha256": "1aa0f3ad2e2b04c382cbba5b7ad9b192d35a495e75b42ef934b0d77459395fcc"
+    },
+    {
+      "url": "https://nodejs.org/api/esm.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/esm.html",
+      "bytes_read": 137255,
+      "sha256": "da7a56d421095e25335c6d2ae807b92cf35007a4790a9565a15e6095194c7e45"
+    },
+    {
+      "url": "https://nodejs.org/api/globals.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/globals.html",
+      "bytes_read": 147805,
+      "sha256": "37ef3c94f43e2c18621bae700731059ef53753ee96355a5699e06e7738c344b0"
+    },
+    {
+      "url": "https://nodejs.org/api/http.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/http.html",
+      "bytes_read": 695119,
+      "sha256": "66705d8d9693f390068e02bf03c7074dbcb89d289e9dacbde3d9345e0e1aa95f"
+    },
+    {
+      "url": "https://nodejs.org/api/path.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/path.html",
+      "bytes_read": 101125,
+      "sha256": "965930984be1510faa109d592ec3edd1e08245fcf995b1a992260499c82d7611"
+    },
+    {
+      "url": "https://nodejs.org/api/process.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/process.html",
+      "bytes_read": 718897,
+      "sha256": "5d23dc2a5c12d9c8965898396e307fef5604e6468fd2374c929b1e30ccc1f50d"
+    },
+    {
+      "url": "https://nodejs.org/api/process.html#processmemoryusage",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/process.html#processmemoryusage",
+      "bytes_read": 718897,
+      "sha256": "5d23dc2a5c12d9c8965898396e307fef5604e6468fd2374c929b1e30ccc1f50d",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://nodejs.org/api/timers.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/timers.html",
+      "bytes_read": 93945,
+      "sha256": "c374cce12821285b75b1274050e4f95a383ec17d4deea74cf1d32ab390b0a5f8"
+    },
+    {
+      "url": "https://nodejs.org/api/url.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/url.html",
+      "bytes_read": 338384,
+      "sha256": "ddd2d8abe9ba5ed81f561520027b8e107acda2107f0c2520be23365804b367ed"
+    },
+    {
+      "url": "https://nodejs.org/api/util.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/util.html",
+      "bytes_read": 788619,
+      "sha256": "c68c461d5d122450dfc123c5d1b650d34e61bf1de047a5e9013f5c70515eb86c"
+    },
+    {
+      "url": "https://nodejs.org/api/worker_threads.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/api/worker_threads.html",
+      "bytes_read": 410199,
+      "sha256": "367e17621531a4a61c189a84c10a2ca1c0b3dccd991866417b29434f58fbb941"
+    },
+    {
+      "url": "https://nodejs.org/docs/latest-v22.x/api/cluster.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/docs/latest-v22.x/api/cluster.html",
+      "bytes_read": 94445,
+      "sha256": "5a420aff1f2aa5e15311e1635afd3738f5613111a8e30ca8f38c5c3197092b72"
+    },
+    {
+      "url": "https://nodejs.org/docs/latest-v22.x/api/events.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/docs/latest-v22.x/api/events.html",
+      "bytes_read": 242544,
+      "sha256": "b0c88c0f9db7ad6d6e3fe6adfb988876077b6ffb6a71176709b7502dcc174998"
+    },
+    {
+      "url": "https://nodejs.org/docs/latest-v22.x/api/fs.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/docs/latest-v22.x/api/fs.html",
+      "bytes_read": 682292,
+      "sha256": "6339cfd6ee7d35980068fd65796484a1de82c64b3de10027f1c6fbb73e8a6dd4"
+    },
+    {
+      "url": "https://nodejs.org/docs/latest-v22.x/api/inspector.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/docs/latest-v22.x/api/inspector.html",
+      "bytes_read": 66849,
+      "sha256": "47a7d6381b40cbc45838bd871e613096c7b7c4b1350c666c0023858c0c63d8ca"
+    },
+    {
+      "url": "https://nodejs.org/docs/latest-v22.x/api/stream.html",
+      "status": 200,
+      "effective_url": "https://nodejs.org/docs/latest-v22.x/api/stream.html",
+      "bytes_read": 422106,
+      "sha256": "abb51f52a3db56a79a46c10246c28ebd1905a7c31a0c6c135b25732828749302"
+    },
+    {
+      "url": "https://nodejs.org/docs/latest-v22.x/api/stream.html#streampipelinesource-transforms-destination-options",
+      "status": 200,
+      "effective_url": "https://nodejs.org/docs/latest-v22.x/api/stream.html#streampipelinesource-transforms-destination-options",
+      "bytes_read": 422106,
+      "sha256": "abb51f52a3db56a79a46c10246c28ebd1905a7c31a0c6c135b25732828749302",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://nodejs.org/docs/latest-v22.x/api/stream.html#writablewritechunk-encoding-callback",
+      "status": 200,
+      "effective_url": "https://nodejs.org/docs/latest-v22.x/api/stream.html#writablewritechunk-encoding-callback",
+      "bytes_read": 422106,
+      "sha256": "abb51f52a3db56a79a46c10246c28ebd1905a7c31a0c6c135b25732828749302",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://nodejs.org/en/about/previous-releases",
+      "status": 200,
+      "effective_url": "https://nodejs.org/en/about/previous-releases",
+      "bytes_read": 286486,
+      "sha256": "099d65476c3210b1d4dc4988456135bb0a50d313cc38f868a94b1dc3d564fce6"
+    },
+    {
+      "url": "https://nodejs.org/en/learn/asynchronous-work/dont-block-the-event-loop",
+      "status": 200,
+      "effective_url": "https://nodejs.org/learn/asynchronous-work/dont-block-the-event-loop",
+      "bytes_read": 146838,
+      "sha256": "acbd1782f58942d39cb97c49e13b11e815399dd8779377134a4211e661d4bad5"
+    },
+    {
+      "url": "https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick",
+      "status": 200,
+      "effective_url": "https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick",
+      "bytes_read": 167237,
+      "sha256": "b794836b30bc7a70ff43087ee8830ac998b916afefeade8beab7196bb01ed58d"
+    },
+    {
+      "url": "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs",
+      "status": 200,
+      "effective_url": "https://nodejs.org/learn/getting-started/introduction-to-nodejs",
+      "bytes_read": 90807,
+      "sha256": "b1dc84c5e5ab4315f027ef6a6e293cd771aaac11d6e7e685aaa35970a85f0a53"
+    },
+    {
+      "url": "https://openid.net/specs/openid-connect-core-1_0.html",
+      "status": 200,
+      "effective_url": "https://openid.net/specs/openid-connect-core-1_0.html",
+      "bytes_read": 437508,
+      "sha256": "4d016752a645e8a3c259baa4173b5a90cb6c82898ce868fc8444adde262a5aed"
+    },
+    {
+      "url": "https://opentelemetry.io/docs/concepts/context-propagation/",
+      "status": 200,
+      "effective_url": "https://opentelemetry.io/docs/concepts/context-propagation/",
+      "bytes_read": 415666,
+      "sha256": "8e7088657e5ff871fff5a52ccd839f60c5df24b93357827c6c21885921be9494"
+    },
+    {
+      "url": "https://opentelemetry.io/docs/concepts/signals/",
+      "status": 200,
+      "effective_url": "https://opentelemetry.io/docs/concepts/signals/",
+      "bytes_read": 405763,
+      "sha256": "b2520aa8da2a6d0caf38f8d84ae677588dd4a7a243d3b3223b6562073db280e9"
+    },
+    {
+      "url": "https://opentelemetry.io/docs/languages/js/getting-started/nodejs/",
+      "status": 200,
+      "effective_url": "https://opentelemetry.io/docs/languages/js/getting-started/nodejs/",
+      "bytes_read": 484638,
+      "sha256": "3081067b135615cc7e50b6a1a43e4b80f8ef9268307825368fda563bcec74618"
+    },
+    {
+      "url": "https://playwright.dev/docs/library",
+      "status": 200,
+      "effective_url": "https://playwright.dev/docs/library",
+      "bytes_read": 123980,
+      "sha256": "5c99f2a1361a55a519b51511681de16eb9e04d332d911111926f4014dd8608be"
+    },
+    {
+      "url": "https://playwright.dev/docs/test-assertions",
+      "status": 200,
+      "effective_url": "https://playwright.dev/docs/test-assertions",
+      "bytes_read": 159543,
+      "sha256": "7793536b57a5bb986b47ad5dbffe9531f77e14b0d110adac337ef69386a11ac1"
+    },
+    {
+      "url": "https://prometheus.io/docs/practices/naming/",
+      "status": 200,
+      "effective_url": "https://prometheus.io/docs/practices/naming/",
+      "bytes_read": 201773,
+      "sha256": "526d9981a9d251a47a642bb1a3e3c952f9f588d64ba12bcfcc1f346e84640b3d"
+    },
+    {
+      "url": "https://react.dev/learn/sharing-state-between-components",
+      "status": 200,
+      "effective_url": "https://react.dev/learn/sharing-state-between-components",
+      "bytes_read": 239448,
+      "sha256": "108e8dcd3b1beff5040986be2566eccdefe580eae514e6ebefff79857b503bb8"
+    },
+    {
+      "url": "https://react.dev/reference/react/useEffect",
+      "status": 200,
+      "effective_url": "https://react.dev/reference/react/useEffect",
+      "bytes_read": 601920,
+      "sha256": "1c6de8f347916751010cec51b524c9bee08d956830daac47a771b140614f530b"
+    },
+    {
+      "url": "https://react.dev/reference/react/useEffect#fetching-data-with-effects",
+      "status": 200,
+      "effective_url": "https://react.dev/reference/react/useEffect#fetching-data-with-effects",
+      "bytes_read": 601920,
+      "sha256": "1c6de8f347916751010cec51b524c9bee08d956830daac47a771b140614f530b",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://react.dev/reference/react/useRef",
+      "status": 200,
+      "effective_url": "https://react.dev/reference/react/useRef",
+      "bytes_read": 274890,
+      "sha256": "534d3538643033f9c6d686155c133ab226d1b294f87df14174b2a8b127936c6a"
+    },
+    {
+      "url": "https://sre.google/workbook/implementing-slos/",
+      "status": 200,
+      "effective_url": "https://sre.google/workbook/implementing-slos/",
+      "bytes_read": 104090,
+      "sha256": "1b02c7f3f640d92ca4357ba3e088fdbd6766274118afac934bede95ea9ea23e9"
+    },
+    {
+      "url": "https://tc39.es/ecma262/multipage/control-abstraction-objects.html#sec-promise.all",
+      "status": 200,
+      "effective_url": "https://tc39.es/ecma262/multipage/control-abstraction-objects.html#sec-promise.all",
+      "bytes_read": 1095650,
+      "sha256": "ad2d3080dfdba65e86eee0fc081c82df32bf97ea36ca0f186ffd0fd1033db4f5",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html",
+      "status": 200,
+      "effective_url": "https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html",
+      "bytes_read": 1120104,
+      "sha256": "3034e2454b3ebd870a01ed8dd9b1fb3ac30eb5fef3602da7c67835c0aa0bd7b4"
+    },
+    {
+      "url": "https://tc39.es/ecma262/multipage/ecmascript-language-statements-and-declarations.html",
+      "status": 200,
+      "effective_url": "https://tc39.es/ecma262/multipage/ecmascript-language-statements-and-declarations.html",
+      "bytes_read": 953054,
+      "sha256": "3ee505f4f10747e566b706546fba742c9bfd85acdec212d79fe449fa65ccfcbf"
+    },
+    {
+      "url": "https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-environment-records",
+      "status": 200,
+      "effective_url": "https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-environment-records",
+      "bytes_read": 888556,
+      "sha256": "c5ef6ab7547392e6d412b7ae9089e8141c0cc1d122750129bc010a15f9d8a859",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://tc39.es/ecma262/multipage/indexed-collections.html",
+      "status": 200,
+      "effective_url": "https://tc39.es/ecma262/multipage/indexed-collections.html",
+      "bytes_read": 1060522,
+      "sha256": "27e4f1b033de58c23fa56b6785c576cd0b026e9458fc3d6b99382caa24c700eb"
+    },
+    {
+      "url": "https://tc39.es/ecma262/multipage/keyed-collections.html",
+      "status": 200,
+      "effective_url": "https://tc39.es/ecma262/multipage/keyed-collections.html",
+      "bytes_read": 729993,
+      "sha256": "35d7e04aca4aa759f9f30e03ca21005513232128bde0b58edf28e45ed6e3b339"
+    },
+    {
+      "url": "https://tc39.es/ecma262/multipage/numbers-and-dates.html",
+      "status": 200,
+      "effective_url": "https://tc39.es/ecma262/multipage/numbers-and-dates.html",
+      "bytes_read": 974193,
+      "sha256": "52fb441eb8812a60303b86761f74fa626dac83b926154f8c7b877161f3d6e169"
+    },
+    {
+      "url": "https://tc39.es/ecma262/multipage/structured-data.html",
+      "status": 200,
+      "effective_url": "https://tc39.es/ecma262/multipage/structured-data.html",
+      "bytes_read": 969092,
+      "sha256": "328deefcdde096a5b7a1378aba9476abfeafe2e471efd35cb4f586926d83fa17"
+    },
+    {
+      "url": "https://tc39.es/ecma262/multipage/text-processing.html",
+      "status": 200,
+      "effective_url": "https://tc39.es/ecma262/multipage/text-processing.html",
+      "bytes_read": 1232239,
+      "sha256": "973fec79a5c87212478730c0c5c67f66d6a9c538f6bfe187cb04e9eba18b9a35"
+    },
+    {
+      "url": "https://vitest.dev/guide/mocking.html",
+      "status": 200,
+      "effective_url": "https://vitest.dev/guide/mocking.html",
+      "bytes_read": 100981,
+      "sha256": "9af118ed733eecbc7ffd28a7c1e1e3f4e8b3a623d8d09f51ef584de69323601e"
+    },
+    {
+      "url": "https://www.postgresql.org/docs/17/backup.html",
+      "status": 200,
+      "effective_url": "https://www.postgresql.org/docs/17/backup.html",
+      "bytes_read": 17297,
+      "sha256": "2e6c993d06d4acc9b5163919234eb8e38f3a02ab964431b90fdc9c9b770bb80d"
+    },
+    {
+      "url": "https://www.postgresql.org/docs/17/sql-insert.html",
+      "status": 200,
+      "effective_url": "https://www.postgresql.org/docs/17/sql-insert.html",
+      "bytes_read": 45605,
+      "sha256": "8d1ddd100344c8f44c2259199c88746b8447e168f94b7456d263039f6bd33cd2"
+    },
+    {
+      "url": "https://www.postgresql.org/docs/18/sql-select.html",
+      "status": 200,
+      "effective_url": "https://www.postgresql.org/docs/18/sql-select.html",
+      "bytes_read": 118042,
+      "sha256": "c0ba81488bcc4c2654ba88e824983ccbbb5c47e57dac145814c98805da9bb325"
+    },
+    {
+      "url": "https://www.postgresql.org/docs/current/ddl-constraints.html",
+      "status": 200,
+      "effective_url": "https://www.postgresql.org/docs/current/ddl-constraints.html",
+      "bytes_read": 46639,
+      "sha256": "bfa47acf38b1234630dcc076aeb172314bbd4949c28984755b5eea04b6ccf023"
+    },
+    {
+      "url": "https://www.postgresql.org/docs/current/explicit-locking.html",
+      "status": 200,
+      "effective_url": "https://www.postgresql.org/docs/current/explicit-locking.html",
+      "bytes_read": 46826,
+      "sha256": "2c7ed0375df946ee8ec85f82ce6a1b045ad6001ad595ccf52845f709dbead4b5"
+    },
+    {
+      "url": "https://www.postgresql.org/docs/current/functions-json.html",
+      "status": 200,
+      "effective_url": "https://www.postgresql.org/docs/current/functions-json.html",
+      "bytes_read": 193458,
+      "sha256": "7e4dc1e3c2dd1e14eb67f6ad1b6833a5ec6fa0a8badd378ce34f78aa4083f279"
+    },
+    {
+      "url": "https://www.postgresql.org/docs/current/functions-matching.html",
+      "status": 200,
+      "effective_url": "https://www.postgresql.org/docs/current/functions-matching.html",
+      "bytes_read": 132293,
+      "sha256": "0ef336701307402fba316f939229413ad944ed18144f3cc2c1cafc320d56fae4"
+    },
+    {
+      "url": "https://www.postgresql.org/docs/current/monitoring-stats.html",
+      "status": 200,
+      "effective_url": "https://www.postgresql.org/docs/current/monitoring-stats.html",
+      "bytes_read": 290994,
+      "sha256": "4b872e1cd30fd40679c000bf3e5efc15d9f1e4d7a003aed877cfe2c09381c45c"
+    },
+    {
+      "url": "https://www.postgresql.org/docs/current/sql-insert.html",
+      "status": 200,
+      "effective_url": "https://www.postgresql.org/docs/current/sql-insert.html",
+      "bytes_read": 48141,
+      "sha256": "30cf8bd73954213a389058787d8a8c371f43b75271acb7ab2e9fd40bb8af230e"
+    },
+    {
+      "url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+      "status": 200,
+      "effective_url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+      "bytes_read": 47642,
+      "sha256": "26a5c19a4171ae6f86b591ab7025c6e38f4094d98fdeb252c762208e25e9032a"
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc7519.html",
+      "status": 200,
+      "effective_url": "https://www.rfc-editor.org/rfc/rfc7519.html",
+      "bytes_read": 83832,
+      "sha256": "d0ca0d6c6f8b7dfcad6e13c55086694d7ee69665bb828dcac6362d1587b4b53b"
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc7636.html#appendix-B",
+      "status": 200,
+      "effective_url": "https://www.rfc-editor.org/rfc/rfc7636.html#appendix-B",
+      "bytes_read": 50290,
+      "sha256": "1dd39bd17081e0ed18c2cf304b87c79061c51e505d2ff5e12ffbd0d182fe5b20",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-if-match",
+      "status": 200,
+      "effective_url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-if-match",
+      "bytes_read": 1187554,
+      "sha256": "d431760660ea44e130f6e919dab216df2d0b3a490567a98089267523368fe1e5",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://www.typescriptlang.org/docs/handbook/2/basic-types.html",
+      "status": 200,
+      "effective_url": "https://www.typescriptlang.org/docs/handbook/2/basic-types.html",
+      "bytes_read": 253012,
+      "sha256": "a81fccb59d80f74cb9f27d75561a90f4fce6fdcbd5cc45b41f7a19d1727b46a1"
+    },
+    {
+      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
+      "status": 200,
+      "effective_url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
+      "bytes_read": 324762,
+      "sha256": "0182979da3dc0c09b1400cbd6ba92a150401f444759f8b9699f2f70db306f13d"
+    },
+    {
+      "url": "https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function",
+      "status": 200,
+      "effective_url": "https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function",
+      "bytes_read": 377537,
+      "sha256": "cf49750fc9da6de1611153380e850a89a11b9907ca5fc8bd2401e15a404e23bd",
+      "fragment_observed_in_response": true
+    },
+    {
+      "url": "https://www.typescriptlang.org/docs/handbook/2/generics.html",
+      "status": 200,
+      "effective_url": "https://www.typescriptlang.org/docs/handbook/2/generics.html",
+      "bytes_read": 301249,
+      "sha256": "648460d89bfcad1b8ab89764a207d63bb2fd71acc6efb7e3f46d94ed319a671e"
+    },
+    {
+      "url": "https://www.typescriptlang.org/docs/handbook/2/modules.html",
+      "status": 200,
+      "effective_url": "https://www.typescriptlang.org/docs/handbook/2/modules.html",
+      "bytes_read": 262778,
+      "sha256": "81c86c92102d76c91d1e689be64c6e13625d4c64b5aa2d33d00a9ec14bd25ddc"
+    },
+    {
+      "url": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+      "status": 200,
+      "effective_url": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+      "bytes_read": 335786,
+      "sha256": "7954c9d73b5ee5b8f2eac9ecfaf3c56101dc7729307b6676ea65371aefea8b58"
+    },
+    {
+      "url": "https://www.typescriptlang.org/docs/handbook/utility-types.html",
+      "status": 200,
+      "effective_url": "https://www.typescriptlang.org/docs/handbook/utility-types.html",
+      "bytes_read": 326949,
+      "sha256": "c2bcc0b20899173dcfd4e0c0c5c836de602af3df46ec8974e2d2a00d43a0a0d7"
+    },
+    {
+      "url": "https://www.typescriptlang.org/tsconfig/emitDecoratorMetadata.html",
+      "status": 200,
+      "effective_url": "https://www.typescriptlang.org/tsconfig/emitDecoratorMetadata.html",
+      "bytes_read": 193474,
+      "sha256": "557a17f61751f81ae1f10ea1ef181c8c1391c43bcf4aa1b82d4f8163ac277bac"
+    },
+    {
+      "url": "https://zod.dev/api",
+      "status": 200,
+      "effective_url": "https://zod.dev/api",
+      "bytes_read": 2916258,
+      "sha256": "7943c87228bfc9a56009d6168f5ff244e109c4682f3f8082b1330e3b789eca9f"
+    },
+    {
+      "url": "https://zod.dev/basics",
+      "status": 200,
+      "effective_url": "https://zod.dev/basics",
+      "bytes_read": 200052,
+      "sha256": "f5e4860192bbc93d28b761b88f59bbce9b44610e132da86ccd7a33527ba2dc35"
+    }
+  ]
+}

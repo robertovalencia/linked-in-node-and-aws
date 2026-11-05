@@ -56,4 +56,5 @@ for row in manifest['excerpts']:
     actual = '\n'.join(source(manifest['source_commit'], row['path'])[row['start']-1:row['end']])
     assert actual == row['excerpt'], f"Stale source excerpt: {row['path']}"
 questionnaire = json.loads(subprocess.check_output(['python3', str(root / 'scripts/check-aws-questionnaire.py'), '--repository', str(repo)], text=True))
-print(json.dumps({'questionnaire':questionnaire,'lessons':count,'cloud_lessons':len(lessons),'mapped_concepts':sum(len(r['concepts']) for r in coverage['coverage']),'local_links':links,'unique_pinned_source_ranges':len(pinned),'exact_manifest_excerpts':len(manifest['excerpts'])}))
+node_questionnaire = json.loads(subprocess.check_output(['python3', str(root / 'scripts/check-node-questionnaire.py'), '--repository', str(repo)], text=True))
+print(json.dumps({'questionnaire':questionnaire,'node_questionnaire':node_questionnaire,'lessons':count,'cloud_lessons':len(lessons),'mapped_concepts':sum(len(r['concepts']) for r in coverage['coverage']),'local_links':links,'unique_pinned_source_ranges':len(pinned),'exact_manifest_excerpts':len(manifest['excerpts'])}))

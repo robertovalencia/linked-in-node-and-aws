@@ -18,6 +18,8 @@ Use [09 · the executable local Terraform workbook](walkthroughs/09-terraform-lo
 
 ## Read or download
 
+Use the [Node.js/backend questionnaire and troubleshooting guide](node-backend-questionnaire.md) for beginner interview rehearsal, four-service setup, language/runtime mechanisms, persistence/security/events and backend design extensions. Its [concept coverage ledger](node-backend-coverage.md), [live validation/review record](node-backend-progress.md) and [runnable credential-free lab](labs/node-runtime/README.md) are included in the managed ZIP. Numbered lesson IDs and personal progress are preserved.
+
 Use the [AWS/Terraform questionnaire and troubleshooting companion](aws-terraform-questionnaire.md) for 30 short interview answers and 12 symptom → checks → repair → recovery scenarios. Every item links existing lessons and a project excerpt; evidence dates distinguish the newer ECS preparation/execution records from older lesson checkpoints. This supplementary guide and its validation map are included in the managed download.
 
 Read these guides directly on GitHub, or [download the complete study pack](NodeJs-AWS-study-pack.zip). The [service technical handbooks](https://github.com/robertovalencia/linked-in-node-and-aws/blob/8cb1c13bc3e42f06930ce8c7f1bb6a8aa3c08b61/docs/nodejs-beginner/README.md) organize tools by capability.

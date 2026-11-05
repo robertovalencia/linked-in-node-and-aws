@@ -1,0 +1,124 @@
+{
+  "date": "2026-11-05",
+  "scope": "Documentation, local Node examples, offline corruption/source checks, public documentation GETs and clean packaging. No cloud, external publication or full-stack outage execution.",
+  "protected_files": {
+    "count": 171,
+    "all_unchanged": true,
+    "scope": "84 local lessons,local personal progress,and86 external-profile files; no note content published"
+  },
+  "commands": [
+    {
+      "command": "npm run check",
+      "exit_code": 0,
+      "log": "node-backend-validation/npm-check.log"
+    },
+    {
+      "command": "npm test",
+      "exit_code": 1,
+      "log": "node-backend-validation/npm-test-sandbox-failure.log",
+      "reason": "Sandbox denied loopback server listen; three TLS test failures preserved"
+    },
+    {
+      "command": "npm test (with local loopback access)",
+      "exit_code": 0,
+      "backend_tests": 88,
+      "frontend_tests": 28,
+      "log": "node-backend-validation/npm-test-local-access.log"
+    },
+    {
+      "command": "npm run build",
+      "exit_code": 0,
+      "log": "node-backend-validation/npm-build.log"
+    },
+    {
+      "command": "node --unhandled-rejections=strict docs/nodejs-aws-study-path/labs/node-runtime/run.mjs",
+      "exit_code": 0,
+      "groups": 10,
+      "log": "node-backend-validation/runtime-lab.json"
+    },
+    {
+      "command": "python3 scripts/check-node-questionnaire.test.py",
+      "exit_code": 0,
+      "tests": 26,
+      "log": "node-backend-validation/node-regressions.log"
+    },
+    {
+      "command": "python3 scripts/check-aws-questionnaire.test.py",
+      "exit_code": 0,
+      "tests": 26,
+      "log": "node-backend-validation/aws-regressions.log"
+    }
+  ],
+  "archive_delta": {
+    "previous_members": 152,
+    "members": 167,
+    "added": [
+      "NodeJs-AWS/evidence/node-backend-source-context.md",
+      "NodeJs-AWS/labs/node-runtime/README.md",
+      "NodeJs-AWS/labs/node-runtime/run.mjs",
+      "NodeJs-AWS/node-backend-coverage.json",
+      "NodeJs-AWS/node-backend-coverage.md",
+      "NodeJs-AWS/node-backend-lesson-inventory.json",
+      "NodeJs-AWS/node-backend-operations.md",
+      "NodeJs-AWS/node-backend-progress.md",
+      "NodeJs-AWS/node-backend-questionnaire-map.json",
+      "NodeJs-AWS/node-backend-questionnaire.md",
+      "NodeJs-AWS/node-backend-runtime.md",
+      "NodeJs-AWS/node-backend-services.md",
+      "NodeJs-AWS/node-operations-items.json",
+      "NodeJs-AWS/node-runtime-items.json",
+      "NodeJs-AWS/node-services-items.json"
+    ],
+    "removed": [],
+    "changed_existing": [
+      "NodeJs-AWS/README.md"
+    ]
+  },
+  "public_links": {
+    "report": "node-backend-links-final-2026-11-05.json",
+    "http_200": 157,
+    "total": 157,
+    "unobserved_fragments": 0
+  },
+  "clean_candidate": {
+    "report": "node-backend-clean-final-2026-11-05.json",
+    "independent_report": "node-backend-clean-independent-rerun-2026-11-05.json",
+    "status": "PASS"
+  },
+  "failed_then_repaired": [
+    {
+      "evidence": "node-backend-clean-initial-2026-11-05.json",
+      "failure": "Candidate omitted managed README navigation",
+      "repair": "Copy explicit pack README alongside intended delta"
+    },
+    {
+      "evidence": "node-backend-clean-required-assets-failure-2026-11-05.json",
+      "failure": "Checker required excluded private lab canaries",
+      "repair": "Require actual README and run.mjs assets; retain state/cache/private exclusions"
+    },
+    {
+      "evidence": "node-backend-clean-diagnostic-failure-2026-11-05.json",
+      "failure": "Stronger index-count check changed missing-ID test diagnostic",
+      "repair": "Check reviewed identities before rendered counts; retain both independent checks and mutants"
+    },
+    {
+      "evidence": "node-backend-links-initial-2026-11-05.json",
+      "failure": "Moved Jest page404 plus four unquoted HTML anchors not recognized",
+      "repair": "Use current asynchronous page and HTMLParser supporting valid unquoted anchors; all157 pass"
+    }
+  ],
+  "not_run": {
+    "acceptance": "Docker daemon unavailable; no stack started and no new real HTTP/browser/outage acceptance claimed",
+    "cloud_publication": "No AWS/Terraform operation,secret read,GitHub/Jira/Sonar hosted run,commit,push or Study Desk write"
+  },
+  "final_archive_sha256": "c59320e59b2338cde82299b60cd46f6b0a0cbf77a4cab25b9a39244c3a1bec76",
+  "latest_companion_validation": {
+    "questions": 137,
+    "incidents": 24,
+    "source_files": 37,
+    "absent_examples": 28,
+    "concept_rows": 290,
+    "local_links": 1484,
+    "archive_members": 167
+  }
+}

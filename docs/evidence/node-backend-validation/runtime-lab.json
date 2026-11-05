@@ -1,0 +1,16 @@
+{
+  "node": "v22.14.0",
+  "passed": 10,
+  "checks": [
+    "EventEmitter: synchronous order and unhandled error",
+    "Scheduling: CommonJS and ESM entry-point contexts",
+    "Values: closure lifetime, shallow copy and encoded byte length",
+    "Pipeline: equal bytes, error rejection and both streams closed",
+    "Backpressure: production pauses for drain; all 100 chunks consumed",
+    "AsyncLocalStorage: overlapping runs keep separate IDs",
+    "Worker: result 144, exit zero and failed worker rejection owned",
+    "Child arguments: shell metacharacters remain literal; failure rejects",
+    "Abort: timeout cancels a supported operation, with explicit failure",
+    "Input: URL query round-trip and numeric conversion edge cases"
+  ]
+}

@@ -49,6 +49,8 @@ node scripts/failure-drill.mjs
 
 ## Learn and rehearse
 
+Start with the [Node.js/backend interview questionnaire and troubleshooting guide](docs/nodejs-aws-study-path/node-backend-questionnaire.md): short answers, service setup, source-linked mechanisms, recovery scenarios and a credential-free runnable lab. The [coverage ledger](docs/nodejs-aws-study-path/node-backend-coverage.md) maps both lesson sets; [live progress](docs/nodejs-aws-study-path/node-backend-progress.md) records checks and independent reviews.
+
 Practice with the [AWS/Terraform questionnaire and developer troubleshooting companion](docs/nodejs-aws-study-path/aws-terraform-questionnaire.md): 30 concise answers and 12 diagnostic scenarios, each mapped to existing lessons, priority and dated project evidence.
 
 The [AWS visual study guide](docs/nodejs-aws-study-path/visuals/README.md) adds actual project views and official console examples with field explanations and explicit provenance, plus guidance for email/provider sign-in and the actual IAM user-permissions wizard.
