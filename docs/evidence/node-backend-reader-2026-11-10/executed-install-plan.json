@@ -1,0 +1,37 @@
+{
+  "source_revision": "841f0cf6484d6d6e4d7d752c2fcde9341a2f635f",
+  "destination": "/Users/robertovalencia/Documents/Business/Interview process",
+  "code_files": [
+    "tools/import_nodejs_aws_study.py",
+    "tools/study_app.py",
+    "tests/test_nodejs_aws_import.py",
+    "tests/test_study_app.py",
+    "README.md",
+    "app/app.css"
+  ],
+  "managed_count": 92,
+  "changed_managed_paths": [
+    "study/profiles/nodejs-aws/generated/00-roadmap-and-mastery-gates.md",
+    "study/profiles/nodejs-aws/generated/19-source-and-requirement-coverage.md",
+    "study/profiles/nodejs-aws/generated/20-cloud-roadmap-and-lab.md",
+    "study/profiles/nodejs-aws/generated/32-terraform-hcl-and-first-local-lab.md",
+    "study/profiles/nodejs-aws/generated/37-terraform-plan-apply-and-drift.md",
+    "study/profiles/nodejs-aws/generated/44-cloud-complete-syllabus-and-mastery-map.md",
+    "study/profiles/nodejs-aws/generated/50-dns-route53-acm-and-tls.md",
+    "study/profiles/nodejs-aws/generated/65-cloudwatch-agent-logs-metrics-and-alarms.md",
+    "study/profiles/nodejs-aws/generated/69-cloud-cost-allocation-and-optimization.md",
+    "study/profiles/nodejs-aws/generated/71-terraform-modules-and-contracts.md",
+    "study/profiles/nodejs-aws/generated/80-staged-modernization-and-traceability.md",
+    "study/profiles/nodejs-aws/generated/81-network-security-local-lab.md",
+    "study/profiles/nodejs-aws/generated/82-terraform-advanced-local-lab.md",
+    "study/profiles/nodejs-aws/README.md",
+    "study/profiles/nodejs-aws/generated/node-backend-questionnaire.md",
+    "study/profiles/nodejs-aws/generated/node-backend-runtime.md",
+    "study/profiles/nodejs-aws/generated/node-backend-services.md",
+    "study/profiles/nodejs-aws/generated/node-backend-operations.md",
+    "study/profiles/nodejs-aws/generated/node-backend-coverage.md",
+    "study/profiles/nodejs-aws/generated/node-backend-progress.md",
+    "study/profiles/nodejs-aws/generated/node-backend-source-context.md"
+  ],
+  "visual_repair": "Stable anchor block display and88px sticky-header scroll clearance; class emitted only by validated anchor rule."
+}

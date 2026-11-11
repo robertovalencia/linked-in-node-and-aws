@@ -1,0 +1,85 @@
+TAP version 13
+# Subtest: resume opens in the shared shell and retains form state across view changes
+ok 1 - resume opens in the shared shell and retains form state across view changes
+  ---
+  duration_ms: 2.643958
+  ...
+# Subtest: direct links and history entries resolve to the correct workspace view
+ok 2 - direct links and history entries resolve to the correct workspace view
+  ---
+  duration_ms: 0.972042
+  ...
+# Subtest: NodeJs/AWS deep links override the stored Java profile and retain twelve-week grouping
+ok 3 - NodeJs/AWS deep links override the stored Java profile and retain twelve-week grouping
+  ---
+  duration_ms: 1.455666
+  ...
+# Subtest: a pending study request cannot overwrite the resume view
+ok 4 - a pending study request cannot overwrite the resume view
+  ---
+  duration_ms: 0.947958
+  ...
+# Subtest: source links requesting a separate tab are not intercepted by study navigation
+ok 5 - source links requesting a separate tab are not intercepted by study navigation
+  ---
+  duration_ms: 1.370458
+  ...
+# Subtest: all expansion modes preserve the selected model and keep the selector enabled
+ok 6 - all expansion modes preserve the selected model and keep the selector enabled
+  ---
+  duration_ms: 0.493542
+  ...
+# Subtest: pasted Java snippets receive fences while preserving their exact indentation
+ok 7 - pasted Java snippets receive fences while preserving their exact indentation
+  ---
+  duration_ms: 3.266958
+  ...
+# Subtest: notes and already fenced snippets retain normal paste behavior
+ok 8 - notes and already fenced snippets retain normal paste behavior
+  ---
+  duration_ms: 0.92475
+  ...
+# Subtest: autoformatted paste replaces only the selection and separates code from surrounding notes
+ok 9 - autoformatted paste replaces only the selection and separates code from surrounding notes
+  ---
+  duration_ms: 0.873083
+  ...
+# Subtest: oversized code is not truncated and ordinary text pastes are not intercepted
+ok 10 - oversized code is not truncated and ordinary text pastes are not intercepted
+  ---
+  duration_ms: 0.698917
+  ...
+# Subtest: Saved and Details editors attach automatic paste formatting when adding or editing a comment
+ok 11 - Saved and Details editors attach automatic paste formatting when adding or editing a comment
+  ---
+  duration_ms: 1.16325
+  ...
+# Subtest: switching resumes ignores stale validation and submits the selected template
+ok 12 - switching resumes ignores stale validation and submits the selected template
+  ---
+  duration_ms: 4.919208
+  ...
+# Subtest: switching sources clears the previous link and waits for the new preflight
+ok 13 - switching sources clears the previous link and waits for the new preflight
+  ---
+  duration_ms: 0.803459
+  ...
+# Subtest: saved personal analysis locks its selection and finishes without a new AI submission
+ok 14 - saved personal analysis locks its selection and finishes without a new AI submission
+  ---
+  duration_ms: 0.765333
+  ...
+# Subtest: additional experience is submitted and the readable profile preview is rendered as text
+ok 15 - additional experience is submitted and the readable profile preview is rendered as text
+  ---
+  duration_ms: 0.932459
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 46.166417

@@ -1,0 +1,67 @@
+{
+  "base_url": "http://127.0.0.1:8765",
+  "managed_guides": 92,
+  "companion_pages": 7,
+  "questions": 137,
+  "incidents": 24,
+  "search_results": 12,
+  "all_source_targets": true,
+  "requests": [
+    {
+      "path": "/api/library",
+      "status": 200,
+      "sha256": "964dffdce409c9863c00864fef17ff9b3a7f589cdcb4c1075bb5f1f497209e55"
+    },
+    {
+      "path": "/api/guides/nodejs-aws--node-backend-runtime",
+      "status": 200,
+      "sha256": "fa46aaa34477db02f82de30c83750f352440174a45b7f35aa084b53a3746728b"
+    },
+    {
+      "path": "/api/guides/nodejs-aws--node-backend-services",
+      "status": 200,
+      "sha256": "ef4bef4436941e372a1c5fe3418c86b21a4b07f14aed933ff33daa2ae8585d41"
+    },
+    {
+      "path": "/api/guides/nodejs-aws--node-backend-operations",
+      "status": 200,
+      "sha256": "aa40b1a52cc719c420bae1dd9613576e57a2bef3f1c4032474c5b62e4f30b1a0"
+    },
+    {
+      "path": "/api/guides/nodejs-aws--node-backend-source-context",
+      "status": 200,
+      "sha256": "833c7e0188ac29f862059866cb2b7917acb1ea601c6315458833ebdc78e60158"
+    },
+    {
+      "path": "/guide/nodejs-aws--node-backend-questionnaire",
+      "status": 200,
+      "sha256": "ff1637038441c85d21a4a53ee7186356e451726b37527b17721d78bccae36eb9"
+    },
+    {
+      "path": "/guide/nodejs-aws--node-backend-runtime",
+      "status": 200,
+      "sha256": "ff1637038441c85d21a4a53ee7186356e451726b37527b17721d78bccae36eb9"
+    },
+    {
+      "path": "/guide/nodejs-aws--node-backend-services",
+      "status": 200,
+      "sha256": "ff1637038441c85d21a4a53ee7186356e451726b37527b17721d78bccae36eb9"
+    },
+    {
+      "path": "/guide/nodejs-aws--03-node-runtime-and-async",
+      "status": 200,
+      "sha256": "ff1637038441c85d21a4a53ee7186356e451726b37527b17721d78bccae36eb9"
+    },
+    {
+      "path": "/api/search?q=backpressure&profile=nodejs-aws",
+      "status": 200,
+      "sha256": "fb928fbb3b03623c1a22de8b1eccd7f055a4b231b9ab0bc6aae41f1b36c218f7"
+    },
+    {
+      "path": "/app.css",
+      "status": 200,
+      "sha256": "4be3ae06ac3d7ffb775164aa7bea31d6f2f9eb8c36618aae1e9e97292eab4a3d"
+    }
+  ],
+  "paid_requests": 0
+}

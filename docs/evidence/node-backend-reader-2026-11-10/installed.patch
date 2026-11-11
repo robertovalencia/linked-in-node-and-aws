@@ -1,0 +1,349 @@
+--- a/tools/import_nodejs_aws_study.py
++++ b/tools/import_nodejs_aws_study.py
+@@ -13,6 +13,19 @@
+ DEFAULT_SOURCE = Path('/Users/robertovalencia/Documents/Business/linked-in-node-and-aws')
+ PROFILE = 'nodejs-aws'
+ LINK = re.compile(r'(?<!!)\[([^\]]+)\]\(([^)]+)\)')
++# Supplementary reader pages are deliberately explicit; never import personal
++# notes or recursively copy the pack. Numbered curriculum validation is separate.
++BACKEND_COMPANIONS = (
++    'node-backend-questionnaire.md', 'node-backend-runtime.md',
++    'node-backend-services.md', 'node-backend-operations.md',
++    'node-backend-coverage.md', 'node-backend-progress.md',
++    'evidence/node-backend-source-context.md',
++)
++BACKEND_SUPPORT = (
++    'node-backend-questionnaire-map.json', 'node-backend-coverage.json',
++    'node-backend-lesson-inventory.json',
++    'labs/node-runtime/README.md', 'labs/node-runtime/run.mjs',
++)
+
+
+ def source_identity(source: Path) -> tuple[str, str]:
+@@ -86,6 +99,16 @@
+         raise ValueError(f'Expected complete Node study lessons 00 through {expected_count - 1:02}')
+     mapping = {p.resolve(): p.stem for p in lessons}
+     mapping[(pack / 'README.md').resolve()] = 'study-index'
++    index_bytes = committed_file(pack / 'README.md')
++    has_backend = (b'node-backend-questionnaire.md' in index_bytes
++                   or any((pack / name).exists() for name in BACKEND_COMPANIONS + BACKEND_SUPPORT))
++    if has_backend:
++        for name in BACKEND_COMPANIONS + BACKEND_SUPPORT:
++            path = pack / name
++            if not path.is_file():
++                raise ValueError(f'Incomplete Node backend companion bundle: {name}')
++            committed_file(path)
++        mapping.update({(pack / name).resolve(): Path(name).stem for name in BACKEND_COMPANIONS})
+     # Check the entire managed input set before constructing any destination writes.
+     for original in mapping:
+         committed_file(original)
+--- a/tools/study_app.py
++++ b/tools/study_app.py
+@@ -132,6 +132,11 @@
+
+ NODEJS_AWS_GROUPS = [
+     ("Start here", {"study-index", "00-roadmap-and-mastery-gates"}),
++    ("Node.js/backend interview and troubleshooting", {
++        "node-backend-questionnaire", "node-backend-runtime",
++        "node-backend-services", "node-backend-operations",
++        "node-backend-coverage", "node-backend-source-context", "node-backend-progress",
++    }),
+     ("JavaScript to Node.js", {
+         "01-javascript-language-foundations", "02-typescript-and-modules",
+         "03-node-runtime-and-async", "04-node-http-processes-and-streams",
+@@ -395,6 +400,27 @@
+     md.enable("table")
+     md.enable("strikethrough")
+     md.renderer.rules["fence"] = render_fence
++    # Recognize only the companion's standalone, empty stable-card anchors.
++    # Raw HTML stays disabled, including inside code fences and inline examples.
++    def stable_card_anchor(state, start_line, end_line, silent):
++        if state.is_code_block(start_line):
++            return False
++        start = state.bMarks[start_line] + state.tShift[start_line]
++        line = state.src[start:state.eMarks[start_line]]
++        match = re.fullmatch(r'<a id="((?:source-)?n[rso]i?[0-9]{2})"></a>\s*', line)
++        if not match:
++            return False
++        if not silent:
++            token = state.push("stable_card_anchor", "a", 0)
++            token.attrSet("id", match.group(1))
++            token.block = True
++            token.map = [start_line, start_line + 1]
++            state.line = start_line + 1
++        return True
++    md.block.ruler.before("paragraph", "stable_card_anchor", stable_card_anchor)
++    md.renderer.rules["stable_card_anchor"] = lambda tokens, idx, options, env: (
++        f'<a id="{html.escape(tokens[idx].attrGet("id"), quote=True)}" class="stable-card-anchor"></a>\n'
++    )
+     def render_link(tokens, idx, options, env):
+         token = tokens[idx]
+         href = token.attrGet("href") or ""
+--- a/tests/test_nodejs_aws_import.py
++++ b/tests/test_nodejs_aws_import.py
+@@ -1,4 +1,6 @@
+ import hashlib
++from html.parser import HTMLParser
++from urllib.parse import urlsplit, unquote
+ import json
+ from pathlib import Path
+ import sys
+@@ -13,6 +15,21 @@
+
+ SHA = 'a' * 40
+ REPO = 'https://github.com/example/marketplace'
++
++
++class RenderedTargets(HTMLParser):
++    def __init__(self, body):
++        super().__init__()
++        self.ids = []
++        self.links = []
++        self.feed(body)
++
++    def handle_starttag(self, tag, attrs):
++        attrs = dict(attrs)
++        if 'id' in attrs:
++            self.ids.append(attrs['id'])
++        if tag == 'a' and 'href' in attrs:
++            self.links.append(attrs['href'])
+
+
+ def files_snapshot(root):
+@@ -29,7 +46,7 @@
+         patcher.start()
+         self.addCleanup(patcher.stop)
+
+-    def fixture(self, root, *, count=84, manifest=True):
++    def fixture(self, root, *, count=84, manifest=True, backend=False):
+         source = root / 'source'
+         pack = source / 'docs/nodejs-aws-study-path'
+         (pack / 'generated').mkdir(parents=True, exist_ok=True)
+@@ -52,7 +69,76 @@
+             (pack / 'cloud-coverage.json').write_text(json.dumps({
+                 'schema_version': 2, 'lesson_count': count,
+             }))
++        if backend:
++            for name in importer.BACKEND_COMPANIONS + importer.BACKEND_SUPPORT:
++                path = pack / name
++                path.parent.mkdir(parents=True, exist_ok=True)
++                path.write_text('# Companion\n' if name.endswith('.md') else '{}\n')
++            (pack / 'README.md').write_text('# Node\n\n[Interview](node-backend-questionnaire.md)\n')
++            (pack / 'node-backend-questionnaire.md').write_text(
++                '# Interview\n\n[Runtime](node-backend-runtime.md#nr01)\n')
++            (pack / 'node-backend-runtime.md').write_text(
++                '# Runtime\n\n<a id="nr01"></a>\n\n### What is backpressure?\n\n'
++                '[Source](evidence/node-backend-source-context.md#source-nr01)\n'
++                '[Lesson](generated/03-topic.md#topic-3)\n[Lab](labs/node-runtime/run.mjs)\n')
++            (pack / 'evidence/node-backend-source-context.md').write_text(
++                '# Inspected source\n\n<a id="source-nr01"></a>\n\nLiteral source.\n')
+         return source
++
++    @patch.object(importer, 'source_identity', return_value=(REPO, SHA))
++    def test_companions_are_local_searchable_scoped_and_idempotent(self, identity):
++        with tempfile.TemporaryDirectory() as temp:
++            root = Path(temp)
++            source = self.fixture(root, backend=True)
++            destination = root / 'app'
++            self.assertEqual(len(importer.run_import(source, destination)), 92)
++            self.assertEqual(importer.run_import(source, destination), [])
++            before = files_snapshot(destination)
++            self.assertEqual(importer.run_import(source, destination, check=True), [])
++            self.assertEqual(before, files_snapshot(destination))
++            library = app.StudyLibrary(destination)
++            rendered = library.render_document('nodejs-aws--node-backend-runtime')['html']
++            self.assertIn('id="nr01"', rendered)
++            self.assertIn('class="stable-card-anchor"', rendered)
++            self.assertIn('/guide/nodejs-aws--node-backend-source-context#source-nr01', rendered)
++            self.assertIn('/guide/nodejs-aws--03-topic#topic-3', rendered)
++            self.assertIn(f'{REPO}/blob/{SHA}/docs/nodejs-aws-study-path/labs/node-runtime/run.mjs', rendered)
++            self.assertTrue(library.search('backpressure', profile='nodejs-aws'))
++            self.assertEqual(library.search('backpressure', profile='java'), [])
++            (source / 'docs/nodejs-aws-study-path/private-notes.md').write_text('private')
++            self.assertEqual(importer.run_import(source, destination), [])
++
++    @patch.object(importer, 'source_identity', return_value=(REPO, SHA))
++    def test_each_missing_companion_or_support_file_fails_before_writes(self, identity):
++        with tempfile.TemporaryDirectory() as temp:
++            root = Path(temp)
++            source = self.fixture(root, backend=True)
++            destination = root / 'app'
++            importer.run_import(source, destination)
++            before = files_snapshot(destination)
++            for name in importer.BACKEND_COMPANIONS + importer.BACKEND_SUPPORT:
++                with self.subTest(file=name):
++                    path = source / 'docs/nodejs-aws-study-path' / name
++                    body = path.read_bytes()
++                    path.unlink()
++                    with self.assertRaisesRegex(ValueError, 'Incomplete Node backend companion bundle'):
++                        importer.run_import(source, destination)
++                    self.assertEqual(before, files_snapshot(destination))
++                    path.write_bytes(body)
++
++    def test_stable_anchor_renderer_keeps_raw_html_disabled(self):
++        body = '\n\n'.join([
++            '# Safe anchors', '<a id="nr01"></a>', '<a id="nsi09"></a>',
++            '<a id="source-no40"></a>', '<a id="nr02" onclick="alert(1)"></a>',
++            '<a id="app"></a>', '<script>alert(1)</script>',
++            'Inline <a id="nr03"></a> stays literal.',
++            '```html\n<a id="nr04"></a>\n```', '    <a id="nr05"></a>',
++        ])
++        rendered = app.sanitize(app.markdown_engine().render(body))
++        self.assertEqual(RenderedTargets(rendered).ids, ['nr01', 'nsi09', 'source-no40'])
++        self.assertNotIn('<script>', rendered)
++        self.assertNotIn('<a id="nr02"', rendered)
++        self.assertIn('&lt;a id=', rendered)
+
+     @patch.object(importer, 'source_identity', return_value=(REPO, SHA))
+     def test_manifest_pack_resolves_internal_guides_and_pins_new_lab_links(self, identity):
+@@ -166,8 +252,25 @@
+
+
+ class NodeCommitIntegrityTests(unittest.TestCase):
+-    def fixture(self, root):
+-        source = NodeImportTests().fixture(root)
++    def test_dirty_backend_pages_and_metadata_reject_before_destination_writes(self):
++        with tempfile.TemporaryDirectory() as temp:
++            root = Path(temp)
++            source, git = self.fixture(root, backend=True)
++            destination = root / 'app'
++            importer.run_import(source, destination)
++            before = files_snapshot(destination)
++            for name in importer.BACKEND_COMPANIONS + importer.BACKEND_SUPPORT:
++                with self.subTest(file=name):
++                    path = source / 'docs/nodejs-aws-study-path' / name
++                    body = path.read_bytes()
++                    path.write_bytes(body + b'\nUncommitted modification.\n')
++                    with self.assertRaisesRegex(ValueError, 'differs from committed revision'):
++                        importer.run_import(source, destination)
++                    self.assertEqual(before, files_snapshot(destination))
++                    path.write_bytes(body)
++
++    def fixture(self, root, *, backend=False):
++        source = NodeImportTests().fixture(root, backend=backend)
+         (source / 'infra').mkdir()
+         (source / 'infra/other-owner.tf').write_text('# Other conversation owns this file.\n')
+         def git(*args):
+@@ -231,13 +334,48 @@
+
+
+ class NodeCloudProfileTests(unittest.TestCase):
++    def test_real_backend_counts_fragments_and_reader_navigation(self):
++        library = app.StudyLibrary(app.ROOT)
++        pages = {Path(name).stem: library.render_document('nodejs-aws--' + Path(name).stem)
++                 for name in importer.BACKEND_COMPANIONS}
++        parsed = {slug: RenderedTargets(page['html']) for slug, page in pages.items()}
++        cards = [target for slug in ('node-backend-runtime', 'node-backend-services', 'node-backend-operations')
++                 for target in parsed[slug].ids if importer.re.fullmatch(r'n[rso]i?[0-9]{2}', target)]
++        self.assertEqual(len(cards), 161)
++        self.assertEqual(len(set(cards)), 161)
++        self.assertEqual(sum('i' in target for target in cards), 24)
++        self.assertEqual(sum('i' not in target for target in cards), 137)
++        self.assertTrue({'source-' + target for target in cards} <= set(parsed['node-backend-source-context'].ids))
++        for slug, targets in parsed.items():
++            self.assertEqual(len(targets.ids), len(set(targets.ids)), slug)
++            for href in targets.links:
++                url = urlsplit(href)
++                if href.startswith('#'):
++                    self.assertIn(unquote(url.fragment), targets.ids, (slug, href))
++                elif not url.netloc and url.path.startswith('/guide/'):
++                    target_id = url.path.removeprefix('/guide/')
++                    library.require_document(target_id)
++                    if url.fragment:
++                        other = target_id.removeprefix('nodejs-aws--')
++                        target = parsed.get(other)
++                        if target is None:
++                            target = RenderedTargets(library.render_document(target_id)['html'])
++                            parsed[other] = target
++                        self.assertIn(unquote(url.fragment), target.ids, (slug, href))
++        profile = library._profile_payload('nodejs-aws')
++        group = next(g for g in profile['groups'] if g['label'] == 'Node.js/backend interview and troubleshooting')
++        self.assertEqual({d['slug'] for d in group['documents']}, set(pages))
++        results = library.search('backpressure', profile='nodejs-aws')
++        self.assertTrue(any(d['id'] == 'nodejs-aws--node-backend-runtime' for d in results))
++        self.assertTrue(all(d['id'].startswith('nodejs-aws--') for d in results))
++
+     def test_real_cloud_lessons_render_and_link_inside_profile(self):
+         library = app.StudyLibrary(app.ROOT)
+         profile = next(p for p in library.library_payload(ai_available=False, model='test')['profiles']
+                        if p['id'] == 'nodejs-aws')
+         docs = [d for group in profile['groups'] for d in group['documents']]
+-        self.assertEqual(len(docs), 85)
+-        self.assertEqual(len({d['id'] for d in docs}), 85)
++        self.assertEqual(len(docs), 92)
++        self.assertEqual(len({d['id'] for d in docs}), 92)
+         for number in range(20, 84):
+             document = next(d for d in docs if d['id'].startswith(f'nodejs-aws--{number:02}-'))
+             rendered = library.render_document(document['id'])
+--- a/tests/test_study_app.py
++++ b/tests/test_study_app.py
+@@ -151,16 +151,30 @@
+         node_guides = [document for document in generated if document.profile == "nodejs-aws"]
+         self.assertEqual(len(java_guides), 16)
+         self.assertEqual(len(devops_guides), 12)
+-        self.assertEqual(len(node_guides), 84)
++        numbered_node_guides = [document for document in node_guides if document.slug[:2].isdigit()]
++        self.assertEqual(len(numbered_node_guides), 84)
++        self.assertEqual(len(node_guides), 91)
+         before_generated = digest_tree(app.GENERATED_DIR)
+         before_personal = digest_tree(app.PERSONAL_DIR)
+         for document in generated:
+             payload = library.render_document(document.id)
+             self.assertIn("html", payload)
+             self.assertIn("outline", payload)
+-            self.assertTrue(payload["points"], document.id)
++            if document.profile == "nodejs-aws" and document.slug in {
++                "node-backend-coverage", "node-backend-progress",
++            }:
++                self.assertIn("<table>", payload["html"], document.id)
++                self.assertTrue(payload["outline"], document.id)
++            else:
++                self.assertTrue(payload["points"], document.id)
+             if document.profile == "nodejs-aws":
+-                self.assertTrue(payload["references"], f"No selectable sources: {document.id}")
++                if document.slug[:2].isdigit():
++                    self.assertTrue(payload["references"], f"No selectable sources: {document.id}")
++                else:
++                    # Supplementary cards use inline official/source links.
++                    # Their AI actions must retain the reader's same-profile
++                    # reference fallback, without changing numbered lessons.
++                    self.assertTrue(library.expansion_references(document, document.title), document.id)
+         self.assertEqual(before_generated, digest_tree(app.GENERATED_DIR))
+         self.assertEqual(before_personal, digest_tree(app.PERSONAL_DIR))
+
+@@ -195,7 +209,7 @@
+         profile = next(item for item in payload["profiles"] if item["id"] == "nodejs-aws")
+         self.assertEqual(profile["default_document"], "nodejs-aws--00-roadmap-and-mastery-gates")
+         documents = [item for group in profile["groups"] for item in group["documents"]]
+-        self.assertEqual(len(documents), 85)
++        self.assertEqual(len(documents), 92)
+         self.assertTrue(all(item["id"].startswith("nodejs-aws--") for item in documents))
+         results = library.search("outbox", profile="nodejs-aws")
+         self.assertTrue(results)
+--- a/README.md
++++ b/README.md
+@@ -249,6 +249,8 @@
+
+ ## NodeJS/AWS: detailed AWS and Terraform curriculum
+
++Open the [Node.js/backend interview and troubleshooting questionnaire](http://127.0.0.1:8765/guide/nodejs-aws--node-backend-questionnaire) for 137 questions and 24 recovery scenarios. Its runtime, services and operations sections, coverage ledger, inspected source excerpts and dated validation record are searchable local guides in the **Node.js/backend interview and troubleshooting** group. Question, incident and source links retain stable fragments. Reading and searching require no AI call.
++
+ Open [the AWS/Terraform roadmap](http://127.0.0.1:8765/guide/nodejs-aws--20-cloud-roadmap-and-lab). The 64 cloud lessons, numbered 20–83, cover foundations through professional AWS governance, networking, compute, data, integration, security, operations, advanced Terraform and architecture practice. Lessons 44–83 extend beyond services implemented in the marketplace; new designs are explicitly illustrative and use official references. Real project examples retain pinned source links. Credential-free network and Terraform labs create no cloud resources. The separate deployment conversation has acknowledged ownership of costs and infrastructure. Its reviewed cost/HTTPS plan report is published; certificate issuance is verified. State bootstrap and application infrastructure were not applied, and final plan approval and live operational gates remain pending. Read the project coordination record for the dated owner report.
+
+ Refresh after the project documentation changes:
+@@ -258,4 +260,4 @@
+ .venv/bin/python tools/import_nodejs_aws_study.py --check
+ ```
+
+-The importer updates only this profile’s managed index and 84 generated lessons, resolves guide links inside the reader, and pins lab/code/download links to the published Git commit. The source coverage manifest declares schema 2 and 84 contiguous lessons (00–83); incomplete packs are rejected before writing. Managed documents, the manifest and directly linked file assets must byte-match the selected Git commit; directory links must exist in that commit. Unrelated working-tree changes do not block the import. Complete legacy 44-lesson packs remain compatible when no manifest exists. It preserves existing guide IDs, personal notes, saved expansions, comments and other profiles. `--check` reports drift without writing. Restart the app after changing navigation groups.
++The importer updates only this profile’s managed index, 84 numbered lessons and seven explicitly allowed backend companion pages. It resolves imported guide links inside the reader and pins lab/code/download links to the selected source Git commit. The source coverage manifest declares schema 2 and 84 contiguous lessons (00–83); incomplete curricula or companion bundles are rejected before writing. Managed documents, companion metadata, the runtime lab, the manifest and directly linked file assets must byte-match that commit; directory links must exist in it. Unrelated working-tree changes do not block the import. Complete legacy 44-lesson packs remain compatible when no manifest exists. It preserves existing guide IDs, personal notes, saved expansions, comments and other profiles. `--check` reports drift without writing; rerunning the importer without source changes updates zero files. Restart the app after changing navigation groups. Source validation dates describe the original questionnaire checks, separately from reader-import evidence.
+--- a/app/app.css
++++ b/app/app.css
+@@ -419,6 +419,7 @@
+ .markdown-body h1 { display: none; }
+ .markdown-body h2 { margin: 58px 0 20px; padding-top: 4px; font-family: Georgia, "Times New Roman", serif; font-size: 30px; line-height: 1.2; letter-spacing: -.02em; scroll-margin-top: 88px; }
+ .markdown-body h2::before { content: ""; display: block; width: 34px; height: 3px; margin-bottom: 14px; border-radius: 2px; background: var(--green); }
++.markdown-body .stable-card-anchor { display: block; scroll-margin-top: 88px; }
+ .markdown-body h3 { margin: 32px 0 12px; color: var(--navy); font-size: 19px; line-height: 1.35; scroll-margin-top: 88px; }
+ .markdown-body h4 { margin: 24px 0 10px; }
+ .markdown-body p { margin: 12px 0; }
